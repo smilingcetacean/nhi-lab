@@ -27,7 +27,6 @@ KUBECTX="${KUBECTX:-kind-${CLUSTER_NAME}}"
 TRUST_DOMAIN="${TRUST_DOMAIN:-lab.local}"
 
 RESOURCE_URL="http://resource.nhi.svc.cluster.local:8080"
-VENDING_URL="http://vending-service.nhi.svc.cluster.local:8090"
 
 PARENT_ID="spiffe://${TRUST_DOMAIN}/agent/parent/vend-verify"
 CHILD_PATH_HINT="child/vend-verify-c1"
