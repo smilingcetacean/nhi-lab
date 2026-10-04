@@ -24,7 +24,7 @@ type opaInput struct {
 	Method   string `json:"method"`
 	Path     string `json:"path"`
 	// Scopes are the scopes this request REQUIRES, derived server-side from
-	// method and path. Never caller-supplied. See requiredScopesFor.
+	// method and path. Never caller-supplied. See routeFor.
 	Scopes []string `json:"scopes"`
 	// Now is the resource's clock, in Unix seconds, so that TTL conditions in
 	// generated policy are evaluated against a value the test harness can

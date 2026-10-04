@@ -44,7 +44,7 @@ type detail struct {
 	Method string `json:"method"`
 	Path   string `json:"path"`
 	// RequiredScopes is what the endpoint demanded — server-derived, never
-	// caller-asserted. See requiredScopesFor.
+	// caller-asserted. See routeFor.
 	RequiredScopes []string `json:"required_scopes,omitempty"`
 	// ChainIDSource records how much the chain_id above is worth. An auditor
 	// reading `client-asserted` knows the value is a correlation hint and not
