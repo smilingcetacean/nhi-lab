@@ -360,10 +360,6 @@ func buildAndSignManifest(childPathHint, scopes, taskContext, selectors string, 
 	return m, nil
 }
 
-// corrupt flips one character in a compact-JWS string, producing something
-// that still parses structurally (same number of '.'-separated segments) but
-// fails signature verification — a "forged/tampered" signature, distinct
-// from a missing or empty one.
 // corrupt flips one character within the JWS SIGNATURE segment (the part
 // after the last '.'), producing something that still parses structurally
 // (same number of '.'-separated segments) but fails signature verification.

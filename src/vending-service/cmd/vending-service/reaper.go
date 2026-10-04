@@ -16,8 +16,9 @@ import (
 // reaper reaps it through the same disposeChain path handleDispose uses, so
 // there is exactly one disposal code path, not two that could drift apart.
 //
-// selfID is the audit actor attributed to a reaper-initiated disposal — the
-// service's own identity, not a caller's, since no caller is involved.
+// A reaper-initiated disposal is attributed in the audit trail to this
+// service's own identity (cfg.audience), not a caller's, since no caller is
+// involved.
 func (s *server) runReaper(ctx context.Context) {
 	ticker := time.NewTicker(s.cfg.reaperInterval)
 	defer ticker.Stop()
