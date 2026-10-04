@@ -64,10 +64,8 @@ func Sign(payload []byte, key crypto.Signer, leafAndChain []*x509.Certificate) (
 
 // Verify checks that compactJWS is a valid detached-JWS signature over
 // payload, whose x5c header chains to one of roots, and whose leaf
-// certificate's SPIFFE ID (URI SAN) equals expectedSigner. It returns the
-// verified leaf certificate's SPIFFE ID on success — which is always
-// expectedSigner, returned so callers can log what was actually checked
-// rather than what was merely asked for.
+// certificate's SPIFFE ID (URI SAN) equals expectedSigner. It returns nil
+// on success and an error naming the failed check otherwise.
 //
 // Chain verification uses x509.ExtKeyUsageAny: SPIRE X.509-SVIDs are typically
 // issued with both server- and client-auth EKUs, and this check's purpose is

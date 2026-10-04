@@ -115,7 +115,6 @@ func run() error {
 	log.Printf("policy-engine: loaded %d root parent(s) from %s", len(bootstrap), cfg.bootstrapPath)
 
 	srv := &server{
-		cfg:         cfg,
 		audit:       audit,
 		synthesizer: deterministicSynthesizer{},
 		opa:         newOPAClient(opaHTTP, cfg.opaURL),
@@ -155,7 +154,6 @@ func run() error {
 }
 
 type server struct {
-	cfg         config
 	audit       *auditor
 	synthesizer Synthesizer
 	opa         *opaClient
