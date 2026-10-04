@@ -98,8 +98,8 @@ func run() error {
 		return fmt.Errorf("parse OPA SPIFFE ID %q: %w", cfg.opaSpiffeID, err)
 	}
 
-	// Authorize OPA by its SPIFFE ID, not by hostname. The svc/opa entry has DNS SANs
-	// to the svc/opa entry so that generic clients like curl can verify it at
+	// Authorize OPA by its SPIFFE ID, not by hostname. The svc/opa entry
+	// carries DNS SANs so that generic clients like curl can verify it at
 	// all, but a SPIFFE-aware client should use the stronger check — it stays
 	// correct even if DNS is subverted.
 	opaClient := &http.Client{
@@ -213,7 +213,7 @@ func (s *server) handleProtected(w http.ResponseWriter, r *http.Request) {
 	rt, known := routeFor(r.Method, r.URL.Path)
 	if !known {
 		// A 404 is still audited. An authenticated caller probing for
-		// endpoints is exactly the kind of thing the attribution claim in
+		// endpoints is exactly the kind of thing the attribution trail
 		// should be able to reconstruct after the fact.
 		s.deny(w, r, http.StatusNotFound, auditEvent{
 			ChainID:       chainID,

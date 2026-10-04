@@ -26,7 +26,8 @@ func TestRequiredScopesAreServerDerived(t *testing.T) {
 		{http.MethodGet, "/datasets/C", nil, false},
 	}
 	for _, c := range cases {
-		got, known := requiredScopesFor(c.method, c.path)
+		rt, known := routeFor(c.method, c.path)
+		got := rt.requiredScopes
 		if known != c.known {
 			t.Errorf("%s %s: known = %v, want %v", c.method, c.path, known, c.known)
 			continue
@@ -41,8 +42,9 @@ func TestRequiredScopesAreServerDerived(t *testing.T) {
 // request line and from nothing else. If a future change ever threaded a
 // caller-supplied value into the required scopes, this is what should fail.
 func TestRequiredScopesIgnoreCallerInput(t *testing.T) {
-	a, _ := requiredScopesFor(http.MethodGet, "/datasets/A")
-	b, _ := requiredScopesFor(http.MethodGet, "/datasets/A")
+	ra, _ := routeFor(http.MethodGet, "/datasets/A")
+	rb, _ := routeFor(http.MethodGet, "/datasets/A")
+	a, b := ra.requiredScopes, rb.requiredScopes
 	if strings.Join(a, ",") != strings.Join(b, ",") {
 		t.Fatal("required scopes are not a pure function of method and path")
 	}
@@ -51,7 +53,7 @@ func TestRequiredScopesIgnoreCallerInput(t *testing.T) {
 	}
 }
 
-// Sub-decision 3: the chain id is a correlation hint and must never influence
+// The chain id is a correlation hint and must never influence
 // an authorization decision. The strongest enforceable version of that rule is
 // that it never reaches OPA at all.
 func TestOPAInputExcludesChainID(t *testing.T) {

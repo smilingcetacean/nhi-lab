@@ -47,8 +47,8 @@ var routes = []route{
 	},
 }
 
-// requiredScopesFor returns the scopes an endpoint demands, and whether the
-// endpoint exists at all.
+// routeFor returns the protected route for method and path — and with it the
+// scopes that endpoint demands — and whether the endpoint exists at all.
 //
 // It is worth being explicit about why this function looks like this.
 //
@@ -66,15 +66,6 @@ var routes = []route{
 //
 // and the decision is containment of the first in the second. Neither side can
 // widen the other.
-func requiredScopesFor(method, path string) ([]string, bool) {
-	for _, r := range routes {
-		if r.method == method && r.path == path {
-			return r.requiredScopes, true
-		}
-	}
-	return nil, false
-}
-
 func routeFor(method, path string) (route, bool) {
 	for _, r := range routes {
 		if r.method == method && r.path == path {
