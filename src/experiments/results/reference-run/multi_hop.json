@@ -1,0 +1,70 @@
+{
+  "generated_at": "2000-01-01T18:20:55Z",
+  "run_id": "d96ab855",
+  "hop1_vend": {
+    "http_code": 201,
+    "body": "{\"chain_id\":\"c_57b443438bae0800708e75656f5c112c\",\"parent_spiffe_id\":\"spiffe://lab.local/agent/parent/exp-root\",\"child_spiffe_id\":\"spiffe://lab.local/agent/parent/exp-root/child/mh-c-d96ab855\",\"child_scopes\":[\"resource:read:datasetA\",\"resource:read:datasetB\"],\"entry_id\":\"631cbd82-03a1-478a-ba45-5e999dc59093\",\"policy_id\":\"nhi_grants_c_57b443438bae0800708e75656f5c112c\",\"issued_at\":946750855,\"expires_at\":946751455}"
+  },
+  "hop1_child_obtained_svid": true,
+  "hop1_pi_c_subset_of_pi_p": true,
+  "hop2_vend": {
+    "http_code": 201,
+    "body": "{\"chain_id\":\"c_5113827ad1858decee9bb0e7619e8490\",\"parent_spiffe_id\":\"spiffe://lab.local/agent/parent/exp-root/child/mh-c-d96ab855\",\"child_spiffe_id\":\"spiffe://lab.local/agent/parent/exp-root/child/mh-c-d96ab855/child/mh-g-d96ab855\",\"child_scopes\":[\"resource:read:datasetA\",\"resource:read:datasetB\"],\"entry_id\":\"3250247e-4699-41db-86b5-21889850f64c\",\"policy_id\":\"nhi_grants_c_5113827ad1858decee9bb0e7619e8490\",\"issued_at\":946750859,\"expires_at\":946751459}"
+  },
+  "hop2_pi_g_subset_of_pi_c": true,
+  "hop2_jobs_escalation_attenuated": true,
+  "hop2_grandchild_obtained_svid": true,
+  "grandchild_get_datasetA": 200,
+  "grandchild_post_jobs_denied": 403,
+  "hop1_audit_event": {
+    "timestamp": "2000-01-01T18:20:55.589230055Z",
+    "stage": "vend",
+    "chain_id": "c_57b443438bae0800708e75656f5c112c",
+    "actor_spiffe_id": "spiffe://lab.local/agent/parent/exp-root",
+    "outcome": "allow",
+    "detail": {
+      "parent_spiffe_id": "spiffe://lab.local/agent/parent/exp-root",
+      "child_spiffe_id": "spiffe://lab.local/agent/parent/exp-root/child/mh-c-d96ab855",
+      "requested_scopes": [
+        "resource:read:datasetA",
+        "resource:read:datasetB"
+      ],
+      "child_scopes": [
+        "resource:read:datasetA",
+        "resource:read:datasetB"
+      ],
+      "policy_id": "nhi_grants_c_57b443438bae0800708e75656f5c112c",
+      "entry_id": "631cbd82-03a1-478a-ba45-5e999dc59093",
+      "expires_at": 946751455,
+      "task_context": "experiment multi-hop hop1 (P->C)"
+    }
+  },
+  "hop2_audit_event": {
+    "timestamp": "2000-01-01T18:20:59.850082387Z",
+    "stage": "vend",
+    "chain_id": "c_5113827ad1858decee9bb0e7619e8490",
+    "actor_spiffe_id": "spiffe://lab.local/agent/parent/exp-root/child/mh-c-d96ab855",
+    "outcome": "allow",
+    "detail": {
+      "parent_spiffe_id": "spiffe://lab.local/agent/parent/exp-root/child/mh-c-d96ab855",
+      "child_spiffe_id": "spiffe://lab.local/agent/parent/exp-root/child/mh-c-d96ab855/child/mh-g-d96ab855",
+      "requested_scopes": [
+        "resource:read:datasetA",
+        "resource:read:datasetB",
+        "resource:write:jobs"
+      ],
+      "child_scopes": [
+        "resource:read:datasetA",
+        "resource:read:datasetB"
+      ],
+      "policy_id": "nhi_grants_c_5113827ad1858decee9bb0e7619e8490",
+      "entry_id": "3250247e-4699-41db-86b5-21889850f64c",
+      "expires_at": 946751459,
+      "task_context": "experiment multi-hop hop2 (C->G, jobs escalation attempt)"
+    }
+  },
+  "lineage_traceable_via_audit": true,
+  "dispose_grandchild_http_code": 200,
+  "dispose_child_http_code": 200,
+  "overall_pass": true
+}

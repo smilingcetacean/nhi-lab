@@ -1,0 +1,103 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: spire-server
+  namespace: spire
+data:
+  server.conf: |
+    server {
+        bind_address   = "0.0.0.0"
+        bind_port      = "8081"
+
+        # Trust domain is fixed lab-wide (SPIFFE IDs, OPA rules and tests all
+        # embed it). Do not change.
+        trust_domain   = "lab.local"
+
+        data_dir       = "/run/spire/data"
+        log_level      = "INFO"
+
+        # Local admin socket. `spire-server entry ...` executed inside this
+        # container talks to the server over this UDS; that is how the
+        # static entries (`make entries`) are created.
+        socket_path    = "/tmp/spire-server/private/api.sock"
+
+        ca_ttl                = "24h"
+        default_x509_svid_ttl = "1h"
+
+        # Deliberately short. JWT-SVIDs are the credential the protected
+        # resource accepts, so a short lifetime is what makes the
+        # "dispose" stage observable within an experiment run.
+        default_jwt_svid_ttl  = "5m"
+
+        ca_subject {
+            country      = ["US"]
+            organization = ["nhi-lab"]
+            common_name  = "lab.local"
+        }
+
+        # WARNING — this is an UNSCOPED privilege grant.
+        #
+        # admin_ids is not limited to the Entry API. A caller holding this
+        # SPIFFE ID may create, update and DELETE any entry for ANY SPIFFE ID
+        # with ANY selectors and TTL, ban or delete agents, and write the
+        # bundle and trust-domain APIs. SPIRE 1.15 cannot express a narrower
+        # grant such as "may only create entries beneath this path".
+        #
+        # Consequence: the SPIRE server places NO independent constraint on
+        # what the vending service mints, so the scope attenuation invariant
+        # Pi(C) subset-of Pi(P) is enforced by the vending service's own code
+        # plus default deny at the resource — not by the server. This is an
+        # accepted, documented limitation of the design.
+        #
+        # Note: SPIRE matches admin_ids against the caller's X509-SVID,
+        # not a JWT-SVID. The vending service must reach :8081 over mTLS.
+        admin_ids = ["spiffe://lab.local/svc/vending-service"]
+    }
+
+    plugins {
+        DataStore "sql" {
+            plugin_data {
+                database_type     = "sqlite3"
+                connection_string = "/run/spire/data/datastore.sqlite3"
+            }
+        }
+
+        # Node attestation: Projected Service Account Token.
+        # `audience` here MUST match the audience the agent's projected token
+        # volume requests (see 22-agent-daemonset.yaml). Mismatch is the
+        # classic PSAT failure: TokenReview returns authenticated=false with
+        # no obvious explanation.
+        NodeAttestor "k8s_psat" {
+            plugin_data {
+                clusters = {
+                    "nhi-lab" = {
+                        service_account_allow_list = ["spire:spire-agent"]
+                        audience                   = ["spire-server"]
+                    }
+                }
+            }
+        }
+
+        KeyManager "disk" {
+            plugin_data {
+                keys_path = "/run/spire/data/keys.json"
+            }
+        }
+
+        # Publishes the trust bundle into the `spire-bundle` ConfigMap so the
+        # agent DaemonSet can bootstrap without a pre-shared join token.
+        Notifier "k8sbundle" {
+            plugin_data {
+                namespace  = "spire"
+                config_map = "spire-bundle"
+            }
+        }
+    }
+
+    health_checks {
+        listener_enabled = true
+        bind_address     = "0.0.0.0"
+        bind_port        = "8080"
+        live_path        = "/live"
+        ready_path       = "/ready"
+    }

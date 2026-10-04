@@ -1,0 +1,54 @@
+# The root-parent bootstrap table.
+#
+# Π(P) for a DYNAMIC parent (one that was itself vended as a child) is read
+# back from its own nhi_grants_* module in OPA. A ROOT parent — one that was
+# never vended, pre-provisioned instead — has no such module, so this
+# ConfigMap is the base case: a static, cluster-provisioned spiffe_id -> scopes
+# table, mounted read-only. It is deliberately NOT runtime-writable: letting
+# anything mutate it at runtime would reintroduce the asserted-Π(P) problem
+# the wire protocol deliberately avoids, just moved into a different file.
+#
+# A parent absent from this table AND absent from OPA has Π(P) = ∅ — every
+# synthesis for it attenuates to the empty set. Unknown parent yields no
+# authority, not an error (fail closed).
+#
+# `policy-verify` exists solely so src/deploy/scripts/verify-policy.sh has a root
+# parent to test against without the vending service. It holds only
+# resource:read:datasetA, deliberately less than a full-access parent, so the
+# verify script can also exercise an escalation attempt (requesting datasetB
+# too) and show the attenuated result.
+#
+# `vend-verify` is the same pattern for verify-vending.sh: a REAL, running pod
+# (manifests/test/44-vending-test-parent.yaml) authenticates as this SPIFFE
+# ID and submits real spawn manifests to the vending service — unlike
+# policy-verify, which never runs as an actual workload. Also deliberately
+# limited to resource:read:datasetA, so verify-vending.sh's scope-escalation
+# negative test (requesting datasetB too) has something to attenuate.
+#
+# `demo`: src/agents/parent.py (manifests/agents/71-demo-parent-pod.yaml)
+# runs as this identity for `make demo`. Also limited to resource:read:datasetA
+# — the happy-path cycle only ever requests that one scope (the demo is the
+# full spawn->attest->vend->operate->dispose cycle, not an escalation
+# attempt; the vend-verify fixture already demonstrates attenuation).
+#
+# `exp-root` (src/experiments/, manifests/experiments/): a REAL running pod
+# (60-experiments-fixtures.yaml) that plays the root parent for the
+# functional (randomized Π(C) ⊆ Π(P) subsets), multi-hop (P -> C -> G) and
+# performance suites. Unlike vend-verify/demo it deliberately holds ALL THREE
+# scopes the resource defines (src/resource/scopes.go) so a randomized
+# requested-scope subset is a meaningful test rather than a trivial
+# singleton — with only one grantable scope, "randomized subsets" degenerates
+# to {} vs {A}.
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: policy-engine-bootstrap
+  namespace: nhi
+data:
+  parents.json: |
+    {
+      "spiffe://lab.local/agent/parent/policy-verify": ["resource:read:datasetA"],
+      "spiffe://lab.local/agent/parent/vend-verify": ["resource:read:datasetA"],
+      "spiffe://lab.local/agent/parent/demo": ["resource:read:datasetA"],
+      "spiffe://lab.local/agent/parent/exp-root": ["resource:read:datasetA", "resource:read:datasetB", "resource:write:jobs"]
+    }

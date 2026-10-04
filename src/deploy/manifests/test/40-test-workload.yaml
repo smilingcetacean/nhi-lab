@@ -1,0 +1,59 @@
+# Static test workload for `make verify`.
+#
+# This is the manually registered static workload: it has no
+# special powers, it is simply a pod in namespace `agents` running under a known
+# service account, matching the registration entry created by
+# `scripts/register-entries.sh`:
+#
+#   spiffe://lab.local/svc/test-workload
+#     selectors: k8s:ns:agents, k8s:sa:nhi-test
+#
+# It runs the SPIRE agent image purely because that image already contains the
+# `spire-agent` CLI, which the verification uses to fetch SVIDs. The
+# long-running command is `api watch`, which subscribes to the Workload API and
+# prints every X.509-SVID update — so the pod's own log is standing evidence
+# that X.509-SVID delivery works, independent of the exec-based checks.
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: nhi-test
+  namespace: agents
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nhi-test-workload
+  namespace: agents
+  labels:
+    app: nhi-test-workload
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: nhi-test-workload
+  template:
+    metadata:
+      labels:
+        app: nhi-test-workload
+    spec:
+      serviceAccountName: nhi-test
+      containers:
+        - name: workload
+          image: ghcr.io/spiffe/spire-agent:1.15.2
+          imagePullPolicy: IfNotPresent
+          command:
+            - /opt/spire/bin/spire-agent
+            - api
+            - watch
+            - -socketPath
+            - /run/spire/sockets/agent.sock
+          volumeMounts:
+            - name: spire-agent-socket
+              mountPath: /run/spire/sockets
+      volumes:
+        # Same hostPath the agent DaemonSet owns. Not readOnly —
+        # connect(2) on a Unix socket requires write permission.
+        - name: spire-agent-socket
+          hostPath:
+            path: /run/spire/sockets
+            type: DirectoryOrCreate

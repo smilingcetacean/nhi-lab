@@ -1,0 +1,56 @@
+# Restrict who can open a connection to OPA at all.
+#
+# This is defence in depth *behind* the mTLS authentication in 31-opa.yaml, not
+# instead of it. Every rule below could be deleted and OPA would still refuse an
+# agent workload, because that workload has no SVID for svc/policy-engine or
+# svc/resource. The NetworkPolicy exists so that the refusal happens at the
+# first SYN rather than after a TLS handshake — and so a future OPA
+# misconfiguration is not a single point of failure.
+#
+# kind ships kindnet, which enforces NetworkPolicy, so this is live in the lab
+# rather than decorative. `make verify` asserts the authentication behaviour
+# directly; the reachability restriction here is asserted by the same checks
+# failing to connect from the `agents` namespace.
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: opa-ingress
+  namespace: opa
+spec:
+  podSelector:
+    matchLabels:
+      app: opa
+  policyTypes:
+    - Ingress
+  ingress:
+    # The policy-plane clients, all in namespace `nhi`. Note that reaching this
+    # port buys the vending service nothing — the system.authz policy has no
+    # rule for its identity.
+    - from:
+        - namespaceSelector:
+            matchLabels:
+              kubernetes.io/metadata.name: nhi
+          podSelector:
+            matchExpressions:
+              # `policy-probe` is the ephemeral verify client of
+              # manifests/test/41-policy-probe.yaml. It is admitted at L3 on
+              # purpose: `make verify` has to prove that OPA
+              # *refuses* it, and a refusal is only evidence of an
+              # authorization decision if the packet arrived in the first place.
+              - key: app
+                operator: In
+                values: ["policy-engine", "resource", "vending-service", "policy-probe"]
+      ports:
+        - protocol: TCP
+          port: 8181
+        # The diagnostic listener (health, metrics). It carries no policy API,
+        # but it is not an unauthenticated escape hatch either: OPA's
+        # --authentication=tls applies RequireAndVerifyClientCert to it as
+        # well, so a caller still needs a valid SVID.
+        - protocol: TCP
+          port: 8282
+
+    # No exception for kubelet probe traffic. There is nothing to except: the
+    # probes in 31-opa.yaml are tcpSocket, because the kubelet holds no SVID
+    # and every OPA listener requires a client certificate. A NetworkPolicy
+    # ingress rule cannot grant a TLS credential.

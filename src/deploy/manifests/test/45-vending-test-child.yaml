@@ -1,0 +1,56 @@
+# Vending-service verification fixture: NOT part of `make spire-up`. Applied and torn
+# down by verify-vending.sh.
+#
+# vending-test-child is deliberately UNREGISTERED at apply time: no SPIRE
+# registration entry names k8s:ns:agents + k8s:sa:nhi-test-vend-child until
+# the vending service creates one dynamically. That is the entire point of
+# verify-vending.sh — "the child pod subsequently obtains its own SVID
+# via the Workload API without any human action" describes exactly this pod,
+# once vending-test-parent's manifest names these same selectors as
+# child_selectors.
+#
+# Runs the same parentsim image as the test parent, but only ever
+# invoked with -mode=x509-check (one-shot Workload API fetch, to observe the
+# SVID appearing and later disappearing) and -mode=call (fetch a JWT-SVID
+# and exercise the protected resource) — never -mode=vend: this pod has no
+# parent role.
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: nhi-test-vend-child
+  namespace: agents
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: vending-test-child
+  namespace: agents
+  labels:
+    app: vending-test-child
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: vending-test-child
+  template:
+    metadata:
+      labels:
+        app: vending-test-child
+    spec:
+      serviceAccountName: nhi-test-vend-child
+      containers:
+        - name: parentsim
+          image: nhi-lab/parentsim:dev
+          imagePullPolicy: Never
+          command: ["/parentsim", "idle"]
+          env:
+            - name: SPIFFE_ENDPOINT_SOCKET
+              value: unix:///run/spire/sockets/agent.sock
+          volumeMounts:
+            - name: spire-agent-socket
+              mountPath: /run/spire/sockets
+      volumes:
+        - name: spire-agent-socket
+          hostPath:
+            path: /run/spire/sockets
+            type: DirectoryOrCreate

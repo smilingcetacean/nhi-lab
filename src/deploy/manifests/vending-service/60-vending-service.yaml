@@ -1,0 +1,129 @@
+# The vending service — the controller that mints child identities through
+# the SPIRE Entry API; the core contribution of this lab.
+#
+# Namespace `nhi`, service account `vending-service`, therefore SPIFFE ID
+# spiffe://lab.local/svc/vending-service (registered by
+# scripts/register-entries.sh). That identity is named in the SPIRE server's
+# admin_ids, so whatever pod runs under this service account holds unscoped
+# SPIRE admin. Keep the service account's use confined to this Deployment.
+#
+# Three credentials meet in this pod:
+#   ingress — parents present a JWT-SVID, audience spiffe://lab.local/svc/vending-service
+#   egress  — this service's own X509-SVID to the policy engine
+#   egress  — this service's own X509-SVID to the SPIRE server admin API
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: vending-service
+  namespace: nhi
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: vending-service
+  namespace: nhi
+spec:
+  type: ClusterIP
+  selector:
+    app: vending-service
+  ports:
+    - name: http
+      port: 8090
+      targetPort: 8090
+      protocol: TCP
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: vending-service
+  namespace: nhi
+  labels:
+    app: vending-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: vending-service
+  template:
+    metadata:
+      labels:
+        app: vending-service
+    spec:
+      serviceAccountName: vending-service
+      containers:
+        - name: vending-service
+          # Built locally and side-loaded into kind. Not a registry
+          # reference: nothing should be able to pull the component holding
+          # unscoped SPIRE admin from the internet.
+          image: nhi-lab/vending-service:dev
+          imagePullPolicy: Never
+          ports:
+            - name: http
+              containerPort: 8090
+          env:
+            - name: LISTEN_ADDR
+              value: ":8090"
+            - name: VENDING_AUDIENCE
+              value: spiffe://lab.local/svc/vending-service
+            - name: TRUST_DOMAIN
+              value: lab.local
+            - name: POLICY_ENGINE_URL
+              value: https://policy-engine.nhi.svc.cluster.local:8443
+            - name: POLICY_ENGINE_SPIFFE_ID
+              value: spiffe://lab.local/svc/policy-engine
+            - name: SPIRE_SERVER_ADDR
+              value: spire-server.spire.svc.cluster.local:8081
+            # SPIRE's own serving SPIFFE ID (distinct from admin_ids, which
+            # names the CALLER this service authenticates as). Verified
+            # empirically against the running cluster — see
+            # src/vending-service/README.md.
+            - name: SPIRE_SERVER_SPIFFE_ID
+              value: spiffe://lab.local/spire/server
+            # Every child entry is parented to the node alias, not
+            # an individual agent.
+            - name: NODE_ALIAS_SPIFFE_ID
+              value: spiffe://lab.local/node/nhi-lab
+            - name: DB_PATH
+              value: /var/lib/vending-service/vending.db
+            - name: SPIFFE_ENDPOINT_SOCKET
+              value: unix:///run/spire/sockets/agent.sock
+            - name: REAPER_INTERVAL
+              value: 15s
+          livenessProbe:
+            httpGet:
+              path: /healthz
+              port: 8090
+            initialDelaySeconds: 3
+            periodSeconds: 10
+          readinessProbe:
+            httpGet:
+              path: /healthz
+              port: 8090
+            initialDelaySeconds: 2
+            periodSeconds: 5
+          volumeMounts:
+            - name: spire-agent-socket
+              mountPath: /run/spire/sockets
+            - name: vending-data
+              mountPath: /var/lib/vending-service
+          securityContext:
+            runAsUser: 65532
+            runAsGroup: 65532
+            runAsNonRoot: true
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+            capabilities:
+              drop: ["ALL"]
+      volumes:
+        - name: spire-agent-socket
+          hostPath:
+            path: /run/spire/sockets
+            type: DirectoryOrCreate
+        # SQLite needs a writable directory; readOnlyRootFilesystem above
+        # forces it into an explicit emptyDir rather than the container's own
+        # filesystem. Not persisted across pod restarts — acceptable for the
+        # lab; a
+        # restart loses delegation bookkeeping but not any live SPIRE entry
+        # or OPA grant, which is what the reaper and disposal actually act on.
+        - name: vending-data
+          emptyDir: {}

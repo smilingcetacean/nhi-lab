@@ -1,0 +1,71 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: spire-agent
+  namespace: spire
+data:
+  agent.conf: |
+    agent {
+        data_dir          = "/run/spire/agent-data"
+        log_level         = "INFO"
+        server_address    = "spire-server.spire.svc.cluster.local"
+        server_port       = "8081"
+
+        # Workload API endpoint. Shared into workload pods by hostPath
+        # (not the SPIFFE CSI driver); the hostPath directory is
+        # /run/spire/sockets on the node.
+        socket_path       = "/run/spire/sockets/agent.sock"
+
+        trust_bundle_path = "/run/spire/bundle/bundle.crt"
+        trust_domain      = "lab.local"
+    }
+
+    plugins {
+        # Node attestation, server-side counterpart in 11-server-configmap.yaml.
+        # token_path points at the projected token volume whose audience is
+        # "spire-server"; the server's k8s_psat `audience` must match exactly.
+        NodeAttestor "k8s_psat" {
+            plugin_data {
+                cluster    = "nhi-lab"
+                token_path = "/var/run/secrets/tokens/spire-agent"
+            }
+        }
+
+        KeyManager "memory" {
+            plugin_data {}
+        }
+
+        # Workload attestation. Emits k8s:ns:<ns>, k8s:sa:<sa>, k8s:pod-uid:<uid>
+        # and friends — the selectors a spawn manifest carries in its
+        # `child_selectors` field.
+        #
+        # skip_kubelet_verification: kind's kubelet serves a self-signed
+        # certificate that no in-cluster CA vouches for. Lab-only shortcut and
+        # a known limitation of this deployment.
+        #
+        # What it weakens: the selectors this attestor derives from the kubelet
+        # /pods query are the sole binding between a minted child SPIFFE ID and
+        # the pod entitled to use it, so the provenance claim
+        # terminates at the integrity of that query. Forging it requires
+        # intercepting a loopback connection inside the node's own network
+        # namespace, i.e. node compromise — already terminal for SPIRE's node
+        # attestation trust model. Low residual risk, but stated explicitly
+        # rather than left assumed.
+        WorkloadAttestor "k8s" {
+            plugin_data {
+                skip_kubelet_verification = true
+            }
+        }
+
+        WorkloadAttestor "unix" {
+            plugin_data {}
+        }
+    }
+
+    health_checks {
+        listener_enabled = true
+        bind_address     = "0.0.0.0"
+        bind_port        = "8082"
+        live_path        = "/live"
+        ready_path       = "/ready"
+    }

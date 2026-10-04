@@ -1,0 +1,202 @@
+# Experiment fixtures. NOT part of `make spire-up` — applied and torn
+# down by src/experiments' own harness (mirrors manifests/test/44-45's
+# ephemeral pattern), independently of the verify/demo fixtures so an
+# experiment run never collides with a concurrent `make verify-vending`/`make demo`.
+#
+# Three real, running pods, each with its own SPIRE-attested identity:
+#
+#   experiments-parent  spiffe://lab.local/agent/parent/exp-root (registered,
+#                        root-parent scopes: manifests/policy-engine/
+#                        36-policy-engine-bootstrap.yaml — all three resource
+#                        scopes, unlike vend-verify/demo's single scope)
+#   experiments-child    UNREGISTERED at apply time. Recipient of the
+#                        functional/performance suites' P -> C delegations,
+#                        and ALSO plays parent for the multi-hop P -> C -> G
+#                        suite (its own X.509/JWT-SVID, once vended, let it
+#                        submit its own signed manifests exactly as any real
+#                        parent would).
+#   experiments-grandchild  UNREGISTERED at apply time. Recipient of the
+#                        multi-hop suite's C -> G delegation only.
+#
+# All three run cmd/parentsim — the same binary verify-vending.sh uses,
+# reused here rather than forked, since every knob (fixed nonce, corrupt
+# signature, claimed parent, raw manifest relay) the negative/functional/
+# performance suites need is already a flag on it.
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: nhi-exp-parent
+  namespace: agents
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: experiments-parent
+  namespace: agents
+  labels:
+    app: experiments-parent
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: experiments-parent
+  template:
+    metadata:
+      labels:
+        app: experiments-parent
+    spec:
+      serviceAccountName: nhi-exp-parent
+      containers:
+        - name: parentsim
+          image: nhi-lab/parentsim:dev
+          imagePullPolicy: Never
+          command: ["/parentsim", "idle"]
+          env:
+            - name: VENDING_SERVICE_URL
+              value: http://vending-service.nhi.svc.cluster.local:8090
+            - name: VENDING_AUDIENCE
+              value: spiffe://lab.local/svc/vending-service
+            - name: SPIFFE_ENDPOINT_SOCKET
+              value: unix:///run/spire/sockets/agent.sock
+          volumeMounts:
+            - name: spire-agent-socket
+              mountPath: /run/spire/sockets
+      volumes:
+        - name: spire-agent-socket
+          hostPath:
+            path: /run/spire/sockets
+            type: DirectoryOrCreate
+---
+# experiments-attacker reuses the static test-workload identity
+# (spiffe://lab.local/svc/test-workload, already registered — no new SPIRE
+# entry needed), exactly mirroring manifests/test/44's vending-test-attacker:
+# a real, unrelated, authenticated identity for the wrong-caller-identity /
+# relayed-manifest negative test.
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: experiments-attacker
+  namespace: agents
+  labels:
+    app: experiments-attacker
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: experiments-attacker
+  template:
+    metadata:
+      labels:
+        app: experiments-attacker
+    spec:
+      serviceAccountName: nhi-test
+      containers:
+        - name: parentsim
+          image: nhi-lab/parentsim:dev
+          imagePullPolicy: Never
+          command: ["/parentsim", "idle"]
+          env:
+            - name: VENDING_SERVICE_URL
+              value: http://vending-service.nhi.svc.cluster.local:8090
+            - name: VENDING_AUDIENCE
+              value: spiffe://lab.local/svc/vending-service
+            - name: SPIFFE_ENDPOINT_SOCKET
+              value: unix:///run/spire/sockets/agent.sock
+          volumeMounts:
+            - name: spire-agent-socket
+              mountPath: /run/spire/sockets
+      volumes:
+        - name: spire-agent-socket
+          hostPath:
+            path: /run/spire/sockets
+            type: DirectoryOrCreate
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: nhi-exp-child
+  namespace: agents
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: experiments-child
+  namespace: agents
+  labels:
+    app: experiments-child
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: experiments-child
+  template:
+    metadata:
+      labels:
+        app: experiments-child
+    spec:
+      serviceAccountName: nhi-exp-child
+      containers:
+        - name: parentsim
+          image: nhi-lab/parentsim:dev
+          imagePullPolicy: Never
+          command: ["/parentsim", "idle"]
+          env:
+            # Same env as a parent: this pod plays BOTH the child recipient
+            # role (x509-check/call/fetch-jwt/bearer-call) AND the parent
+            # role for the multi-hop grandchild delegation (vend/dispose),
+            # once the vending service has minted its own entry.
+            - name: VENDING_SERVICE_URL
+              value: http://vending-service.nhi.svc.cluster.local:8090
+            - name: VENDING_AUDIENCE
+              value: spiffe://lab.local/svc/vending-service
+            - name: SPIFFE_ENDPOINT_SOCKET
+              value: unix:///run/spire/sockets/agent.sock
+          volumeMounts:
+            - name: spire-agent-socket
+              mountPath: /run/spire/sockets
+      volumes:
+        - name: spire-agent-socket
+          hostPath:
+            path: /run/spire/sockets
+            type: DirectoryOrCreate
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: nhi-exp-grandchild
+  namespace: agents
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: experiments-grandchild
+  namespace: agents
+  labels:
+    app: experiments-grandchild
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: experiments-grandchild
+  template:
+    metadata:
+      labels:
+        app: experiments-grandchild
+    spec:
+      serviceAccountName: nhi-exp-grandchild
+      containers:
+        - name: parentsim
+          image: nhi-lab/parentsim:dev
+          imagePullPolicy: Never
+          command: ["/parentsim", "idle"]
+          env:
+            - name: SPIFFE_ENDPOINT_SOCKET
+              value: unix:///run/spire/sockets/agent.sock
+          volumeMounts:
+            - name: spire-agent-socket
+              mountPath: /run/spire/sockets
+      volumes:
+        - name: spire-agent-socket
+          hostPath:
+            path: /run/spire/sockets
+            type: DirectoryOrCreate

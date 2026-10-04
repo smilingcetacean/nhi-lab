@@ -1,0 +1,14 @@
+# Trust bundle distribution point.
+#
+# Created empty here; the server's k8sbundle Notifier populates the `bundle.crt`
+# key once its CA is up, and refreshes it on every rotation. The agent mounts
+# this ConfigMap and uses it as `trust_bundle_path`.
+#
+# `make spire-up` blocks until the `bundle.crt` key is present and non-empty
+# before it applies the agent DaemonSet — otherwise the agent starts with a
+# missing file and crash-loops for no interesting reason.
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: spire-bundle
+  namespace: spire

@@ -1,0 +1,30 @@
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: spire-agent
+  namespace: spire
+---
+# The k8s workload attestor queries the local kubelet's /pods endpoint through
+# `nodes/proxy` to map an attesting process's container ID to a pod, and from
+# there to the namespace / service account / pod UID selectors.
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: spire-agent-workload-attestor
+rules:
+  - apiGroups: [""]
+    resources: ["pods", "nodes", "nodes/proxy"]
+    verbs: ["get", "list"]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: spire-agent-workload-attestor
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: spire-agent-workload-attestor
+subjects:
+  - kind: ServiceAccount
+    name: spire-agent
+    namespace: spire

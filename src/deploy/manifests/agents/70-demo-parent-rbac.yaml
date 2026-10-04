@@ -1,0 +1,38 @@
+# Demo parent. ServiceAccount + minimal RBAC so parent.py can create the
+# child pod via the k8s API — the parent creates the child pod with exactly
+# the selectors it promised in the signed spawn manifest.
+#
+# Scoped to namespace `agents` only (a Role, not a ClusterRole) and to
+# exactly the verbs parent.py's k8s client calls actually use: create the
+# child pod, poll its status, and (if a future demo run wants explicit
+# cleanup) delete it. No access to any other namespace, no access to
+# anything but pods.
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: nhi-demo-parent
+  namespace: agents
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: nhi-demo-parent
+  namespace: agents
+rules:
+  - apiGroups: [""]
+    resources: ["pods"]
+    verbs: ["create", "get", "list", "watch", "delete"]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: nhi-demo-parent
+  namespace: agents
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: nhi-demo-parent
+subjects:
+  - kind: ServiceAccount
+    name: nhi-demo-parent
+    namespace: agents

@@ -1,0 +1,205 @@
+# Configuration for the authenticated policy plane.
+#
+# Two ConfigMaps:
+#   opa-authz         — the `system.authz` Rego that OPA evaluates for *every*
+#                       request to its own API under `--authorization=basic`.
+#   opa-spiffe-helper — the sidecar config that fetches OPA's X509-SVID from the
+#                       Workload API and writes it where OPA's TLS flags expect.
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: opa-authz
+  namespace: opa
+data:
+  # OPA's own API authorization policy. This is not the lab's authorization
+  # policy — that is the default-deny resource package below and the policy
+  # engine's generated per-child modules. This decides who may *talk to OPA at all*, and in particular who
+  # may rewrite those policies.
+  #
+  # Why the URI SAN and not the CommonName: a SPIRE X509-SVID leaves
+  # Subject.CommonName EMPTY and carries the SPIFFE ID only in the URI SAN. A
+  # CN-based rule here would not error — it would silently match nothing and
+  # deny everything, or worse, match "" for every caller. Verified against
+  # OPA 1.18.2.
+  #
+  # `input.client_certificates[_].URIs` arrives as parsed url.URL structure,
+  # e.g. {"Scheme":"spiffe","Host":"lab.local","Path":"/svc/policy-engine"},
+  # so the SPIFFE ID has to be reassembled from Scheme/Host/Path rather than
+  # string-matched.
+  authz.rego: |
+    package system.authz
+
+    # Default deny. Anything not explicitly allowed below is refused,
+    # including a caller who presents a valid SVID for an unlisted identity.
+    default allow := false
+
+    policy_engine_id := "spiffe://lab.local/svc/policy-engine"
+    resource_id := "spiffe://lab.local/svc/resource"
+
+    # Every SPIFFE ID proven by the client's certificate chain. Empty for an
+    # anonymous caller — though in practice `--authentication=tls` refuses
+    # those at the TLS handshake, before this policy is ever consulted. This
+    # rule is the second line of defence, not the first.
+    client_spiffe_ids contains id if {
+        some cert in input.client_certificates
+        some uri in cert.URIs
+        uri.Scheme == "spiffe"
+        id := sprintf("spiffe://%s%s", [uri.Host, uri.Path])
+    }
+
+    # --- svc/policy-engine: the ONLY identity that may mutate policy ---------
+    #
+    # And only within one namespace of policy IDs. The policy engine pushes a generated
+    # module at vend time and removes it at disposal, so it needs PUT and
+    # DELETE — but confined to IDs beginning `nhi_grants_`.
+    #
+    # The prefix is load-bearing, not tidiness. Verified against
+    # this cluster: OPA's policy API can delete a module that was loaded from
+    # disk at startup, and can add a second module to an existing package. An
+    # unrestricted writer could therefore DELETE `nhi/resource.rego`, or PUT a
+    # module declaring `package nhi.resource` with `allow := true`, and thereby
+    # grant itself everything — defeating the Π(C) ⊆ Π(P) containment rule that
+    # the whole lab rests on. Both fail closed rather than open, but "the
+    # attacker can only cause an outage" is not the property this plane claims.
+    #
+    # With the prefix, the policy engine can write grants and nothing else. The
+    # containment rule and this authz policy are outside its reach.
+    allow if {
+        policy_engine_id in client_spiffe_ids
+        input.method in {"PUT", "DELETE", "GET"}
+        input.path[0] == "v1"
+        input.path[1] == "policies"
+        count(input.path) == 3
+        startswith(input.path[2], "nhi_grants_")
+    }
+
+    # Listing policies, so the engine can reconcile its own grants against
+    # what OPA actually holds. Read-only.
+    allow if {
+        policy_engine_id in client_spiffe_ids
+        input.method == "GET"
+        input.path == ["v1", "policies"]
+    }
+
+    # It may also evaluate policy, so its unit/integration tests can assert on
+    # the decisions its own modules produce.
+    allow if {
+        policy_engine_id in client_spiffe_ids
+        input.path[0] == "v1"
+        input.path[1] == "data"
+    }
+
+    # --- svc/resource: decisions only ---------------------------------------
+    # The protected resource asks "may this caller do this?" and nothing else.
+    # It is deliberately NOT able to write policy: the component
+    # that enforces policy must not be able to rewrite the policy it enforces.
+    # Restricted to POST so it cannot even read arbitrary data documents by
+    # walking GET /v1/data.
+    allow if {
+        resource_id in client_spiffe_ids
+        input.method == "POST"
+        input.path[0] == "v1"
+        input.path[1] == "data"
+    }
+
+    # --- everything else -----------------------------------------------------
+    # No rule for svc/vending-service. The separation of duties is that
+    # the component holding unscoped SPIRE admin reaches policy only
+    # *through* the policy engine. The NetworkPolicy lets it reach OPA's port;
+    # this policy is what makes that reachability useless to it.
+    #
+    # No rule for agent workloads. Closing this route is what makes the
+    # scope-escalation negative test meaningful: otherwise a child could skip
+    # the escalation attempt entirely and just write its own Rego.
+  # ---------------------------------------------------------------------------
+  # The protected resource's base authorization policy.
+  #
+  # This is the lab's actual authorization decision, as opposed to authz.rego
+  # above which decides who may talk to OPA. It is loaded from disk at startup
+  # and is NOT rewritten at runtime: the policy engine's generated modules add *grants*
+  # underneath `data.nhi.grants`, they never replace this containment rule.
+  # That separation is what makes the invariant auditable — there is exactly
+  # one place where "allowed" is defined.
+  resource.rego: |
+    package nhi.resource
+
+    # Default deny. Every path out of this module that
+    # does not explicitly allow, denies — including the case where no grant
+    # module exists at all, which is the state of a freshly started lab.
+    default allow := false
+
+    # A request is allowed when every scope the endpoint REQUIRES is contained
+    # in the set of scopes GRANTED to this caller.
+    #
+    # Note the direction: required ⊆ granted. The resource says what the
+    # request demands (input.scopes, derived server-side from method+path);
+    # OPA holds what the subject may do. Neither side can widen the other, and
+    # a caller cannot assert a scope into existence.
+    allow if {
+        count(input.scopes) > 0
+        every required in input.scopes {
+            required in granted_scopes
+        }
+    }
+
+    # granted_scopes is the union of the live grants naming this caller.
+    #
+    # The policy engine writes one module per delegation, so that a single child's authority
+    # can be added at vend time and removed at disposal without touching any
+    # other child's:
+    #
+    #     package nhi.grants.<slug>
+    #     spiffe_id  := "spiffe://lab.local/agent/parent/t1/child/c1"
+    #     scopes     := ["resource:read:datasetA"]
+    #     expires_at := 1785012840        # unix seconds
+    #
+    # Scanning every grant is O(n) per decision. At lab scale that is
+    # irrelevant, and it buys the property that matters here: each grant is an
+    # independently addressable OPA policy document, so disposal is a DELETE of
+    # exactly one module.
+    granted_scopes contains scope if {
+        some key
+        grant := data.nhi.grants[key]
+        grant.spiffe_id == input.spiffe_id
+        not expired(grant)
+        some scope in grant.scopes
+    }
+
+    # Expiry is evaluated against input.now — the resource's clock, passed in
+    # explicitly — rather than Rego's time.now_ns(). The experiments test that a
+    # credential stops working when its TTL passes; with an injectable clock
+    # that is a deterministic assertion instead of a sleep.
+    #
+    # A grant with no expires_at never expires. The policy engine always sets one; this is
+    # stated so that the absence is a visible convention rather than an
+    # accident of rule evaluation.
+    expired(grant) if {
+        grant.expires_at < input.now
+    }
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: opa-spiffe-helper
+  namespace: opa
+data:
+  # OPA cannot speak the SPIFFE Workload API, so it cannot fetch or
+  # rotate its own SVID. spiffe-helper does that on its behalf and writes the
+  # PEM files into a shared emptyDir; OPA is pointed at those paths and re-reads
+  # them on `--tls-cert-refresh-period`. Neither container needs to know the
+  # other's schedule.
+  helper.conf: |
+    agent_address         = "/run/spire/sockets/agent.sock"
+    cert_dir              = "/run/spiffe"
+    svid_file_name        = "svid.pem"
+    svid_key_file_name    = "svid_key.pem"
+    svid_bundle_file_name = "bundle.pem"
+
+    # Stay resident and rewrite the files on every rotation. Without this the
+    # helper fetches once and exits, and OPA's certificate expires silently at
+    # the end of the SVID's TTL.
+    daemon_mode = true
+
+    # No renew_signal: OPA is not signalled to reload. It polls the files on
+    # --tls-cert-refresh-period, which avoids needing shareProcessNamespace
+    # between the two containers just to deliver a SIGHUP.

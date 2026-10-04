@@ -1,0 +1,112 @@
+# The protected resource — the "operate" stage of the lifecycle.
+#
+# Namespace `nhi`, service account `resource`, therefore SPIFFE ID
+# spiffe://lab.local/svc/resource. The registration entry is created by
+# scripts/register-entries.sh, and OPA's system.authz policy authorizes exactly
+# this identity for `POST /v1/data/*` and nothing else — it can ask for
+# decisions and cannot write policy.
+#
+# Two credentials meet in this pod and are easy to confuse:
+#   ingress — callers present a JWT-SVID with audience spiffe://lab.local/svc/resource
+#   egress  — this service presents its own X509-SVID to OPA over mTLS
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: resource
+  namespace: nhi
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: resource
+  namespace: nhi
+spec:
+  type: ClusterIP
+  selector:
+    app: resource
+  ports:
+    - name: http
+      port: 8080
+      targetPort: 8080
+      protocol: TCP
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: resource
+  namespace: nhi
+  labels:
+    app: resource
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: resource
+  template:
+    metadata:
+      labels:
+        app: resource
+    spec:
+      serviceAccountName: resource
+      containers:
+        - name: resource
+          image: nhi-lab/resource:dev
+          # Never: the image is built locally and side-loaded into kind by
+          # `make resource-image`. A pull would mean something other than the
+          # built artifact is running.
+          imagePullPolicy: Never
+          ports:
+            - name: http
+              containerPort: 8080
+          env:
+            - name: LISTEN_ADDR
+              value: ":8080"
+            - name: OPA_URL
+              value: https://opa.opa.svc.cluster.local:8181
+            - name: OPA_DECISION_PATH
+              value: /v1/data/nhi/resource/allow
+            # A JWT-SVID minted for any other audience is rejected here, even
+            # though it is perfectly valid elsewhere in the trust domain. This
+            # is what stops a token issued for the vending service from being
+            # replayed against the resource.
+            - name: RESOURCE_AUDIENCE
+              value: spiffe://lab.local/svc/resource
+            # OPA is authorized by SPIFFE ID rather than hostname.
+            - name: OPA_SPIFFE_ID
+              value: spiffe://lab.local/svc/opa
+            - name: SPIFFE_ENDPOINT_SOCKET
+              value: unix:///run/spire/sockets/agent.sock
+          # Unlike OPA, this service's ingress is plain HTTP with a JWT bearer
+          # token, so ordinary HTTP probes work. /healthz is unauthenticated
+          # and reveals only liveness. OPA cannot do the same: its listener
+          # requires a client certificate the kubelet does not have.
+          livenessProbe:
+            httpGet:
+              path: /healthz
+              port: 8080
+            initialDelaySeconds: 3
+            periodSeconds: 10
+          readinessProbe:
+            httpGet:
+              path: /healthz
+              port: 8080
+            initialDelaySeconds: 2
+            periodSeconds: 5
+          volumeMounts:
+            - name: spire-agent-socket
+              mountPath: /run/spire/sockets
+          securityContext:
+            runAsUser: 65532
+            runAsGroup: 65532
+            runAsNonRoot: true
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+            capabilities:
+              drop: ["ALL"]
+      volumes:
+        # The resource is SPIFFE-aware (go-spiffe against the Workload API)
+        # so it needs no spiffe-helper sidecar — contrast OPA.
+        - name: spire-agent-socket
+          hostPath:
+            path: /run/spire/sockets
+            type: DirectoryOrCreate

@@ -1,0 +1,215 @@
+# OPA as a pre-declared, mTLS-authenticated policy service.
+#
+# OPA is a Service rather than a loopback sidecar of the protected resource,
+# because the policy engine pushes Rego to it from a different pod. Because
+# anything that can write Rego can grant itself anything, OPA authenticates
+# every caller with an X509-SVID rather than trusting the network.
+#
+# The three moving parts:
+#   - spiffe-helper fetches and rotates OPA's X509-SVID into an
+#     emptyDir, because OPA cannot speak the Workload API itself;
+#   - `--authentication=tls` makes a client certificate mandatory at the TLS
+#     handshake, so an anonymous caller never reaches the policy layer;
+#   - `--authorization=basic` evaluates the `system.authz` policy in
+#     30-opa-config.yaml, which defaults to deny and authorizes on the client's
+#     SPIFFE ID read from the certificate's URI SAN.
+#
+# Reachability is narrowed separately by 32-opa-networkpolicy.yaml. That is
+# defence in depth *behind* authentication, not a substitute for it.
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: opa
+  namespace: opa
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: opa
+  namespace: opa
+spec:
+  type: ClusterIP
+  selector:
+    app: opa
+  ports:
+    - name: https
+      port: 8181
+      targetPort: 8181
+      protocol: TCP
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: opa
+  namespace: opa
+  labels:
+    app: opa
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: opa
+  template:
+    metadata:
+      labels:
+        app: opa
+    spec:
+      serviceAccountName: opa
+      initContainers:
+        # Ordinary init container: fetch the SVID once and exit. Without this
+        # OPA starts before any PEM file exists, fails on --tls-cert-file and
+        # crash-loops until the sidecar happens to catch up. Blocking here
+        # turns a race into a deterministic startup order.
+        - name: spiffe-helper-init
+          image: ghcr.io/spiffe/spiffe-helper:0.11.0
+          imagePullPolicy: IfNotPresent
+          args: ["-config", "/etc/spiffe-helper/helper.conf", "-daemon-mode=false"]
+          volumeMounts:
+            - name: spiffe-certs
+              mountPath: /run/spiffe
+            - name: spiffe-helper-config
+              mountPath: /etc/spiffe-helper
+              readOnly: true
+            - name: spire-agent-socket
+              mountPath: /run/spire/sockets
+          securityContext:
+            # Same UID as the OPA container so the PEM files — in particular
+            # svid_key.pem, written 0600 — are readable by OPA without relaxing
+            # their mode. The Workload API socket is srwxrwxrwx on the node, so
+            # dropping to an unprivileged UID does not cost socket access.
+            runAsUser: 1000
+            runAsGroup: 1000
+            runAsNonRoot: true
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+            capabilities:
+              drop: ["ALL"]
+
+        # Native sidecar (restartPolicy: Always on an init container, stable
+        # since k8s 1.33; this lab pins v1.36.1). It starts before the OPA
+        # container, stays resident to rewrite the PEMs on every rotation, and
+        # is terminated after OPA on pod shutdown.
+        - name: spiffe-helper
+          image: ghcr.io/spiffe/spiffe-helper:0.11.0
+          imagePullPolicy: IfNotPresent
+          restartPolicy: Always
+          args: ["-config", "/etc/spiffe-helper/helper.conf"]
+          volumeMounts:
+            - name: spiffe-certs
+              mountPath: /run/spiffe
+            - name: spiffe-helper-config
+              mountPath: /etc/spiffe-helper
+              readOnly: true
+            - name: spire-agent-socket
+              mountPath: /run/spire/sockets
+          securityContext:
+            runAsUser: 1000
+            runAsGroup: 1000
+            runAsNonRoot: true
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+            capabilities:
+              drop: ["ALL"]
+      containers:
+        - name: opa
+          image: openpolicyagent/opa:1.18.2
+          imagePullPolicy: IfNotPresent
+          args:
+            - run
+            - --server
+            - --addr=0.0.0.0:8181
+            - --diagnostic-addr=0.0.0.0:8282
+            - --log-level=info
+            # Serve TLS from the SVID the sidecar maintains, and require the
+            # caller to present one signed by the same trust bundle.
+            - --tls-cert-file=/run/spiffe/svid.pem
+            - --tls-private-key-file=/run/spiffe/svid_key.pem
+            - --tls-ca-cert-file=/run/spiffe/bundle.pem
+            - --authentication=tls
+            - --authorization=basic
+            # Re-read all three files on this period. SPIRE rotates an SVID at
+            # half its TTL, so this must stay well under that or OPA will serve
+            # an expired certificate until it restarts.
+            - --tls-cert-refresh-period=30s
+            # Both static policies: system.authz (who may talk to OPA) and
+            # nhi.resource (the lab's default-deny authorization rule). Loaded
+            # from disk at startup rather than pushed over the API — for
+            # system.authz because until it is loaded OPA's default decision
+            # would lock out the very identity that would have to push it, and
+            # for nhi.resource because it is the containment rule the policy
+            # engine's generated grants are judged by and must not be rewritable by the
+            # component that writes those grants.
+            #
+            # Named file by file, NOT as the directory `/policy`. A ConfigMap
+            # mount is not a flat directory: it contains a `..data` symlink and
+            # a timestamped directory holding the real files. `opa run /policy`
+            # walks all of it and loads each policy three times, which fails at
+            # startup with "multiple default rules data.nhi.resource.allow
+            # found". Adding a policy here means adding a line here.
+            - /policy/authz.rego
+            - /policy/resource.rego
+          ports:
+            - name: https
+              containerPort: 8181
+            - name: diagnostic
+              containerPort: 8282
+          # Probes are tcpSocket, not httpGet, and that is forced rather than
+          # chosen.
+          #
+          # `--authentication=tls` sets the Go TLS ClientAuth policy to
+          # RequireAndVerifyClientCert on EVERY listener OPA opens — including
+          # --diagnostic-addr, which is exempt from authn/authz at the HTTP
+          # layer but not at the TLS layer below it. Verified on this cluster:
+          # an unauthenticated client is refused at the handshake on 8282
+          # exactly as on 8181. The kubelet holds no SVID and cannot be given
+          # one, so no HTTP health probe of any scheme can succeed.
+          #
+          # What this costs, stated honestly: readiness now means "the listener
+          # accepts TCP", not "OPA evaluates policy". The stronger claim is
+          # asserted where it can be — scripts/verify.sh gets a real evaluated
+          # decision back over mTLS, which no tcpSocket probe could establish.
+          livenessProbe:
+            tcpSocket:
+              port: 8181
+            initialDelaySeconds: 5
+            periodSeconds: 10
+          readinessProbe:
+            tcpSocket:
+              port: 8181
+            initialDelaySeconds: 3
+            periodSeconds: 5
+          volumeMounts:
+            - name: spiffe-certs
+              mountPath: /run/spiffe
+              readOnly: true
+            - name: opa-authz
+              mountPath: /policy
+              readOnly: true
+          securityContext:
+            runAsUser: 1000
+            runAsGroup: 1000
+            runAsNonRoot: true
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+            capabilities:
+              drop: ["ALL"]
+      volumes:
+        # Shared between the helper (writer) and OPA (reader). emptyDir on a
+        # memory-backed medium, so the private key never touches a Secret, the
+        # API server or the node's durable storage — it lives only as long as
+        # the pod, which is the point of a short-lived SVID.
+        - name: spiffe-certs
+          emptyDir:
+            medium: Memory
+        - name: spiffe-helper-config
+          configMap:
+            name: opa-spiffe-helper
+        - name: opa-authz
+          configMap:
+            name: opa-authz
+        # The same hostPath the agent DaemonSet owns. Not readOnly —
+        # connect(2) on a Unix socket requires write permission.
+        - name: spire-agent-socket
+          hostPath:
+            path: /run/spire/sockets
+            type: DirectoryOrCreate

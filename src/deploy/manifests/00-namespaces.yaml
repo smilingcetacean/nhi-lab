@@ -1,0 +1,43 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: spire
+  labels:
+    nhi-lab/component: identity-plane
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: opa
+  labels:
+    nhi-lab/component: policy-plane
+---
+# Namespace for the lab's own infrastructure services — the policy engine,
+# the protected resource and the vending service.
+#
+# Naming: a pod here running as service account <name> carries SPIFFE ID
+# spiffe://lab.local/svc/<name>, bound by the selector pair
+# (k8s:ns:nhi, k8s:sa:<name>). Keeping them in one namespace distinct from
+# `agents` is what lets the NetworkPolicy on OPA distinguish
+# "infrastructure that may talk to the policy plane" from "agent workloads
+# that may not" without enumerating pods.
+#
+# Named `nhi` rather than `svc` so that in-cluster DNS stays readable:
+# policy-engine.nhi.svc.cluster.local, not policy-engine.svc.svc.cluster.local.
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: nhi
+  labels:
+    nhi-lab/component: service-plane
+---
+# Namespace that agent workloads live in. `make verify` requires a pod in this
+# namespace to obtain an X.509-SVID and a JWT-SVID. The parent and child agent
+# pods are created here too, so the k8s workload attestor
+# selector `k8s:ns:agents` is the namespace half of every agent identity.
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: agents
+  labels:
+    nhi-lab/component: workload-plane

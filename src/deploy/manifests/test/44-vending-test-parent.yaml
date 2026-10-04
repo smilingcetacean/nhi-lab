@@ -1,0 +1,106 @@
+# Vending-service verification fixtures: NOT part of `make spire-up`. Applied and torn
+# down by verify-vending.sh, mirroring the ephemeral pattern
+# manifests/test/41-policy-probe.yaml and manifests/test/43-child-workload.yaml
+# already use.
+#
+# vending-test-parent is a REAL, running pod that authenticates as
+# spiffe://lab.local/agent/parent/vend-verify (registered by
+# scripts/register-entries.sh, root-parent scopes in
+# manifests/policy-engine/36-policy-engine-bootstrap.yaml) and runs
+# cmd/parentsim — a minimal Go parent, independent of the Python agent
+# harness — to submit real spawn manifests to the vending service.
+#
+# This is what makes "a test parent with a static entry" literal rather than
+# simulated: the parent's own SPIFFE ID, JWT-SVID and X.509-SVID all come
+# from a real SPIRE attestation of this pod, exactly as an agent parent's
+# would.
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: nhi-test-vend-parent
+  namespace: agents
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: vending-test-parent
+  namespace: agents
+  labels:
+    app: vending-test-parent
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: vending-test-parent
+  template:
+    metadata:
+      labels:
+        app: vending-test-parent
+    spec:
+      serviceAccountName: nhi-test-vend-parent
+      containers:
+        - name: parentsim
+          image: nhi-lab/parentsim:dev
+          imagePullPolicy: Never
+          command: ["/parentsim", "idle"]
+          env:
+            - name: VENDING_SERVICE_URL
+              value: http://vending-service.nhi.svc.cluster.local:8090
+            - name: VENDING_AUDIENCE
+              value: spiffe://lab.local/svc/vending-service
+            - name: SPIFFE_ENDPOINT_SOCKET
+              value: unix:///run/spire/sockets/agent.sock
+          volumeMounts:
+            - name: spire-agent-socket
+              mountPath: /run/spire/sockets
+      volumes:
+        - name: spire-agent-socket
+          hostPath:
+            path: /run/spire/sockets
+            type: DirectoryOrCreate
+---
+# vending-test-attacker reuses the static test-workload identity
+# (spiffe://lab.local/svc/test-workload, already registered — no new SPIRE
+# entry needed) to play the role of an unrelated, authenticated caller in
+# verify-vending.sh's "wrong caller identity" negative test: it holds a
+# perfectly valid JWT-SVID and a perfectly valid X.509-SVID, for an identity
+# that is simply not vend-verify. Also runs parentsim, driven with
+# -claim-parent to submit a manifest claiming to be vend-verify.
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: vending-test-attacker
+  namespace: agents
+  labels:
+    app: vending-test-attacker
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: vending-test-attacker
+  template:
+    metadata:
+      labels:
+        app: vending-test-attacker
+    spec:
+      serviceAccountName: nhi-test
+      containers:
+        - name: parentsim
+          image: nhi-lab/parentsim:dev
+          imagePullPolicy: Never
+          command: ["/parentsim", "idle"]
+          env:
+            - name: VENDING_SERVICE_URL
+              value: http://vending-service.nhi.svc.cluster.local:8090
+            - name: VENDING_AUDIENCE
+              value: spiffe://lab.local/svc/vending-service
+            - name: SPIFFE_ENDPOINT_SOCKET
+              value: unix:///run/spire/sockets/agent.sock
+          volumeMounts:
+            - name: spire-agent-socket
+              mountPath: /run/spire/sockets
+      volumes:
+        - name: spire-agent-socket
+          hostPath:
+            path: /run/spire/sockets
+            type: DirectoryOrCreate

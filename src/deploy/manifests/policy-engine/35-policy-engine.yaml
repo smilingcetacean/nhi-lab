@@ -1,0 +1,123 @@
+# The policy engine, pre-declared.
+#
+# `make spire-up` applies this file before the image exists, because the
+# *identity, network position and authority* of the policy engine are part of
+# the baseline the rest of the lab is designed against — the engine does not
+# get to choose its own SPIFFE ID or its own access to OPA. Until
+# `make policy-engine-up` builds and side-loads the image, the pod simply
+# cannot start (imagePullPolicy: Never); nothing in spire-up waits on it.
+#
+# Configuration: BOOTSTRAP_PARENTS_PATH (the root-parent table, ConfigMap in
+# 36-policy-engine-bootstrap.yaml) and CLIENT_SPIFFE_ID (the one identity this
+# service's mTLS listener accepts on /synthesize — svc/vending-service; see
+# src/policy-engine/README.md).
+#
+# This is a service rather than a library linked into the vending service, for
+# separation of duties: the vending service holds unscoped SPIRE admin, so the
+# component that can mint any identity must not also be
+# the component that can rewrite the policy those identities are judged against.
+# This Deployment is the only holder of the one SPIFFE ID that OPA's
+# `system.authz` policy permits to write Rego.
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: policy-engine
+  namespace: nhi
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: policy-engine
+  namespace: nhi
+spec:
+  type: ClusterIP
+  selector:
+    app: policy-engine
+  ports:
+    - name: https
+      port: 8443
+      targetPort: 8443
+      protocol: TCP
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: policy-engine
+  namespace: nhi
+  labels:
+    app: policy-engine
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: policy-engine
+  template:
+    metadata:
+      labels:
+        app: policy-engine
+    spec:
+      serviceAccountName: policy-engine
+      containers:
+        - name: policy-engine
+          # Built locally and side-loaded into kind. Not a registry reference:
+          # nothing should be able to pull a policy engine from the internet.
+          image: nhi-lab/policy-engine:dev
+          imagePullPolicy: Never
+          ports:
+            - name: https
+              containerPort: 8443
+          env:
+            - name: OPA_URL
+              value: https://opa.opa.svc.cluster.local:8181
+            - name: OPA_SPIFFE_ID
+              value: spiffe://lab.local/svc/opa
+            # The ONLY identity /synthesize authorizes. `make verify-policy`
+            # patches this env var to a probe identity for the duration of its
+            # run, so it can exercise the engine without the vending service,
+            # and restores it afterwards. See src/policy-engine/README.md.
+            - name: CLIENT_SPIFFE_ID
+              value: spiffe://lab.local/svc/vending-service
+            - name: BOOTSTRAP_PARENTS_PATH
+              value: /etc/policy-engine/parents.json
+            - name: SPIFFE_ENDPOINT_SOCKET
+              value: unix:///run/spire/sockets/agent.sock
+          # mTLS on ingress makes an HTTP health probe structurally
+          # impossible, exactly as for OPA: the kubelet holds
+          # no SVID and cannot complete the TLS handshake. tcpSocket proves
+          # the listener accepts connections, not that a decision can be made.
+          livenessProbe:
+            tcpSocket:
+              port: 8443
+            initialDelaySeconds: 3
+            periodSeconds: 10
+          readinessProbe:
+            tcpSocket:
+              port: 8443
+            initialDelaySeconds: 2
+            periodSeconds: 5
+          volumeMounts:
+            - name: spire-agent-socket
+              mountPath: /run/spire/sockets
+            - name: bootstrap-parents
+              mountPath: /etc/policy-engine
+              readOnly: true
+          securityContext:
+            runAsUser: 65532
+            runAsGroup: 65532
+            runAsNonRoot: true
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+            capabilities:
+              drop: ["ALL"]
+      volumes:
+        # Unlike OPA, the policy engine is SPIFFE-aware: it is a Go service
+        # using go-spiffe against the Workload API, so it needs no spiffe-helper
+        # sidecar — just the Workload API socket.
+        - name: spire-agent-socket
+          hostPath:
+            path: /run/spire/sockets
+            type: DirectoryOrCreate
+        # The root-parent table. Read-only, cluster-provisioned.
+        - name: bootstrap-parents
+          configMap:
+            name: policy-engine-bootstrap

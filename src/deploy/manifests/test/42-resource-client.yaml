@@ -1,0 +1,71 @@
+# Test caller for `make verify-resource`.
+#
+# A pod in namespace `agents` under service account `nhi-test`, so SPIRE issues
+# it spiffe://lab.local/svc/test-workload — the statically registered test
+# identity. Using it keeps the resource test independent of the vending
+# service; the test only requires *a* valid SVID whose grants can be
+# switched on and off.
+#
+# Two containers because no single pinned image has both tools:
+#   svid   — the SPIRE agent image, for `spire-agent api fetch jwt`
+#   client — curl, to call the resource with the token that produced
+#
+# verify-resource.sh fetches the token from one and spends it in the other. That is
+# also a fair model of how a child agent behaves: obtain a JWT-SVID
+# from the Workload API, then present it as a bearer token.
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: resource-client
+  namespace: agents
+  labels:
+    app: resource-client
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: resource-client
+  template:
+    metadata:
+      labels:
+        app: resource-client
+    spec:
+      serviceAccountName: nhi-test
+      containers:
+        - name: svid
+          image: ghcr.io/spiffe/spire-agent:1.15.2
+          imagePullPolicy: IfNotPresent
+          # `api watch` rather than a sleep: the image has no shell, so
+          # `sh -c "sleep infinity"` fails with RunContainerError. Watching the
+          # Workload API is a long-running command that the image does provide,
+          # and it has the side benefit that the container log shows this pod's
+          # SVID being delivered and rotated.
+          command:
+            - /opt/spire/bin/spire-agent
+            - api
+            - watch
+            - -socketPath
+            - /run/spire/sockets/agent.sock
+          volumeMounts:
+            - name: spire-agent-socket
+              mountPath: /run/spire/sockets
+        - name: client
+          image: curlimages/curl:8.18.0
+          imagePullPolicy: IfNotPresent
+          command: ["sleep", "infinity"]
+          securityContext:
+            runAsUser: 101
+            runAsGroup: 102
+            runAsNonRoot: true
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+            capabilities:
+              drop: ["ALL"]
+      volumes:
+        # The node's Workload API socket. Only the `svid` container
+        # mounts it — the `client` container never touches SPIRE, it only
+        # spends a token it is handed, exactly like any ordinary HTTP client.
+        - name: spire-agent-socket
+          hostPath:
+            path: /run/spire/sockets
+            type: DirectoryOrCreate

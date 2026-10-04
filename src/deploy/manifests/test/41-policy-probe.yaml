@@ -1,0 +1,202 @@
+# Ephemeral mTLS probes for the policy-plane assertions in `make verify`.
+#
+# NOT part of `make spire-up`. verify.sh applies this manifest, runs its checks
+# and deletes it again. That is deliberate: `policy-probe-authorized` runs under
+# the `policy-engine` service account and therefore *is*
+# spiffe://lab.local/svc/policy-engine as far as SPIRE is concerned, so it can
+# write Rego. Leaving it running would hand a permanent second holder of the
+# policy-write identity to a lab whose negative tests depend on that
+# identity being singular.
+#
+# That equivalence is worth stating plainly, because it is a property of the
+# design and not an accident: identity here is the selector pair
+# (k8s:ns:nhi, k8s:sa:<name>). Any pod under a given service account in that
+# namespace holds that SPIFFE ID. The lab's service accounts are therefore
+# security boundaries, and k8s RBAC over who may create pods with them is part
+# of the trusted computing base.
+#
+# Why two probes: two negatives alone cannot distinguish "authorization is
+# correct" from "OPA is broken and denies everyone", and a silently
+# deny-everything authz policy would not surface until the policy engine failed to push its
+# first module. The authorized probe is the positive control.
+#
+# The two Deployments are near-identical and are written out longhand. YAML
+# anchors were tried and do not work here: kubectl parses each `---` document
+# separately, so an anchor defined in one is an unknown reference in the next.
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: policy-probe
+  namespace: nhi
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: policy-probe-spiffe-helper
+  namespace: nhi
+data:
+  # Fetch once and exit — no daemon_mode. A probe lives for the duration of one
+  # verify run, far inside the SVID TTL, so rotation is not a concern.
+  helper.conf: |
+    agent_address         = "/run/spire/sockets/agent.sock"
+    cert_dir              = "/run/spiffe"
+    svid_file_name        = "svid.pem"
+    svid_key_file_name    = "svid_key.pem"
+    svid_bundle_file_name = "bundle.pem"
+---
+# Denied by system.authz: holds spiffe://lab.local/svc/policy-probe, which no
+# rule mentions. Network-allowed by the OPA NetworkPolicy, so a refusal here is
+# an authorization decision and not a dropped packet.
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: policy-probe-unauthorized
+  namespace: nhi
+  labels:
+    app: policy-probe
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: policy-probe
+      probe: unauthorized
+  template:
+    metadata:
+      labels:
+        app: policy-probe
+        probe: unauthorized
+    spec:
+      serviceAccountName: policy-probe
+      initContainers:
+        - name: spiffe-helper-init
+          image: ghcr.io/spiffe/spiffe-helper:0.11.0
+          imagePullPolicy: IfNotPresent
+          args: ["-config", "/etc/spiffe-helper/helper.conf", "-daemon-mode=false"]
+          volumeMounts:
+            - name: spiffe-certs
+              mountPath: /run/spiffe
+            - name: spiffe-helper-config
+              mountPath: /etc/spiffe-helper
+              readOnly: true
+            - name: spire-agent-socket
+              mountPath: /run/spire/sockets
+          securityContext:
+            # curlimages/curl runs as 101:102; match it so the 0600 key file is
+            # readable by the container that has to present it.
+            runAsUser: 101
+            runAsGroup: 102
+            runAsNonRoot: true
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+            capabilities:
+              drop: ["ALL"]
+      containers:
+        - name: probe
+          image: curlimages/curl:8.18.0
+          imagePullPolicy: IfNotPresent
+          command: ["sleep", "infinity"]
+          volumeMounts:
+            - name: spiffe-certs
+              mountPath: /run/spiffe
+              readOnly: true
+          securityContext:
+            # runAsUser is spelled out because curlimages/curl declares its
+            # USER by name (`curl_user`). With runAsNonRoot and a non-numeric
+            # image user the kubelet cannot prove the UID is not 0 and refuses
+            # to start the container at all.
+            runAsUser: 101
+            runAsGroup: 102
+            runAsNonRoot: true
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+            capabilities:
+              drop: ["ALL"]
+      volumes:
+        - name: spiffe-certs
+          emptyDir:
+            medium: Memory
+        - name: spiffe-helper-config
+          configMap:
+            name: policy-probe-spiffe-helper
+        - name: spire-agent-socket
+          hostPath:
+            path: /run/spire/sockets
+            type: DirectoryOrCreate
+---
+# Positive control: runs under the `policy-engine` service account, so SPIRE
+# issues it spiffe://lab.local/svc/policy-engine and system.authz must let it
+# write Rego. Proves the authz policy is selective rather than uniformly
+# closed.
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: policy-probe-authorized
+  namespace: nhi
+  labels:
+    app: policy-probe
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: policy-probe
+      probe: authorized
+  template:
+    metadata:
+      labels:
+        app: policy-probe
+        probe: authorized
+    spec:
+      serviceAccountName: policy-engine
+      initContainers:
+        - name: spiffe-helper-init
+          image: ghcr.io/spiffe/spiffe-helper:0.11.0
+          imagePullPolicy: IfNotPresent
+          args: ["-config", "/etc/spiffe-helper/helper.conf", "-daemon-mode=false"]
+          volumeMounts:
+            - name: spiffe-certs
+              mountPath: /run/spiffe
+            - name: spiffe-helper-config
+              mountPath: /etc/spiffe-helper
+              readOnly: true
+            - name: spire-agent-socket
+              mountPath: /run/spire/sockets
+          securityContext:
+            runAsUser: 101
+            runAsGroup: 102
+            runAsNonRoot: true
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+            capabilities:
+              drop: ["ALL"]
+      containers:
+        - name: probe
+          image: curlimages/curl:8.18.0
+          imagePullPolicy: IfNotPresent
+          command: ["sleep", "infinity"]
+          volumeMounts:
+            - name: spiffe-certs
+              mountPath: /run/spiffe
+              readOnly: true
+          securityContext:
+            # runAsUser is spelled out because curlimages/curl declares its
+            # USER by name (`curl_user`). With runAsNonRoot and a non-numeric
+            # image user the kubelet cannot prove the UID is not 0 and refuses
+            # to start the container at all.
+            runAsUser: 101
+            runAsGroup: 102
+            runAsNonRoot: true
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+            capabilities:
+              drop: ["ALL"]
+      volumes:
+        - name: spiffe-certs
+          emptyDir:
+            medium: Memory
+        - name: spiffe-helper-config
+          configMap:
+            name: policy-probe-spiffe-helper
+        - name: spire-agent-socket
+          hostPath:
+            path: /run/spire/sockets
+            type: DirectoryOrCreate

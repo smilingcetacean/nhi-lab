@@ -1,0 +1,9 @@
+[project]
+name = "nhi-experiments"
+version = "0.1.0"
+description = "Experiment harness for the NHI lab. Drives the real in-cluster vending service/policy engine/resource via kubectl exec of cmd/parentsim, exactly as src/deploy/scripts/verify-vending.sh does, but repeated at volume and with results captured as CSV/JSON."
+requires-python = ">=3.11"
+dependencies = []
+
+[tool.uv]
+package = false

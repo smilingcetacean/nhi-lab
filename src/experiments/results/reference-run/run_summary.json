@@ -1,0 +1,25 @@
+{
+  "suites": {
+    "negative_tests": {
+      "exit_code": 0,
+      "elapsed_s": 13.6,
+      "pass": true
+    },
+    "multi_hop": {
+      "exit_code": 0,
+      "elapsed_s": 11.0,
+      "pass": true
+    },
+    "functional_tests": {
+      "exit_code": 0,
+      "elapsed_s": 105.5,
+      "pass": true
+    },
+    "performance": {
+      "exit_code": 0,
+      "elapsed_s": 529.4,
+      "pass": true
+    }
+  },
+  "run_id": "reference-run"
+}

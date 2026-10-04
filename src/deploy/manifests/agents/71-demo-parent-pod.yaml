@@ -1,0 +1,56 @@
+# Demo parent pod. Applied (delete-then-create, for idempotency across
+# repeated `make demo` runs — Pod specs are immutable) by
+# src/deploy/scripts/demo.sh, never part of `make spire-up`: this is the
+# demo cycle itself, not lab substrate.
+#
+# Authenticates as spiffe://lab.local/agent/parent/demo — a REAL SPIRE
+# registration entry (src/deploy/scripts/register-entries.sh), root-parent
+# scopes in manifests/policy-engine/36-policy-engine-bootstrap.yaml — same
+# pattern as the vending-test-parent fixture (vend-verify),
+# except this pod runs the real parent.py, not cmd/parentsim.
+apiVersion: v1
+kind: Pod
+metadata:
+  name: nhi-demo-parent
+  namespace: agents
+  labels:
+    app: nhi-demo-parent
+spec:
+  serviceAccountName: nhi-demo-parent
+  restartPolicy: Never
+  containers:
+    - name: parent
+      image: nhi-lab/agents:dev
+      imagePullPolicy: Never
+      command: ["python3", "/app/parent.py"]
+      env:
+        - name: VENDING_SERVICE_URL
+          value: http://vending-service.nhi.svc.cluster.local:8090
+        - name: VENDING_AUDIENCE
+          value: spiffe://lab.local/svc/vending-service
+        - name: RESOURCE_URL
+          value: http://resource.nhi.svc.cluster.local:8080
+        - name: RESOURCE_AUDIENCE
+          value: spiffe://lab.local/svc/resource
+        - name: DATASET_PATH
+          value: /datasets/A
+        - name: REQUESTED_SCOPES
+          value: resource:read:datasetA
+        - name: TASK_CONTEXT
+          value: "demo: read datasetA on the parent's behalf"
+        - name: TTL_SECONDS
+          value: "300"
+        - name: CHILD_NAMESPACE
+          value: agents
+        - name: AGENTS_IMAGE
+          value: nhi-lab/agents:dev
+        - name: SPIFFE_ENDPOINT_SOCKET
+          value: unix:///run/spire/sockets/agent.sock
+      volumeMounts:
+        - name: spire-agent-socket
+          mountPath: /run/spire/sockets
+  volumes:
+    - name: spire-agent-socket
+      hostPath:
+        path: /run/spire/sockets
+        type: DirectoryOrCreate

@@ -1,0 +1,68 @@
+# Ephemeral test identity for verify-policy.sh's descendant-check tests.
+#
+# A pod in namespace `agents` under a DEDICATED service account
+# `nhi-test-child`, distinct from `nhi-test` (used by the static test
+# workload and the resource-client). It matches the registration entry
+# `scripts/register-entries.sh` creates:
+#
+#   spiffe://lab.local/agent/parent/policy-verify/child/policy-verify-child
+#     selectors: k8s:ns:agents, k8s:sa:nhi-test-child
+#
+# This SPIFFE ID is a properly shaped descendant of the
+# `policy-verify` bootstrap root parent
+# (manifests/policy-engine/36-policy-engine-bootstrap.yaml), which is what
+# /synthesize requires of child_spiffe_id.
+#
+# A dedicated service account, rather than reusing `nhi-test`, matters:
+# verify.sh asserts that a pod under `nhi-test` resolves
+# to EXACTLY ONE X.509-SVID and one JWT-SVID subject
+# (spiffe://lab.local/svc/test-workload). Registering a second entry against
+# those same selectors would have silently broken that invariant for every
+# pod running under `nhi-test`, including the static workload itself and
+# the `resource-client`.
+#
+# NOT part of `make spire-up` — applied and torn down by verify-policy.sh,
+# mirroring the ephemeral pattern manifests/test/41-policy-probe.yaml and
+# manifests/test/42-resource-client.yaml already use.
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: nhi-test-child
+  namespace: agents
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: child-workload
+  namespace: agents
+  labels:
+    app: child-workload
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: child-workload
+  template:
+    metadata:
+      labels:
+        app: child-workload
+    spec:
+      serviceAccountName: nhi-test-child
+      containers:
+        - name: svid
+          image: ghcr.io/spiffe/spire-agent:1.15.2
+          imagePullPolicy: IfNotPresent
+          command:
+            - /opt/spire/bin/spire-agent
+            - api
+            - watch
+            - -socketPath
+            - /run/spire/sockets/agent.sock
+          volumeMounts:
+            - name: spire-agent-socket
+              mountPath: /run/spire/sockets
+      volumes:
+        - name: spire-agent-socket
+          hostPath:
+            path: /run/spire/sockets
+            type: DirectoryOrCreate
