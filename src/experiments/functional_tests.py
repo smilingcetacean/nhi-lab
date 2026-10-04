@@ -21,7 +21,6 @@
 from __future__ import annotations
 
 import csv
-import itertools
 import json
 import random
 import sys
