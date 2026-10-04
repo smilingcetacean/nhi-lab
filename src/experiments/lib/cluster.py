@@ -24,7 +24,6 @@ KUBECTX = os.environ.get("KUBECTX", f"kind-{CLUSTER_NAME}")
 TRUST_DOMAIN = os.environ.get("TRUST_DOMAIN", "lab.local")
 
 RESOURCE_URL = "http://resource.nhi.svc.cluster.local:8080"
-VENDING_URL = "http://vending-service.nhi.svc.cluster.local:8090"
 RESOURCE_AUD = f"spiffe://{TRUST_DOMAIN}/svc/resource"
 
 
@@ -38,22 +37,6 @@ def kubectl(*args: str, check: bool = True, timeout: int = 60) -> subprocess.Com
     if check and res.returncode != 0:
         raise KubectlError(f"{' '.join(cmd)} failed ({res.returncode}): {res.stderr}")
     return res
-
-
-def apply(path: str) -> None:
-    kubectl("apply", "-f", path)
-
-
-def delete(path: str, ignore_not_found: bool = True) -> None:
-    args = ["delete", "-f", path]
-    if ignore_not_found:
-        args.append("--ignore-not-found")
-    kubectl(*args, check=False)
-
-
-def rollout_status(kind: str, name: str, ns: str, timeout: str = "150s") -> bool:
-    res = kubectl("rollout", "status", f"{kind}/{name}", "-n", ns, f"--timeout={timeout}", check=False)
-    return res.returncode == 0
 
 
 def running_pod(ns: str, selector: str) -> str | None:
