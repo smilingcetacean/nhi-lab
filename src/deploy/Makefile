@@ -109,6 +109,18 @@ load-images: ## Pull pinned images and side-load them into the kind nodes
 	  rm -f "$$tmp/img.tar"; \
 	done
 
+# Build image $(1) from build context $(2) with Dockerfile $(3), then side-load
+# it into the kind cluster through the same single-platform docker save /
+# kind load image-archive round-trip that load-images uses, for the same reason.
+define build_and_load_image
+	@echo ">> building $(1)"
+	@docker build -q -t '$(1)' -f '$(3)' '$(2)' >/dev/null
+	@echo ">> loading $(1) into kind/$(KIND_CLUSTER)"
+	@tmp=$$(mktemp -d); trap 'rm -rf "$$tmp"' EXIT; \
+	  docker save --platform '$(LOAD_PLATFORM)' '$(1)' -o "$$tmp/img.tar"; \
+	  kind load image-archive --name '$(KIND_CLUSTER)' "$$tmp/img.tar"
+endef
+
 # ---------------------------------------------------------------------------
 # Platform
 # ---------------------------------------------------------------------------
@@ -171,8 +183,7 @@ wait-bundle: ## Block until the server has published the trust bundle ConfigMap
 # actually attested.
 .PHONY: entries
 entries: spire-agent ## Create the static registration entries (idempotent)
-	@CLUSTER_NAME='$(CLUSTER_NAME)' KUBECTX='$(KUBECTX)' TRUST_DOMAIN='$(TRUST_DOMAIN)' \
-	  bash '$(SCRIPTS)/register-entries.sh'
+	@bash '$(SCRIPTS)/register-entries.sh'
 
 # Depends on `entries`: OPA's spiffe-helper sidecar blocks until the Workload
 # API issues svc/opa an SVID, so applying this before the registration entry
@@ -203,8 +214,7 @@ test-workload: entries ## Deploy the static test workload in namespace agents
 
 .PHONY: verify
 verify: ## Verify the baseline (attestation, X.509/JWT-SVIDs, authenticated OPA)
-	@CLUSTER_NAME='$(CLUSTER_NAME)' KUBECTX='$(KUBECTX)' TRUST_DOMAIN='$(TRUST_DOMAIN)' \
-	  bash '$(SCRIPTS)/verify.sh'
+	@bash '$(SCRIPTS)/verify.sh'
 
 # ---------------------------------------------------------------------------
 # Protected resource
@@ -219,12 +229,7 @@ resource-test: ## Unit-test the protected resource
 
 .PHONY: resource-image
 resource-image: ## Build the resource image and side-load it into kind
-	@echo ">> building $(RESOURCE_IMG)"
-	@docker build -q -t '$(RESOURCE_IMG)' '$(RESOURCE_SRC)' >/dev/null
-	@echo ">> loading $(RESOURCE_IMG) into kind/$(KIND_CLUSTER)"
-	@tmp=$$(mktemp -d); trap 'rm -rf "$$tmp"' EXIT; \
-	  docker save --platform '$(LOAD_PLATFORM)' '$(RESOURCE_IMG)' -o "$$tmp/img.tar"; \
-	  kind load image-archive --name '$(KIND_CLUSTER)' "$$tmp/img.tar"
+	$(call build_and_load_image,$(RESOURCE_IMG),$(RESOURCE_SRC),$(RESOURCE_SRC)/Dockerfile)
 
 .PHONY: resource-up
 resource-up: resource-image entries ## Deploy the protected resource
@@ -253,12 +258,7 @@ policy-engine-test: ## Unit-test the policy engine
 
 .PHONY: policy-engine-image
 policy-engine-image: ## Build the policy engine image and side-load it into kind
-	@echo ">> building $(POLICY_ENGINE_IMG)"
-	@docker build -q -t '$(POLICY_ENGINE_IMG)' '$(POLICY_ENGINE_SRC)' >/dev/null
-	@echo ">> loading $(POLICY_ENGINE_IMG) into kind/$(KIND_CLUSTER)"
-	@tmp=$$(mktemp -d); trap 'rm -rf "$$tmp"' EXIT; \
-	  docker save --platform '$(LOAD_PLATFORM)' '$(POLICY_ENGINE_IMG)' -o "$$tmp/img.tar"; \
-	  kind load image-archive --name '$(KIND_CLUSTER)' "$$tmp/img.tar"
+	$(call build_and_load_image,$(POLICY_ENGINE_IMG),$(POLICY_ENGINE_SRC),$(POLICY_ENGINE_SRC)/Dockerfile)
 
 # Re-applies manifests/policy-engine/ (including the bootstrap ConfigMap) and
 # waits for the rollout; spire-up only pre-declares the Deployment.
@@ -290,23 +290,13 @@ vending-service-test: ## Unit-test the vending service
 
 .PHONY: vending-service-image
 vending-service-image: ## Build the vending service image and side-load it into kind
-	@echo ">> building $(VENDING_IMG)"
-	@docker build -q -t '$(VENDING_IMG)' -f '$(VENDING_SRC)/Dockerfile' '$(VENDING_SRC)' >/dev/null
-	@echo ">> loading $(VENDING_IMG) into kind/$(KIND_CLUSTER)"
-	@tmp=$$(mktemp -d); trap 'rm -rf "$$tmp"' EXIT; \
-	  docker save --platform '$(LOAD_PLATFORM)' '$(VENDING_IMG)' -o "$$tmp/img.tar"; \
-	  kind load image-archive --name '$(KIND_CLUSTER)' "$$tmp/img.tar"
+	$(call build_and_load_image,$(VENDING_IMG),$(VENDING_SRC),$(VENDING_SRC)/Dockerfile)
 
 # parentsim is a minimal Go parent used by verify-vending and the experiment
 # fixtures, not the Python agent harness — see src/vending-service/cmd/parentsim.
 .PHONY: parentsim-image
 parentsim-image: ## Build the parentsim test-harness image and side-load it into kind
-	@echo ">> building $(PARENTSIM_IMG)"
-	@docker build -q -t '$(PARENTSIM_IMG)' -f '$(VENDING_SRC)/Dockerfile.parentsim' '$(VENDING_SRC)' >/dev/null
-	@echo ">> loading $(PARENTSIM_IMG) into kind/$(KIND_CLUSTER)"
-	@tmp=$$(mktemp -d); trap 'rm -rf "$$tmp"' EXIT; \
-	  docker save --platform '$(LOAD_PLATFORM)' '$(PARENTSIM_IMG)' -o "$$tmp/img.tar"; \
-	  kind load image-archive --name '$(KIND_CLUSTER)' "$$tmp/img.tar"
+	$(call build_and_load_image,$(PARENTSIM_IMG),$(VENDING_SRC),$(VENDING_SRC)/Dockerfile.parentsim)
 
 # Depends on entries: svc/vending-service's own registration entry must exist
 # before its pod can obtain an SVID.
@@ -343,12 +333,7 @@ agents-test: ## Byte-compile the agent harness (no Go here to vet/test)
 
 .PHONY: agents-image
 agents-image: ## Build the agent harness image and side-load it into kind
-	@echo ">> building $(AGENTS_IMG)"
-	@docker build -q -t '$(AGENTS_IMG)' -f '$(AGENTS_SRC)/Dockerfile' '$(AGENTS_SRC)' >/dev/null
-	@echo ">> loading $(AGENTS_IMG) into kind/$(KIND_CLUSTER)"
-	@tmp=$$(mktemp -d); trap 'rm -rf "$$tmp"' EXIT; \
-	  docker save --platform '$(LOAD_PLATFORM)' '$(AGENTS_IMG)' -o "$$tmp/img.tar"; \
-	  kind load image-archive --name '$(KIND_CLUSTER)' "$$tmp/img.tar"
+	$(call build_and_load_image,$(AGENTS_IMG),$(AGENTS_SRC),$(AGENTS_SRC)/Dockerfile)
 
 # One full spawn -> attest -> vend -> operate -> dispose cycle, with audit
 # events from every component collected into one JSON-lines file.
