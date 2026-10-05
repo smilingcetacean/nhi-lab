@@ -1,0 +1,32 @@
+# Host Software Prerequisites for nhi-lab
+# Target Architecture: Linux x86_64 (amd64)
+# Reference: README.md and src/deploy/README.md
+
+# -----------------------------------------------------------------------------
+# System & Build Utilities
+# -----------------------------------------------------------------------------
+make>=4.0                  # GNU Make: top-level workflow driver
+bash>=5.0                  # Bash shell with pipefail support
+coreutils                  # Standard POSIX tools: grep, awk, sed, mktemp, tail, seq
+jq                         # CLI JSON processor: required for verify and demo scripts
+
+# -----------------------------------------------------------------------------
+# Container & Kubernetes Orchestration
+# -----------------------------------------------------------------------------
+docker-engine>=25.0.0      # Tested: 29.6.2 (requires `docker save --platform` and containerd store)
+kind==0.32.0               # Kubernetes-in-Docker: local cluster provisioning
+kubectl==1.36.2            # Kubernetes CLI: cluster management and rollout tracking
+
+# -----------------------------------------------------------------------------
+# Runtimes & Package Managers
+# -----------------------------------------------------------------------------
+go==1.26.5                 # Go toolchain: unit testing microservices (resource, policy-engine, vending-service)
+python==3.14.6             # Python runtime: agent harness validation and experiments
+uv                         # Fast Python package manager: runs experiment benchmark suite
+
+# -----------------------------------------------------------------------------
+# Optional Host Tools (mirrors in-cluster versions; executed via kubectl exec if absent)
+# -----------------------------------------------------------------------------
+# spire-server==1.15.2     # SPIRE Server CLI
+# spire-agent==1.15.2      # SPIRE Agent CLI
+# opa==1.18.2              # Open Policy Agent CLI
