@@ -105,10 +105,12 @@ registers nothing for the child), `policy-engine-up` (re-applies
 `agent/parent/demo` its bootstrap Π(P) = `{resource:read:datasetA}`),
 `vending-service-up`, `resource-up`.
 
-`src/deploy/scripts/demo.sh` then: restarts the vending service (fresh
-`emptyDir`-backed store — a clean slate per run) and the policy
-engine (picks up the bootstrap ConfigMap), applies the demo parent's RBAC
-and pod (delete-then-create for idempotency — pod specs are immutable),
+`src/deploy/scripts/demo.sh` then: restarts the vending service and the
+policy engine (the latter picks up the bootstrap ConfigMap; the vending
+service's store is durable, so its restart empties nothing — the parent's
+time-based nonces and the per-vend `chain_id` keep runs independent), applies
+the demo parent's RBAC and pod (delete-then-create for idempotency — pod
+specs are immutable),
 waits for the parent pod to reach `Succeeded`/`Failed`, then collects every
 component's audit events (`kubectl logs`, filtered to lines starting with
 `{`) from the parent pod, the child pod, and the vending-service,

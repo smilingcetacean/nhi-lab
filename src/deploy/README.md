@@ -51,7 +51,9 @@ each check rather than only a verdict.
 | `make vending-service-test` | Run the vending service's Go unit tests |
 | `make vending-service-up` | Build the vending service image, side-load it and deploy it |
 | `make verify-vending` | A real spawn manifest, signed and submitted by a real test-parent pod, dynamically creates a child SPIRE registration entry; the child obtains an SVID with no human action; scope escalation is attenuated; forged/relayed manifests and replayed nonces are refused; disposal (on-demand and TTL-reaped) revokes the entry, the grant, and access — see `src/vending-service/README.md` |
-| `make logs-vending-service` | Follow the vending service's JSON-Lines audit events |
+| `make verify-persistence` | Vend a long-TTL and a short-TTL child, delete the vending-service pod, then show the new pod still serves and disposes the long-TTL delegation (the child is then denied at the resource), reaps the short-TTL one, refuses a pre-restart nonce, and that the durable audit trail holds the `vend` and `dispose` events for both |
+| `make logs-vending-service` | Follow the vending service's JSON-Lines audit events (stdout of the running pod only) |
+| `make vending-audit` | Print the vending service's durable audit trail (`audit.jsonl` on the `vending-data` volume) via a short-lived read-only reader pod; stdout is the file alone |
 | `make demo` | One full spawn → attest → vend → operate → dispose cycle driven by the Python agent harness, with every component's audit events collected into `src/deploy/demo-audit.jsonl` |
 | `make demo-identity-uniqueness` | Short narrated demo: one parent vends three children, each with a distinct chain_id, SPIFFE ID, SPIRE entry and OPA grant |
 | `make experiments` | Run the negative, multi-hop, functional and performance suites (`src/experiments/`) |
@@ -176,6 +178,7 @@ src/deploy/
 │   ├── resource/
 │   │   └── 50-resource.yaml          # protected resource, ns nhi
 │   ├── vending-service/
+│   │   ├── 59-vending-data-pvc.yaml  # PVC for the vending store + audit file, ns nhi
 │   │   └── 60-vending-service.yaml   # vending service, ns nhi
 │   ├── agents/
 │   │   ├── 70-demo-parent-rbac.yaml  # demo parent SA + Role to create child pods
@@ -188,13 +191,16 @@ src/deploy/
 │       ├── 42-resource-client.yaml   # ephemeral caller, applied by verify-resource.sh/verify-policy.sh
 │       ├── 43-child-workload.yaml    # ephemeral child identity, applied by verify-policy.sh
 │       ├── 44-vending-test-parent.yaml  # test parent + attacker, applied by verify-vending.sh
-│       └── 45-vending-test-child.yaml   # unregistered child, applied by verify-vending.sh
+│       ├── 45-vending-test-child.yaml   # unregistered child, applied by verify-vending.sh
+│       └── 46-vending-audit-reader.yaml # read-only audit reader pod, applied by vending-audit.sh
 └── scripts/
     ├── register-entries.sh           # idempotent static entry creation
     ├── verify.sh                     # baseline + authenticated policy plane
     ├── verify-resource.sh            # default deny, then grant
     ├── verify-policy.sh              # synthesis, attenuation, disposal
     ├── verify-vending.sh             # full in-cluster vend lifecycle + negatives
+    ├── verify-persistence.sh         # pod restart: store, reaper, audit trail, nonces survive
+    ├── vending-audit.sh              # `make vending-audit`: print the durable audit trail
     ├── demo.sh                       # `make demo`
     ├── demo-identity-uniqueness.sh   # `make demo-identity-uniqueness`
     └── demo-identity-uniqueness-walkthrough.md  # the same demo, step by step by hand

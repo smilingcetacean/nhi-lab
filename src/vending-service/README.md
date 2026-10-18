@@ -19,7 +19,9 @@ Design at a glance:
 - namespace `nhi`, identity `spiffe://lab.local/svc/vending-service`;
 - manifests carry their own detached-JWS signature, and `chain_id` is minted
   here;
-- SQLite storage, parent-only disposal, dual TTL enforcement;
+- SQLite storage on a PersistentVolumeClaim, so records, nonces and a durable
+  copy of the audit events survive a pod restart; parent-only disposal; dual
+  TTL enforcement;
 - `cmd/parentsim` is a Go test-harness parent, not the agent harness.
 
 ---
@@ -30,16 +32,24 @@ Design at a glance:
 # from the repository root — builds, side-loads, deploys and verifies
 make verify-vending
 
+# delete the pod and prove the store, reaper, audit trail and nonces survive
+make verify-persistence
+
 # just the unit tests (no cluster needed)
 make vending-service-test
 
-# watch the audit stream
+# watch the audit stream (stdout of the running pod)
 make logs-vending-service
+
+# read the durable audit trail back from the volume, across restarts
+make vending-audit
 ```
 
-`make verify-vending` needs `make cluster-up && make spire-up` first (it
-deploys the vending service, policy engine and resource itself if not already
-up, but assumes the cluster/SPIRE/OPA baseline exists).
+`make verify-vending` and `make verify-persistence` need `make cluster-up &&
+make spire-up` first (they deploy the vending service, policy engine and
+resource themselves if not already up, but assume the cluster/SPIRE/OPA
+baseline exists). Both can be re-run on the same cluster: their nonces carry a
+per-run id.
 
 ---
 
@@ -165,6 +175,7 @@ the policy engine's own `synthesizeRequest`.
 | `SPIRE_SERVER_SPIFFE_ID` | `spiffe://lab.local/spire/server` | SPIRE server's own serving identity — verified empirically against the running cluster, see below |
 | `NODE_ALIAS_SPIFFE_ID` | `spiffe://lab.local/node/nhi-lab` | `parent_id` of every child entry |
 | `DB_PATH` | `/var/lib/vending-service/vending.db` | SQLite delegation + nonce store |
+| `AUDIT_LOG_PATH` | unset (`/var/lib/vending-service/audit.jsonl` in the deployed manifest) | when set, every audit event is also appended to this file; if it cannot be opened the service exits non-zero — see Storage |
 | `SPIFFE_ENDPOINT_SOCKET` | `unix:///run/spire/sockets/agent.sock` | Workload API |
 | `REAPER_INTERVAL` | `30s` (`15s` in the deployed manifest) | TTL sweep interval |
 | `NONCE_RETENTION_MARGIN` | `24h` | how long past a manifest's own TTL a consumed nonce is still remembered |
@@ -190,29 +201,86 @@ stays a static distroless build like `src/resource` and
   is scoped **per parent**, not global: two different parents may reuse the
   same nonce value without either being treated as a replay of the other.
 
-**Not persisted across pod restarts** in this lab configuration (`emptyDir`,
-`manifests/vending-service/60-vending-service.yaml`). That has a real
-consequence for disposal. On restart:
+**Durable across pod restarts.** `DB_PATH` and the audit file below live on
+the PersistentVolumeClaim `vending-data` (`ReadWriteOnce`, 256Mi, the cluster's
+default StorageClass, which is `local-path` on kind), mounted at
+`/var/lib/vending-service` in place of scratch storage
+(`manifests/vending-service/59-vending-data-pvc.yaml`,
+`manifests/vending-service/60-vending-service.yaml`). After
+`kubectl delete pod -l app=vending-service` the new pod finds everything the
+old one had written:
 
-- `GET`/`DELETE /delegations/{chain_id}` 404 for every pre-restart
-  delegation — a parent that is still alive and still wants to dispose its
-  own live child can no longer do so through this service.
+- `GET`/`DELETE /delegations/{chain_id}` work for pre-restart delegations — a
+  parent can still dispose its own live child through this service, and the
+  disposal removes the child's SPIRE entry and OPA grant as usual.
 - The reaper's work list (`ListExpiredUnrevoked`) is a query over the same
-  now-empty table, so it cannot reap what it no longer has a record of.
-- The policy engine holds no local state, so nothing anywhere retains the
-  mapping from a pre-restart `nhi_grants_*` module back to a `chain_id` —
-  every such module is stranded in OPA **permanently**.
+  table, so the new pod reaps a delegation vended before the restart when its
+  TTL expires (`dispose` / `ttl_expired`, original `chain_id`).
+- Replay protection holds: a nonce used before the restart is still refused
+  with `409`.
+- The audit events below.
 
-**"Revocation state observable to auditors after the task tree is gone"
-therefore does NOT survive a vending-service pod restart in this deployment.**
-The blast radius is bounded: a stranded `nhi_grants_*` module carries its own
-`expires_at` clause and the resource's containment rule already filters
-expired grants at decision time, so a stranded grant goes inert on its own
-schedule rather than remaining a live authorization bypass. The **SPIRE
-entry's own `expires_at`** is independent of this service's state and is
-unaffected by a restart — only the bookkeeping and the OPA grant cleanup are
-lost. A `PersistentVolumeClaim` backing `DB_PATH` is the real fix and is not
-implemented here.
+`make verify-persistence` shows each of these on a live cluster.
+
+**"Revocation state observable to auditors after the task tree is gone"**
+therefore holds across a vending-service pod restart, for this service's own
+events (`vend`, `dispose`, and the `attest` decisions). Its limits:
+
+- **Single writer.** The store is one SQLite file, so the Deployment has one
+  replica and `strategy: Recreate`: on a rollout the old pod stops before the
+  new one starts, so two pods never hold the file (or run two reapers) at once.
+  The cost is a few seconds without a vending service on every rollout. HA or
+  more than one replica is not supported.
+- **Node-bound volume.** The `local-path` volume is pinned to the node where it
+  was first provisioned, and the pod follows it. Fine on a two-node lab cluster.
+- **The volume lives inside the cluster.** Deleting the claim
+  (`kubectl delete -f manifests/vending-service/`) or the cluster
+  (`make clean`) erases the delegation records, the nonces and the audit file
+  together. A new `vending-data` volume starts empty.
+- **A new failure mode.** If the claim cannot bind, the pod stays `Pending` and
+  `rollout status` times out.
+- **OPA's grants are not part of this.** They live in OPA's memory. If OPA
+  restarts they are gone and access fails closed (deny), which is unchanged.
+
+### Audit copy: `AUDIT_LOG_PATH`
+
+Every audit event is written to stdout as one JSON line, as always. When
+`AUDIT_LOG_PATH` is set, the identical line is then appended to that file
+(opened `O_APPEND|O_CREATE|O_WRONLY`, mode `0640`), so `kubectl logs`, `make
+demo` and the experiment suites see exactly what they saw before. The schema is
+unchanged. With `AUDIT_LOG_PATH` unset (unit tests, local runs) behaviour is
+exactly as before.
+
+- If the file cannot be opened at startup the service exits non-zero with a
+  clear error: a service that should persist its trail but silently cannot is
+  worse than one that does not start.
+- A write error at runtime is reported on stderr and does not change the
+  request's outcome, nor drop the stdout line (the two writes are sequential,
+  not an `io.MultiWriter`).
+- There is no `fsync` per event. A pod deletion or container crash keeps every
+  line already written, because it sits in the node's page cache; a node or
+  kernel crash can lose the last few events.
+- If a file write fails partway, for example because the volume is full, the
+  file can keep a fragment with no trailing newline, and the next appended
+  event is joined onto it. The event is still on stdout, and the error is
+  reported on stderr.
+- The file is **not tamper-evident**: anyone with write access to the volume
+  can edit it. There is no rotation either; at roughly 0.5 KB per event 256Mi
+  holds on the order of 500k events, a limit and not a guarantee.
+- Only this service's events are kept. The policy engine's and the resource's
+  audit events stay on their pods' stdout and are lost with those pods.
+
+### Reading the trail: `make vending-audit`
+
+The image is distroless, so there is no `cat` or `tar` to `kubectl exec` or
+`kubectl cp` with, and the service deliberately has no endpoint that serves its
+own audit file (it holds unscoped SPIRE admin; it does not need a new surface).
+`make vending-audit` instead starts a short-lived pod from `curlimages/curl`
+(already used in the lab) that runs as UID/GID 65532, non-root, without
+privilege escalation, mounts `vending-data` with `readOnly: true`, prints
+`audit.jsonl` and is deleted again, even on failure
+(`src/deploy/scripts/vending-audit.sh`, `src/deploy/manifests/test/46-vending-audit-reader.yaml`).
+Only the file is written to stdout, so `make -s vending-audit | jq .` works.
 
 ---
 
@@ -252,7 +320,7 @@ src/vending-service/
 ├── internal/
 │   ├── manifest/          # SpawnManifest, canonicalization, structural validation
 │   ├── signature/         # detached JWS + x5c verify/sign
-│   ├── audit/             # audit event schema, JSON Lines
+│   ├── audit/             # audit event schema, JSON Lines; optional file sink (AUDIT_LOG_PATH)
 │   ├── store/             # SQLite: delegation records + nonce replay table
 │   ├── spireentry/        # SPIRE Entry API client (spire-api-sdk)
 │   └── policyclient/      # policy engine client
@@ -280,6 +348,17 @@ src/vending-service/
   spawn → attest → vend → operate → dispose cycle against the real vending
   service, real SPIRE Entry API, real policy engine and real OPA — see
   `src/deploy/scripts/verify-vending.sh`'s header for the exact scenario list.
+  Its nonces carry a per-run id, so it passes when run repeatedly against the
+  same cluster.
+- **Durability** (`make verify-persistence`, needs a live cluster): vends a
+  long-TTL and a short-TTL child, deletes the vending-service pod, then checks
+  that the new pod still serves and disposes the long-TTL delegation (and the
+  resource then denies the child), reaps the short-TTL one, still refuses a
+  pre-restart nonce, and that `make vending-audit` shows the pre-restart `vend`
+  and post-restart `dispose` events for both chains as valid, schema-exact JSON
+  lines. The audit file copy has a unit test in `internal/audit/audit_test.go`
+  (both sinks byte-identical, a failing file sink does not stop stdout, schema
+  keys exactly as before).
 
 ---
 
@@ -288,11 +367,12 @@ src/vending-service/
 None of these weakens a property claimed above; each is recorded rather than
 hidden.
 
-- **Restart durability.** The delegation store is `emptyDir`-backed (see
-  Storage above); a vending-service pod restart drops in-flight delegation
-  bookkeeping and permanently strands (inert, TTL-bounded) `nhi_grants_*`
-  modules in OPA. Auditor-observable revocation state holds only *between*
-  restarts, not unconditionally.
+- **Durability has a scope.** The delegation store, the nonce table and this
+  service's audit events survive a pod restart (see Storage). They do not
+  survive deleting the claim or the cluster; the audit file is neither
+  tamper-evident, rotated nor synced per event; the policy engine's and the
+  resource's audit events and OPA's grants are not durable; and the service
+  runs as a single replica.
 - **Double-vend for the same child (untested, unfixed).**
   `internal/spireentry.CreateChildEntry` treats SPIRE's `codes.AlreadyExists`
   as success and returns the pre-existing entry's ID. Two manifests that
@@ -363,8 +443,8 @@ hidden.
   holds topologically (how this lab happens to be deployed), not
   mechanically. Also open: `k8s:ns` plus a `k8s:sa` naming no real pod still
   returns `201`, minting an entry matching nothing that currently exists —
-  fail-safe, reclaimable by the TTL reaper, but unreclaimable if the
-  vending-service pod restarts before the reaper runs.
+  fail-safe, and reclaimable by the TTL reaper (also across a
+  vending-service restart, because the delegation record is durable).
 - **`disposeChain`'s SPIRE-entry-delete and audit-event-emit are not atomic
   (`cmd/vending-service/main.go`).** `disposeChain` deletes the SPIRE
   registration entry first and emits the `dispose` audit event last. Any

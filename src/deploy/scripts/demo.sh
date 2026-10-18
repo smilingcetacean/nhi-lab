@@ -70,11 +70,13 @@ fail() { printf '    \033[31mFAIL\033[0m %s\n' "$1"; FAILURES=$((FAILURES + 1));
 # down on purpose.
 
 # ---------------------------------------------------------------------------
-step "Resetting state: fresh vending-service store, policy engine sees the demo bootstrap parent"
-# Same reasoning as verify-vending.sh step 1: the vending service's delegation/
-# nonce store is emptyDir-backed; a fresh rollout starts this run
-# from a clean slate rather than accumulating state across repeated `make
-# demo` invocations. Rolling the policy engine picks up
+step "Restarting the vending service and the policy engine (the policy engine picks up the demo bootstrap parent)"
+# The vending service's delegation/nonce store is durable (a PersistentVolumeClaim),
+# so this restart no longer gives the run an empty store, and nothing here
+# depends on one: the agent harness uses time-based nonces
+# (agents/manifest.py), every vend gets a new chain_id, and the collection
+# below is bounded to this run's own time window. The restart is kept so the
+# run starts against a freshly started pod. Rolling the policy engine picks up
 # manifests/policy-engine/36-policy-engine-bootstrap.yaml's "demo" entry if
 # this is the first run since it was added.
 "${KUBECTL[@]}" rollout restart deployment/vending-service -n nhi >/dev/null

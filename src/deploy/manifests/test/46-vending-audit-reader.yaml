@@ -1,0 +1,57 @@
+# Read-only reader for the vending service's durable audit file. NOT part of
+# `make spire-up` or `make vending-service-up`: it lives under test/ precisely
+# so the `apply -f manifests/vending-service/` in vending-service-up never
+# creates it. Applied, read and deleted by scripts/vending-audit.sh
+# (`make vending-audit`), and by verify-persistence.sh through that script.
+#
+# Why a pod at all: the vending service image is distroless, so there is no
+# `cat` or `tar` in it and neither `kubectl exec` nor `kubectl cp` can pull
+# the file out. A throwaway pod that mounts the same PersistentVolumeClaim
+# and prints the file is the smallest thing that works, and it needs no new
+# endpoint on the one service that holds SPIRE admin.
+#
+# Least privilege: UID/GID 65532 (the vending service's own, so it can read
+# the 0640 file), non-root, no privilege escalation, all capabilities
+# dropped, read-only root filesystem, and the claim mounted readOnly so the
+# reader cannot alter the trail. No Workload API socket and no service
+# account token, so it holds no SPIFFE identity and no API credentials.
+# ReadWriteOnce permits this second mount because the volume is node-bound
+# and the pod is scheduled to that node.
+#
+# curlimages/curl is already side-loaded by `make cluster-up`; it is used here
+# only for the `cat` in its busybox userland.
+apiVersion: v1
+kind: Pod
+metadata:
+  name: vending-audit-reader
+  namespace: nhi
+  labels:
+    app: vending-audit-reader
+spec:
+  restartPolicy: Never
+  automountServiceAccountToken: false
+  securityContext:
+    runAsUser: 65532
+    runAsGroup: 65532
+    runAsNonRoot: true
+    seccompProfile:
+      type: RuntimeDefault
+  containers:
+    - name: reader
+      image: curlimages/curl:8.18.0
+      imagePullPolicy: IfNotPresent
+      command: ["cat", "/var/lib/vending-service/audit.jsonl"]
+      securityContext:
+        allowPrivilegeEscalation: false
+        readOnlyRootFilesystem: true
+        capabilities:
+          drop: ["ALL"]
+      volumeMounts:
+        - name: vending-data
+          mountPath: /var/lib/vending-service
+          readOnly: true
+  volumes:
+    - name: vending-data
+      persistentVolumeClaim:
+        claimName: vending-data
+        readOnly: true

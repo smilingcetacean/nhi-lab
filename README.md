@@ -37,7 +37,8 @@ child's identity minted — against an unmodified SPIRE server.
 
 Every component emits JSON-lines audit events (`timestamp, stage, chain_id,
 actor_spiffe_id, outcome, detail`) to stdout; `make demo` collects them into
-one file.
+one file. The vending service also appends its own events to a file on a
+persistent volume, which `make vending-audit` reads back.
 
 ## Prerequisites
 
@@ -55,6 +56,8 @@ make verify            # baseline checks
 make verify-resource   # default deny, then grant
 make verify-policy     # scope synthesis, attenuation, disposal
 make verify-vending    # full runtime vend lifecycle, plus forged/relayed/replayed negatives
+make verify-persistence # delete the vending-service pod; store, reaper, audit trail and nonces survive
+make vending-audit     # print the vending service's durable audit trail (audit.jsonl) from its volume
 make demo              # one spawn → … → dispose cycle driven by the Python agent harness
 make experiments       # negative, multi-hop, functional and performance suites
 
@@ -84,7 +87,10 @@ This is a single-node, single-trust-domain lab. The policy engine is a
 deterministic set-intersection stub behind an interface intended for an
 LLM-backed implementation; agent forking is scripted behind a similar seam.
 Performance numbers from the bundled reference run are relative, not absolute.
-The vending service holds SPIRE's unscoped admin privilege, and its delegation
-store is not persisted across restarts. Each component README ends with its
+The vending service holds SPIRE's unscoped admin privilege. Its delegation
+store, replay nonces and a copy of its audit events are kept on a
+PersistentVolumeClaim and survive a pod restart, but not deleting the cluster;
+the other components' audit events stay on stdout, and the audit file is not
+tamper-evident. Each component README ends with its
 own known-limitations section; the most consequential are in
 [`src/vending-service/README.md`](src/vending-service/README.md#known-limitations).

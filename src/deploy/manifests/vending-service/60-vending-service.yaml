@@ -41,6 +41,13 @@ metadata:
     app: vending-service
 spec:
   replicas: 1
+  # Recreate, not the default RollingUpdate: a rolling update starts the new
+  # pod before the old one stops, and two pods would then hold the SQLite
+  # file (and run two reapers) at once. Recreate stops the old pod first, so
+  # there is only ever one writer, at the cost of a few seconds without a
+  # vending service on each rollout.
+  strategy:
+    type: Recreate
   selector:
     matchLabels:
       app: vending-service
@@ -50,6 +57,10 @@ spec:
         app: vending-service
     spec:
       serviceAccountName: vending-service
+      securityContext:
+        # Makes the vending-data volume group-owned by the container's GID,
+        # whatever the storage class's default ownership is.
+        fsGroup: 65532
       containers:
         - name: vending-service
           # Built locally and side-loaded into kind. Not a registry
@@ -85,6 +96,12 @@ spec:
               value: spiffe://lab.local/node/nhi-lab
             - name: DB_PATH
               value: /var/lib/vending-service/vending.db
+            # Second audit sink: every event goes to stdout (kubectl logs) and
+            # is also appended to this file on the same volume, so the vending
+            # service's half of the chain_id trail survives a pod restart.
+            # Read it with `make vending-audit`.
+            - name: AUDIT_LOG_PATH
+              value: /var/lib/vending-service/audit.jsonl
             - name: SPIFFE_ENDPOINT_SOCKET
               value: unix:///run/spire/sockets/agent.sock
             - name: REAPER_INTERVAL
@@ -119,11 +136,14 @@ spec:
           hostPath:
             path: /run/spire/sockets
             type: DirectoryOrCreate
-        # SQLite needs a writable directory; readOnlyRootFilesystem above
-        # forces it into an explicit emptyDir rather than the container's own
-        # filesystem. Not persisted across pod restarts — acceptable for the
-        # lab; a
-        # restart loses delegation bookkeeping but not any live SPIRE entry
-        # or OPA grant, which is what the reaper and disposal actually act on.
+        # SQLite needs a writable directory, and readOnlyRootFilesystem above
+        # keeps it off the container's own filesystem. The volume is a
+        # PersistentVolumeClaim (59-vending-data-pvc.yaml), so the delegation
+        # records, the replay nonces and audit.jsonl survive a pod restart:
+        # disposal through the API, the reaper's work list and replay
+        # protection all carry across it. They do not survive deleting the
+        # claim or the cluster. The store is a single-writer SQLite file, hence
+        # one replica and strategy Recreate.
         - name: vending-data
-          emptyDir: {}
+          persistentVolumeClaim:
+            claimName: vending-data

@@ -27,7 +27,8 @@ DEPLOY_TARGETS := cluster-up load-images spire-up namespaces spire-server \
                   policy-engine-test policy-engine-image policy-engine-up \
                   verify-policy logs-policy-engine \
                   vending-service-test vending-service-image parentsim-image \
-                  vending-service-up verify-vending logs-vending-service \
+                  vending-service-up verify-vending verify-persistence \
+                  logs-vending-service vending-audit \
                   agents-test agents-image demo logs-demo-parent \
                   demo-identity-uniqueness \
                   experiments-fixtures-up experiments-fixtures-down experiments \

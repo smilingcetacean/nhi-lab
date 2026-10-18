@@ -71,6 +71,7 @@ type config struct {
 	spireServerSpiffeID  string
 	nodeAliasSpiffeID    string // parent_id of every child entry
 	dbPath               string
+	auditLogPath         string // also append every audit event here; "" = stdout only
 	socketPath           string
 	reaperInterval       time.Duration
 	// nonceRetentionMargin extends how long a consumed nonce is remembered
@@ -90,6 +91,7 @@ func loadConfig() config {
 		spireServerSpiffeID:  env("SPIRE_SERVER_SPIFFE_ID", "spiffe://lab.local/spire/server"),
 		nodeAliasSpiffeID:    env("NODE_ALIAS_SPIFFE_ID", "spiffe://lab.local/node/nhi-lab"),
 		dbPath:               env("DB_PATH", "/var/lib/vending-service/vending.db"),
+		auditLogPath:         env("AUDIT_LOG_PATH", ""),
 		socketPath:           env("SPIFFE_ENDPOINT_SOCKET", "unix:///run/spire/sockets/agent.sock"),
 		reaperInterval:       envDuration("REAPER_INTERVAL", 30*time.Second),
 		nonceRetentionMargin: envDuration("NONCE_RETENTION_MARGIN", 24*time.Hour),
@@ -121,6 +123,17 @@ func main() {
 func run() error {
 	cfg := loadConfig()
 	auditor := audit.New(os.Stdout)
+	if cfg.auditLogPath != "" {
+		// Opened before anything else so a service that is meant to persist
+		// its audit trail but cannot refuses to start, rather than running
+		// with only the (ephemeral) stdout copy.
+		auditFile, err := audit.OpenFile(cfg.auditLogPath)
+		if err != nil {
+			return fmt.Errorf("open audit log %s (AUDIT_LOG_PATH): %w", cfg.auditLogPath, err)
+		}
+		defer auditFile.Close()
+		auditor = audit.NewWithFile(os.Stdout, auditFile, os.Stderr)
+	}
 
 	ctx, stop := signal.NotifyContext(context.Background(), syscall.SIGINT, syscall.SIGTERM)
 	defer stop()
