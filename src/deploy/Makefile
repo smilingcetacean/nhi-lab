@@ -307,7 +307,7 @@ vending-service-up: vending-service-image entries ## Build, load and (re)deploy 
 	@$(KUBECTL) rollout status deployment/vending-service -n nhi --timeout=180s
 
 .PHONY: verify-vending
-verify-vending: vending-service-test vending-service-up parentsim-image resource-up ## Verify the vending service (in-cluster spawn/attest/vend/operate/dispose)
+verify-vending: vending-service-test policy-engine-up vending-service-up parentsim-image resource-up ## Verify the vending service (in-cluster spawn/attest/vend/operate/dispose)
 	@bash '$(SCRIPTS)/verify-vending.sh'
 
 .PHONY: logs-vending-service
