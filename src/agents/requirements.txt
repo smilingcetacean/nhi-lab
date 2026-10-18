@@ -2,3 +2,4 @@ spiffe==0.3.0
 kubernetes==36.0.3
 cryptography>=42.0.0
 requests>=2.31.0
+spiffe-tls==0.4.0

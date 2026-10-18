@@ -18,7 +18,12 @@ src/experiments, not this harness):
   4. emit one audit event of its own (stage=operate, chain_id from the
      CHAIN_ID env var parent.py set — an untrusted hint the resource itself
      also receives via X-NHI-Chain-Id, exactly the resource's
-     chain_id_source contract) and exit.
+     chain_id_source contract).
+  5. if PARENT_CALLBACK_ADDR is set, send the result (chain_id, HTTP status,
+     body) straight back to the parent as one JSON line over mutual TLS,
+     authorizing exactly the parent's SPIFFE ID — which is derived from this
+     pod's own SPIFFE ID (<parent_id>/child/<pod-name>), never from
+     configuration — and exit non-zero if the callback fails.
 """
 
 from __future__ import annotations
@@ -67,7 +72,30 @@ def main() -> int:
             "reason": f"GET {dataset_path} -> {resp.status_code}",
         },
     )
-    return 0 if ok else 1
+
+    callback_ok = True
+    callback_addr = os.environ.get("PARENT_CALLBACK_ADDR")
+    if callback_addr:
+        parent_id = common.parent_id_from_child_id(own_id)
+        if parent_id is None:
+            # Fail closed: without a structurally derived parent ID there is
+            # nobody this result may be sent to.
+            common.log(f"child: own SPIFFE ID {own_id} has no /child/<name> suffix; not sending the result")
+            callback_ok = False
+        else:
+            common.log(f"child: returning the result to {parent_id} at {callback_addr} over mTLS")
+            try:
+                common.send_to_parent(
+                    callback_addr,
+                    parent_id,
+                    {"chain_id": chain_id, "status": resp.status_code, "body": resp.text},
+                )
+                common.log("child: result delivered and acknowledged by the parent")
+            except Exception as err:  # noqa: BLE001 - any failure to deliver is a failed callback
+                common.log(f"child: callback failed: {err!r}")
+                callback_ok = False
+
+    return 0 if ok and callback_ok else 1
 
 
 if __name__ == "__main__":
