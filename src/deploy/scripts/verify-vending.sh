@@ -38,6 +38,14 @@ MANIFESTS="${SCRIPT_DIR}/../manifests"
 
 KUBECTL=(kubectl --context "${KUBECTX}")
 
+# Computed once, at script start, and appended to every nonce below. The
+# vending service's nonce table is durable (it lives on a PersistentVolumeClaim
+# and survives pod restarts), so a nonce used by an earlier run is still
+# remembered and would be refused as a replay. A per-run suffix makes each run's
+# nonces new, while the replay check below still resubmits a nonce this same
+# run already used, so it stays meaningful.
+RUN_ID="$(date -u +%Y%m%d%H%M%S)"
+
 FAILURES=0
 CHECK_NO=0
 
@@ -57,24 +65,11 @@ cleanup() {
 }
 trap cleanup EXIT
 
-# The vending service's delegation/nonce store is a SQLite file on an
-# emptyDir (deliberately not persisted across pod restarts).
-# That is exactly what makes a restart here the cheap way to guarantee a
-# clean nonce table: this script uses FIXED nonces (e.g.
-# "vend_verify_vend_nonce") so the replay check is meaningful, but that means
-# a second consecutive run against a pod that survived the first run would
-# see its own first run's nonces as already used and fail with a confusing
-# 409 that has nothing to do with the replay check under test. Mirrors
-# verify-policy.sh's "clear the grant namespace so this run starts from genuine
-# default deny" step for the same reason: idempotent re-runnability is part
-# of what a verification script has to guarantee, not an incidental nicety.
-step "Restarting the vending service so this run starts from an empty nonce/delegation store"
-"${KUBECTL[@]}" rollout restart deployment/vending-service -n nhi >/dev/null 2>&1
-if "${KUBECTL[@]}" rollout status deployment/vending-service -n nhi --timeout=120s >/dev/null 2>&1; then
-  pass "vending service restarted; SQLite store (emptyDir) is fresh"
-else
-  fail "vending service did not roll out"
-fi
+# No restart of the vending service here. It used to be restarted so that its
+# nonce table started empty; the store is now durable, so a restart would
+# clear nothing and only cost a rollout. Re-running this script
+# against the same cluster works because every nonce carries RUN_ID instead:
+# this run's inputs are new, rather than the service's state being reset.
 
 step "Deploying the vending service's test fixtures (parent, attacker, child)"
 "${KUBECTL[@]}" apply -f "${MANIFESTS}/test/44-vending-test-parent.yaml" 2>&1 | indent
@@ -207,7 +202,7 @@ step "NEGATIVE — wrong caller identity: attacker relays a manifest genuinely s
 SIGNED_MANIFEST=$(exec_p /parentsim sign \
   -child-path-hint="child/vend-verify-attacker-c1" \
   -scopes=resource:read:datasetA -selectors="k8s:ns=agents,k8s:sa=nhi-test-vend-child" \
-  -nonce=vend_verify_attacker_nonce)
+  -nonce="vend_verify_attacker_nonce_${RUN_ID}")
 echo "    | captured manifest (genuinely signed by ${PARENT_ID}):"
 echo "${SIGNED_MANIFEST}" | indent
 OUT=$(exec_a /parentsim vend -raw-manifest="${SIGNED_MANIFEST}")
@@ -232,7 +227,7 @@ step "NEGATIVE — forged manifest: a structurally valid but tampered signature 
 OUT=$(exec_p /parentsim vend -corrupt-signature \
   -child-path-hint="child/vend-verify-forged-c1" \
   -scopes=resource:read:datasetA -selectors="k8s:ns=agents,k8s:sa=nhi-test-vend-child" \
-  -nonce=vend_verify_forged_nonce)
+  -nonce="vend_verify_forged_nonce_${RUN_ID}")
 echo "${OUT}" | indent
 R=$(split_status_body "${OUT}")
 CODE="${R%%|*}"; BODY="${R#*|}"
@@ -262,7 +257,7 @@ step "CHECK A — a real spawn manifest is submitted (with a scope-escalation at
 # datasetB too proves the vending service passes the escalation through to
 # the policy engine rather than pre-filtering it, and that what comes back
 # is attenuated (Π(C) ⊆ Π(P)), not the requested superset.
-vend_retrying exec_p vend_verify_vend_nonce \
+vend_retrying exec_p "vend_verify_vend_nonce_${RUN_ID}" \
   -child-path-hint="${CHILD_PATH_HINT}" \
   -scopes=resource:read:datasetA,resource:read:datasetB \
   -task-context="vending verify — full lifecycle" \
@@ -298,8 +293,8 @@ show_audit 1
 # ---------------------------------------------------------------------------
 step "NEGATIVE — replay: resubmitting the SAME manifest (same nonce) is refused"
 # Reuses VEND_NONCE — whichever nonce ACTUALLY succeeded above (vend_retrying
-# may have had to move off the initial "vend_verify_vend_nonce" if a transient
-# policy-engine connect delay forced a retry with a fresh one). Replaying a
+# may have had to move off the initial "vend_verify_vend_nonce_<run id>" if a
+# transient policy-engine connect delay forced a retry with a fresh one). Replaying a
 # nonce this run never actually used would prove nothing.
 OUT=$(exec_p /parentsim vend \
   -child-path-hint="${CHILD_PATH_HINT}" \
@@ -436,7 +431,7 @@ step "The reaper independently catches an orphaned child (parent never disposes)
 # very short TTL. The reaper (REAPER_INTERVAL=15s on this deployment) must
 # revoke it on its own within a bounded time — this is the
 # orphaned-child case: a parent that dies before calling disposal.
-vend_retrying exec_p vend_verify_orphan_nonce \
+vend_retrying exec_p "vend_verify_orphan_nonce_${RUN_ID}" \
   -child-path-hint="child/vend-verify-orphan-c1" \
   -scopes=resource:read:datasetA \
   -task-context="vending verify — orphaned child" \

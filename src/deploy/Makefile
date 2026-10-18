@@ -300,19 +300,41 @@ parentsim-image: ## Build the parentsim test-harness image and side-load it into
 
 # Depends on entries: svc/vending-service's own registration entry must exist
 # before its pod can obtain an SVID.
+# The restart after `apply` is what puts a rebuilt image onto a running
+# cluster: the image has a fixed `:dev` tag and imagePullPolicy is Never, so
+# when the manifest is unchanged `apply` alters nothing and no new pod would
+# start. The store is durable (a PersistentVolumeClaim), so the restart clears
+# no delegation records, nonces or audit events.
 .PHONY: vending-service-up
 vending-service-up: vending-service-image entries ## Build, load and (re)deploy the vending service
 	@echo ">> deploying the vending service"
 	@$(KUBECTL) apply -f '$(MANIFESTS)/vending-service/'
+	@$(KUBECTL) rollout restart deployment/vending-service -n nhi
 	@$(KUBECTL) rollout status deployment/vending-service -n nhi --timeout=180s
 
 .PHONY: verify-vending
 verify-vending: vending-service-test policy-engine-up vending-service-up parentsim-image resource-up ## Verify the vending service (in-cluster spawn/attest/vend/operate/dispose)
 	@bash '$(SCRIPTS)/verify-vending.sh'
 
+# Proves the vending store and its audit trail survive a pod restart: vends a
+# long-TTL and a short-TTL child, deletes the vending-service pod, then checks
+# disposal through the API, the reaper, the audit file and replay protection
+# against the NEW pod. Same prerequisites as verify-vending.
+.PHONY: verify-persistence
+verify-persistence: vending-service-test policy-engine-up vending-service-up parentsim-image resource-up ## Verify the vending store, reaper, audit trail and nonces survive a pod restart
+	@bash '$(SCRIPTS)/verify-persistence.sh'
+
 .PHONY: logs-vending-service
 logs-vending-service: ## Tail the vending service's audit events
 	@$(KUBECTL) logs -n nhi -l app=vending-service -c vending-service --tail=200 -f
+
+# The vending service image is distroless (no cat, no tar), so the durable
+# copy of its audit events (audit.jsonl on the vending-data volume) is read by
+# a short-lived pod that mounts the volume read-only. See scripts/vending-audit.sh.
+# stdout is the file alone, so `make -s vending-audit | jq .` works.
+.PHONY: vending-audit
+vending-audit: ## Print the vending service's durable audit trail (audit.jsonl) from its volume
+	@bash '$(SCRIPTS)/vending-audit.sh'
 
 # ---------------------------------------------------------------------------
 # Agent harness (parent/child), `make demo`

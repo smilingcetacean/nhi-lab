@@ -1,0 +1,31 @@
+# Durable state for the vending service: one volume holds both the SQLite
+# delegation/nonce store (DB_PATH) and the append-only audit copy
+# (AUDIT_LOG_PATH), so the two records of a delegation share a lifetime.
+# Mounted by the Deployment in 60-vending-service.yaml at
+# /var/lib/vending-service.
+#
+# Numbered before 60 so `kubectl apply -f manifests/vending-service/`
+# (vending-service-up) creates the claim before the Deployment needs it. The
+# claim names no storageClassName, so it takes the cluster's default class;
+# on kind that is `standard` (rancher.io/local-path), which binds when the pod
+# is first scheduled and then pins the volume to that node.
+#
+# Lifetime: the claim survives pod deletion, rollouts and
+# `kubectl delete pod`. It does NOT survive deleting this claim (including
+# `kubectl delete -f manifests/vending-service/`) or deleting the cluster
+# (`make clean`); either erases the delegation records, the replay nonces and
+# the audit file together.
+#
+# Read the audit file back with `make vending-audit`.
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: vending-data
+  namespace: nhi
+  labels:
+    app: vending-service
+spec:
+  accessModes: ["ReadWriteOnce"]
+  resources:
+    requests:
+      storage: 256Mi
