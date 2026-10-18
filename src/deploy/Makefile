@@ -390,6 +390,19 @@ logs-demo-parent: ## Tail the demo parent's log
 # reads the file itself, so the value never appears in argv, in this Makefile's
 # output, or in a log. Without it the Secret is left exactly as it is.
 ANTHROPIC_KEY_FILE ?=
+# A leading ~/ is expanded here: fish, and zsh by default, pass
+# `ANTHROPIC_KEY_FILE=~/...` to make unexpanded, and the recipes quote the path,
+# so nothing downstream would expand it either.
+PRESENT_KEY_FILE = $(patsubst ~/%,$(HOME)/%,$(ANTHROPIC_KEY_FILE))
+
+# Runs before any image is built, so a mistyped path fails in seconds rather
+# than after the builds. Printing the path is fine: it is a location, not the
+# key.
+.PHONY: present-key-check
+present-key-check:
+	@if [ -n '$(ANTHROPIC_KEY_FILE)' ] && [ ! -r '$(PRESENT_KEY_FILE)' ]; then \
+	  echo "!! ANTHROPIC_KEY_FILE='$(ANTHROPIC_KEY_FILE)' is not a readable file"; exit 1; \
+	fi
 
 # Same prerequisites as `demo` plus the OpenCode image. The steps, in order:
 #   1. the LLM key Secret (env from a Secret is read when a pod starts, which
@@ -400,13 +413,10 @@ ANTHROPIC_KEY_FILE ?=
 #   4. the pod is deleted and re-applied: pod specs are immutable, and a new
 #      pod starts with the current image and Secret.
 .PHONY: present-up
-present-up: agents-test agents-image entries policy-engine-up vending-service-up resource-up opencode-image ## Deploy the OpenCode parent pod (ANTHROPIC_KEY_FILE=<file> supplies the LLM key)
+present-up: present-key-check agents-test agents-image entries policy-engine-up vending-service-up resource-up opencode-image ## Deploy the OpenCode parent pod (ANTHROPIC_KEY_FILE=<file> supplies the LLM key)
 	@if [ -n '$(ANTHROPIC_KEY_FILE)' ]; then \
-	  if [ ! -r '$(ANTHROPIC_KEY_FILE)' ]; then \
-	    echo "!! ANTHROPIC_KEY_FILE is set but is not a readable file"; exit 1; \
-	  fi; \
 	  $(KUBECTL) create secret generic opencode-llm -n agents \
-	    --from-env-file='$(ANTHROPIC_KEY_FILE)' --dry-run=client -o yaml \
+	    --from-env-file='$(PRESENT_KEY_FILE)' --dry-run=client -o yaml \
 	    | $(KUBECTL) apply -f - >/dev/null; \
 	  if $(KUBECTL) describe secret opencode-llm -n agents | grep -q '^ANTHROPIC_API_KEY:'; then \
 	    echo ">> Secret opencode-llm applied from the key file"; \
