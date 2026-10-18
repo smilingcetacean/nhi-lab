@@ -1,0 +1,8 @@
+{
+  "name": "nhi-opencode-parent-tools",
+  "private": true,
+  "type": "module",
+  "dependencies": {
+    "@opencode-ai/plugin": "1.19.3"
+  }
+}

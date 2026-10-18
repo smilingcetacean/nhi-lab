@@ -186,6 +186,22 @@ ensure_entry "demo parent" "${DEMO_PARENT_ID}" \
 # manifest creates dynamically — the child pod does not exist, let alone
 # have an entry, until the vending service has minted one from the manifest.
 
+# The OpenCode parent (manifests/agents/72-opencode-parent-pod.yaml): a
+# long-lived pod a presenter execs into and drives through OpenCode, whose one
+# tool runs src/agents/parent.py. Same static-root-parent pattern as the demo
+# parent above, with its own service account so it holds its own identity.
+# Root-parent scopes: manifests/policy-engine/36-policy-engine-bootstrap.yaml.
+OPENCODE_PARENT_ID="spiffe://${TRUST_DOMAIN}/agent/parent/opencode"
+ensure_entry "OpenCode parent" "${OPENCODE_PARENT_ID}" \
+  -parentID "${NODE_ALIAS_ID}" \
+  -spiffeID "${OPENCODE_PARENT_ID}" \
+  -selector "k8s:ns:agents" \
+  -selector "k8s:sa:nhi-opencode-parent"
+
+# Deliberately absent: any entry for the OpenCode parent's children. Exactly
+# like the demo child above, each is created dynamically by the vending
+# service from the spawn manifest, one per delegate_to_child call.
+
 # The experiments root parent (src/experiments/, manifests/experiments/).
 # Same static-root-parent pattern as vend-verify/demo above, but this identity
 # is deliberately granted ALL THREE scopes in the bootstrap ConfigMap so the

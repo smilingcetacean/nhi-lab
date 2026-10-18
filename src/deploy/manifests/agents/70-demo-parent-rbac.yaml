@@ -1,12 +1,18 @@
-# Demo parent. ServiceAccount + minimal RBAC so parent.py can create the
-# child pod via the k8s API — the parent creates the child pod with exactly
-# the selectors it promised in the signed spawn manifest.
+# Demo parent and OpenCode parent. ServiceAccounts + minimal RBAC so
+# parent.py can create the child pod via the k8s API — the parent creates the
+# child pod with exactly the selectors it promised in the signed spawn
+# manifest.
 #
 # Scoped to namespace `agents` only (a Role, not a ClusterRole) and to
 # exactly the verbs parent.py's k8s client calls actually use: create the
 # child pod, poll its status, and (if a future demo run wants explicit
 # cleanup) delete it. No access to any other namespace, no access to
 # anything but pods.
+#
+# The OpenCode parent pod (72-opencode-parent-pod.yaml) runs the same
+# parent.py, so its ServiceAccount is bound to the SAME Role: same verbs, no
+# extra Role, and no access to Secrets (its LLM key reaches the pod as an env
+# var, not through the API).
 apiVersion: v1
 kind: ServiceAccount
 metadata:
@@ -35,4 +41,24 @@ roleRef:
 subjects:
   - kind: ServiceAccount
     name: nhi-demo-parent
+    namespace: agents
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: nhi-opencode-parent
+  namespace: agents
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: nhi-opencode-parent
+  namespace: agents
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: nhi-demo-parent
+subjects:
+  - kind: ServiceAccount
+    name: nhi-opencode-parent
     namespace: agents

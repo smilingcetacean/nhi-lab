@@ -1,0 +1,57 @@
+# Parent pod for the OpenCode demo: the agents image plus a pinned OpenCode
+# binary and a locked-down project (opencode/) whose only tool is
+# delegate_to_child.
+#
+# FROM nhi-lab/agents:dev rather than python:3.13-slim: the tool shells out to
+# the same /app/parent.py harness, so the parent identity, vending client and
+# k8s spawn path are exactly the ones `make demo` exercises, with the same
+# Python dependency set. Nothing here re-implements them.
+#
+# The OpenCode release tarball is checksum-verified; a mismatch fails the
+# build. The glibc build suits the Debian-based base image.
+#
+# The tool imports @opencode-ai/plugin. OpenCode would otherwise fetch it from
+# npm on first start; it is installed here from a lockfile so the pod needs no
+# registry access at runtime. The install lives in a throwaway node stage, so
+# the final image carries no node or npm, only the resulting node_modules.
+#
+# CMD is sleep infinity, not OpenCode: OpenCode is a TUI, so the presenter
+# `kubectl exec -it`s into this pod and starts it by hand in /workspace.
+FROM node:24-slim AS tooldeps
+WORKDIR /deps
+COPY opencode/.opencode/package.json opencode/.opencode/package-lock.json ./
+RUN npm ci --ignore-scripts --no-audit --no-fund
+
+FROM nhi-lab/agents:dev
+
+ARG OPENCODE_VERSION=1.19.3
+ARG OPENCODE_SHA256=13a8fb2978302071b86f9d7e00da9c8895f9cd846978379c3bdc6a5333536c9b
+
+RUN apt-get update \
+    && apt-get install -y --no-install-recommends ca-certificates curl \
+    && rm -rf /var/lib/apt/lists/* \
+    && curl -fsSL -o /tmp/opencode.tgz \
+        "https://github.com/anomalyco/opencode/releases/download/v${OPENCODE_VERSION}/opencode-linux-x64.tar.gz" \
+    && echo "${OPENCODE_SHA256}  /tmp/opencode.tgz" | sha256sum -c - \
+    && tar -xzf /tmp/opencode.tgz -C /usr/local/bin opencode \
+    && rm /tmp/opencode.tgz \
+    && opencode --version
+
+WORKDIR /workspace
+COPY opencode/ ./
+COPY --from=tooldeps /deps/node_modules ./.opencode/node_modules
+
+# OpenCode also checks its global config directory for the same plugin package
+# and installs it there when absent; seed it from the locked copy so first
+# start makes no network call.
+RUN mkdir -p /root/.config/opencode \
+    && cp -a .opencode/package.json .opencode/package-lock.json .opencode/node_modules /root/.config/opencode/
+
+# Keep OpenCode from reaching anywhere but the model API. The update check
+# reads only the GLOBAL config (the project's autoupdate=false does not cover
+# it), so it is switched off here; the model catalog is the one bundled in the
+# binary, which already lists the pinned model, instead of a startup refresh.
+ENV OPENCODE_DISABLE_AUTOUPDATE=1 \
+    OPENCODE_DISABLE_MODELS_FETCH=1
+
+CMD ["sleep", "infinity"]
