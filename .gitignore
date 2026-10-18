@@ -8,3 +8,5 @@ src/experiments/results/latest/
 src/experiments/.venv/
 # Python bytecode.
 __pycache__/
+# Local Claude Code configuration (project subagents). Kept untracked.
+.claude/
