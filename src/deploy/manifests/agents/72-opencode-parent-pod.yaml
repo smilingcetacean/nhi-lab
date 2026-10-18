@@ -1,0 +1,82 @@
+# OpenCode parent pod. Applied by hand or by a make target, never part of
+# `make spire-up` and never created by demo.sh: this is a long-lived pod, not a
+# one-shot cycle. A presenter `kubectl exec -it`s into it and starts OpenCode in
+# /workspace; the LLM's only tool, delegate_to_child, runs one full
+# spawn -> attest -> vend -> operate -> dispose cycle per call through the same
+# parent.py as `make demo` (python3 /app/parent.py tool '<args JSON>').
+#
+# Authenticates as spiffe://lab.local/agent/parent/opencode — a REAL SPIRE
+# registration entry (src/deploy/scripts/register-entries.sh), root-parent
+# scopes in manifests/policy-engine/36-policy-engine-bootstrap.yaml (dataset A
+# only, so a dataset-B request shows attenuation). The LLM makes no
+# authorization decision: it only chooses which dataset to ask for; the policy
+# engine and OPA decide, exactly as for the scripted parent.
+#
+# The one place in the lab that talks to an LLM. The Anthropic key comes from
+# Secret `opencode-llm` (key ANTHROPIC_API_KEY), marked optional so the pod
+# starts, and the identity and audit paths can be checked, without one.
+apiVersion: v1
+kind: Pod
+metadata:
+  name: nhi-opencode-parent
+  namespace: agents
+  labels:
+    app: nhi-opencode-parent
+spec:
+  serviceAccountName: nhi-opencode-parent
+  restartPolicy: Always
+  containers:
+    - name: parent
+      image: nhi-lab/opencode-parent:dev
+      imagePullPolicy: Never
+      ports:
+        # mTLS callback listener: the child dials this pod's IP directly to
+        # hand its result back.
+        - name: callback
+          containerPort: 8443
+      env:
+        - name: VENDING_SERVICE_URL
+          value: http://vending-service.nhi.svc.cluster.local:8090
+        - name: VENDING_AUDIENCE
+          value: spiffe://lab.local/svc/vending-service
+        - name: RESOURCE_URL
+          value: http://resource.nhi.svc.cluster.local:8080
+        - name: RESOURCE_AUDIENCE
+          value: spiffe://lab.local/svc/resource
+        - name: TTL_SECONDS
+          value: "300"
+        - name: CHILD_NAMESPACE
+          value: agents
+        - name: AGENTS_IMAGE
+          value: nhi-lab/agents:dev
+        - name: SPIFFE_ENDPOINT_SOCKET
+          value: unix:///run/spire/sockets/agent.sock
+        - name: POD_IP
+          valueFrom:
+            fieldRef:
+              fieldPath: status.podIP
+        - name: CALLBACK_PORT
+          value: "8443"
+        # PID 1 is `sleep infinity`, so audit events from an exec'd tool would
+        # otherwise vanish with its stdout. Writing them to PID 1's stdout
+        # puts them in `kubectl logs` with the rest of the pod's output.
+        - name: NHI_AUDIT_SINK
+          value: /proc/1/fd/1
+        - name: ANTHROPIC_API_KEY
+          valueFrom:
+            secretKeyRef:
+              name: opencode-llm
+              key: ANTHROPIC_API_KEY
+              optional: true
+      readinessProbe:
+        exec:
+          command: ["test", "-S", "/run/spire/sockets/agent.sock"]
+        periodSeconds: 5
+      volumeMounts:
+        - name: spire-agent-socket
+          mountPath: /run/spire/sockets
+  volumes:
+    - name: spire-agent-socket
+      hostPath:
+        path: /run/spire/sockets
+        type: DirectoryOrCreate

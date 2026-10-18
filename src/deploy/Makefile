@@ -357,6 +357,15 @@ agents-test: ## Byte-compile the agent harness (no Go here to vet/test)
 agents-image: ## Build the agent harness image and side-load it into kind
 	$(call build_and_load_image,$(AGENTS_IMG),$(AGENTS_SRC),$(AGENTS_SRC)/Dockerfile)
 
+# The OpenCode parent image extends the agents image (same harness, plus a
+# pinned, checksum-verified OpenCode and its locked-down project), so it is
+# built after it.
+OPENCODE_IMG := nhi-lab/opencode-parent:dev
+
+.PHONY: opencode-image
+opencode-image: agents-image ## Build the OpenCode parent image and side-load it into kind
+	$(call build_and_load_image,$(OPENCODE_IMG),$(AGENTS_SRC),$(AGENTS_SRC)/Dockerfile.opencode)
+
 # One full spawn -> attest -> vend -> operate -> dispose cycle, with audit
 # events from every component collected into one JSON-lines file.
 # Depends on `entries` (the demo parent's static SPIRE entry and the

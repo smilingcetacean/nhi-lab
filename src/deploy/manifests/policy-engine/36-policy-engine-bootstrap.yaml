@@ -31,6 +31,12 @@
 # full spawn->attest->vend->operate->dispose cycle, not an escalation
 # attempt; the vend-verify fixture already demonstrates attenuation).
 #
+# `opencode` (manifests/agents/72-opencode-parent-pod.yaml): the parent an
+# LLM-driven OpenCode session acts through. Deliberately limited to
+# resource:read:datasetA, so asking its delegate_to_child tool for dataset B
+# is an escalation attempt the policy engine attenuates to nothing, and the
+# refusal (with its audit event) is what the presenter shows.
+#
 # `exp-root` (src/experiments/, manifests/experiments/): a REAL running pod
 # (60-experiments-fixtures.yaml) that plays the root parent for the
 # functional (randomized Π(C) ⊆ Π(P) subsets), multi-hop (P -> C -> G) and
@@ -50,5 +56,6 @@ data:
       "spiffe://lab.local/agent/parent/policy-verify": ["resource:read:datasetA"],
       "spiffe://lab.local/agent/parent/vend-verify": ["resource:read:datasetA"],
       "spiffe://lab.local/agent/parent/demo": ["resource:read:datasetA"],
+      "spiffe://lab.local/agent/parent/opencode": ["resource:read:datasetA"],
       "spiffe://lab.local/agent/parent/exp-root": ["resource:read:datasetA", "resource:read:datasetB", "resource:write:jobs"]
     }
