@@ -1,0 +1,66 @@
+# Impostor for the OpenCode parent's result callback, applied by
+# verify-present.sh and deleted again.
+#
+# The pod holds a REAL, valid SVID (spiffe://lab.local/agent/parent/demo, the
+# demo parent's static entry, via service account nhi-demo-parent) that is not
+# the vended child's. It dials the OpenCode parent's callback listener and
+# tries to hand over a forged result. The listener authorizes exactly one SPIFFE
+# ID, the delegated child's, so this connection must be refused and audited as
+# `callback_refused` with this pod's ID as the peer.
+#
+# No listener exists until a delegation is running, so the pod redials every
+# half second until one accepts the TCP connection, which makes it independent
+# of when the cycle starts. verify-present.sh replaces __TARGET__ with the
+# parent pod's IP and port before applying.
+apiVersion: v1
+kind: Pod
+metadata:
+  name: callback-impostor
+  namespace: agents
+  labels:
+    app: callback-impostor
+spec:
+  serviceAccountName: nhi-demo-parent
+  restartPolicy: Never
+  containers:
+    - name: impostor
+      image: nhi-lab/agents:dev
+      imagePullPolicy: Never
+      command: ["python3", "-W", "ignore", "-c"]
+      args:
+        - |
+          import os, sys, time
+          import spiffetls
+          from spiffetls.tlsconfig.authorize import authorize_any
+          from spiffe.workloadapi.x509_source import X509Source
+          src = X509Source(socket_path="unix:///run/spire/sockets/agent.sock", timeout_in_seconds=30)
+          print("impostor identity:", src.svid.spiffe_id, flush=True)
+          addr = os.environ["TARGET"]
+          deadline = time.time() + 120
+          while True:
+              try:
+                  conn = spiffetls.dial(addr, src, spiffetls.ClientTlsMode.TLS, authorize_any())
+                  break
+              except Exception:
+                  if time.time() > deadline:
+                      print("no listener within 120s", flush=True)
+                      sys.exit(3)
+                  time.sleep(0.5)
+          print("dial OK: reached the listener", flush=True)
+          try:
+              conn.sendall(b'{"chain_id":"c_impostor","status":200,"body":"forged result"}\n')
+              reply = conn.recv(1)
+              print("peer closed without a reply" if not reply else "UNEXPECTED reply", flush=True)
+          except Exception as e:
+              print("refused after the handshake:", type(e).__name__, flush=True)
+      env:
+        - name: TARGET
+          value: "__TARGET__"
+      volumeMounts:
+        - name: spire-agent-socket
+          mountPath: /run/spire/sockets
+  volumes:
+    - name: spire-agent-socket
+      hostPath:
+        path: /run/spire/sockets
+        type: DirectoryOrCreate

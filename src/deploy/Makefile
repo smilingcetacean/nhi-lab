@@ -380,6 +380,69 @@ demo: agents-test agents-image entries policy-engine-up vending-service-up resou
 logs-demo-parent: ## Tail the demo parent's log
 	@$(KUBECTL) logs -n agents nhi-demo-parent -c parent --tail=200 -f
 
+# ---------------------------------------------------------------------------
+# OpenCode parent (presentation)
+# ---------------------------------------------------------------------------
+
+# Path of a file holding one `ANTHROPIC_API_KEY=<value>` line. There is no
+# default: nothing in this repository names a location on anyone's machine.
+# Only the PATH is ever handled here. `kubectl create secret --from-env-file`
+# reads the file itself, so the value never appears in argv, in this Makefile's
+# output, or in a log. Without it the Secret is left exactly as it is.
+ANTHROPIC_KEY_FILE ?=
+
+# Same prerequisites as `demo` plus the OpenCode image. The steps, in order:
+#   1. the LLM key Secret (env from a Secret is read when a pod starts, which
+#      is one reason the pod is recreated below);
+#   2. the parent's RBAC (shared with the demo parent);
+#   3. a policy engine restart, so it reads the bootstrap row that gives
+#      agent/parent/opencode its Π(P) (dataset A only);
+#   4. the pod is deleted and re-applied: pod specs are immutable, and a new
+#      pod starts with the current image and Secret.
+.PHONY: present-up
+present-up: agents-test agents-image entries policy-engine-up vending-service-up resource-up opencode-image ## Deploy the OpenCode parent pod (ANTHROPIC_KEY_FILE=<file> supplies the LLM key)
+	@if [ -n '$(ANTHROPIC_KEY_FILE)' ]; then \
+	  if [ ! -r '$(ANTHROPIC_KEY_FILE)' ]; then \
+	    echo "!! ANTHROPIC_KEY_FILE is set but is not a readable file"; exit 1; \
+	  fi; \
+	  $(KUBECTL) create secret generic opencode-llm -n agents \
+	    --from-env-file='$(ANTHROPIC_KEY_FILE)' --dry-run=client -o yaml \
+	    | $(KUBECTL) apply -f - >/dev/null; \
+	  if $(KUBECTL) describe secret opencode-llm -n agents | grep -q '^ANTHROPIC_API_KEY:'; then \
+	    echo ">> Secret opencode-llm applied from the key file"; \
+	  else \
+	    echo "!! the key file has no ANTHROPIC_API_KEY=... line; the agent will have no LLM"; \
+	  fi; \
+	elif $(KUBECTL) get secret opencode-llm -n agents >/dev/null 2>&1; then \
+	  echo ">> no ANTHROPIC_KEY_FILE given; keeping the existing Secret opencode-llm"; \
+	else \
+	  echo "!! no ANTHROPIC_KEY_FILE given and no Secret opencode-llm: the agent will have no LLM"; \
+	  echo "!! until one is provided: make present-up ANTHROPIC_KEY_FILE=<file with ANTHROPIC_API_KEY=...>"; \
+	fi
+	@$(KUBECTL) apply -f '$(MANIFESTS)/agents/70-demo-parent-rbac.yaml' >/dev/null
+	@$(KUBECTL) apply -f '$(MANIFESTS)/policy-engine/' >/dev/null
+	@$(KUBECTL) rollout restart deployment/policy-engine -n nhi >/dev/null
+	@$(KUBECTL) rollout status deployment/policy-engine -n nhi --timeout=120s
+	@$(KUBECTL) delete pod nhi-opencode-parent -n agents --wait --ignore-not-found >/dev/null
+	@$(KUBECTL) apply -f '$(MANIFESTS)/agents/72-opencode-parent-pod.yaml'
+	@$(KUBECTL) wait --for=condition=Ready pod/nhi-opencode-parent -n agents --timeout=120s
+	@echo
+	@echo ">> OpenCode parent is up. Next: make present-shell"
+
+.PHONY: present-shell
+present-shell: ## Start the OpenCode TUI in the parent pod (needs a terminal)
+	@$(KUBECTL) exec -it -n agents nhi-opencode-parent -c parent -- sh -c 'cd /workspace && exec opencode'
+
+# No LLM and no key needed: it drives the same tool OpenCode would call, with
+# fixed arguments, and checks the identity, audit and refusal behaviour.
+.PHONY: verify-present
+verify-present: present-up ## Verify the OpenCode parent end to end without an LLM (cycle, impostor, attenuation)
+	@bash '$(SCRIPTS)/verify-present.sh'
+
+.PHONY: present-audit
+present-audit: ## Stream live audit events from the parent, vending service, policy engine and resource
+	@bash '$(SCRIPTS)/present-audit.sh'
+
 # A short, narrated demo (contrast the full `demo` above): one parent
 # identity (the experiments-parent fixture) vends
 # three children back to back and shows each spawn's chain_id/child SPIFFE

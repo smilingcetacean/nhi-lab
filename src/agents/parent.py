@@ -1,11 +1,12 @@
 #!/usr/bin/env python3
 """Parent agent.
 
-Runs as a Kubernetes Job in namespace `agents`, authenticated by a REAL
-SPIRE registration entry (spiffe://lab.local/agent/parent/demo — see
-src/deploy/scripts/register-entries.sh and
-manifests/policy-engine/36-policy-engine-bootstrap.yaml for its bootstrap
-Π(P)), exactly like the vending-test-parent fixture and cmd/parentsim.
+Runs in a pod in namespace `agents`, authenticated by a REAL SPIRE
+registration entry — spiffe://lab.local/agent/parent/demo for `make demo`,
+spiffe://lab.local/agent/parent/opencode for the OpenCode parent pod that
+calls the `tool` subcommand (see src/deploy/scripts/register-entries.sh and
+manifests/policy-engine/36-policy-engine-bootstrap.yaml for their bootstrap
+Π(P)) — exactly like the vending-test-parent fixture and cmd/parentsim.
 Unlike verify-vending.sh (which pre-creates its child pod as a scripting
 shortcut), the child pod here is created ONLY
 AFTER the vending service has minted its SPIRE registration entry, so "the

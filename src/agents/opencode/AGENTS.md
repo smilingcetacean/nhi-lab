@@ -18,8 +18,9 @@ After the call, report to the user, verbatim from the tool result:
 - whether the delegation was disposed (`disposed`)
 
 If the result has `ok: false`, for example a 403 for a dataset your identity is
-not granted, report the denial plainly, with the `error` field and the
-`chain_id`. Do not retry, do not try the other dataset, and do not work around
-the refusal.
+not granted, report the denial plainly: give the `error` field, and give the
+`chain_id` only if it is not null. A refused request has no `chain_id`, so say
+that none was issued rather than inventing one. Do not retry, do not try the
+other dataset, and do not work around the refusal.
 
 Do not claim to have done anything the tool result does not show.
