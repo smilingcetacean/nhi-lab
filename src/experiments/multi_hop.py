@@ -174,14 +174,59 @@ def main() -> int:
     print(f"  audit: hop1 actor={ev1 and ev1['actor_spiffe_id']}  hop2 actor={ev2 and ev2['actor_spiffe_id']}  lineage_ok={lineage_ok}")
     ok = ok and lineage_ok
 
-    # --- disposal: dispose G, then C. Confirm no automatic cascade (documented limitation) ---
-    dispose_g = c.parentsim(NS, child_pod, "dispose", f"-chain-id={chain2_id}")
+    # --- disposal: P revokes C ONLY; the cascade must take G down with it ----
+    # G's JWT-SVID is captured first. After the cascade G's SPIRE entry is gone
+    # and a fresh Workload API fetch would fail, which would prove nothing about
+    # authorization; replaying the still-valid token shows the denial is OPA's
+    # decision (C's grant is gone, so G's lineage is broken), not G's inability
+    # to obtain a credential.
+    g_jwt = c.exec_pod(NS, grandchild_pod, "parentsim", "/parentsim", "fetch-jwt",
+                       f"-call-audience={c.RESOURCE_AUD}").strip()
+    captured_ok = g_jwt.count(".") == 2 and " " not in g_jwt
+    report["grandchild_jwt_captured"] = captured_ok
+    ok = ok and captured_ok
+
     dispose_c = c.parentsim(NS, parent_pod, "dispose", f"-chain-id={chain1_id}")
-    report["dispose_grandchild_http_code"] = dispose_g.code
     report["dispose_child_http_code"] = dispose_c.code
-    dispose_ok = (dispose_g.code == 200) and (dispose_c.code == 200)
-    print(f"  disposal: G disposed by C -> {dispose_g.code}; C disposed by P -> {dispose_c.code}")
-    ok = ok and dispose_ok
+    print(f"  disposal: only C disposed, by P -> {dispose_c.code} (G is not disposed by hand)")
+    ok = ok and dispose_c.code == 200
+
+    # G's next request is denied by OPA (403), and the resource audits it.
+    g_after = c.parentsim(NS, grandchild_pod, "bearer-call",
+                          f"-call-url={c.RESOURCE_URL}/datasets/A", f"-bearer-token={g_jwt}")
+    report["grandchild_get_datasetA_after_cascade"] = g_after.code
+    res_events = c.audit_lines("nhi", "app=resource", "resource", tail=100)
+    g_deny = next((e for e in reversed(res_events)
+                   if e.get("actor_spiffe_id") == grandchild_id and e.get("outcome") == "deny"
+                   and e.get("detail", {}).get("path") == "/datasets/A"), None)
+    report["grandchild_resource_deny_event"] = g_deny
+    denied_ok = g_after.code == 403 and bool(g_deny) and g_deny["detail"].get("reason") == "policy denied"
+    print(f"  cascade: G GET /datasets/A after C was revoked -> {g_after.code} (want 403), "
+          f"resource deny event={'yes' if g_deny else 'NO'}")
+    ok = ok and denied_ok
+
+    # G's delegation is revoked, with the ancestor named, and its entry is gone.
+    g_rec = c.parentsim(NS, parent_pod, "get", f"-chain-id={chain2_id}")
+    g_body = json.loads(g_rec.body) if g_rec.code == 200 else {}
+    reason_want = f"ancestor_revoked: {chain1_id}"
+    report["grandchild_delegation_after_cascade"] = g_body
+    revoked_ok = (g_rec.code == 200 and g_body.get("revoked_at") is not None
+                  and g_body.get("revocation_reason") == reason_want)
+    print(f"  cascade: G delegation revoked_at={g_body.get('revoked_at')} reason={g_body.get('revocation_reason')!r} (want {reason_want!r})")
+    ok = ok and revoked_ok
+
+    g_dispose_ev = c.find_event(vending_audit(tail=200), chain_id=chain2_id, stage="dispose", outcome="allow")
+    report["grandchild_dispose_event"] = g_dispose_ev
+    dispose_ev_ok = (bool(g_dispose_ev) and g_dispose_ev["actor_spiffe_id"] == PARENT_ID
+                     and g_dispose_ev["detail"].get("reason") == reason_want)
+    print(f"  cascade: G dispose event actor={g_dispose_ev and g_dispose_ev['actor_spiffe_id']} "
+          f"reason={g_dispose_ev and g_dispose_ev['detail'].get('reason')!r}")
+    ok = ok and dispose_ev_ok
+
+    entry_gone = not c.entry_exists(grandchild_id)
+    report["grandchild_entry_gone"] = entry_gone
+    print(f"  cascade: G SPIRE entry gone: {entry_gone}")
+    ok = ok and entry_gone
 
     report["overall_pass"] = ok
     _write(report)

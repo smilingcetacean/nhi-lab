@@ -26,6 +26,13 @@
 //     this service never writes policy itself (separation of duties)
 //  6. create the child registration entry via the SPIRE Entry API
 //  7. persist the delegation record; audit every step
+//
+// Two creation limits (delegation depth, live children per parent) are checked
+// after the selector check and before the nonce is recorded, so a refusal
+// leaves no state behind.
+//
+// Disposal runs the other way: grant first, then SPIRE entry, then the row, and
+// revoking a delegation also disposes every live descendant of its child.
 package main
 
 import (
@@ -40,7 +47,9 @@ import (
 	"net/http"
 	"os"
 	"os/signal"
+	"strconv"
 	"strings"
+	"sync"
 	"syscall"
 	"time"
 
@@ -78,9 +87,24 @@ type config struct {
 	// past the manifest's own ttl_seconds, so a replay cannot succeed simply
 	// by outliving the nonce record while the underlying grant is still live.
 	nonceRetentionMargin time.Duration
+	// maxDelegationDepth bounds how deep a delegation chain may go: a child's
+	// depth is the number of /child/ segments in its SPIFFE ID (a root parent
+	// is depth 0, its child 1, and so on), and a vend is refused if the child
+	// would be deeper than this. maxLiveChildren bounds the unrevoked,
+	// unexpired direct children one parent may hold at a time.
+	maxDelegationDepth int
+	maxLiveChildren    int
 }
 
-func loadConfig() config {
+func loadConfig() (config, error) {
+	maxDepth, err := envPositiveInt("MAX_DELEGATION_DEPTH", 2)
+	if err != nil {
+		return config{}, err
+	}
+	maxChildren, err := envPositiveInt("MAX_LIVE_CHILDREN", 8)
+	if err != nil {
+		return config{}, err
+	}
 	return config{
 		listenAddr:           env("LISTEN_ADDR", ":8090"),
 		audience:             env("VENDING_AUDIENCE", "spiffe://lab.local/svc/vending-service"),
@@ -95,7 +119,9 @@ func loadConfig() config {
 		socketPath:           env("SPIFFE_ENDPOINT_SOCKET", "unix:///run/spire/sockets/agent.sock"),
 		reaperInterval:       envDuration("REAPER_INTERVAL", 30*time.Second),
 		nonceRetentionMargin: envDuration("NONCE_RETENTION_MARGIN", 24*time.Hour),
-	}
+		maxDelegationDepth:   maxDepth,
+		maxLiveChildren:      maxChildren,
+	}, nil
 }
 
 func env(key, def string) string {
@@ -103,6 +129,22 @@ func env(key, def string) string {
 		return v
 	}
 	return def
+}
+
+// envPositiveInt reads a limit from the environment. A value that is set but
+// is not a positive integer is an error rather than a silent fallback: a
+// mistyped limit must stop the service from starting, not quietly run with
+// some other bound.
+func envPositiveInt(key string, def int) (int, error) {
+	v := os.Getenv(key)
+	if v == "" {
+		return def, nil
+	}
+	n, err := strconv.Atoi(v)
+	if err != nil || n < 1 {
+		return 0, fmt.Errorf("%s=%q must be a positive integer", key, v)
+	}
+	return n, nil
 }
 
 func envDuration(key string, def time.Duration) time.Duration {
@@ -121,7 +163,10 @@ func main() {
 }
 
 func run() error {
-	cfg := loadConfig()
+	cfg, err := loadConfig()
+	if err != nil {
+		return err
+	}
 	auditor := audit.New(os.Stdout)
 	if cfg.auditLogPath != "" {
 		// Opened before anything else so a service that is meant to persist
@@ -258,6 +303,9 @@ type server struct {
 	entries      entryAPIClient
 	store        *store.Store
 	trustDomain  spiffeid.TrustDomain
+	// parentLocks serializes one parent's vends from the live-children check to
+	// the delegation insert. See parentLocks.
+	parentLocks parentLocks
 	// now is injectable so expiry math is deterministic in tests.
 	now func() time.Time
 }
@@ -411,6 +459,54 @@ func (s *server) handleVend(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	// --- creation limits: delegation depth and live children ----------------------
+	// Like the selector check above, these run BEFORE the nonce is recorded, so
+	// a refusal leaves nothing behind: no nonce, no grant, no SPIRE entry, no
+	// row. The caller can retry the same manifest once the limit no longer
+	// binds.
+	childDepth := strings.Count(childSpiffeID, "/child/")
+	if childDepth > s.cfg.maxDelegationDepth {
+		s.deny(w, http.StatusForbidden, audit.Event{
+			Stage: audit.StageVend, ActorSpiffeID: actor.String(), Outcome: audit.OutcomeDeny,
+			Detail: audit.Detail{
+				ParentSpiffeID: m.ParentSpiffeID, ChildSpiffeID: childSpiffeID,
+				Reason: fmt.Sprintf("delegation depth limit: the child would be at depth %d, but MAX_DELEGATION_DEPTH is %d",
+					childDepth, s.cfg.maxDelegationDepth),
+			},
+		})
+		return
+	}
+	// The count and the insert below must not interleave with another vend by
+	// the same parent, or two concurrent requests could both see room for one
+	// more child. The lock is held until this handler returns, which covers
+	// every path from here to the delegation insert. The service runs as a
+	// single replica, so an in-process lock is enough; vends by other parents
+	// are not blocked.
+	unlock := s.parentLocks.lock(m.ParentSpiffeID)
+	defer unlock()
+	liveChildren, err := s.store.CountLiveChildren(ctx, m.ParentSpiffeID, s.now().Unix())
+	if err != nil {
+		s.deny(w, http.StatusInternalServerError, audit.Event{
+			Stage: audit.StageVend, ActorSpiffeID: actor.String(), Outcome: audit.OutcomeError,
+			Detail: audit.Detail{
+				ParentSpiffeID: m.ParentSpiffeID, ChildSpiffeID: childSpiffeID,
+				Reason: "could not count the caller's live children: " + err.Error(),
+			},
+		})
+		return
+	}
+	if liveChildren >= s.cfg.maxLiveChildren {
+		s.deny(w, http.StatusForbidden, audit.Event{
+			Stage: audit.StageVend, ActorSpiffeID: actor.String(), Outcome: audit.OutcomeDeny,
+			Detail: audit.Detail{
+				ParentSpiffeID: m.ParentSpiffeID, ChildSpiffeID: childSpiffeID,
+				Reason: fmt.Sprintf("live children limit: the caller already has %d live children and MAX_LIVE_CHILDREN is %d",
+					liveChildren, s.cfg.maxLiveChildren),
+			},
+		})
+		return
+	}
+
 	// --- step 2b: nonce replay protection -------------------------------------
 	nowUnix := s.now().Unix()
 	nonceExpiresAt := s.now().Add(time.Duration(m.TTLSeconds)*time.Second + s.cfg.nonceRetentionMargin).Unix()
@@ -505,7 +601,13 @@ func (s *server) handleVend(w http.ResponseWriter, r *http.Request) {
 		})
 		return
 	}
-	entryID, err := s.entries.CreateChildEntry(ctx, s.cfg.nodeAliasSpiffeID, childSpiffeID, selectors, m.TTLSeconds, synth.ExpiresAt)
+	// The policy engine returns the child's effective expiry: the requested TTL,
+	// or less if the parent's own grant ends sooner. Everything below uses it,
+	// never the raw request, so the entry, the X.509-SVID and the stored record
+	// cannot outlive the grant.
+	issuedAt := s.now().Unix()
+	effectiveTTL := max(synth.ExpiresAt-issuedAt, 1)
+	entryID, err := s.entries.CreateChildEntry(ctx, s.cfg.nodeAliasSpiffeID, childSpiffeID, selectors, effectiveTTL, synth.ExpiresAt)
 	if err != nil {
 		s.deny(w, http.StatusBadGateway, audit.Event{
 			Stage: audit.StageVend, ActorSpiffeID: actor.String(), ChainID: chainID, Outcome: audit.OutcomeError,
@@ -524,7 +626,6 @@ func (s *server) handleVend(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// --- step 7: persist the delegation record --------------------------------
-	issuedAt := s.now().Unix()
 	rec := store.DelegationRecord{
 		ChainID:        chainID,
 		ParentSpiffeID: m.ParentSpiffeID,
@@ -534,7 +635,7 @@ func (s *server) handleVend(w http.ResponseWriter, r *http.Request) {
 		EntryID:        entryID,
 		PolicyID:       synth.PolicyID,
 		IssuedAt:       issuedAt,
-		TTL:            m.TTLSeconds,
+		TTL:            effectiveTTL,
 		ExpiresAt:      synth.ExpiresAt,
 	}
 	if err := s.store.CreateDelegation(ctx, rec); err != nil {
@@ -554,13 +655,18 @@ func (s *server) handleVend(w http.ResponseWriter, r *http.Request) {
 	}
 
 	expiresAt := synth.ExpiresAt
+	ttlReason := ""
+	if synth.TTLShortened {
+		ttlReason = fmt.Sprintf("ttl_seconds shortened: requested %d s, granted %d s (a child cannot outlive its parent's earliest live grant)",
+			m.TTLSeconds, effectiveTTL)
+	}
 	s.audit.Emit(audit.Event{
 		Stage: audit.StageVend, ActorSpiffeID: actor.String(), ChainID: chainID, Outcome: audit.OutcomeAllow,
 		Detail: audit.Detail{
 			ParentSpiffeID: m.ParentSpiffeID, ChildSpiffeID: childSpiffeID,
 			RequestedScopes: m.RequestedScopes, ChildScopes: synth.ChildScopes,
 			PolicyID: synth.PolicyID, EntryID: entryID, ExpiresAt: &expiresAt,
-			TaskContext: m.TaskContext,
+			TaskContext: m.TaskContext, Reason: ttlReason,
 		},
 	})
 
@@ -627,10 +733,11 @@ func (s *server) handleGet(w http.ResponseWriter, r *http.Request) {
 }
 
 // handleDispose is DELETE /delegations/{chain_id} — disposal:
-// delete the SPIRE entry, remove the Rego module, mark the record revoked.
-// Parent-initiated revoke: only the delegation's own parent (or
-// this service's own reaper, which calls disposeChain directly rather than
-// through this handler) may revoke it.
+// remove the Rego module, delete the SPIRE entry, mark the record revoked, then
+// do the same for every live descendant of the child. Parent-initiated revoke:
+// only the delegation's own parent (or this service's own reaper, which calls
+// disposeChain directly rather than through this handler, and does not
+// cascade) may revoke it.
 func (s *server) handleDispose(w http.ResponseWriter, r *http.Request) {
 	actor, err := s.authenticate(r)
 	if err != nil {
@@ -677,20 +784,88 @@ func (s *server) handleDispose(w http.ResponseWriter, r *http.Request) {
 		})
 		return
 	}
+	if err := s.disposeDescendants(r.Context(), rec, actor.String()); err != nil {
+		s.deny(w, http.StatusBadGateway, audit.Event{
+			Stage: audit.StageDispose, ActorSpiffeID: actor.String(), ChainID: chainID, Outcome: audit.OutcomeError,
+			Detail: audit.Detail{
+				ParentSpiffeID: rec.ParentSpiffeID, ChildSpiffeID: rec.ChildSpiffeID,
+				EntryID: rec.EntryID, PolicyID: rec.PolicyID,
+				Reason: "delegation revoked, but cleaning up its descendants failed: " + err.Error(),
+			},
+		})
+		return
+	}
 	writeJSON(w, http.StatusOK, map[string]any{"chain_id": chainID, "revoked": true})
 }
 
-// disposeChain does the actual work of disposal — SPIRE entry deletion, OPA
-// grant removal, record revocation — shared between handleDispose (parent
-// initiated) and the reaper (TTL initiated). actor is who to attribute the
-// audit event to: the parent for an on-demand call, this service's own
-// identity for the reaper.
-func (s *server) disposeChain(ctx context.Context, rec store.DelegationRecord, actor, reason string) error {
-	if err := s.entries.DeleteEntry(ctx, rec.EntryID); err != nil {
-		return fmt.Errorf("could not delete SPIRE registration entry: %w", err)
+// disposeDescendants disposes every live descendant of target's child,
+// breadth-first: the rows whose parent_spiffe_id is a disposed row's
+// child_spiffe_id, level by level. Each is disposed exactly as the target was
+// and attributed to actor (the revoking parent), with the target's chain_id in
+// the reason.
+//
+// By the time this runs the target's grant is already gone, so its whole
+// subtree is already denied at the resource (the base policy counts a grant
+// only while every ancestor's grant is live). This walk is the physical
+// cleanup. A descendant whose cleanup fails is named in the returned error and
+// its row is left unrevoked, so the reaper disposes it at its expiry, which is
+// never later than the target's. The walk carries on past a failure so one bad
+// descendant does not strand the rest.
+func (s *server) disposeDescendants(ctx context.Context, target store.DelegationRecord, actor string) error {
+	reason := "ancestor_revoked: " + target.ChainID
+	var failures []error
+	// seen guards against a cycle in child/parent ids, which the structural
+	// SPIFFE ID shape rules out, but a loop here would never end.
+	seen := map[string]bool{target.ChainID: true}
+	level := []string{target.ChildSpiffeID}
+	for len(level) > 0 {
+		var next []string
+		for _, parentID := range level {
+			children, err := s.store.ListLiveChildren(ctx, parentID)
+			if err != nil {
+				failures = append(failures, fmt.Errorf("list the live children of %s: %w", parentID, err))
+				continue
+			}
+			for _, rec := range children {
+				if seen[rec.ChainID] {
+					continue
+				}
+				seen[rec.ChainID] = true
+				next = append(next, rec.ChildSpiffeID)
+				if err := s.disposeChain(ctx, rec, actor, reason); err != nil {
+					failures = append(failures, fmt.Errorf("descendant %s (%s): %w", rec.ChainID, rec.ChildSpiffeID, err))
+					s.audit.Emit(audit.Event{
+						Stage: audit.StageDispose, ActorSpiffeID: actor, ChainID: rec.ChainID, Outcome: audit.OutcomeError,
+						Detail: audit.Detail{
+							ParentSpiffeID: rec.ParentSpiffeID, ChildSpiffeID: rec.ChildSpiffeID,
+							EntryID: rec.EntryID, PolicyID: rec.PolicyID,
+							Reason: reason + ": " + err.Error(),
+						},
+					})
+				}
+			}
+		}
+		level = next
 	}
+	return errors.Join(failures...)
+}
+
+// disposeChain does the actual work of disposal — OPA grant removal, SPIRE
+// entry deletion, record revocation — shared between handleDispose (parent
+// initiated, and for its descendants) and the reaper (TTL initiated). actor is
+// who to attribute the audit event to: the parent for an on-demand call, this
+// service's own identity for the reaper.
+//
+// The grant goes first because it is what the resource enforces: once it is
+// gone the child (and, through the base policy's lineage rule, everything
+// below it) is denied, even if the later steps fail. The row is marked revoked
+// last, so a failure anywhere leaves it live for the reaper to retry.
+func (s *server) disposeChain(ctx context.Context, rec store.DelegationRecord, actor, reason string) error {
 	if err := s.policyEngine.Dispose(ctx, rec.ChainID); err != nil {
 		return fmt.Errorf("could not remove grant module: %w", err)
+	}
+	if err := s.entries.DeleteEntry(ctx, rec.EntryID); err != nil {
+		return fmt.Errorf("could not delete SPIRE registration entry: %w", err)
 	}
 	revokedAt := s.now().Unix()
 	if err := s.store.MarkRevoked(ctx, rec.ChainID, revokedAt, reason); err != nil {
@@ -804,4 +979,44 @@ func k8sSelectorValue(selectors []spireentry.Selector, subtype string) (string, 
 		}
 	}
 	return "", false
+}
+
+// parentLocks hands out one mutex per parent SPIFFE ID. Entries are removed
+// when the last holder or waiter lets go, so the map holds only parents with a
+// vend in flight. The zero value is ready to use.
+type parentLocks struct {
+	mu    sync.Mutex
+	locks map[string]*parentLock
+}
+
+type parentLock struct {
+	mu   sync.Mutex
+	refs int
+}
+
+// lock blocks until the caller holds the lock for parentID and returns the
+// function that releases it.
+func (p *parentLocks) lock(parentID string) (unlock func()) {
+	p.mu.Lock()
+	if p.locks == nil {
+		p.locks = make(map[string]*parentLock)
+	}
+	l := p.locks[parentID]
+	if l == nil {
+		l = &parentLock{}
+		p.locks[parentID] = l
+	}
+	l.refs++
+	p.mu.Unlock()
+
+	l.mu.Lock()
+	return func() {
+		l.mu.Unlock()
+		p.mu.Lock()
+		l.refs--
+		if l.refs == 0 {
+			delete(p.locks, parentID)
+		}
+		p.mu.Unlock()
+	}
 }
