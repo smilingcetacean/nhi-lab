@@ -74,8 +74,10 @@ func (m SpawnManifest) CanonicalBytes() ([]byte, error) {
 
 // MaxTTLSeconds bounds ttl_seconds so a manifest cannot request a
 // registration entry (and therefore an identity) that outlives any
-// reasonable lab run. 24h is generous; nothing in the lab needs longer.
-const MaxTTLSeconds = 24 * 60 * 60
+// reasonable lab run. 6h is generous; the longest TTL any lab script asks for
+// is 600 s. It is also the worst case for how long a child can stay live after
+// its parent crashes without disposing it, since the TTL is the backstop.
+const MaxTTLSeconds = 6 * 60 * 60
 
 // MaxNonceLen bounds an attacker-controlled string that ends up in both the
 // SQLite replay table and the audit log.
@@ -156,11 +158,9 @@ func (m SpawnManifest) Validate() error {
 	// ChildSpiffeID() must itself be constructible as a valid, in-trust-domain
 	// descendant of parentID — this also catches a parent path so long/odd
 	// that appending /child/<x> would not parse.
-	childID, err := spiffeid.FromString(parentID.String() + "/" + m.ChildPathHint)
-	if err != nil {
+	if _, err := spiffeid.FromString(parentID.String() + "/" + m.ChildPathHint); err != nil {
 		return fmt.Errorf("computed child SPIFFE ID is invalid: %w", err)
 	}
-	_ = childID
 
 	if m.TTLSeconds <= 0 {
 		return fmt.Errorf("ttl_seconds must be positive")

@@ -23,9 +23,9 @@ spec:
   policyTypes:
     - Ingress
   ingress:
-    # The policy-plane clients, all in namespace `nhi`. Note that reaching this
-    # port buys the vending service nothing — the system.authz policy has no
-    # rule for its identity.
+    # The policy-plane clients, all in namespace `nhi`. The vending service is
+    # deliberately not among them: it reaches policy only through the policy
+    # engine, so it has no business opening a connection to OPA at all.
     - from:
         - namespaceSelector:
             matchLabels:
@@ -39,7 +39,7 @@ spec:
               # authorization decision if the packet arrived in the first place.
               - key: app
                 operator: In
-                values: ["policy-engine", "resource", "vending-service", "policy-probe"]
+                values: ["policy-engine", "resource", "policy-probe"]
       ports:
         - protocol: TCP
           port: 8181

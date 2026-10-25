@@ -38,7 +38,7 @@ SPIFFE ID, and the child sends its result straight back over it (see
 common.CallbackListener). Without POD_IP the callback is off, which is how
 `make demo` runs.
 
-Two entry points:
+Entry points:
 
   python3 parent.py                 the scripted demo cycle (`make demo`)
   python3 parent.py tool '<json>'   one cycle for a task the caller chose:
@@ -46,6 +46,13 @@ Two entry points:
                                     prints exactly one result JSON line on
                                     stdout; narration and (absent
                                     NHI_AUDIT_SINK) audit events go to stderr.
+  python3 parent.py stop-tools      SIGTERM every running `parent.py tool`
+                                    process in this container and wait for
+                                    them to exit (the OpenCode parent pod's
+                                    preStop hook).
+
+Both cycle entry points turn SIGTERM and SIGHUP into SystemExit, so run_cycle's
+`finally` disposes the delegation when the pod is deleted.
 """
 
 from __future__ import annotations
@@ -116,6 +123,19 @@ def build_and_sign_manifest(decision: dict, own_id: str, svid) -> manifest_mod.S
     return m
 
 
+def parent_owner_references() -> list[k8s_client.V1OwnerReference] | None:
+    """An ownerReference to this parent's own pod, from the downward-API env
+    vars POD_NAME and POD_UID, so that deleting the parent pod makes the garbage
+    collector delete the child pod too. Without both vars (a caller that is not
+    one of the parent pods) the child pod has no owner. blockOwnerDeletion is
+    deliberately left unset: with it, the OwnerReferencesPermissionEnforcement
+    admission plugin would demand extra RBAC on pods/finalizers."""
+    name, uid = os.environ.get("POD_NAME"), os.environ.get("POD_UID")
+    if not name or not uid:
+        return None
+    return [k8s_client.V1OwnerReference(api_version="v1", kind="Pod", name=name, uid=uid)]
+
+
 def create_child_pod(
     v1: k8s_client.CoreV1Api,
     *,
@@ -147,6 +167,7 @@ def create_child_pod(
             name=pod_name,
             namespace=namespace,
             labels={"app": "nhi-demo-child", "nhi.chain-id": chain_id},
+            owner_references=parent_owner_references(),
         ),
         spec=k8s_client.V1PodSpec(
             restart_policy="Never",
@@ -446,7 +467,21 @@ def start() -> tuple:
     return wl, svid, own_id
 
 
+def _terminated(signum, _frame):
+    raise SystemExit(128 + signum)
+
+
+def install_exit_handlers() -> None:
+    """Turns SIGTERM and SIGHUP into SystemExit, which unwinds through
+    run_cycle's `finally` and so disposes the delegation. Without a handler a
+    PID 1 ignores SIGTERM, and the pod is killed outright after its grace
+    period with the delegation still live."""
+    signal.signal(signal.SIGTERM, _terminated)
+    signal.signal(signal.SIGHUP, _terminated)
+
+
 def main() -> int:
+    install_exit_handlers()
     wl, svid, own_id = start()
     decision = decide_to_fork(own_id)
     res = run_cycle(decision, wl=wl, svid=svid, own_id=own_id)
@@ -499,10 +534,6 @@ def decision_from_tool(args: dict, own_spiffe_id: str) -> dict:
     }
 
 
-def _terminated(signum, _frame):
-    raise SystemExit(128 + signum)
-
-
 def tool_main(argv: list[str]) -> int:
     """`parent.py tool '<json>'`: one full cycle for a caller-chosen task.
     stdout carries exactly one line, the result JSON; everything else
@@ -524,8 +555,7 @@ def tool_main(argv: list[str]) -> int:
         return finish(res, 2)
 
     # If the caller goes away mid-cycle, still dispose the delegation.
-    signal.signal(signal.SIGTERM, _terminated)
-    signal.signal(signal.SIGHUP, _terminated)
+    install_exit_handlers()
     res = new_result({"requested_scopes": [f"resource:read:dataset{args['dataset']}"]})
     try:
         wl, svid, own_id = start()
@@ -547,10 +577,63 @@ def tool_main(argv: list[str]) -> int:
     return finish(res, 0 if res["ok"] else 1)
 
 
+# --- stop-tools (the OpenCode parent pod's preStop hook) -------------------------
+
+
+def _is_tool_process(pid: int) -> bool:
+    """True for a live `python3 .../parent.py tool ...` process. Zombies do not
+    count: they have already exited and only await a reaper."""
+    try:
+        with open(f"/proc/{pid}/cmdline", "rb") as f:
+            argv = f.read().split(b"\0")
+        with open(f"/proc/{pid}/stat", "rb") as f:
+            state = f.read().rsplit(b")", 1)[1].split()[0]
+    except (OSError, IndexError):
+        return False
+    if state == b"Z":
+        return False
+    return any(a.endswith(b"parent.py") and argv[i + 1 : i + 2] == [b"tool"] for i, a in enumerate(argv))
+
+
+def running_tool_pids() -> list[int]:
+    me = os.getpid()
+    return sorted(int(d) for d in os.listdir("/proc") if d.isdigit() and int(d) != me and _is_tool_process(int(d)))
+
+
+def stop_tools_main() -> int:
+    """`parent.py stop-tools`: SIGTERM every running `parent.py tool` process and
+    wait until they have exited, so each one's handler disposes its delegation
+    before the pod's main process is stopped. The image has no pkill, so this
+    scans /proc. The wait is bounded by STOP_TOOLS_WAIT_SECONDS (default 20),
+    below the pod's 30 s grace period. Exit 0 if none is left, else 1."""
+    pids = running_tool_pids()
+    if not pids:
+        common.log("stop-tools: no parent.py tool process is running")
+        return 0
+    common.log(f"stop-tools: sending SIGTERM to parent.py tool process(es) {pids}")
+    for pid in pids:
+        try:
+            os.kill(pid, signal.SIGTERM)
+        except ProcessLookupError:
+            pass
+    deadline = time.monotonic() + float(env("STOP_TOOLS_WAIT_SECONDS", "20"))
+    left = pids
+    while time.monotonic() < deadline:
+        left = [p for p in pids if _is_tool_process(p)]
+        if not left:
+            common.log("stop-tools: every tool process has exited")
+            return 0
+        time.sleep(0.2)
+    common.log(f"stop-tools: still running after the wait: {left}")
+    return 1
+
+
 if __name__ == "__main__":
     if len(sys.argv) >= 2 and sys.argv[1] == "tool":
         sys.exit(tool_main(sys.argv[2:]))
+    if len(sys.argv) == 2 and sys.argv[1] == "stop-tools":
+        sys.exit(stop_tools_main())
     if len(sys.argv) == 1:
         sys.exit(main())
-    print("usage: parent.py [tool '<json>']", file=sys.stderr)
+    print("usage: parent.py [tool '<json>' | stop-tools]", file=sys.stderr)
     sys.exit(2)

@@ -110,3 +110,95 @@ func TestListGrantModulesReportsOPAAuthzRefusal(t *testing.T) {
 		t.Fatal("expected an error")
 	}
 }
+
+func TestDeriveParentExpiryTakesTheEarliestLiveGrant(t *testing.T) {
+	now := time.Unix(1000, 0)
+	parent := "spiffe://lab.local/agent/parent/t1/child/c1"
+	grants := map[string]grantModule{
+		"nhi_grants_a": {SpiffeID: parent, ExpiresAt: 5000},
+		"nhi_grants_b": {SpiffeID: parent, ExpiresAt: 1800},
+		"nhi_grants_c": {SpiffeID: parent, ExpiresAt: 3000},
+		// Expired: must not drag the minimum below now.
+		"nhi_grants_d": {SpiffeID: parent, ExpiresAt: 500},
+		// Another identity's earlier grant must not count.
+		"nhi_grants_e": {SpiffeID: "spiffe://lab.local/agent/parent/other", ExpiresAt: 1100},
+	}
+	got, ok := deriveParentExpiry(grants, parent, now)
+	if !ok || got != 1800 {
+		t.Fatalf("deriveParentExpiry = (%d, %v), want (1800, true)", got, ok)
+	}
+}
+
+// A bootstrap-only root holds no grant module, so there is nothing to clamp to.
+func TestDeriveParentExpiryRootHasNone(t *testing.T) {
+	grants := map[string]grantModule{
+		"nhi_grants_a": {SpiffeID: "spiffe://lab.local/agent/parent/t1/child/c1", ExpiresAt: 5000},
+	}
+	if got, ok := deriveParentExpiry(grants, "spiffe://lab.local/agent/parent/t1", time.Unix(1000, 0)); ok {
+		t.Fatalf("root parent got an expiry bound %d", got)
+	}
+	if _, ok := deriveParentExpiry(nil, "spiffe://lab.local/agent/parent/t1", time.Unix(1000, 0)); ok {
+		t.Fatal("no grants at all must yield no bound")
+	}
+}
+
+func TestAttenuateExpiry(t *testing.T) {
+	now := time.Unix(1000, 0)
+	cases := []struct {
+		name         string
+		ttl          int64
+		parentExpiry int64
+		hasParent    bool
+		want         int64
+		wantShort    bool
+	}{
+		{"root, no clamp", 600, 0, false, 1600, false},
+		{"parent outlives the request", 600, 5000, true, 1600, false},
+		{"parent expires first", 600, 1200, true, 1200, true},
+		{"parent expires exactly at the requested expiry", 600, 1600, true, 1600, false},
+	}
+	for _, tc := range cases {
+		got, short := attenuateExpiry(now, tc.ttl, tc.parentExpiry, tc.hasParent)
+		if got != tc.want || short != tc.wantShort {
+			t.Errorf("%s: attenuateExpiry = (%d, %v), want (%d, %v)", tc.name, got, short, tc.want, tc.wantShort)
+		}
+	}
+}
+
+// OPA answers 404 for a DELETE of a policy id it does not hold. Disposal must
+// treat that as done (a retry after a partial failure finds the grant already
+// gone), while any other failure still surfaces.
+func TestDeleteGrantModuleIsIdempotent(t *testing.T) {
+	for _, tc := range []struct {
+		status  int
+		wantErr bool
+	}{
+		{http.StatusOK, false},
+		{http.StatusNotFound, false},
+		{http.StatusInternalServerError, true},
+		{http.StatusUnauthorized, true},
+	} {
+		srv := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+			if r.Method != http.MethodDelete || r.URL.Path != "/v1/policies/nhi_grants_c1" {
+				t.Errorf("unexpected request: %s %s", r.Method, r.URL.Path)
+			}
+			w.WriteHeader(tc.status)
+		}))
+		err := newOPAClient(srv.Client(), srv.URL).deleteGrantModule(context.Background(), "nhi_grants_c1")
+		srv.Close()
+		if (err != nil) != tc.wantErr {
+			t.Errorf("OPA status %d: err = %v, wantErr = %v", tc.status, err, tc.wantErr)
+		}
+	}
+}
+
+// Only DELETE gets that leniency: a PUT that comes back 404 is still a failure.
+func TestPutGrantModuleStillFailsOn404(t *testing.T) {
+	srv := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, _ *http.Request) {
+		w.WriteHeader(http.StatusNotFound)
+	}))
+	defer srv.Close()
+	if err := newOPAClient(srv.Client(), srv.URL).putGrantModule(context.Background(), "nhi_grants_c1", "package x\n"); err == nil {
+		t.Fatal("expected an error for a 404 on PUT")
+	}
+}

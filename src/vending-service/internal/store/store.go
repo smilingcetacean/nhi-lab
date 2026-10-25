@@ -90,6 +90,9 @@ CREATE TABLE IF NOT EXISTS delegations (
 CREATE INDEX IF NOT EXISTS idx_delegations_expiry
 	ON delegations (expires_at) WHERE revoked_at IS NULL;
 
+CREATE INDEX IF NOT EXISTS idx_delegations_parent
+	ON delegations (parent_spiffe_id) WHERE revoked_at IS NULL;
+
 CREATE TABLE IF NOT EXISTS used_nonces (
 	parent_spiffe_id TEXT NOT NULL,
 	nonce            TEXT NOT NULL,
@@ -266,6 +269,46 @@ func (s *Store) ListExpiredUnrevoked(ctx context.Context, now int64) ([]Delegati
 		rec, err := scanDelegation(rows)
 		if err != nil {
 			return nil, fmt.Errorf("scan expired delegation: %w", err)
+		}
+		out = append(out, rec)
+	}
+	return out, rows.Err()
+}
+
+// CountLiveChildren returns how many direct children parentSpiffeID has that
+// are neither revoked nor expired at now. "Expired" matches the resource's own
+// rule (expires_at < now), so a child the resource still honours is counted.
+func (s *Store) CountLiveChildren(ctx context.Context, parentSpiffeID string, now int64) (int, error) {
+	var n int
+	err := s.db.QueryRowContext(ctx,
+		`SELECT COUNT(*) FROM delegations
+		 WHERE parent_spiffe_id = ? AND revoked_at IS NULL AND expires_at >= ?`,
+		parentSpiffeID, now).Scan(&n)
+	if err != nil {
+		return 0, fmt.Errorf("count live children of %s: %w", parentSpiffeID, err)
+	}
+	return n, nil
+}
+
+// ListLiveChildren returns the unrevoked delegations whose parent is
+// parentSpiffeID, oldest first. Expiry is deliberately not considered: an
+// expired but unrevoked row still holds a SPIRE entry and a grant module, so
+// cascading disposal should clean it up rather than leave it for the reaper.
+func (s *Store) ListLiveChildren(ctx context.Context, parentSpiffeID string) ([]DelegationRecord, error) {
+	rows, err := s.db.QueryContext(ctx,
+		`SELECT `+selectColumns+` FROM delegations
+		 WHERE parent_spiffe_id = ? AND revoked_at IS NULL ORDER BY issued_at ASC, chain_id ASC`,
+		parentSpiffeID)
+	if err != nil {
+		return nil, fmt.Errorf("list children of %s: %w", parentSpiffeID, err)
+	}
+	defer rows.Close()
+
+	var out []DelegationRecord
+	for rows.Next() {
+		rec, err := scanDelegation(rows)
+		if err != nil {
+			return nil, fmt.Errorf("scan child delegation: %w", err)
 		}
 		out = append(out, rec)
 	}

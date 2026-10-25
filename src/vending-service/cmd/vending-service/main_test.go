@@ -268,6 +268,9 @@ func newHarness(t *testing.T) *harness {
 		cfg: config{
 			audience:          "spiffe://lab.local/svc/vending-service",
 			nodeAliasSpiffeID: "spiffe://lab.local/node/nhi-lab",
+			// The shipped defaults.
+			maxDelegationDepth: 2,
+			maxLiveChildren:    8,
 		},
 		audit:        audit.New(&buf),
 		bundles:      bundle,
@@ -989,5 +992,21 @@ func TestReaperReapsExpiredDelegation(t *testing.T) {
 	}
 	if ev.ActorSpiffeID != h.srv.cfg.audience {
 		t.Fatalf("reaper-initiated disposal must be attributed to this service's own identity, got %q", ev.ActorSpiffeID)
+	}
+}
+
+func mustDecodeEvent(t *testing.T, line string) audit.Event {
+	t.Helper()
+	var ev audit.Event
+	if err := json.Unmarshal([]byte(line), &ev); err != nil {
+		t.Fatalf("audit line %q: %v", line, err)
+	}
+	return ev
+}
+
+func mustUnmarshal(t *testing.T, raw []byte, v any) {
+	t.Helper()
+	if err := json.Unmarshal(raw, v); err != nil {
+		t.Fatalf("decode %s: %v", raw, err)
 	}
 }

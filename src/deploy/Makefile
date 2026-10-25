@@ -245,6 +245,12 @@ verify-resource: resource-test resource-up ## Verify the resource (default deny,
 logs-resource: ## Tail the protected resource's audit events
 	@$(KUBECTL) logs -n nhi -l app=resource -c resource --tail=200 -f
 
+# The base containment policy (resource.rego) is unit-tested with the pinned OPA
+# binary against the text shipped in the ConfigMap. No cluster is needed.
+.PHONY: rego-test
+rego-test: ## Unit-test the base containment policy (Rego) with the pinned OPA
+	@bash '$(DEPLOY_DIR)/policy-tests/run.sh'
+
 # ---------------------------------------------------------------------------
 # Policy engine
 # ---------------------------------------------------------------------------
@@ -323,6 +329,18 @@ verify-vending: vending-service-test policy-engine-up vending-service-up parents
 .PHONY: verify-persistence
 verify-persistence: vending-service-test policy-engine-up vending-service-up parentsim-image resource-up ## Verify the vending store, reaper, audit trail and nonces survive a pod restart
 	@bash '$(SCRIPTS)/verify-persistence.sh'
+
+# Proves the revocation, TTL and creation-limit rules on a live cluster: a
+# revoked child takes its whole subtree down, a child never outlives its
+# parent's grant, the depth and live-child limits refuse with no state left
+# behind, a parent that never disposes is covered by the TTL and the reaper, and
+# the vending service cannot open a connection to OPA. Same prerequisites as
+# verify-persistence plus the experiment fixtures, whose parent, child and
+# grandchild pods form the P -> C -> G chain. It restarts the vending service to
+# change its limits and puts the shipped values back afterwards.
+.PHONY: verify-disposal
+verify-disposal: rego-test vending-service-test policy-engine-test policy-engine-up vending-service-up parentsim-image resource-up experiments-fixtures-up ## Verify cascade revocation, TTL attenuation and creation limits end to end
+	@bash '$(SCRIPTS)/verify-disposal.sh'
 
 .PHONY: logs-vending-service
 logs-vending-service: ## Tail the vending service's audit events
@@ -448,6 +466,12 @@ present-shell: ## Start the OpenCode TUI in the parent pod (needs a terminal)
 .PHONY: verify-present
 verify-present: present-up ## Verify the OpenCode parent end to end without an LLM (cycle, impostor, attenuation)
 	@bash '$(SCRIPTS)/verify-present.sh'
+
+# A parent pod deleted mid-cycle disposes its delegation first, and its child pod
+# is garbage-collected. Same prerequisites as present-up, which covers `demo`'s.
+.PHONY: verify-exit-hooks
+verify-exit-hooks: present-up ## Verify the parents' exit hooks: delete each parent pod mid-cycle, check disposal and ownerReferences
+	@bash '$(SCRIPTS)/verify-exit-hooks.sh'
 
 .PHONY: present-audit
 present-audit: ## Stream live audit events from the parent, vending service, policy engine and resource

@@ -7,6 +7,7 @@ import (
 	"fmt"
 	"io"
 	"net/http"
+	"slices"
 	"strings"
 	"time"
 )
@@ -96,19 +97,23 @@ func (c *opaClient) putGrantModule(ctx context.Context, id, rego string) error {
 	return c.do(req, "PUT /v1/policies/"+id)
 }
 
-// deleteGrantModule removes one grant module. Deleting an id that does not
-// exist is treated as success by OPA (idempotent disposal), which matters
-// for the vending service's revoke-on-demand and its reaper both potentially racing to
-// dispose of the same chain_id.
+// deleteGrantModule removes one grant module. OPA answers 404 for an id that
+// does not exist; that is treated as success here, so disposal is idempotent.
+// It has to be: the vending service removes the grant first and the SPIRE
+// entry second, so a retry after a failure in between (from the API or from
+// the reaper) finds the module already gone, and so can a revoke racing the
+// reaper for the same chain_id.
 func (c *opaClient) deleteGrantModule(ctx context.Context, id string) error {
 	req, err := http.NewRequestWithContext(ctx, http.MethodDelete, c.baseURL+"/v1/policies/"+id, nil)
 	if err != nil {
 		return fmt.Errorf("build delete request: %w", err)
 	}
-	return c.do(req, "DELETE /v1/policies/"+id)
+	return c.do(req, "DELETE /v1/policies/"+id, http.StatusNotFound)
 }
 
-func (c *opaClient) do(req *http.Request, label string) error {
+// do sends req and requires HTTP 200, or one of the extra statuses in
+// alsoOK, which the caller has decided mean the same thing as success.
+func (c *opaClient) do(req *http.Request, label string, alsoOK ...int) error {
 	resp, err := c.http.Do(req)
 	if err != nil {
 		return fmt.Errorf("call opa (%s): %w", label, err)
@@ -119,7 +124,7 @@ func (c *opaClient) do(req *http.Request, label string) error {
 		return fmt.Errorf("opa refused this service's identity (HTTP 401) on %s — check system.authz for svc/policy-engine: %s",
 			label, bytes.TrimSpace(raw))
 	}
-	if resp.StatusCode != http.StatusOK {
+	if resp.StatusCode != http.StatusOK && !slices.Contains(alsoOK, resp.StatusCode) {
 		return fmt.Errorf("opa %s returned HTTP %d: %s", label, resp.StatusCode, bytes.TrimSpace(raw))
 	}
 	return nil
@@ -158,4 +163,39 @@ func deriveParentScopes(grants map[string]grantModule, bootstrap map[string][]st
 		add(gm.Scopes)
 	}
 	return out
+}
+
+// attenuateExpiry is the time analogue of Π(C) = requested ∩ Π(P): the child's
+// expiry is the earlier of now + ttl and the earliest expires_at among the
+// parent's live grants, so no child outlives any grant that contributed to the
+// authority it was derived from. The request is shortened, never refused.
+//
+// A parent with no live grant (parentExpiry ok == false) is a root parent from
+// the bootstrap table: static entries have no expiry of their own, so only the
+// requested TTL applies. shortened reports whether the parent's expiry bound
+// the result.
+func attenuateExpiry(now time.Time, ttlSeconds int64, parentExpiry int64, hasParentExpiry bool) (expiresAt int64, shortened bool) {
+	expiresAt = now.Unix() + ttlSeconds
+	if hasParentExpiry && parentExpiry < expiresAt {
+		return parentExpiry, true
+	}
+	return expiresAt, false
+}
+
+// deriveParentExpiry returns the earliest expires_at among the parent's live
+// grants, read from the same OPA state as deriveParentScopes and with the same
+// notion of "live". ok is false when the parent holds no live grant, which is
+// the case for a bootstrap-only root (and for an unknown parent, whose empty
+// Π(P) the vending service refuses anyway).
+func deriveParentExpiry(grants map[string]grantModule, parentSpiffeID string, now time.Time) (earliest int64, ok bool) {
+	nowUnix := now.Unix()
+	for _, gm := range grants {
+		if gm.SpiffeID != parentSpiffeID || gm.ExpiresAt < nowUnix {
+			continue
+		}
+		if !ok || gm.ExpiresAt < earliest {
+			earliest, ok = gm.ExpiresAt, true
+		}
+	}
+	return earliest, ok
 }

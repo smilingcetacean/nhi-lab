@@ -40,6 +40,10 @@ type SynthesizeResponse struct {
 	ChildScopes []string `json:"child_scopes"`
 	PolicyID    string   `json:"policy_id"`
 	ExpiresAt   int64    `json:"expires_at"`
+	// TTLShortened is set by the policy engine when ExpiresAt is earlier than
+	// the requested ttl_seconds allowed, because the parent's own grant ends
+	// first.
+	TTLShortened bool `json:"ttl_shortened,omitempty"`
 }
 
 // Synthesize calls POST /synthesize. Errors carry the response body so a

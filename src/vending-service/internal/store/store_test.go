@@ -173,3 +173,69 @@ func TestPruneExpiredNonces(t *testing.T) {
 		t.Fatalf("expected live nonce to still refuse replay, got %v", err)
 	}
 }
+
+func mustCreate(t *testing.T, s *Store, chain, parent, child string, issuedAt, expiresAt int64) {
+	t.Helper()
+	if err := s.CreateDelegation(context.Background(), DelegationRecord{
+		ChainID: chain, ParentSpiffeID: parent, ChildSpiffeID: child,
+		GrantedScopes: []string{"resource:read:datasetA"}, EntryID: "e_" + chain, PolicyID: "nhi_grants_" + chain,
+		IssuedAt: issuedAt, TTL: expiresAt - issuedAt, ExpiresAt: expiresAt,
+	}); err != nil {
+		t.Fatal(err)
+	}
+}
+
+func TestCountLiveChildrenCountsOnlyUnrevokedUnexpiredDirectChildren(t *testing.T) {
+	s := openTestStore(t)
+	ctx := context.Background()
+	p := "spiffe://lab.local/agent/parent/t1"
+	mustCreate(t, s, "c_live1", p, p+"/child/a", 100, 500)
+	mustCreate(t, s, "c_live2", p, p+"/child/b", 100, 500)
+	mustCreate(t, s, "c_expired", p, p+"/child/c", 100, 199)
+	mustCreate(t, s, "c_revoked", p, p+"/child/d", 100, 500)
+	if err := s.MarkRevoked(ctx, "c_revoked", 150, "revoked_on_demand"); err != nil {
+		t.Fatal(err)
+	}
+	// A grandchild and another parent's child are not direct children of p.
+	mustCreate(t, s, "c_grand", p+"/child/a", p+"/child/a/child/x", 100, 500)
+	mustCreate(t, s, "c_other", "spiffe://lab.local/agent/parent/t2", "spiffe://lab.local/agent/parent/t2/child/a", 100, 500)
+
+	n, err := s.CountLiveChildren(ctx, p, 200)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if n != 2 {
+		t.Fatalf("CountLiveChildren = %d, want 2", n)
+	}
+	// A child expiring exactly now is still live (the resource's rule is expires_at < now).
+	if n, _ := s.CountLiveChildren(ctx, p, 500); n != 2 {
+		t.Fatalf("CountLiveChildren at expires_at = %d, want 2", n)
+	}
+	if n, _ := s.CountLiveChildren(ctx, p, 501); n != 0 {
+		t.Fatalf("CountLiveChildren after expiry = %d, want 0", n)
+	}
+}
+
+func TestListLiveChildrenSkipsRevokedAndOtherParents(t *testing.T) {
+	s := openTestStore(t)
+	ctx := context.Background()
+	p := "spiffe://lab.local/agent/parent/t1"
+	mustCreate(t, s, "c_b", p, p+"/child/b", 101, 500)
+	mustCreate(t, s, "c_a", p, p+"/child/a", 100, 150) // expired but unrevoked: still listed
+	mustCreate(t, s, "c_gone", p, p+"/child/gone", 100, 500)
+	mustCreate(t, s, "c_other", p+"/child/a", p+"/child/a/child/x", 100, 500)
+	if err := s.MarkRevoked(ctx, "c_gone", 150, "revoked_on_demand"); err != nil {
+		t.Fatal(err)
+	}
+	got, err := s.ListLiveChildren(ctx, p)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if len(got) != 2 || got[0].ChainID != "c_a" || got[1].ChainID != "c_b" {
+		t.Fatalf("ListLiveChildren = %+v, want [c_a c_b]", got)
+	}
+	got, err = s.ListLiveChildren(ctx, p+"/child/a")
+	if err != nil || len(got) != 1 || got[0].ChainID != "c_other" {
+		t.Fatalf("ListLiveChildren(grandchild level) = %+v, %v", got, err)
+	}
+}

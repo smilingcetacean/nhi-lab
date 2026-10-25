@@ -25,6 +25,11 @@ metadata:
 spec:
   serviceAccountName: nhi-opencode-parent
   restartPolicy: Always
+  # PID 1 is `sleep infinity`, so a deleted pod would SIGKILL a running tool
+  # without letting it dispose. The preStop hook below signals the tool first;
+  # one disposal takes well under a second, and the hook waits at most 20 s,
+  # inside this grace period (which also covers the hook's own run time).
+  terminationGracePeriodSeconds: 30
   containers:
     - name: parent
       image: nhi-lab/opencode-parent:dev
@@ -57,6 +62,16 @@ spec:
               fieldPath: status.podIP
         - name: CALLBACK_PORT
           value: "8443"
+        # The parent's own pod name and UID, for the ownerReference parent.py
+        # puts on each child pod: deleting this pod then deletes its children.
+        - name: POD_NAME
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.name
+        - name: POD_UID
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.uid
         # PID 1 is `sleep infinity`, so audit events from an exec'd tool would
         # otherwise vanish with its stdout. Writing them to PID 1's stdout
         # puts them in `kubectl logs` with the rest of the pod's output.
@@ -68,6 +83,10 @@ spec:
               name: opencode-llm
               key: ANTHROPIC_API_KEY
               optional: true
+      lifecycle:
+        preStop:
+          exec:
+            command: ["python3", "/app/parent.py", "stop-tools"]
       readinessProbe:
         exec:
           command: ["test", "-S", "/run/spire/sockets/agent.sock"]

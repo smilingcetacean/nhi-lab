@@ -112,6 +112,22 @@ func TestValidateRejectsExcessiveTTL(t *testing.T) {
 	}
 }
 
+// The ceiling is 6 h: exactly that is accepted, one second more is refused.
+func TestValidateTTLCeilingIsSixHours(t *testing.T) {
+	if MaxTTLSeconds != 21600 {
+		t.Fatalf("MaxTTLSeconds = %d, want 21600", MaxTTLSeconds)
+	}
+	m := validManifest()
+	m.TTLSeconds = 21600
+	if err := m.Validate(); err != nil {
+		t.Fatalf("ttl_seconds=21600 must be accepted: %v", err)
+	}
+	m.TTLSeconds = 21601
+	if err := m.Validate(); err == nil {
+		t.Fatal("ttl_seconds=21601 must be refused")
+	}
+}
+
 func TestValidateRejectsEmptyNonce(t *testing.T) {
 	m := validManifest()
 	m.Nonce = ""

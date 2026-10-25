@@ -18,6 +18,9 @@ metadata:
 spec:
   serviceAccountName: nhi-demo-parent
   restartPolicy: Never
+  # parent.py is PID 1 and turns SIGTERM into a disposal of its delegation, so
+  # deleting this pod mid-cycle revokes the child before the pod goes.
+  terminationGracePeriodSeconds: 30
   containers:
     - name: parent
       image: nhi-lab/agents:dev
@@ -46,6 +49,16 @@ spec:
           value: nhi-lab/agents:dev
         - name: SPIFFE_ENDPOINT_SOCKET
           value: unix:///run/spire/sockets/agent.sock
+        # The parent's own pod name and UID, for the ownerReference parent.py
+        # puts on each child pod: deleting this pod then deletes its children.
+        - name: POD_NAME
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.name
+        - name: POD_UID
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.uid
       volumeMounts:
         - name: spire-agent-socket
           mountPath: /run/spire/sockets

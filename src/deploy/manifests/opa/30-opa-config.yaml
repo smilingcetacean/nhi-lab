@@ -105,8 +105,9 @@ data:
     # --- everything else -----------------------------------------------------
     # No rule for svc/vending-service. The separation of duties is that
     # the component holding unscoped SPIRE admin reaches policy only
-    # *through* the policy engine. The NetworkPolicy lets it reach OPA's port;
-    # this policy is what makes that reachability useless to it.
+    # *through* the policy engine. The NetworkPolicy does not admit it to OPA's
+    # port, and this policy has no rule for it either, so it is refused at both
+    # layers.
     #
     # No rule for agent workloads. Closing this route is what makes the
     # scope-escalation negative test meaningful: otherwise a child could skip
@@ -142,7 +143,9 @@ data:
         }
     }
 
-    # granted_scopes is the union of the live grants naming this caller.
+    # granted_scopes is the union of the live grants naming this caller, and a
+    # grant counts only while the caller's whole lineage is live too (see
+    # ancestors_live below).
     #
     # The policy engine writes one module per delegation, so that a single child's authority
     # can be added at vend time and removed at disposal without touching any
@@ -162,7 +165,41 @@ data:
         grant := data.nhi.grants[key]
         grant.spiffe_id == input.spiffe_id
         not expired(grant)
+        ancestors_live
         some scope in grant.scopes
+    }
+
+    # A descendant is only as live as every ancestor above it. Removing one
+    # grant module (the child's) therefore denies that child and everything
+    # below it in a single write, without walking the subtree.
+    #
+    # The ancestors of a caller are found by stripping trailing /child/<segment>
+    # pairs from its SPIFFE ID:
+    #
+    #     .../parent/t1/child/c1/child/g1  ->  .../parent/t1/child/c1
+    #                                          .../parent/t1
+    #
+    # The root (the ID with no /child/ segment) is skipped: it is a static,
+    # pre-provisioned identity and has no grant module. A caller that is itself
+    # a root has no ancestors, so this holds trivially for it.
+    ancestors contains ancestor if {
+        parts := split(input.spiffe_id, "/child/")
+        count(parts) > 2
+        some depth in numbers.range(1, count(parts) - 2)
+        ancestor := concat("/child/", array.slice(parts, 0, depth + 1))
+    }
+
+    ancestors_live if {
+        every ancestor in ancestors {
+            has_live_grant(ancestor)
+        }
+    }
+
+    has_live_grant(spiffe_id) if {
+        some key
+        grant := data.nhi.grants[key]
+        grant.spiffe_id == spiffe_id
+        not expired(grant)
     }
 
     # Expiry is evaluated against input.now — the resource's clock, passed in

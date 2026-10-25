@@ -9,6 +9,7 @@ import (
 	"net/http/httptest"
 	"net/url"
 	"reflect"
+	"strconv"
 	"strings"
 	"testing"
 	"time"
@@ -242,5 +243,107 @@ func TestActorFromRequestRequiresClientCertificate(t *testing.T) {
 	r := httptest.NewRequest(http.MethodPost, "/synthesize", nil)
 	if _, err := actorFromRequest(r); err == nil {
 		t.Fatal("expected an error when no TLS client certificate is present")
+	}
+}
+
+// synthesizeWithParentGrants drives handleSynthesize for parent -> child with
+// OPA holding the given parent grant modules, and returns the decoded response
+// and the audit events written.
+func synthesizeWithParentGrants(t *testing.T, parent, child string, ttl int64, parentGrantExpiries ...int64) (synthesizeResponse, []auditEvent) {
+	t.Helper()
+	var items []opaPolicyListItem
+	for i, exp := range parentGrantExpiries {
+		raw, err := renderGrantModule("pg"+string(rune('a'+i)), parent, []string{"resource:read:datasetA"}, exp)
+		if err != nil {
+			t.Fatal(err)
+		}
+		items = append(items, opaPolicyListItem{ID: policyID("pg" + string(rune('a'+i))), Raw: raw})
+	}
+	var pushed string
+	opaSrv := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		switch {
+		case r.Method == http.MethodGet && r.URL.Path == "/v1/policies":
+			_ = json.NewEncoder(w).Encode(opaPolicyListResponse{Result: items})
+		case r.Method == http.MethodPut:
+			b := new(bytes.Buffer)
+			_, _ = b.ReadFrom(r.Body)
+			pushed = b.String()
+			_, _ = w.Write([]byte(`{}`))
+		default:
+			t.Fatalf("unexpected OPA call: %s %s", r.Method, r.URL.Path)
+		}
+	}))
+	defer opaSrv.Close()
+
+	var audit bytes.Buffer
+	srv := &server{
+		audit:       newAuditor(&audit),
+		synthesizer: deterministicSynthesizer{},
+		opa:         newOPAClient(opaSrv.Client(), opaSrv.URL),
+		bootstrap:   map[string][]string{"spiffe://lab.local/agent/parent/t1": {"resource:read:datasetA"}},
+		now:         func() time.Time { return time.Unix(1000, 0) },
+	}
+	body, _ := json.Marshal(map[string]any{
+		"chain_id": "chain_9", "parent_spiffe_id": parent, "child_spiffe_id": child,
+		"requested_scopes": []string{"resource:read:datasetA"}, "ttl_seconds": ttl,
+	})
+	w := httptest.NewRecorder()
+	srv.handleSynthesize(w, mustSpiffeCertRequest(t, http.MethodPost, "/synthesize", "spiffe://lab.local/svc/vending-service", body))
+	if w.Code != http.StatusOK {
+		t.Fatalf("status = %d, body = %s", w.Code, w.Body.String())
+	}
+	var resp synthesizeResponse
+	if err := json.Unmarshal(w.Body.Bytes(), &resp); err != nil {
+		t.Fatal(err)
+	}
+	// The pushed grant carries the same expiry the response reports.
+	if !strings.Contains(pushed, "expires_at := "+strconv.FormatInt(resp.ExpiresAt, 10)) {
+		t.Errorf("pushed grant does not carry expires_at %d:\n%s", resp.ExpiresAt, pushed)
+	}
+	var events []auditEvent
+	for _, ln := range strings.Split(strings.TrimSpace(audit.String()), "\n") {
+		var ev auditEvent
+		if err := json.Unmarshal([]byte(ln), &ev); err != nil {
+			t.Fatalf("audit line %q: %v", ln, err)
+		}
+		events = append(events, ev)
+	}
+	return resp, events
+}
+
+// A child asked for longer than its parent has left gets the parent's expiry,
+// the response says so, and so does the engine's audit event. The parent holds
+// three live grants: the child is bounded by the EARLIEST of them.
+func TestHandleSynthesizeShortensTTLToEarliestParentGrant(t *testing.T) {
+	parent := "spiffe://lab.local/agent/parent/t1/child/c1"
+	resp, events := synthesizeWithParentGrants(t, parent, parent+"/child/g1", 600, 5000, 1300, 3000)
+	if resp.ExpiresAt != 1300 || !resp.TTLShortened {
+		t.Fatalf("expires_at=%d shortened=%v, want 1300 true", resp.ExpiresAt, resp.TTLShortened)
+	}
+	if len(events) != 1 || events[0].Outcome != "allow" || events[0].Detail.ExpiresAt == nil || *events[0].Detail.ExpiresAt != 1300 {
+		t.Fatalf("unexpected audit events: %+v", events)
+	}
+	if !strings.Contains(events[0].Detail.Reason, "requested 600") {
+		t.Errorf("detail.reason = %q, want it to record the requested TTL", events[0].Detail.Reason)
+	}
+}
+
+func TestHandleSynthesizeKeepsTTLWhenParentOutlivesIt(t *testing.T) {
+	parent := "spiffe://lab.local/agent/parent/t1/child/c1"
+	resp, events := synthesizeWithParentGrants(t, parent, parent+"/child/g1", 600, 5000)
+	if resp.ExpiresAt != 1600 || resp.TTLShortened {
+		t.Fatalf("expires_at=%d shortened=%v, want 1600 false", resp.ExpiresAt, resp.TTLShortened)
+	}
+	if events[0].Detail.Reason != "" {
+		t.Errorf("detail.reason = %q, want empty when nothing was shortened", events[0].Detail.Reason)
+	}
+}
+
+// A bootstrap-only root has no grant module and so no clamp.
+func TestHandleSynthesizeRootParentIsNotClamped(t *testing.T) {
+	root := "spiffe://lab.local/agent/parent/t1"
+	resp, _ := synthesizeWithParentGrants(t, root, root+"/child/c1", 21600)
+	if resp.ExpiresAt != 1000+21600 || resp.TTLShortened {
+		t.Fatalf("expires_at=%d shortened=%v, want %d false", resp.ExpiresAt, resp.TTLShortened, 1000+21600)
 	}
 }

@@ -106,6 +106,15 @@ spec:
               value: unix:///run/spire/sockets/agent.sock
             - name: REAPER_INTERVAL
               value: 15s
+            # Creation limits, checked before a vend records its nonce. The
+            # depth is the number of /child/ segments in the child's SPIFFE ID
+            # (a root parent is 0), so 2 lets a root vend C and C vend G but
+            # stops G. The child cap counts one parent's unrevoked, unexpired
+            # direct children. Both are refused with 403 and an audited deny.
+            - name: MAX_DELEGATION_DEPTH
+              value: "2"
+            - name: MAX_LIVE_CHILDREN
+              value: "8"
           livenessProbe:
             httpGet:
               path: /healthz

@@ -185,6 +185,10 @@ type synthesizeResponse struct {
 	ChildScopes []string `json:"child_scopes"`
 	PolicyID    string   `json:"policy_id"`
 	ExpiresAt   int64    `json:"expires_at"`
+	// TTLShortened is true when ExpiresAt was bounded by the parent's own
+	// earliest grant expiry rather than by now + ttl_seconds, so the caller can
+	// say so in its audit event without comparing clocks with this service.
+	TTLShortened bool `json:"ttl_shortened,omitempty"`
 }
 
 const maxBodyBytes = 64 << 10
@@ -301,7 +305,17 @@ func (s *server) handleSynthesize(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	expiresAt := s.now().Unix() + req.TTLSeconds
+	// The child never outlives the parent's earliest live grant. now is read
+	// once so the grants and the arithmetic agree on what "live" means.
+	now := s.now()
+	parentExpiry, hasParentExpiry := deriveParentExpiry(grants, req.ParentSpiffeID, now)
+	expiresAt, ttlShortened := attenuateExpiry(now, req.TTLSeconds, parentExpiry, hasParentExpiry)
+	shortenedReason := ""
+	if ttlShortened {
+		shortenedReason = fmt.Sprintf(
+			"ttl_seconds shortened: requested %d s, child expires with the parent's earliest live grant at %d",
+			req.TTLSeconds, expiresAt)
+	}
 	rego, err := renderGrantModule(req.ChainID, req.ChildSpiffeID, result.ChildScopes, expiresAt)
 	if err != nil {
 		s.deny(w, http.StatusInternalServerError, auditEvent{
@@ -330,14 +344,15 @@ func (s *server) handleSynthesize(w http.ResponseWriter, r *http.Request) {
 			ParentSpiffeID: req.ParentSpiffeID, ChildSpiffeID: req.ChildSpiffeID,
 			RequestedScopes: req.RequestedScopes, ChildScopes: result.ChildScopes,
 			ParentScopes: parentScopes, PolicyID: id, ExpiresAt: &expiresAt,
-			TaskContext: req.TaskContext,
+			TaskContext: req.TaskContext, Reason: shortenedReason,
 		},
 	})
 
 	writeJSON(w, http.StatusOK, synthesizeResponse{
-		ChildScopes: result.ChildScopes,
-		PolicyID:    id,
-		ExpiresAt:   expiresAt,
+		ChildScopes:  result.ChildScopes,
+		PolicyID:     id,
+		ExpiresAt:    expiresAt,
+		TTLShortened: ttlShortened,
 	})
 }
 
