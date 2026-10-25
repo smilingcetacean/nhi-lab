@@ -32,6 +32,7 @@ DEPLOY_TARGETS := cluster-up load-images spire-up namespaces spire-server \
                   logs-vending-service vending-audit \
                   agents-test agents-image demo logs-demo-parent \
                   opencode-image present-up present-shell verify-present \
+                  verify-exit-hooks \
                   present-audit \
                   demo-identity-uniqueness \
                   experiments-fixtures-up experiments-fixtures-down experiments \

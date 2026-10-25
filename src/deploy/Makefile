@@ -467,6 +467,12 @@ present-shell: ## Start the OpenCode TUI in the parent pod (needs a terminal)
 verify-present: present-up ## Verify the OpenCode parent end to end without an LLM (cycle, impostor, attenuation)
 	@bash '$(SCRIPTS)/verify-present.sh'
 
+# A parent pod deleted mid-cycle disposes its delegation first, and its child pod
+# is garbage-collected. Same prerequisites as present-up, which covers `demo`'s.
+.PHONY: verify-exit-hooks
+verify-exit-hooks: present-up ## Verify the parents' exit hooks: delete each parent pod mid-cycle, check disposal and ownerReferences
+	@bash '$(SCRIPTS)/verify-exit-hooks.sh'
+
 .PHONY: present-audit
 present-audit: ## Stream live audit events from the parent, vending service, policy engine and resource
 	@bash '$(SCRIPTS)/present-audit.sh'
