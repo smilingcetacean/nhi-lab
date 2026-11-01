@@ -193,23 +193,37 @@ x509_id() { psim "$1" x509-check | grep -o '"spiffe_id":"[^"]*"' | head -1 | cut
 # wait_svid <pod> <spiffe-id> : the pod holds an X.509-SVID for exactly that ID
 wait_svid() {
   local pod="$1" want="$2" got
-  for _ in $(seq 1 30); do
+  for _ in $(seq 1 60); do
     got=$(x509_id "${pod}")
     [ "${got}" = "${want}" ] && return 0
-    sleep 2
+    sleep 1
   done
   return 1
 }
 
 # wait_no_identity <pod> : the agent no longer issues the pod any identity, so the
-# next run starts with the pod holding exactly one SVID.
+# next run starts with the pod holding exactly one SVID. Returns 1 after 90 s.
+#
+# The output is captured before it is tested. `x509-check` exits 2 when the pod
+# has no identity, so `psim ... | grep -q '"error"'` would report that exit status
+# under `pipefail` even though grep matched, and the loop would never return 0.
 wait_no_identity() {
-  local pod="$1"
-  for _ in $(seq 1 45); do
-    psim "${pod}" x509-check | grep -q '"error"' && return 0
-    sleep 2
+  local pod="$1" out
+  for _ in $(seq 1 90); do
+    out=$(psim "${pod}" x509-check)
+    grep -q '"error"' <<<"${out}" && return 0
+    sleep 1
   done
   return 1
+}
+
+# drained <pod...> : every pod holds no identity, or the run fails. A timeout here
+# means the next chain would start on a pod that still holds the old one.
+drained() {
+  local pod
+  for pod in "$@"; do
+    wait_no_identity "${pod}" || fail "${pod} still holds an identity 90 s after its entry was removed"
+  done
 }
 
 fetch_jwt() { psim "$1" fetch-jwt -call-audience="$2"; }
@@ -242,13 +256,13 @@ audit_of() {
 # ev <component> <jq select expression> -> matching events, one per line (compact)
 ev() { audit_of "$1" | jq -c "select($2)" 2>/dev/null; }
 
-# wait_ev <component> <jq select expression> -> first match, polling up to 90 s
+# wait_ev <component> <jq select expression> -> first match, polling up to 90 s, once a second
 wait_ev() {
   local line
-  for _ in $(seq 1 45); do
+  for _ in $(seq 1 90); do
     line=$(ev "$1" "$2" | head -1)
     if [ -n "${line}" ]; then printf '%s\n' "${line}"; return 0; fi
-    sleep 2
+    sleep 1
   done
   return 1
 }
@@ -298,7 +312,7 @@ make_chain() {
 # fixtures pods hold no identity, ready for the next chain.
 drain_chain() {
   psim "${P_POD}" dispose -chain-id="${C_CHAIN}" >/dev/null 2>&1 || true
-  wait_no_identity "${C_POD}"; wait_no_identity "${G_POD}"
+  drained "${C_POD}" "${G_POD}"
 }
 
 # ===============================================================================
@@ -318,7 +332,8 @@ else
 fi
 # A stale OPA would silently run the old containment rule and fail every check
 # below for a confusing reason; say so up front.
-if "${KUBECTL[@]}" get configmap opa-authz -n opa -o jsonpath='{.data.resource\.rego}' | grep -q 'ancestors_live'; then
+OPA_RULES="$("${KUBECTL[@]}" get configmap opa-authz -n opa -o jsonpath='{.data.resource\.rego}')"
+if grep -q 'ancestors_live' <<<"${OPA_RULES}"; then
   pass "the opa-authz ConfigMap carries the lineage-aware grant rule"
 else
   fail "the opa-authz ConfigMap has no lineage rule: re-run 'make opa-up' and restart OPA"
@@ -399,7 +414,7 @@ for run in $(seq 1 "${CASCADE_RUNS}"); do
   else
     fail "G's dispose event does not carry 'ancestor_revoked: ${C_CHAIN}' / actor ${PARENT_ID}"
   fi
-  wait_no_identity "${C_POD}"; wait_no_identity "${G_POD}"
+  drained "${C_POD}" "${G_POD}"
 done
 
 # ===============================================================================
@@ -424,8 +439,10 @@ fi
 drain_chain
 
 # ===============================================================================
-step "TTL ATTENUATION — G asks for 600 s from a C that has under 80 s left"
-C_TTL=80
+# C_TTL only has to outlast building the chain and the checks that need C live
+# (about 12 s measured); every one of those checks fails loudly if C expires first.
+C_TTL=35
+step "TTL ATTENUATION — G asks for 600 s from a C that has under ${C_TTL} s left"
 if ! make_chain "ttl" "${C_TTL}"; then fail "could not build P -> C -> G"; die; fi
 echo "    | C expires_at=${C_EXP}  G expires_at=${G_EXP}  G issued_at=${G_ISSUED}"
 if [ "${V_CODE}" = "201" ]; then pass "G's vend (ttl_seconds=600) succeeded: 201"; else fail "vend returned ${V_CODE}"; fi
@@ -478,7 +495,7 @@ for who in "C:${C_CHAIN}" "G:${G_CHAIN}"; do
     fail "the reaper did not dispose ${who%%:*} (${who#*:})"
   fi
 done
-wait_no_identity "${C_POD}"; wait_no_identity "${G_POD}"
+drained "${C_POD}" "${G_POD}"
 
 OUT=$(psim "${P_POD}" vend -child-path-hint="child/dsp-toolong-${RUN_ID}" -nonce="dsp_toolong_${RUN_ID}" \
   -scopes=resource:read:datasetA -selectors="k8s:ns=agents,k8s:sa=nhi-dsp-nopod" -ttl=21601)
@@ -530,7 +547,7 @@ else
   fail "the depth-3 child was not revoked: ${REC}"
 fi
 check "its SPIRE entry is gone" test "$(spire_entry_count "${GG_ID}")" = "0"
-wait_no_identity "${C_POD}"; wait_no_identity "${G_POD}"
+drained "${C_POD}" "${G_POD}"
 
 # ===============================================================================
 step "CHILD CAP — MAX_LIVE_CHILDREN=2 (depth back to ${DEFAULT_DEPTH})"
@@ -602,7 +619,9 @@ resolve_pods
 
 # ===============================================================================
 step "CRASHED PARENT — P is force-killed after vending, so no cleanup ever runs; its child is denied at expires_at and then reaped"
-X_TTL=50
+# X_TTL only has to outlast the vend, the parent's replacement and the 200 check
+# before expires_at (about 10 s measured); that check fails loudly otherwise.
+X_TTL=35
 X_ID="${PARENT_ID}/child/dsp-crash-${RUN_ID}"
 vend_ok "${P_POD}" "child/dsp-crash-${RUN_ID}" "dsp_crash_${RUN_ID}" nhi-exp-child "${X_TTL}" resource:read:datasetA
 if [ "${V_CODE}" = "201" ]; then
@@ -639,7 +658,7 @@ else
 fi
 check "its SPIRE entry is gone" test "$(spire_entry_count "${X_ID}")" = "0"
 check "its row is revoked" jq -e '.revoked_at != null and .revocation_reason == "ttl_expired"' <<<"$(get_delegation "${X_CHAIN}")"
-wait_no_identity "${C_POD}"
+drained "${C_POD}"
 
 # ===============================================================================
 step "OPA REACH — a pod labelled app=vending-service cannot open a TCP connection to OPA"
@@ -719,7 +738,7 @@ G_JWT=$(fetch_jwt "${G_POD}" "${RESOURCE_AUD}")
 psim "${P_POD}" dispose -chain-id="${C_CHAIN}" >/dev/null 2>&1
 CODE=$(bearer_code "${G_POD}" /datasets/A "${G_JWT}")
 if [ "${CODE}" = "403" ]; then pass "revoked G, still holding a JWT-SVID that verifies: 403 from OPA, not 401"; else fail "expected 403, got '${CODE}'"; fi
-wait_no_identity "${C_POD}"; wait_no_identity "${G_POD}"
+drained "${C_POD}" "${G_POD}"
 
 # ===============================================================================
 printf '\n'

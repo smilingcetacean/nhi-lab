@@ -36,6 +36,7 @@ DEPLOY_TARGETS := cluster-up load-images spire-up namespaces spire-server \
                   present-audit \
                   demo-identity-uniqueness \
                   experiments-fixtures-up experiments-fixtures-down experiments \
+                  revocation-speed \
                   status agent-list entry-show bundle-show logs-server \
                   logs-agent logs-resource opa-port-forward clean
 

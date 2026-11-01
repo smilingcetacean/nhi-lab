@@ -48,7 +48,7 @@ func main() {
 
 func run() error {
 	if len(os.Args) < 2 {
-		return fmt.Errorf("usage: parentsim <vend|sign|dispose|get|whoami|call|fetch-jwt|bearer-call|x509-check|idle> [flags]")
+		return fmt.Errorf("usage: parentsim <vend|sign|dispose|dispose-timed|get|whoami|call|fetch-jwt|bearer-call|poll|x509-check|idle> [flags]")
 	}
 	mode := os.Args[1]
 
@@ -98,6 +98,10 @@ func run() error {
 	callMethod := fs.String("call-method", http.MethodGet, "HTTP method for -mode=call and -mode=bearer-call")
 	bearerToken := fs.String("bearer-token", "", "token to present verbatim in -mode=bearer-call (see -mode=fetch-jwt)")
 
+	// "poll" mode: see poll.go.
+	pollInterval := fs.Duration("poll-interval", 20*time.Millisecond, "target gap between requests in -mode=poll")
+	pollTimeout := fs.Duration("poll-timeout", 30*time.Second, "give up after this long without a denial in -mode=poll")
+
 	if err := fs.Parse(os.Args[2:]); err != nil {
 		return err
 	}
@@ -127,6 +131,26 @@ func run() error {
 			return fmt.Errorf("bearer-call requires -bearer-token")
 		}
 		return postJSON(httpClient, *callMethod, *callURL, *bearerToken, nil)
+	}
+
+	// poll repeats one request with a caller-supplied token until the
+	// resource refuses it with 403, reporting wall-clock timestamps (see
+	// poll.go). Like bearer-call it fetches nothing from the Workload API, so
+	// it keeps working after the caller's registration entry is gone.
+	if mode == "poll" {
+		if *callURL == "" || *bearerToken == "" {
+			return fmt.Errorf("poll requires -call-url and -bearer-token")
+		}
+		ev, err := runPoll(context.Background(), &http.Client{Timeout: 5 * time.Second},
+			pollConfig{URL: *callURL, Method: *callMethod, Bearer: *bearerToken, Interval: *pollInterval, Timeout: *pollTimeout},
+			os.Stdout, time.Now)
+		if err != nil {
+			return err
+		}
+		if ev.Event != "denied" {
+			os.Exit(2)
+		}
+		return nil
 	}
 
 	// x509-check does not need a JWT-SVID either: it is a ONE-SHOT
@@ -233,6 +257,25 @@ func run() error {
 		}
 		return postJSON(httpClient, http.MethodDelete, base+"/delegations/"+*chainID, jwtSVID.Marshal(), nil)
 
+	case "dispose-timed":
+		// As dispose, but prints the wall-clock instants around the DELETE
+		// (see poll.go) instead of the response body alone.
+		if *chainID == "" {
+			return fmt.Errorf("dispose-timed requires -chain-id")
+		}
+		res, err := timedDelete(ctx, httpClient, base+"/delegations/"+*chainID, jwtSVID.Marshal(), time.Now)
+		if err != nil {
+			return err
+		}
+		fmt.Fprintf(os.Stderr, "HTTP %d\n", res.Status)
+		if err := json.NewEncoder(os.Stdout).Encode(res); err != nil {
+			return err
+		}
+		if res.Status < 200 || res.Status >= 300 {
+			os.Exit(2)
+		}
+		return nil
+
 	case "get":
 		if *chainID == "" {
 			return fmt.Errorf("get requires -chain-id")
@@ -240,7 +283,7 @@ func run() error {
 		return postJSON(httpClient, http.MethodGet, base+"/delegations/"+*chainID, jwtSVID.Marshal(), nil)
 
 	default:
-		return fmt.Errorf("unknown mode %q (want vend, sign, dispose, get, whoami, call, fetch-jwt, bearer-call, x509-check)", mode)
+		return fmt.Errorf("unknown mode %q (want vend, sign, dispose, dispose-timed, get, whoami, call, fetch-jwt, bearer-call, poll, x509-check)", mode)
 	}
 }
 
