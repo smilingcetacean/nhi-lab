@@ -516,6 +516,18 @@ experiments-fixtures-down: ## Tear down the experiment fixtures
 experiments: vending-service-up resource-up experiments-fixtures-up ## Run the experiment suites (negative, multi-hop, functional, performance)
 	@cd '$(EXPERIMENTS_SRC)' && uv run python3 run_all.py
 
+# Revocation speed: 30 trials of P -> C -> G, each timing the gap between P's
+# DELETE of C and G's first denied request, measured by loops running inside the
+# fixture pods (src/experiments/revocation_speed.py). Not part of `experiments`.
+# Run it on an otherwise idle host. REVOCATION_TRIALS changes the trial count.
+# The fixture pods keep the parentsim image they started with: after rebuilding
+# it, recreate them (experiments-fixtures-down, then this target).
+REVOCATION_TRIALS ?= 30
+
+.PHONY: revocation-speed
+revocation-speed: vending-service-up resource-up experiments-fixtures-up ## Measure DELETE-to-first-denial time for a revoked grandchild (REVOCATION_TRIALS=30)
+	@cd '$(EXPERIMENTS_SRC)' && uv run python3 revocation_speed.py --trials '$(REVOCATION_TRIALS)'
+
 .PHONY: status
 status: ## Show cluster, pod and SPIRE state
 	@$(KUBECTL) get nodes -o wide
