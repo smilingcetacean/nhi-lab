@@ -459,13 +459,13 @@ if [ -n "${ORPHAN_CHAIN:-}" ]; then
   # failed. A failed exec must retry, never be read as "reaped".
   REAPED=""
   EXEC_EVER_OK=""
-  for attempt in $(seq 1 15); do
+  for attempt in $(seq 1 30); do
     ORPHAN_RAW=$("${KUBECTL[@]}" exec -n spire spire-server-0 -c spire-server -- \
       /opt/spire/bin/spire-server entry show -spiffeID "${PARENT_ID}/child/vend-verify-orphan-c1" 2>&1)
     EXEC_STATUS=$?
     if [ "${EXEC_STATUS}" -ne 0 ]; then
       echo "    | (attempt ${attempt}) spire-server entry show exec failed (status ${EXEC_STATUS}), retrying: ${ORPHAN_RAW}" >&2
-      sleep 2
+      sleep 1
       continue
     fi
     EXEC_EVER_OK="yes"
@@ -474,7 +474,7 @@ if [ -n "${ORPHAN_CHAIN:-}" ]; then
       REAPED="yes"
       break
     fi
-    sleep 2
+    sleep 1
   done
   if [ "${REAPED}" = "yes" ]; then
     pass "the reaper deleted the orphaned child's SPIRE entry with no DELETE call from the parent"

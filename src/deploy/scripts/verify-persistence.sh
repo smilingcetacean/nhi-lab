@@ -57,10 +57,11 @@ LONG_CHILD_ID="${PARENT_ID}/${LONG_PATH_HINT}"
 SHORT_CHILD_ID="${PARENT_ID}/${SHORT_PATH_HINT}"
 LONG_TTL=600
 # S must still be live when the pod is deleted, so the old pod's reaper cannot
-# reap it: the TTL has to outlast the pre-restart steps (about half a minute on
-# a slow run) plus up to one reaper interval (15s). The wait below covers the TTL
-# plus one more reaper interval for the NEW pod, with ample margin.
-SHORT_TTL=40
+# reap it: the TTL has to outlast the pre-restart steps (about 16 s measured).
+# The step after the restart fails if the old pod was not gone before S expired,
+# so a TTL that is too short for a slow host is reported, not silently absorbed.
+# The wait below covers the TTL plus one more reaper interval for the NEW pod.
+SHORT_TTL=30
 SHORT_WAIT_SECONDS=120
 
 # The audit schema's top-level keys, sorted (jq's `keys` sorts).
@@ -238,6 +239,7 @@ R=$(split_status_body "${OUT}")
 CODE="${R%%|*}"; BODY="${R#*|}"
 if [ "${CODE}" = "201" ]; then
   S_CHAIN=$(echo "${BODY}" | jq -r '.chain_id')
+  S_EXPIRES_AT=$(echo "${BODY}" | jq -r '.expires_at')
   pass "S vended: chain_id=${S_CHAIN} child=${SHORT_CHILD_ID} (HTTP 201, expires in ${SHORT_TTL}s)"
 else
   fail "expected 201 for S, got '${CODE}': ${BODY}"
@@ -306,6 +308,7 @@ step "THE RESTART — kubectl delete pod -l app=vending-service, then wait for t
 RESTART_AT=$(date -u +%Y-%m-%dT%H:%M:%SZ)
 echo "    | deleting ${OLD_POD} at ${RESTART_AT}"
 "${KUBECTL[@]}" delete pod -n nhi -l app=vending-service --wait=true --timeout=120s 2>&1 | indent
+OLD_POD_GONE_AT=$(date +%s)
 NEW_POD=""
 for attempt in $(seq 1 60); do
   CAND=$(ready_vending_pod)
@@ -315,6 +318,11 @@ for attempt in $(seq 1 60); do
   fi
   sleep 2
 done
+if [ "${OLD_POD_GONE_AT}" -lt "${S_EXPIRES_AT:-0}" ]; then
+  pass "the old pod was gone before S expired (${S_EXPIRES_AT}), so only the new pod's reaper can have reaped it"
+else
+  fail "the old pod was still running when S expired (${S_EXPIRES_AT}): SHORT_TTL=${SHORT_TTL} is too short for this host"
+fi
 if [ -n "${NEW_POD}" ]; then
   RESTARTED_AFTER=$(( $(date +%s) - SHORT_VENDED_AT ))
   pass "new pod ${NEW_POD} is Ready (the old pod ${OLD_POD} is gone); ${RESTARTED_AFTER}s after S was vended"
