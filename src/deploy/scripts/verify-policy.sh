@@ -119,12 +119,14 @@ fi
 # observed on this host taking 30-40s to fully disappear. `.items[0]` from an
 # unsorted list can pick that dying pod instead of the fresh Ready one,
 # producing a `NotFound` moments later. Filtering to Running and sorting by
-# creation time picks the pod `wait_ready` actually just confirmed.
+# creation time, and skipping any pod that already has a deletionTimestamp (a
+# Terminating pod is still phase=Running), picks the pod `wait_ready` actually
+# just confirmed.
 running_pod() {
   local ns="$1" selector="$2"
   "${KUBECTL[@]}" get pods -n "${ns}" -l "${selector}" --field-selector=status.phase=Running \
     --sort-by=.metadata.creationTimestamp -o jsonpath='{.items}' \
-    | jq -r 'if length > 0 then .[-1].metadata.name else empty end'
+    | jq -r '[.[] | select(.metadata.deletionTimestamp == null)] | if length > 0 then .[-1].metadata.name else empty end'
 }
 
 CLIENT_POD=$(running_pod agents app=resource-client)

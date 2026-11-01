@@ -78,12 +78,38 @@ else
   exit 1
 fi
 
-CLIENT_POD=$("${KUBECTL[@]}" get pods -n agents -l app=resource-client \
-  -o jsonpath='{.items[0].metadata.name}')
-WRITER_POD=$("${KUBECTL[@]}" get pods -n nhi -l probe=authorized \
-  -o jsonpath='{.items[0].metadata.name}')
-RESOURCE_POD=$("${KUBECTL[@]}" get pods -n nhi -l app=resource \
-  -o jsonpath='{.items[0].metadata.name}')
+# running_pod <ns> <selector> — the newest pod that is Running, Ready in every
+# container and NOT being deleted.
+#
+# NOT `.items[0]`, and NOT "phase=Running" alone. The cleanup above deletes
+# these Deployments with --wait=false, so a run that follows another one
+# re-applies the same names while the previous run's pods are still
+# Terminating, and those carry the same labels. A Terminating pod is still
+# phase=Running until its containers are gone, but its containers are being
+# stopped: `kubectl exec` into it fails with `container not found ("svid")`.
+# `rollout status` only proves the NEW pod is available; it says nothing about
+# which pod a label query returns first. Selecting on deletionTimestamp and
+# readiness picks the pod that `wait_ready` actually confirmed.
+running_pod() {
+  local ns="$1" selector="$2"
+  "${KUBECTL[@]}" get pods -n "${ns}" -l "${selector}" \
+    --sort-by=.metadata.creationTimestamp -o json \
+    | jq -r '[.items[]
+        | select(.metadata.deletionTimestamp == null)
+        | select(.status.phase == "Running")
+        | select(((.status.containerStatuses // []) | length) > 0
+                 and all(.status.containerStatuses[]; .ready == true))]
+      | if length > 0 then .[-1].metadata.name else empty end'
+}
+
+CLIENT_POD=$(running_pod agents app=resource-client)
+WRITER_POD=$(running_pod nhi probe=authorized)
+RESOURCE_POD=$(running_pod nhi app=resource)
+if [ -z "${CLIENT_POD}" ] || [ -z "${WRITER_POD}" ] || [ -z "${RESOURCE_POD}" ]; then
+  fail "no Ready, non-terminating pod found (caller='${CLIENT_POD}' writer='${WRITER_POD}' resource='${RESOURCE_POD}')"
+  printf '\n\033[31m================ RESOURCE VERIFY: FAIL ================\033[0m\n'
+  exit 1
+fi
 echo "    | caller=${CLIENT_POD}  writer=${WRITER_POD}  resource=${RESOURCE_POD}"
 
 # ---------------------------------------------------------------------------
