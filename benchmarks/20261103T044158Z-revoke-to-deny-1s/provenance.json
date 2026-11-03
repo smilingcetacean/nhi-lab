@@ -1,0 +1,59 @@
+{
+  "benchmark": "revoke_to_deny",
+  "run": "random phase, SPIRE agent sync_interval and server cache_reload_interval both 1 s, chain P -> C only",
+  "headline": "revoke_to_deny_ms: P sends DELETE /delegations/{chain_id} (t0) -> C receives its first 403 from the resource for GET /datasets/A, sent with a JWT-SVID C fetched from its agent in the same tick",
+  "secondary": "revoke_to_identity_gone_ms: t0 -> C receives the answer to its first failed JWT-SVID fetch (PermissionDenied, no identity issued); C does not call the resource when a fetch fails. Also recorded: deny_to_identity_gone_ms (first 403 received -> failed fetch received)",
+  "why_403_not_401": "a revoked child's JWT-SVID stays cryptographically valid until it expires, so the resource accepts the token and OPA denies it (403); the resource sends 401 only for a missing, malformed, expired or otherwise invalid token. No tokenless call is made, and no 401 is expected or produced.",
+  "child_behaviour": "C runs `parentsim revoke-wait` in its own pod after the vend, once it holds the vended SVID: every 20 ms it fetches a fresh JWT-SVID (audience spiffe://lab.local/svc/resource) from its SPIRE agent through one long-lived Workload API client and, in the same tick, sends GET /datasets/A with it. It prints ready at its first 200, keeps looping through the 403s, and stops at its first failed token fetch (at most one tick in flight).",
+  "harness": "src/experiments/revoke_to_deny.py (reusing revocation_speed.py's and vend_to_svid.py's parts), parentsim modes revoke-wait (C) and dispose-timed (P)",
+  "reference_instant": "P's pod stamps the wall clock (CLOCK_REALTIME, Unix ns) just before it writes the DELETE; all stamps are compared across pods on the single-host kind clock",
+  "code": {
+    "branch": "feat/revoke-to-deny-benchmark",
+    "base_commit": "d4fd4a0",
+    "state": "uncommitted working tree at run time"
+  },
+  "command": "cd src/experiments && CLUSTER_NAME=nhi-lab KUBECTX=kind-bench-rtd-1s TRUST_DOMAIN=lab.local uv run python3 revoke_to_deny.py --trials 50 --jitter-s 1 --run-id 20261103T044158Z-revoke-to-deny-1s",
+  "jitter": {
+    "jitter_s": 1.0,
+    "seed": 2586430187,
+    "applies": "a seeded uniform random 0..jitter_s wait after C's ready and before the DELETE, then a 0.2 s settle, so the DELETE lands at a random point of the agent's sync cycle"
+  },
+  "cluster": {
+    "kind_cluster": "bench-rtd-1s (throwaway, two nodes), created for this run and deleted after it",
+    "bring_up": [
+      "make cluster-up KIND_CLUSTER=bench-rtd-1s",
+      "make spire-up KIND_CLUSTER=bench-rtd-1s",
+      "make policy-engine-up vending-service-up resource-up experiments-fixtures-up KIND_CLUSTER=bench-rtd-1s"
+    ],
+    "note": "the runs were started without make, because the make targets re-apply the repository's SPIRE ConfigMaps"
+  },
+  "config_changes_on_this_cluster_only": [
+    {
+      "component": "spire-server",
+      "change": "in the server block of the live spire-server ConfigMap: `audit_log_enabled = true` and `experimental { cache_reload_interval = \"1s\" }` (default 5 s); StatefulSet restarted",
+      "repository_manifests_changed": false
+    },
+    {
+      "component": "spire-agent",
+      "change": "in the agent block of the live spire-agent ConfigMap: `experimental { sync_interval = \"1s\" }` (default 5 s); DaemonSet restarted after the server",
+      "repository_manifests_changed": false
+    }
+  ],
+  "smoke_run": "2 trials with --jitter-s 1 passed (both ok, every cross-check populated except the agent log line, which is empty by nature) before the 50-trial run, on the same cluster and config; its output is not kept",
+  "cross_checks_not_populated": "agent_log_*: C's node agent logs nothing that names C's ID after the DELETE at its INFO level (it logs the entry's creation only), so the column is empty in every trial",
+  "logs": {
+    "dir": "logs/",
+    "files": "logs/{vending-service,spire-server,resource,policy-engine,spire-agent,parent}/trial-NN.log",
+    "window": "contiguous per trial: from the end of the previous trial's window (the first starts 1 s before trial 1) to the moment C held no identity again after the revoke",
+    "timestamp": "first field of each line: the container runtime's capture time (kubectl logs --timestamps); for parent/, the time this host received P's command output; spire-agent/ is C's node agent",
+    "spire_server_audit_log_enabled": true,
+    "lines": {
+      "vending_service": 150,
+      "spire_server": 1152,
+      "resource": 4667,
+      "policy_engine": 160,
+      "spire_agent": 227,
+      "parent": 200
+    }
+  }
+}

@@ -1,0 +1,4 @@
+2026-11-03T04:44:54.908040493Z time="2026-11-03T04:44:54Z" level=error msg="No identity issued" method=FetchX509SVID pid=14638 registered=false service=WorkloadAPI subsystem_name=endpoints
+2026-11-03T04:44:55.528050115Z time="2026-11-03T04:44:55Z" level=info msg="Creating X509-SVID" entry_id=7e8ab274-372e-4231-a24f-fbdbd9511b1a spiffe_id="spiffe://lab.local/agent/parent/exp-root/child/r2d-002c7a-45" subsystem_name=manager
+2026-11-03T04:44:57.582205583Z time="2026-11-03T04:44:57Z" level=error msg="No identity issued" method=FetchJWTSVID pid=14683 registered=false service=WorkloadAPI subsystem_name=endpoints
+2026-11-03T04:44:57.692386240Z time="2026-11-03T04:44:57Z" level=error msg="No identity issued" method=FetchX509SVID pid=14759 registered=false service=WorkloadAPI subsystem_name=endpoints

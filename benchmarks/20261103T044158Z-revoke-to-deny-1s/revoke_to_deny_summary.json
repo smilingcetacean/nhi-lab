@@ -1,0 +1,281 @@
+{
+  "run_id": "20261103T044158Z-revoke-to-deny-1s",
+  "started_at": "2026-11-03T04:41:58Z",
+  "finished_at": "2026-11-03T04:45:18Z",
+  "trials_requested": 50,
+  "trials_completed": 50,
+  "trials_failed": 0,
+  "config": {
+    "poll_interval_target_ms": 20,
+    "settle_s": 0.2,
+    "ttl_s": 300,
+    "jitter_s": 1.0,
+    "jitter_seed": 2586430187,
+    "wait_timeout_s": 60,
+    "jitter_applies": "after C's ready and before the DELETE: a seeded uniform random 0..jitter_s wait, then settle_s",
+    "spire_server_audit_log_enabled": true
+  },
+  "percentile_method": "nearest-rank",
+  "stdev_method": "sample (n-1)",
+  "unit": "ms",
+  "headline": "revoke_to_deny_ms: P sends DELETE /delegations/{chain_id} (t0) -> C receives its first 403 from the resource for GET /datasets/A, sent with a JWT-SVID C fetched from its agent in the same tick",
+  "secondary": "revoke_to_identity_gone_ms: t0 -> C receives the answer to its first failed JWT-SVID fetch (no identity issued); C does not call the resource without a token",
+  "revoke_to_deny_ms": {
+    "n": 50,
+    "min": 5.324,
+    "p50": 12.398,
+    "p90": 19.159,
+    "p95": 21.082,
+    "p99": 22.379,
+    "max": 22.379,
+    "mean": 12.834,
+    "stdev": 4.91
+  },
+  "revoke_to_identity_gone_ms": {
+    "n": 50,
+    "min": 544.08,
+    "p50": 1201.334,
+    "p90": 1496.241,
+    "p95": 1588.974,
+    "p99": 1683.207,
+    "max": 1683.207,
+    "mean": 1181.147,
+    "stdev": 282.849
+  },
+  "deny_to_identity_gone_ms (first 403 received -> failed fetch received)": {
+    "n": 50,
+    "min": 535.662,
+    "p50": 1191.492,
+    "p90": 1486.493,
+    "p95": 1570.218,
+    "p99": 1670.491,
+    "max": 1670.491,
+    "mean": 1168.313,
+    "stdev": 283.393
+  },
+  "revoke_to_deny_send_basis_ms (t0 -> first 403 request sent)": {
+    "n": 50,
+    "min": 4.608,
+    "p50": 11.819,
+    "p90": 18.543,
+    "p95": 20.336,
+    "p99": 21.805,
+    "max": 21.805,
+    "mean": 12.18,
+    "stdev": 4.913
+  },
+  "revoke_to_identity_gone_send_basis_ms (t0 -> failed fetch sent)": {
+    "n": 50,
+    "min": 543.783,
+    "p50": 1200.973,
+    "p90": 1495.614,
+    "p95": 1588.687,
+    "p99": 1682.882,
+    "max": 1682.882,
+    "mean": 1180.672,
+    "stdev": 282.866
+  },
+  "denial_window_ms (first 403 received - last 200 sent: uncertainty in when the denial began)": {
+    "n": 50,
+    "min": 19.776,
+    "p50": 20.866,
+    "p90": 21.642,
+    "p95": 21.71,
+    "p99": 21.901,
+    "max": 21.901,
+    "mean": 21.01,
+    "stdev": 0.49
+  },
+  "delete_round_trip_ms": {
+    "n": 50,
+    "min": 10.516,
+    "p50": 12.477,
+    "p90": 13.039,
+    "p95": 13.389,
+    "p99": 22.09,
+    "max": 22.09,
+    "mean": 12.502,
+    "stdev": 1.554
+  },
+  "resource_deny_after_send_ms (t0 -> the resource's first deny audit event)": {
+    "n": 50,
+    "min": 5.265,
+    "p50": 12.356,
+    "p90": 19.11,
+    "p95": 21.036,
+    "p99": 22.33,
+    "max": 22.33,
+    "mean": 12.787,
+    "stdev": 4.91
+  },
+  "policy_dispose_after_send_ms (t0 -> the policy engine's dispose event, grant removed)": {
+    "n": 50,
+    "min": 4.186,
+    "p50": 4.622,
+    "p90": 4.891,
+    "p95": 5.043,
+    "p99": 5.289,
+    "max": 5.289,
+    "mean": 4.595,
+    "stdev": 0.262
+  },
+  "vending_dispose_after_send_ms (t0 -> the vending service's dispose event)": {
+    "n": 50,
+    "min": 10.384,
+    "p50": 12.34,
+    "p90": 12.888,
+    "p95": 13.258,
+    "p99": 21.97,
+    "max": 21.97,
+    "mean": 12.349,
+    "stdev": 1.558
+  },
+  "server_delete_entry_after_send_ms (t0 -> server audit BatchDeleteEntry)": {
+    "n": 50,
+    "min": 4.886,
+    "p50": 5.416,
+    "p90": 5.856,
+    "p95": 6.118,
+    "p99": 17.348,
+    "max": 17.348,
+    "mean": 5.7,
+    "stdev": 1.716
+  },
+  "phase_since_child_agent_sync_ms (t0 - C's agent's last sync before it)": {
+    "n": 50,
+    "min": 0.983,
+    "p50": 560.692,
+    "p90": 860.016,
+    "p95": 906.285,
+    "p99": 943.346,
+    "max": 943.346,
+    "mean": 475.883,
+    "stdev": 301.148
+  },
+  "child_agent_sync_before_gone_after_send_ms (t0 -> C's agent's last sync before the failed fetch)": {
+    "n": 50,
+    "min": 531.884,
+    "p50": 1186.939,
+    "p90": 1490.53,
+    "p95": 1587.829,
+    "p99": 1673.867,
+    "max": 1673.867,
+    "mean": 1171.669,
+    "stdev": 282.349
+  },
+  "child_agent_syncs_between (C's agent's syncs after t0 up to the failed fetch)": {
+    "1": 19,
+    "2": 31
+  },
+  "agent_log_after_send_ms (t0 -> C's node agent's first log line naming C)": {
+    "n": 0
+  },
+  "first_denial_status_counts (trials with a DELETE answered)": {
+    "403": 50
+  },
+  "denials_before_identity_gone": {
+    "n": 50,
+    "min": 26.0,
+    "p50": 58.0,
+    "p90": 72.0,
+    "p95": 76.0,
+    "p99": 81.0,
+    "max": 81.0,
+    "mean": 56.64,
+    "stdev": 13.772
+  },
+  "tokens": {
+    "trials_first_403_used_the_ready_token": 50,
+    "trials_first_403_used_a_different_token": 0,
+    "distinct_tokens_per_trial": {
+      "1": 50
+    }
+  },
+  "achieved_loop_gap_ms": {
+    "mean_of_trial_means": 20.605,
+    "max_of_trial_maxes": 21.182,
+    "trials_with_mean_gap_over_50ms": 0
+  },
+  "fetch_latency_ms": {
+    "mean_of_trial_means": 0.476,
+    "max_of_trial_maxes": 2.962
+  },
+  "call_latency_ms": {
+    "mean_of_trial_means": 0.603,
+    "max_of_trial_maxes": 4.051
+  },
+  "checks": {
+    "trials_ok": 50,
+    "trials_delete_200": 50,
+    "trials_first_denial_403": 50,
+    "trials_with_resource_deny_event": 50,
+    "trials_resource_deny_inside_403_request": 50,
+    "trials_with_policy_dispose_event": 50,
+    "trials_with_vending_dispose_event": 50,
+    "trials_with_server_delete_entry": 50,
+    "trials_with_agent_sync_before_delete": 50,
+    "trials_with_agent_sync_before_gone": 50,
+    "trials_with_agent_log_line": 0,
+    "trials_c_entry_gone": 50,
+    "trials_order_ok": 50,
+    "trials_with_transport_errors": 0,
+    "trials_with_other_statuses": 0
+  },
+  "logs": {
+    "dir": "logs/",
+    "files": "logs/{vending-service,spire-server,resource,policy-engine,spire-agent,parent}/trial-NN.log",
+    "window": "contiguous per trial: from the end of the previous trial's window (the first starts 1 s before trial 1) to the moment C held no identity again after the revoke",
+    "timestamp": "first field of each line: the container runtime's capture time (kubectl logs --timestamps); for parent/, the time this host received P's command output; spire-agent/ is C's node agent",
+    "spire_server_audit_log_enabled": true,
+    "lines": {
+      "vending_service": 150,
+      "spire_server": 1152,
+      "resource": 4667,
+      "policy_engine": 160,
+      "spire_agent": 227,
+      "parent": 200
+    }
+  },
+  "host": {
+    "cpu_model": "AMD Ryzen 7 9800X3D 8-Core Processor",
+    "cpu_cores": 16,
+    "memory_total_gib": 30.4,
+    "kernel": "7.3.1-1-cachyos",
+    "os": "Linux",
+    "python": "3.13.14",
+    "docker_server": "29.9.2",
+    "kind": "kind v0.33.0 go1.27.0-X:nodwarf5 linux/amd64",
+    "kubectl_client": "v1.37.2",
+    "kube_context": "kind-bench-rtd-1s",
+    "nodes": "NAME                         KUBELET   KERNEL\nbench-rtd-1s-control-plane   v1.36.1   7.3.1-1-cachyos\nbench-rtd-1s-worker          v1.36.1   7.3.1-1-cachyos",
+    "load_average_start": [
+      1.05,
+      1.13,
+      0.97
+    ],
+    "load_average_end": [
+      0.69,
+      0.98,
+      0.95
+    ],
+    "spire_images": [
+      "spire-agent-gnjj6=ghcr.io/spiffe/spire-agent:1.15.2",
+      "spire-agent-pw67t=ghcr.io/spiffe/spire-agent:1.15.2",
+      "spire-server-0=ghcr.io/spiffe/spire-server:1.15.2"
+    ],
+    "child_node": "bench-rtd-1s-worker",
+    "child_agent_pod": "spire-agent-gnjj6",
+    "component_pods": {
+      "vending-service": "vending-service-58bd6f488d-rc7cj",
+      "spire-server": "spire-server-0",
+      "resource": "resource-66f9fdcb44-sp99v",
+      "policy-engine": "policy-engine-9f7dd98c4-92dtm",
+      "spire-agent": "spire-agent-gnjj6"
+    },
+    "spire_server_audit_log_enabled": true,
+    "agent_ids_by_node": {
+      "bench-rtd-1s-control-plane": "spiffe://lab.local/spire/agent/k8s_psat/nhi-lab/591a36d9-7a1d-4eb2-844a-d3b9df0e5fcd",
+      "bench-rtd-1s-worker": "spiffe://lab.local/spire/agent/k8s_psat/nhi-lab/8c8de191-ceba-4917-a245-54699b32706e"
+    }
+  }
+}
