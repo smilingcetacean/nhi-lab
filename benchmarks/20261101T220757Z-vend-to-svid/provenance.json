@@ -1,0 +1,57 @@
+{
+  "benchmark": "vend_to_svid",
+  "run": "1 of 2: phase-locked",
+  "headline": "vend_to_svid_ms: parent sends POST /delegations (t0) -> child's first Workload API answer holding the new X.509-SVID received (t3)",
+  "harness": "src/experiments/vend_to_svid.py (with the parentsim modes vend-timed and svid-wait)",
+  "code": {
+    "branch": "feat/vend-to-svid-benchmark",
+    "base_commit": "39eac90",
+    "state": "uncommitted working tree at run time"
+  },
+  "command": "cd src/experiments && CLUSTER_NAME=nhi-lab KUBECTX=kind-bench-v2s TRUST_DOMAIN=lab.local uv run python3 vend_to_svid.py --trials 50",
+  "cluster": {
+    "kind_cluster": "bench-v2s (throwaway, two nodes)",
+    "bring_up": [
+      "make cluster-up KIND_CLUSTER=bench-v2s",
+      "make spire-up KIND_CLUSTER=bench-v2s",
+      "make vend-to-svid KIND_CLUSTER=bench-v2s VEND_SVID_TRIALS=2 (deploys policy engine, vending service and fixtures; 2-trial smoke, not kept)"
+    ]
+  },
+  "config_changes_on_this_cluster_only": [
+    {
+      "component": "spire-server",
+      "change": "added `audit_log_enabled = true` to the server block of the live spire-server ConfigMap, then restarted the StatefulSet (data on a PVC, so entries and CA kept)",
+      "why": "at the configured log_level INFO the server logs nothing per request; the audit log records every API call (BatchCreateEntry, SyncAuthorizedEntries, BatchNewX509SVID, BatchDeleteEntry)",
+      "repository_manifests_changed": false,
+      "note": "the run was started without make, because make vend-to-svid re-applies the repository's SPIRE ConfigMap (entries -> spire-agent -> spire-server)"
+    }
+  ],
+  "harness_differences_from_run_2": "run 1 predates --jitter-s; its CSV has no pre_trial_jitter_ms or phase_since_child_agent_sync_ms columns. The phase figures below were computed afterwards from this run's logs/spire-server files.",
+  "post_hoc_from_spire_server_audit": {
+    "child_agent_syncs_seen": 117,
+    "child_agent_sync_gap_ms": {
+      "min": 4502.3,
+      "median": 4928.1,
+      "max": 5498.0
+    },
+    "phase_since_child_agent_sync_ms (t0 - the child's agent's last sync before it)": {
+      "trials": 49,
+      "min": 392.6,
+      "max": 1396.4,
+      "note": "trial 1 has no earlier sync in its log window"
+    },
+    "why_phase_locked": "each trial starts once the previous child identity has left the pod, which happens only at a sync of the child's agent, so every vend lands about 0.4-1.4 s after a sync",
+    "child_agent_first_sync_after_BatchCreateEntry_ms": {
+      "caught (entry delivered at that sync)": {
+        "n": 35,
+        "min": 3325.6,
+        "max": 4844.9
+      },
+      "missed (entry not delivered until the next sync)": {
+        "n": 15,
+        "min": 436.3,
+        "max": 4643.5
+      }
+    }
+  }
+}

@@ -1,0 +1,151 @@
+{
+  "benchmark": "vend_to_svid",
+  "run": "4: random phase, default SPIRE intervals (5 s), SPIRE server telemetry on",
+  "purpose": "the SPIRE server's own time per call: from receiving a request to finishing it, for the vending service's BatchCreateEntry (entry registered) and the child's node agent's BatchNewX509SVID (SVID signed). The audit log gives only the completion time of a call, so the earlier runs could not give this.",
+  "harness": "src/experiments/vend_to_svid.py (with the parentsim modes vend-timed and svid-wait), including --jitter-s",
+  "code": {
+    "branch": "feat/vend-to-svid-benchmark",
+    "base_commit": "39eac90",
+    "state": "uncommitted working tree at run time"
+  },
+  "command": "cd src/experiments && CLUSTER_NAME=nhi-lab KUBECTX=kind-bench-v2s-tel TRUST_DOMAIN=lab.local uv run python3 vend_to_svid.py --trials 50 --jitter-s 5 --run-id 20261102T032618Z-vend-to-svid-server-telemetry",
+  "jitter": {
+    "jitter_s": 5.0,
+    "seed": 3579183490
+  },
+  "cluster": {
+    "kind_cluster": "bench-v2s-tel (throwaway, two nodes), created for this run and deleted after it",
+    "bring_up": [
+      "make cluster-up KIND_CLUSTER=bench-v2s-tel",
+      "make spire-up KIND_CLUSTER=bench-v2s-tel",
+      "make policy-engine-up vending-service-up experiments-fixtures-up KIND_CLUSTER=bench-v2s-tel"
+    ],
+    "note": "the run was started without make, because make vend-to-svid re-applies the repository's SPIRE ConfigMaps"
+  },
+  "config_changes_on_this_cluster_only": [
+    {
+      "component": "spire-server",
+      "change": "in the live spire-server ConfigMap: `audit_log_enabled = true` in the server block (as in runs 1-3), and a top-level `telemetry { Statsd = [{ address = \"<control-plane node IP>:8125\" }] EnableHostnameLabel = false }`; StatefulSet restarted. Agent config unchanged (default 5 s sync_interval, default 5 s cache_reload_interval on the server).",
+      "repository_manifests_changed": false
+    },
+    {
+      "component": "statsd listener",
+      "change": "a static Go UDP listener (about 40 lines, session scratchpad) copied into the control-plane node container and run there with docker exec; it prefixes each received metric line with its receive time (RFC 3339, ns), on the host's clock. It ran in the node container because the host firewall drops UDP from the kind network.",
+      "repository_manifests_changed": false
+    }
+  ],
+  "method": {
+    "timer": "SPIRE 1.15.2 rpc.<service>.<method>.elapsed_time: started in the metrics middleware's Preprocess (2nd in the server's middleware chain, pkg/server/endpoints/middleware.go:30), after the gRPC request has been received and decoded, and stopped in its Postprocess after the handler returns (pkg/common/api/middleware/metrics.go, pkg/common/telemetry/call.go:80). It excludes TLS, HTTP/2 framing and writing the response.",
+    "inner_timers": {
+      "datastore.registration_entry.create.elapsed_time": "the datastore write inside BatchCreateEntry",
+      "server_key_manager.sign_data.elapsed_time": "the key manager's signature inside BatchNewX509SVID"
+    },
+    "matching": "each audit line is matched to the first unused telemetry sample of the same method received 0-200 ms after it (statsd flushes every 100 ms). received_ns = audit_ns - elapsed. Inner timers are kept only when their UDP packet holds exactly one call of that method and one inner sample.",
+    "files": {
+      "server_timing.csv": "one row per trial",
+      "logs/spire-server-telemetry/trial-NN.log": "the statsd lines received in each trial's log window"
+    }
+  },
+  "server_timing": {
+    "problems": [],
+    "audit_lines": {
+      "BatchCreateEntry": 50,
+      "BatchNewX509SVID": 99
+    },
+    "unmatched_samples_in_run_window": {
+      "spire_server.rpc.entry.v1.entry.batch_create_entry.elapsed_time.OK": 0,
+      "spire_server.rpc.svid.v1.svid.batch_new_x509svid.elapsed_time.OK": 0
+    },
+    "sample_arrival_after_audit_ms": {
+      "n": 149,
+      "min": 1.136,
+      "p50": 51.201,
+      "p90": 88.37,
+      "p95": 93.856,
+      "max": 99.307,
+      "mean": 52.299
+    },
+    "create_server_ms": {
+      "n": 50,
+      "min": 0.858,
+      "p50": 0.931,
+      "p90": 1.035,
+      "p95": 1.107,
+      "max": 5.73,
+      "mean": 1.042
+    },
+    "create_datastore_write_ms": {
+      "n": 50,
+      "min": 0.688,
+      "p50": 0.768,
+      "p90": 0.854,
+      "p95": 0.919,
+      "max": 5.569,
+      "mean": 0.87
+    },
+    "child_sign_server_ms": {
+      "n": 50,
+      "min": 0.444,
+      "p50": 0.509,
+      "p90": 0.568,
+      "p95": 0.585,
+      "max": 0.625,
+      "mean": 0.513
+    },
+    "child_sign_key_manager_ms": {
+      "n": 48,
+      "min": 0.111,
+      "p50": 0.119,
+      "p90": 0.14,
+      "p95": 0.145,
+      "max": 0.177,
+      "mean": 0.123
+    },
+    "other_node_sign_server_ms": {
+      "n": 49,
+      "min": 0.448,
+      "p50": 0.506,
+      "p90": 0.552,
+      "p95": 0.57,
+      "max": 0.67,
+      "mean": 0.508
+    },
+    "other_node_sign_key_manager_ms": {
+      "n": 48,
+      "min": 0.111,
+      "p50": 0.119,
+      "p90": 0.138,
+      "p95": 0.146,
+      "max": 0.163,
+      "mean": 0.122
+    },
+    "create_received_to_child_svid_signed_ms": {
+      "n": 50,
+      "min": 875.854,
+      "p50": 3748.261,
+      "p90": 6797.215,
+      "p95": 7016.596,
+      "max": 7759.288,
+      "mean": 4231.368
+    },
+    "create_done_to_child_sign_received_ms": {
+      "n": 50,
+      "min": 874.278,
+      "p50": 3746.877,
+      "p90": 6795.808,
+      "p95": 7015.154,
+      "max": 7757.878,
+      "mean": 4229.813
+    },
+    "create_plus_child_sign_server_ms": {
+      "n": 50,
+      "min": 1.34,
+      "p50": 1.443,
+      "p90": 1.576,
+      "p95": 1.625,
+      "max": 6.188,
+      "mean": 1.555
+    },
+    "other_node_signed_first": 1
+  }
+}

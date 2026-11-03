@@ -1,7 +1,8 @@
 package main
 
 // poll and dispose-timed exist to measure how long a revocation takes to bite,
-// from inside the cluster.
+// from inside the cluster. vend-timed and svid-wait (svidwait.go) measure the
+// other direction: how long a vended identity takes to reach the child.
 //
 // A measurement driven through `kubectl exec` cannot resolve this: one exec
 // costs 50-70 ms, which is the same order as the interval being measured. So
@@ -17,6 +18,7 @@ package main
 // there without a clock-sync bound.
 
 import (
+	"bytes"
 	"context"
 	"encoding/json"
 	"fmt"
@@ -178,7 +180,7 @@ func runPoll(ctx context.Context, client *http.Client, cfg pollConfig, out io.Wr
 	}
 }
 
-// timedResult is what dispose-timed prints.
+// timedResult is what dispose-timed and vend-timed print.
 type timedResult struct {
 	Status   int    `json:"status"`
 	SendNs   int64  `json:"send_ns"`
@@ -187,16 +189,25 @@ type timedResult struct {
 	Response string `json:"response"`
 }
 
-// timedDelete is the revoking parent's side: it sends one DELETE and reports
-// the wall-clock instants just before the request is written and just after the
+// timedRequest sends one request to the vending service and reports the
+// wall-clock instants just before the request is written and just after the
 // response headers are read, plus the status. The caller does all setup (SVID
-// fetch) before calling it, so the interval covers only the DELETE.
-func timedDelete(ctx context.Context, client *http.Client, url, bearer string, now func() time.Time) (timedResult, error) {
-	req, err := http.NewRequestWithContext(ctx, http.MethodDelete, url, nil)
+// fetch, manifest signing) before calling it, so the interval covers only the
+// request. dispose-timed (the revoking parent) sends a DELETE with no body;
+// vend-timed sends the signed manifest as a POST.
+func timedRequest(ctx context.Context, client *http.Client, method, url, bearer string, body []byte, now func() time.Time) (timedResult, error) {
+	var reader io.Reader
+	if body != nil {
+		reader = bytes.NewReader(body)
+	}
+	req, err := http.NewRequestWithContext(ctx, method, url, reader)
 	if err != nil {
 		return timedResult{}, fmt.Errorf("build request: %w", err)
 	}
 	req.Header.Set("Authorization", "Bearer "+bearer)
+	if body != nil {
+		req.Header.Set("Content-Type", "application/json")
+	}
 	send := now()
 	resp, err := client.Do(req)
 	recv := now()

@@ -48,7 +48,7 @@ func main() {
 
 func run() error {
 	if len(os.Args) < 2 {
-		return fmt.Errorf("usage: parentsim <vend|sign|dispose|dispose-timed|get|whoami|call|fetch-jwt|bearer-call|poll|x509-check|idle> [flags]")
+		return fmt.Errorf("usage: parentsim <vend|vend-timed|sign|dispose|dispose-timed|get|whoami|call|fetch-jwt|bearer-call|poll|svid-wait|access-wait|x509-check|idle> [flags]")
 	}
 	mode := os.Args[1]
 
@@ -98,9 +98,17 @@ func run() error {
 	callMethod := fs.String("call-method", http.MethodGet, "HTTP method for -mode=call and -mode=bearer-call")
 	bearerToken := fs.String("bearer-token", "", "token to present verbatim in -mode=bearer-call (see -mode=fetch-jwt)")
 
-	// "poll" mode: see poll.go.
-	pollInterval := fs.Duration("poll-interval", 20*time.Millisecond, "target gap between requests in -mode=poll")
-	pollTimeout := fs.Duration("poll-timeout", 30*time.Second, "give up after this long without a denial in -mode=poll")
+	// "poll" mode: see poll.go. "svid-wait" mode (svidwait.go) shares the
+	// interval and timeout flags.
+	pollInterval := fs.Duration("poll-interval", 20*time.Millisecond, "target gap between requests in -mode=poll and between fetches in -mode=svid-wait")
+	pollTimeout := fs.Duration("poll-timeout", 30*time.Second, "give up after this long without a denial (-mode=poll) or the expected identity (-mode=svid-wait)")
+	expectID := fs.String("expect-id", "", "in -mode=svid-wait and -mode=access-wait, the SPIFFE ID to wait for")
+
+	// "access-wait" mode: see accesswait.go. It also uses -call-url,
+	// -call-method, -call-audience, -poll-interval and -poll-timeout.
+	accessStyle := fs.String("access-style", "poll", "in -mode=access-wait: poll (fixed -poll-interval loop) or child-py (src/agents/child.py's retries)")
+	retryDelay := fs.Duration("retry-delay", 2*time.Second, "in -mode=access-wait -access-style=child-py, the pause after a failed fetch (child.py: 2s)")
+	retryAttempts := fs.Int("retry-attempts", 30, "in -mode=access-wait -access-style=child-py, attempts per fetch (child.py: 30)")
 
 	if err := fs.Parse(os.Args[2:]); err != nil {
 		return err
@@ -148,6 +156,95 @@ func run() error {
 			return err
 		}
 		if ev.Event != "denied" {
+			os.Exit(2)
+		}
+		return nil
+	}
+
+	// svid-wait runs in a pod that has no identity yet and waits for the one a
+	// parent is about to vend for it (see svidwait.go), so it must not fetch
+	// an SVID of its own first.
+	if mode == "svid-wait" {
+		if *expectID == "" {
+			return fmt.Errorf("svid-wait requires -expect-id")
+		}
+		client, err := workloadapi.New(context.Background(), workloadapi.WithAddr(*socketPath))
+		if err != nil {
+			return fmt.Errorf("workload API client: %w", err)
+		}
+		defer client.Close()
+		fetch := func(ctx context.Context) ([]heldSVID, error) {
+			svids, err := client.FetchX509SVIDs(ctx)
+			if err != nil {
+				return nil, err
+			}
+			held := make([]heldSVID, 0, len(svids))
+			for _, s := range svids {
+				held = append(held, heldSVID{ID: s.ID.String(), NotAfter: s.Certificates[0].NotAfter})
+			}
+			return held, nil
+		}
+		ev, err := runSVIDWait(context.Background(), fetch,
+			svidWaitConfig{ExpectID: *expectID, Interval: *pollInterval, Timeout: *pollTimeout},
+			os.Stdout, time.Now)
+		if err != nil {
+			return err
+		}
+		if ev.Event != "obtained" {
+			os.Exit(2)
+		}
+		return nil
+	}
+
+	// access-wait runs in a pod that has no identity yet and waits until it
+	// can read the resource with the identity a parent is about to vend for it
+	// (see accesswait.go). Like svid-wait, it must not fetch an SVID first.
+	if mode == "access-wait" {
+		if *expectID == "" || *callURL == "" {
+			return fmt.Errorf("access-wait requires -expect-id and -call-url")
+		}
+		client, err := workloadapi.New(context.Background(), workloadapi.WithAddr(*socketPath))
+		if err != nil {
+			return fmt.Errorf("workload API client: %w", err)
+		}
+		defer client.Close()
+		fetchX509 := func(ctx context.Context) (string, error) {
+			s, err := client.FetchX509SVID(ctx)
+			if err != nil {
+				return "", err
+			}
+			return s.ID.String(), nil
+		}
+		fetchJWT := func(ctx context.Context) (string, string, error) {
+			s, err := client.FetchJWTSVID(ctx, jwtsvid.Params{Audience: *callAudience})
+			if err != nil {
+				return "", "", err
+			}
+			return s.Marshal(), s.ID.String(), nil
+		}
+		resClient := &http.Client{Timeout: 5 * time.Second}
+		call := func(ctx context.Context, token string) (int, error) {
+			req, err := http.NewRequestWithContext(ctx, *callMethod, *callURL, nil)
+			if err != nil {
+				return 0, err
+			}
+			req.Header.Set("Authorization", "Bearer "+token)
+			resp, err := resClient.Do(req)
+			if err != nil {
+				return 0, err
+			}
+			_, _ = io.Copy(io.Discard, resp.Body)
+			resp.Body.Close()
+			return resp.StatusCode, nil
+		}
+		ev, err := runAccessWait(context.Background(), fetchX509, fetchJWT, call,
+			accessWaitConfig{Style: *accessStyle, ExpectID: *expectID, Interval: *pollInterval,
+				RetryDelay: *retryDelay, RetryAttempts: *retryAttempts, Timeout: *pollTimeout},
+			os.Stdout, time.Now)
+		if err != nil {
+			return err
+		}
+		if ev.Event != "granted" {
 			os.Exit(2)
 		}
 		return nil
@@ -251,6 +348,24 @@ func run() error {
 		}
 		return postJSON(httpClient, http.MethodPost, base+"/delegations", jwtSVID.Marshal(), m)
 
+	case "vend-timed":
+		// As vend, but prints the wall-clock instants around the POST (see
+		// poll.go). The manifest is built, signed and marshalled first, so the
+		// interval covers only the request.
+		m, err := buildAndSignManifest(*childPathHint, *scopes, *taskContext, *selectors, *ttl, *nonce, *claimParent, ownID, svid, *corruptSignature)
+		if err != nil {
+			return err
+		}
+		body, err := json.Marshal(m)
+		if err != nil {
+			return fmt.Errorf("marshal manifest: %w", err)
+		}
+		res, err := timedRequest(ctx, httpClient, http.MethodPost, base+"/delegations", jwtSVID.Marshal(), body, time.Now)
+		if err != nil {
+			return err
+		}
+		return printTimed(res)
+
 	case "dispose":
 		if *chainID == "" {
 			return fmt.Errorf("dispose requires -chain-id")
@@ -263,18 +378,11 @@ func run() error {
 		if *chainID == "" {
 			return fmt.Errorf("dispose-timed requires -chain-id")
 		}
-		res, err := timedDelete(ctx, httpClient, base+"/delegations/"+*chainID, jwtSVID.Marshal(), time.Now)
+		res, err := timedRequest(ctx, httpClient, http.MethodDelete, base+"/delegations/"+*chainID, jwtSVID.Marshal(), nil, time.Now)
 		if err != nil {
 			return err
 		}
-		fmt.Fprintf(os.Stderr, "HTTP %d\n", res.Status)
-		if err := json.NewEncoder(os.Stdout).Encode(res); err != nil {
-			return err
-		}
-		if res.Status < 200 || res.Status >= 300 {
-			os.Exit(2)
-		}
-		return nil
+		return printTimed(res)
 
 	case "get":
 		if *chainID == "" {
@@ -283,7 +391,7 @@ func run() error {
 		return postJSON(httpClient, http.MethodGet, base+"/delegations/"+*chainID, jwtSVID.Marshal(), nil)
 
 	default:
-		return fmt.Errorf("unknown mode %q (want vend, sign, dispose, dispose-timed, get, whoami, call, fetch-jwt, bearer-call, poll, x509-check)", mode)
+		return fmt.Errorf("unknown mode %q (want vend, vend-timed, sign, dispose, dispose-timed, get, whoami, call, fetch-jwt, bearer-call, poll, svid-wait, access-wait, x509-check)", mode)
 	}
 }
 
@@ -322,6 +430,20 @@ func postJSON(client *http.Client, method, url, bearer string, body any) error {
 	fmt.Fprintf(os.Stderr, "HTTP %d\n", resp.StatusCode)
 	fmt.Println(string(raw))
 	if resp.StatusCode < 200 || resp.StatusCode >= 300 {
+		os.Exit(2)
+	}
+	return nil
+}
+
+// printTimed prints a timed request's result the way postJSON prints a plain
+// one: the status on stderr, the JSON on stdout, and a non-zero exit on a
+// non-2xx.
+func printTimed(res timedResult) error {
+	fmt.Fprintf(os.Stderr, "HTTP %d\n", res.Status)
+	if err := json.NewEncoder(os.Stdout).Encode(res); err != nil {
+		return err
+	}
+	if res.Status < 200 || res.Status >= 300 {
 		os.Exit(2)
 	}
 	return nil

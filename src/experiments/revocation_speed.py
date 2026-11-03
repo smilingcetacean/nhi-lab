@@ -148,13 +148,12 @@ def vend(pod: str, hint: str, nonce: str, sa: str, scopes: str, ttl: int = 600):
     return last
 
 
-class Poller:
-    """`kubectl exec ... parentsim poll` running in the background, its JSON lines queued."""
+class ParentsimStream:
+    """`kubectl exec ... parentsim <mode>` running in the background, its JSON lines queued."""
 
-    def __init__(self, pod: str, token: str, interval_ms: int, timeout_s: int):
+    def __init__(self, pod: str, *args: str):
         cmd = ["kubectl", "--context", c.KUBECTX, "exec", "-n", NS, pod, "-c", "parentsim", "--",
-               "/parentsim", "poll", f"-call-url={c.RESOURCE_URL}/datasets/A", f"-bearer-token={token}",
-               f"-poll-interval={interval_ms}ms", f"-poll-timeout={timeout_s}s"]
+               "/parentsim", *args]
         self.proc = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, text=True, bufsize=1)
         self.q: "queue.Queue[str | None]" = queue.Queue()
         self.other: list[str] = []
@@ -191,6 +190,14 @@ class Poller:
         if self.proc.poll() is None:
             self.proc.kill()
         self.proc.wait()
+
+
+class Poller(ParentsimStream):
+    """`parentsim poll`: G's request loop against the resource."""
+
+    def __init__(self, pod: str, token: str, interval_ms: int, timeout_s: int):
+        super().__init__(pod, "poll", f"-call-url={c.RESOURCE_URL}/datasets/A", f"-bearer-token={token}",
+                         f"-poll-interval={interval_ms}ms", f"-poll-timeout={timeout_s}s")
 
 
 def audit_events(selector: str, container: str) -> list[dict]:

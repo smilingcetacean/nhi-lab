@@ -1,0 +1,240 @@
+{
+  "run_id": "20261102T032618Z-vend-to-svid-server-telemetry",
+  "started_at": "2026-11-02T03:26:19Z",
+  "finished_at": "2026-11-02T03:36:27Z",
+  "trials_requested": 50,
+  "trials_completed": 50,
+  "trials_failed": 0,
+  "poll_interval_target_ms": 20,
+  "settle_s": 0.2,
+  "ttl_s": 300,
+  "jitter_s": 5.0,
+  "jitter_seed": 3579183490,
+  "percentile_method": "nearest-rank",
+  "stdev_method": "sample (n-1)",
+  "unit": "ms",
+  "headline": "vend_to_svid_ms: P sends POST /delegations (t0) -> C's first Workload API answer holding the new SVID received (t3)",
+  "vend_to_svid_ms": {
+    "n": 50,
+    "min": 895.809,
+    "p50": 3766.263,
+    "p90": 6813.649,
+    "p95": 7387.433,
+    "p99": 7786.031,
+    "max": 7786.031,
+    "mean": 4284.363,
+    "stdev": 1839.967
+  },
+  "vend_to_svid_ms_histogram": {
+    "bin_ms": 500,
+    "counts": {
+      "500-1000": 1,
+      "1500-2000": 4,
+      "2000-2500": 2,
+      "2500-3000": 7,
+      "3000-3500": 9,
+      "3500-4000": 3,
+      "4000-4500": 3,
+      "4500-5000": 4,
+      "5000-5500": 2,
+      "5500-6000": 2,
+      "6000-6500": 6,
+      "6500-7000": 3,
+      "7000-7500": 2,
+      "7500-8000": 2
+    }
+  },
+  "vend_round_trip_ms (t0 -> t1, entry created on the SPIRE server)": {
+    "n": 50,
+    "min": 18.049,
+    "p50": 20.603,
+    "p90": 21.598,
+    "p95": 22.225,
+    "p99": 23.97,
+    "max": 23.97,
+    "mean": 20.329,
+    "stdev": 1.236
+  },
+  "audit_vend_allow_after_send_ms (t0 -> vend allow audit event)": {
+    "n": 50,
+    "min": 17.983,
+    "p50": 20.537,
+    "p90": 21.522,
+    "p95": 22.155,
+    "p99": 23.908,
+    "max": 23.908,
+    "mean": 20.261,
+    "stdev": 1.235
+  },
+  "server_attest_to_vend_ms (attest allow -> vend allow audit events)": {
+    "n": 50,
+    "min": 9.292,
+    "p50": 10.431,
+    "p90": 11.108,
+    "p95": 11.428,
+    "p99": 15.213,
+    "max": 15.213,
+    "mean": 10.496,
+    "stdev": 0.869
+  },
+  "agent_log_after_send_ms (t0 -> t2, C's node agent logs the entry)": {
+    "n": 50,
+    "min": 888.372,
+    "p50": 3761.827,
+    "p90": 6810.234,
+    "p95": 7029.8,
+    "p99": 7772.483,
+    "max": 7772.483,
+    "mean": 4244.412,
+    "stdev": 1836.096
+  },
+  "svid_after_vend_response_ms (t1 -> t3)": {
+    "n": 50,
+    "min": 876.764,
+    "p50": 3748.044,
+    "p90": 6793.323,
+    "p95": 7365.903,
+    "p99": 7765.5,
+    "max": 7765.5,
+    "mean": 4264.035,
+    "stdev": 1839.977
+  },
+  "vend_to_svid_send_basis_ms (t0 -> obtaining fetch sent)": {
+    "n": 50,
+    "min": 895.298,
+    "p50": 3765.75,
+    "p90": 6813.192,
+    "p95": 7042.506,
+    "p99": 7785.521,
+    "max": 7785.521,
+    "mean": 4253.155,
+    "stdev": 1835.821
+  },
+  "svid_window_ms (t3 - last miss sent: arrival uncertainty)": {
+    "n": 50,
+    "min": 20.753,
+    "p50": 20.987,
+    "p90": 21.789,
+    "p95": 511.855,
+    "p99": 543.599,
+    "max": 543.599,
+    "mean": 51.677,
+    "stdev": 122.361
+  },
+  "server_create_entry_after_send_ms (t0 -> server audit BatchCreateEntry)": {
+    "n": 50,
+    "min": 12.342,
+    "p50": 14.968,
+    "p90": 15.784,
+    "p95": 16.492,
+    "p99": 18.291,
+    "max": 18.291,
+    "mean": 14.804,
+    "stdev": 1.065
+  },
+  "server_first_svid_after_send_ms (t0 -> first agent's BatchNewX509SVID, any node)": {
+    "n": 50,
+    "min": 889.141,
+    "p50": 3762.521,
+    "p90": 6810.908,
+    "p95": 7030.497,
+    "p99": 7773.197,
+    "max": 7773.197,
+    "mean": 4228.606,
+    "stdev": 1859.157
+  },
+  "server_child_agent_svid_after_send_ms (t0 -> C's agent's BatchNewX509SVID)": {
+    "n": 50,
+    "min": 889.141,
+    "p50": 3762.521,
+    "p90": 6810.908,
+    "p95": 7030.497,
+    "p99": 7773.197,
+    "max": 7773.197,
+    "mean": 4245.13,
+    "stdev": 1836.087
+  },
+  "child_agent_finding_sync_after_send_ms (t0 -> C's agent's sync that brought the entry)": {
+    "n": 50,
+    "min": 887.854,
+    "p50": 3761.169,
+    "p90": 6809.746,
+    "p95": 7029.155,
+    "p99": 7772.043,
+    "max": 7772.043,
+    "mean": 4243.917,
+    "stdev": 1836.099
+  },
+  "child_agent_syncs_missed (C's agent's syncs after t1 that did not bring the entry)": {
+    "0": 33,
+    "1": 17
+  },
+  "phase_since_child_agent_sync_ms (t0 - C's agent's last sync before it)": {
+    "n": 50,
+    "min": 14.843,
+    "p50": 2485.701,
+    "p90": 4046.93,
+    "p95": 4310.086,
+    "p99": 4982.484,
+    "max": 4982.484,
+    "mean": 2521.445,
+    "stdev": 1270.248
+  },
+  "trials_first_svid_on_another_node": 1,
+  "achieved_wait_gap_ms": {
+    "mean_of_trial_means": 20.484,
+    "max_of_trial_maxes": 21.04
+  },
+  "checks": {
+    "trials_with_agent_log_line": 50,
+    "trials_audit_vend_allow_inside_vend_request": 50,
+    "trials_order_ok": 50,
+    "trials_disposed_200": 50,
+    "trials_vend_retried": 0
+  },
+  "logs": {
+    "dir": "logs/",
+    "files": "logs/vending-service/trial-NN.log, logs/spire-server/trial-NN.log",
+    "window": "contiguous per trial: from the end of the previous trial's window (the first starts 1 s before trial 1) to the moment C held no identity again after the dispose",
+    "timestamp": "first field of each line: the container runtime's capture time (kubectl logs --timestamps)",
+    "spire_server_audit_log_enabled": true,
+    "vending_service_lines": 150,
+    "spire_server_lines": 750
+  },
+  "host": {
+    "cpu_model": "AMD Ryzen 7 9800X3D 8-Core Processor",
+    "cpu_cores": 16,
+    "memory_total_gib": 30.4,
+    "kernel": "7.3.1-1-cachyos",
+    "os": "Linux",
+    "python": "3.13.14",
+    "docker_server": "29.9.2",
+    "kind": "kind v0.33.0 go1.27.0-X:nodwarf5 linux/amd64",
+    "kubectl_client": "v1.37.2",
+    "kube_context": "kind-bench-v2s-tel",
+    "nodes": "NAME                          KUBELET   KERNEL\nbench-v2s-tel-control-plane   v1.36.1   7.3.1-1-cachyos\nbench-v2s-tel-worker          v1.36.1   7.3.1-1-cachyos",
+    "load_average_start": [
+      2.12,
+      1.45,
+      1.19
+    ],
+    "load_average_end": [
+      1.28,
+      1.29,
+      1.24
+    ],
+    "spire_images": [
+      "spire-agent-tbvdv=ghcr.io/spiffe/spire-agent:1.15.2",
+      "spire-agent-xsn5t=ghcr.io/spiffe/spire-agent:1.15.2",
+      "spire-server-0=ghcr.io/spiffe/spire-server:1.15.2"
+    ],
+    "child_node": "bench-v2s-tel-worker",
+    "child_agent_pod": "spire-agent-tbvdv",
+    "vending_service_pod": "vending-service-65bb9994d8-kjd7f",
+    "spire_server_audit_log_enabled": true,
+    "agent_ids_by_node": {
+      "bench-v2s-tel-control-plane": "spiffe://lab.local/spire/agent/k8s_psat/nhi-lab/c9396bc9-5509-429d-bd07-5718e2a5caac",
+      "bench-v2s-tel-worker": "spiffe://lab.local/spire/agent/k8s_psat/nhi-lab/b3578ea7-1d91-4441-8f93-12943c79e775"
+    }
+  }
+}

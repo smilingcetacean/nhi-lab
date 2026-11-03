@@ -1,0 +1,3652 @@
+[
+  {
+    "trial": 1,
+    "wait_ready": {
+      "event": "ready",
+      "send_ns": 1793572411800955632,
+      "recv_ns": 1793572411803584202,
+      "miss_reason": "rpc error: code = PermissionDenied desc = no identity issued"
+    },
+    "vend": {
+      "status": 201,
+      "send_ns": 1793572412050820957,
+      "recv_ns": 1793572412070723086,
+      "round_trip_ns": 19902129,
+      "response": "{\"chain_id\":\"c_5c74133966d41cd5bc059f984cc7deae\",\"parent_spiffe_id\":\"spiffe://lab.local/agent/parent/exp-root\",\"child_spiffe_id\":\"spiffe://lab.local/agent/parent/exp-root/child/v2s-54a942-01\",\"child_scopes\":[\"resource:read:datasetA\"],\"entry_id\":\"de095e19-70b1-4fa0-b45d-2e07e15a1031\",\"policy_id\":\"nhi_grants_c_5c74133966d41cd5bc059f984cc7deae\",\"issued_at\":1793572412,\"expires_at\":1793572712}\n"
+    },
+    "wait_final": {
+      "event": "obtained",
+      "send_ns": 1793572416140970171,
+      "recv_ns": 1793572416141433053,
+      "last_miss_send_ns": 1793572416120448021,
+      "last_miss_recv_ns": 1793572416120848972,
+      "spiffe_ids": [
+        "spiffe://lab.local/agent/parent/exp-root/child/v2s-54a942-01"
+      ],
+      "not_after": "2026-11-01T22:38:36Z",
+      "miss_reasons": {
+        "rpc error: code = PermissionDenied desc = no identity issued": 212
+      },
+      "attempts": 213,
+      "misses": 212,
+      "gap_mean_ns": 20471766,
+      "gap_max_ns": 20983953,
+      "latency_mean_ns": 443379,
+      "latency_max_ns": 2628570
+    },
+    "dispose": 200,
+    "audit_vend_allow": {
+      "timestamp": "2026-11-01T22:33:32.070666016Z",
+      "stage": "vend",
+      "chain_id": "c_5c74133966d41cd5bc059f984cc7deae",
+      "actor_spiffe_id": "spiffe://lab.local/agent/parent/exp-root",
+      "outcome": "allow",
+      "detail": {
+        "parent_spiffe_id": "spiffe://lab.local/agent/parent/exp-root",
+        "child_spiffe_id": "spiffe://lab.local/agent/parent/exp-root/child/v2s-54a942-01",
+        "requested_scopes": [
+          "resource:read:datasetA"
+        ],
+        "child_scopes": [
+          "resource:read:datasetA"
+        ],
+        "policy_id": "nhi_grants_c_5c74133966d41cd5bc059f984cc7deae",
+        "entry_id": "de095e19-70b1-4fa0-b45d-2e07e15a1031",
+        "expires_at": 1793572712,
+        "task_context": "vend to svid"
+      }
+    },
+    "audit_attest_allow": {
+      "timestamp": "2026-11-01T22:33:32.060460546Z",
+      "stage": "attest",
+      "chain_id": "",
+      "actor_spiffe_id": "spiffe://lab.local/agent/parent/exp-root",
+      "outcome": "allow",
+      "detail": {
+        "parent_spiffe_id": "spiffe://lab.local/agent/parent/exp-root",
+        "reason": "JWT-SVID, manifest signature, nonce and child_selectors all verified"
+      }
+    },
+    "agent_log": {
+      "ns": 1793572416138008260,
+      "line": "time=\"2026-11-01T22:33:36Z\" level=info msg=\"Creating X509-SVID\" entry_id=de095e19-70b1-4fa0-b45d-2e07e15a1031 spiffe_id=\"spiffe://lab.local/agent/parent/exp-root/child/v2s-54a942-01\" subsystem_name=manager"
+    }
+  },
+  {
+    "trial": 2,
+    "wait_ready": {
+      "event": "ready",
+      "send_ns": 1793572426417050244,
+      "recv_ns": 1793572426419220812,
+      "miss_reason": "rpc error: code = PermissionDenied desc = no identity issued"
+    },
+    "vend": {
+      "status": 201,
+      "send_ns": 1793572426668143960,
+      "recv_ns": 1793572426687045555,
+      "round_trip_ns": 18901595,
+      "response": "{\"chain_id\":\"c_88fc20d4841de99b48112e46b4ca86f8\",\"parent_spiffe_id\":\"spiffe://lab.local/agent/parent/exp-root\",\"child_spiffe_id\":\"spiffe://lab.local/agent/parent/exp-root/child/v2s-54a942-02\",\"child_scopes\":[\"resource:read:datasetA\"],\"entry_id\":\"08a2b8c7-ab06-4a9d-9e49-e0294e3c93d8\",\"policy_id\":\"nhi_grants_c_88fc20d4841de99b48112e46b4ca86f8\",\"issued_at\":1793572426,\"expires_at\":1793572726}\n"
+    },
+    "wait_final": {
+      "event": "obtained",
+      "send_ns": 1793572431004506219,
+      "recv_ns": 1793572431005156501,
+      "last_miss_send_ns": 1793572430984091919,
+      "last_miss_recv_ns": 1793572430984384510,
+      "spiffe_ids": [
+        "spiffe://lab.local/agent/parent/exp-root/child/v2s-54a942-02"
+      ],
+      "not_after": "2026-11-01T22:38:50Z",
+      "miss_reasons": {
+        "rpc error: code = PermissionDenied desc = no identity issued": 224
+      },
+      "attempts": 225,
+      "misses": 224,
+      "gap_mean_ns": 20479714,
+      "gap_max_ns": 21043352,
+      "latency_mean_ns": 440869,
+      "latency_max_ns": 2170568
+    },
+    "dispose": 200,
+    "audit_vend_allow": {
+      "timestamp": "2026-11-01T22:33:46.686987414Z",
+      "stage": "vend",
+      "chain_id": "c_88fc20d4841de99b48112e46b4ca86f8",
+      "actor_spiffe_id": "spiffe://lab.local/agent/parent/exp-root",
+      "outcome": "allow",
+      "detail": {
+        "parent_spiffe_id": "spiffe://lab.local/agent/parent/exp-root",
+        "child_spiffe_id": "spiffe://lab.local/agent/parent/exp-root/child/v2s-54a942-02",
+        "requested_scopes": [
+          "resource:read:datasetA"
+        ],
+        "child_scopes": [
+          "resource:read:datasetA"
+        ],
+        "policy_id": "nhi_grants_c_88fc20d4841de99b48112e46b4ca86f8",
+        "entry_id": "08a2b8c7-ab06-4a9d-9e49-e0294e3c93d8",
+        "expires_at": 1793572726,
+        "task_context": "vend to svid"
+      }
+    },
+    "audit_attest_allow": {
+      "timestamp": "2026-11-01T22:33:46.677633498Z",
+      "stage": "attest",
+      "chain_id": "",
+      "actor_spiffe_id": "spiffe://lab.local/agent/parent/exp-root",
+      "outcome": "allow",
+      "detail": {
+        "parent_spiffe_id": "spiffe://lab.local/agent/parent/exp-root",
+        "reason": "JWT-SVID, manifest signature, nonce and child_selectors all verified"
+      }
+    },
+    "agent_log": {
+      "ns": 1793572430988374075,
+      "line": "time=\"2026-11-01T22:33:50Z\" level=info msg=\"Creating X509-SVID\" entry_id=08a2b8c7-ab06-4a9d-9e49-e0294e3c93d8 spiffe_id=\"spiffe://lab.local/agent/parent/exp-root/child/v2s-54a942-02\" subsystem_name=manager"
+    }
+  },
+  {
+    "trial": 3,
+    "wait_ready": {
+      "event": "ready",
+      "send_ns": 1793572440817382012,
+      "recv_ns": 1793572440819469240,
+      "miss_reason": "rpc error: code = PermissionDenied desc = no identity issued"
+    },
+    "vend": {
+      "status": 201,
+      "send_ns": 1793572441071801228,
+      "recv_ns": 1793572441094285136,
+      "round_trip_ns": 22483908,
+      "response": "{\"chain_id\":\"c_1ae059e412999fcc11865e1b25356570\",\"parent_spiffe_id\":\"spiffe://lab.local/agent/parent/exp-root\",\"child_spiffe_id\":\"spiffe://lab.local/agent/parent/exp-root/child/v2s-54a942-03\",\"child_scopes\":[\"resource:read:datasetA\"],\"entry_id\":\"92922f00-e9c4-40db-86d4-f27c2ea48708\",\"policy_id\":\"nhi_grants_c_1ae059e412999fcc11865e1b25356570\",\"issued_at\":1793572441,\"expires_at\":1793572741}\n"
+    },
+    "wait_final": {
+      "event": "obtained",
+      "send_ns": 1793572446002835618,
+      "recv_ns": 1793572446003466851,
+      "last_miss_send_ns": 1793572445982410918,
+      "last_miss_recv_ns": 1793572445982721759,
+      "spiffe_ids": [
+        "spiffe://lab.local/agent/parent/exp-root/child/v2s-54a942-03"
+      ],
+      "not_after": "2026-11-01T22:39:05Z",
+      "miss_reasons": {
+        "rpc error: code = PermissionDenied desc = no identity issued": 253
+      },
+      "attempts": 254,
+      "misses": 253,
+      "gap_mean_ns": 20495864,
+      "gap_max_ns": 21055332,
+      "latency_mean_ns": 448008,
+      "latency_max_ns": 2087228
+    },
+    "dispose": 200,
+    "audit_vend_allow": {
+      "timestamp": "2026-11-01T22:34:01.094208635Z",
+      "stage": "vend",
+      "chain_id": "c_1ae059e412999fcc11865e1b25356570",
+      "actor_spiffe_id": "spiffe://lab.local/agent/parent/exp-root",
+      "outcome": "allow",
+      "detail": {
+        "parent_spiffe_id": "spiffe://lab.local/agent/parent/exp-root",
+        "child_spiffe_id": "spiffe://lab.local/agent/parent/exp-root/child/v2s-54a942-03",
+        "requested_scopes": [
+          "resource:read:datasetA"
+        ],
+        "child_scopes": [
+          "resource:read:datasetA"
+        ],
+        "policy_id": "nhi_grants_c_1ae059e412999fcc11865e1b25356570",
+        "entry_id": "92922f00-e9c4-40db-86d4-f27c2ea48708",
+        "expires_at": 1793572741,
+        "task_context": "vend to svid"
+      }
+    },
+    "audit_attest_allow": {
+      "timestamp": "2026-11-01T22:34:01.081509546Z",
+      "stage": "attest",
+      "chain_id": "",
+      "actor_spiffe_id": "spiffe://lab.local/agent/parent/exp-root",
+      "outcome": "allow",
+      "detail": {
+        "parent_spiffe_id": "spiffe://lab.local/agent/parent/exp-root",
+        "reason": "JWT-SVID, manifest signature, nonce and child_selectors all verified"
+      }
+    },
+    "agent_log": {
+      "ns": 1793572445992774889,
+      "line": "time=\"2026-11-01T22:34:05Z\" level=info msg=\"Creating X509-SVID\" entry_id=92922f00-e9c4-40db-86d4-f27c2ea48708 spiffe_id=\"spiffe://lab.local/agent/parent/exp-root/child/v2s-54a942-03\" subsystem_name=manager"
+    }
+  },
+  {
+    "trial": 4,
+    "wait_ready": {
+      "event": "ready",
+      "send_ns": 1793572454589066290,
+      "recv_ns": 1793572454591443380,
+      "miss_reason": "rpc error: code = PermissionDenied desc = no identity issued"
+    },
+    "vend": {
+      "status": 201,
+      "send_ns": 1793572454845505761,
+      "recv_ns": 1793572454866896394,
+      "round_trip_ns": 21390633,
+      "response": "{\"chain_id\":\"c_eee040fcb42c48408604485e19a13ab3\",\"parent_spiffe_id\":\"spiffe://lab.local/agent/parent/exp-root\",\"child_spiffe_id\":\"spiffe://lab.local/agent/parent/exp-root/child/v2s-54a942-04\",\"child_scopes\":[\"resource:read:datasetA\"],\"entry_id\":\"44450a55-d1a6-4e4d-b8a7-223ec566fc35\",\"policy_id\":\"nhi_grants_c_eee040fcb42c48408604485e19a13ab3\",\"issued_at\":1793572454,\"expires_at\":1793572754}\n"
+    },
+    "wait_final": {
+      "event": "obtained",
+      "send_ns": 1793572461067198183,
+      "recv_ns": 1793572461067662054,
+      "last_miss_send_ns": 1793572461046685963,
+      "last_miss_recv_ns": 1793572461047076944,
+      "spiffe_ids": [
+        "spiffe://lab.local/agent/parent/exp-root/child/v2s-54a942-04"
+      ],
+      "not_after": "2026-11-01T22:39:21Z",
+      "miss_reasons": {
+        "rpc error: code = PermissionDenied desc = no identity issued": 316
+      },
+      "attempts": 317,
+      "misses": 316,
+      "gap_mean_ns": 20500417,
+      "gap_max_ns": 21053322,
+      "latency_mean_ns": 439412,
+      "latency_max_ns": 2377100
+    },
+    "dispose": 200,
+    "audit_vend_allow": {
+      "timestamp": "2026-11-01T22:34:14.866802184Z",
+      "stage": "vend",
+      "chain_id": "c_eee040fcb42c48408604485e19a13ab3",
+      "actor_spiffe_id": "spiffe://lab.local/agent/parent/exp-root",
+      "outcome": "allow",
+      "detail": {
+        "parent_spiffe_id": "spiffe://lab.local/agent/parent/exp-root",
+        "child_spiffe_id": "spiffe://lab.local/agent/parent/exp-root/child/v2s-54a942-04",
+        "requested_scopes": [
+          "resource:read:datasetA"
+        ],
+        "child_scopes": [
+          "resource:read:datasetA"
+        ],
+        "policy_id": "nhi_grants_c_eee040fcb42c48408604485e19a13ab3",
+        "entry_id": "44450a55-d1a6-4e4d-b8a7-223ec566fc35",
+        "expires_at": 1793572754,
+        "task_context": "vend to svid"
+      }
+    },
+    "audit_attest_allow": {
+      "timestamp": "2026-11-01T22:34:14.85548124Z",
+      "stage": "attest",
+      "chain_id": "",
+      "actor_spiffe_id": "spiffe://lab.local/agent/parent/exp-root",
+      "outcome": "allow",
+      "detail": {
+        "parent_spiffe_id": "spiffe://lab.local/agent/parent/exp-root",
+        "reason": "JWT-SVID, manifest signature, nonce and child_selectors all verified"
+      }
+    },
+    "agent_log": {
+      "ns": 1793572461061078309,
+      "line": "time=\"2026-11-01T22:34:21Z\" level=info msg=\"Creating X509-SVID\" entry_id=44450a55-d1a6-4e4d-b8a7-223ec566fc35 spiffe_id=\"spiffe://lab.local/agent/parent/exp-root/child/v2s-54a942-04\" subsystem_name=manager"
+    }
+  },
+  {
+    "trial": 5,
+    "wait_ready": {
+      "event": "ready",
+      "send_ns": 1793572469374842377,
+      "recv_ns": 1793572469376972305,
+      "miss_reason": "rpc error: code = PermissionDenied desc = no identity issued"
+    },
+    "vend": {
+      "status": 201,
+      "send_ns": 1793572469626947467,
+      "recv_ns": 1793572469645022447,
+      "round_trip_ns": 18074980,
+      "response": "{\"chain_id\":\"c_37ec8609b04e1a7dcac480587f953a4e\",\"parent_spiffe_id\":\"spiffe://lab.local/agent/parent/exp-root\",\"child_spiffe_id\":\"spiffe://lab.local/agent/parent/exp-root/child/v2s-54a942-05\",\"child_scopes\":[\"resource:read:datasetA\"],\"entry_id\":\"62073cd8-c3dc-4c7e-9af1-9cebc30c4a08\",\"policy_id\":\"nhi_grants_c_37ec8609b04e1a7dcac480587f953a4e\",\"issued_at\":1793572469,\"expires_at\":1793572769}\n"
+    },
+    "wait_final": {
+      "event": "obtained",
+      "send_ns": 1793572475618669819,
+      "recv_ns": 1793572475619223561,
+      "last_miss_send_ns": 1793572475598104829,
+      "last_miss_recv_ns": 1793572475598557871,
+      "spiffe_ids": [
+        "spiffe://lab.local/agent/parent/exp-root/child/v2s-54a942-05"
+      ],
+      "not_after": "2026-11-01T22:39:35Z",
+      "miss_reasons": {
+        "rpc error: code = PermissionDenied desc = no identity issued": 305
+      },
+      "attempts": 306,
+      "misses": 305,
+      "gap_mean_ns": 20471565,
+      "gap_max_ns": 21039581,
+      "latency_mean_ns": 439747,
+      "latency_max_ns": 2174399
+    },
+    "dispose": 200,
+    "audit_vend_allow": {
+      "timestamp": "2026-11-01T22:34:29.644966617Z",
+      "stage": "vend",
+      "chain_id": "c_37ec8609b04e1a7dcac480587f953a4e",
+      "actor_spiffe_id": "spiffe://lab.local/agent/parent/exp-root",
+      "outcome": "allow",
+      "detail": {
+        "parent_spiffe_id": "spiffe://lab.local/agent/parent/exp-root",
+        "child_spiffe_id": "spiffe://lab.local/agent/parent/exp-root/child/v2s-54a942-05",
+        "requested_scopes": [
+          "resource:read:datasetA"
+        ],
+        "child_scopes": [
+          "resource:read:datasetA"
+        ],
+        "policy_id": "nhi_grants_c_37ec8609b04e1a7dcac480587f953a4e",
+        "entry_id": "62073cd8-c3dc-4c7e-9af1-9cebc30c4a08",
+        "expires_at": 1793572769,
+        "task_context": "vend to svid"
+      }
+    },
+    "audit_attest_allow": {
+      "timestamp": "2026-11-01T22:34:29.635720011Z",
+      "stage": "attest",
+      "chain_id": "",
+      "actor_spiffe_id": "spiffe://lab.local/agent/parent/exp-root",
+      "outcome": "allow",
+      "detail": {
+        "parent_spiffe_id": "spiffe://lab.local/agent/parent/exp-root",
+        "reason": "JWT-SVID, manifest signature, nonce and child_selectors all verified"
+      }
+    },
+    "agent_log": {
+      "ns": 1793572475612688526,
+      "line": "time=\"2026-11-01T22:34:35Z\" level=info msg=\"Creating X509-SVID\" entry_id=62073cd8-c3dc-4c7e-9af1-9cebc30c4a08 spiffe_id=\"spiffe://lab.local/agent/parent/exp-root/child/v2s-54a942-05\" subsystem_name=manager"
+    }
+  },
+  {
+    "trial": 6,
+    "wait_ready": {
+      "event": "ready",
+      "send_ns": 1793572481510767291,
+      "recv_ns": 1793572481512284857,
+      "miss_reason": "rpc error: code = PermissionDenied desc = no identity issued"
+    },
+    "vend": {
+      "status": 201,
+      "send_ns": 1793572481761590453,
+      "recv_ns": 1793572481782843755,
+      "round_trip_ns": 21253302,
+      "response": "{\"chain_id\":\"c_6cc4a47bfc524af2a369aea918bc3981\",\"parent_spiffe_id\":\"spiffe://lab.local/agent/parent/exp-root\",\"child_spiffe_id\":\"spiffe://lab.local/agent/parent/exp-root/child/v2s-54a942-06\",\"child_scopes\":[\"resource:read:datasetA\"],\"entry_id\":\"ee464763-97bb-4523-a7d8-ff2f17b48333\",\"policy_id\":\"nhi_grants_c_6cc4a47bfc524af2a369aea918bc3981\",\"issued_at\":1793572481,\"expires_at\":1793572781}\n"
+    },
+    "wait_final": {
+      "event": "obtained",
+      "send_ns": 1793572485424383632,
+      "recv_ns": 1793572485424841903,
+      "last_miss_send_ns": 1793572485403997083,
+      "last_miss_recv_ns": 1793572485404260544,
+      "spiffe_ids": [
+        "spiffe://lab.local/agent/parent/exp-root/child/v2s-54a942-06"
+      ],
+      "not_after": "2026-11-01T22:39:45Z",
+      "miss_reasons": {
+        "rpc error: code = PermissionDenied desc = no identity issued": 191
+      },
+      "attempts": 192,
+      "misses": 191,
+      "gap_mean_ns": 20490138,
+      "gap_max_ns": 21037402,
+      "latency_mean_ns": 437606,
+      "latency_max_ns": 1710876
+    },
+    "dispose": 200,
+    "audit_vend_allow": {
+      "timestamp": "2026-11-01T22:34:41.782765615Z",
+      "stage": "vend",
+      "chain_id": "c_6cc4a47bfc524af2a369aea918bc3981",
+      "actor_spiffe_id": "spiffe://lab.local/agent/parent/exp-root",
+      "outcome": "allow",
+      "detail": {
+        "parent_spiffe_id": "spiffe://lab.local/agent/parent/exp-root",
+        "child_spiffe_id": "spiffe://lab.local/agent/parent/exp-root/child/v2s-54a942-06",
+        "requested_scopes": [
+          "resource:read:datasetA"
+        ],
+        "child_scopes": [
+          "resource:read:datasetA"
+        ],
+        "policy_id": "nhi_grants_c_6cc4a47bfc524af2a369aea918bc3981",
+        "entry_id": "ee464763-97bb-4523-a7d8-ff2f17b48333",
+        "expires_at": 1793572781,
+        "task_context": "vend to svid"
+      }
+    },
+    "audit_attest_allow": {
+      "timestamp": "2026-11-01T22:34:41.77108721Z",
+      "stage": "attest",
+      "chain_id": "",
+      "actor_spiffe_id": "spiffe://lab.local/agent/parent/exp-root",
+      "outcome": "allow",
+      "detail": {
+        "parent_spiffe_id": "spiffe://lab.local/agent/parent/exp-root",
+        "reason": "JWT-SVID, manifest signature, nonce and child_selectors all verified"
+      }
+    },
+    "agent_log": {
+      "ns": 1793572485409609794,
+      "line": "time=\"2026-11-01T22:34:45Z\" level=info msg=\"Creating X509-SVID\" entry_id=ee464763-97bb-4523-a7d8-ff2f17b48333 spiffe_id=\"spiffe://lab.local/agent/parent/exp-root/child/v2s-54a942-06\" subsystem_name=manager"
+    }
+  },
+  {
+    "trial": 7,
+    "wait_ready": {
+      "event": "ready",
+      "send_ns": 1793572494885010934,
+      "recv_ns": 1793572494887294023,
+      "miss_reason": "rpc error: code = PermissionDenied desc = no identity issued"
+    },
+    "vend": {
+      "status": 201,
+      "send_ns": 1793572495135164750,
+      "recv_ns": 1793572495154259194,
+      "round_trip_ns": 19094444,
+      "response": "{\"chain_id\":\"c_6b5870c5343d72c96ca3a8dab10b2bf3\",\"parent_spiffe_id\":\"spiffe://lab.local/agent/parent/exp-root\",\"child_spiffe_id\":\"spiffe://lab.local/agent/parent/exp-root/child/v2s-54a942-07\",\"child_scopes\":[\"resource:read:datasetA\"],\"entry_id\":\"6b75297e-9839-49c4-95b0-d855e72a2158\",\"policy_id\":\"nhi_grants_c_6b5870c5343d72c96ca3a8dab10b2bf3\",\"issued_at\":1793572495,\"expires_at\":1793572795}\n"
+    },
+    "wait_final": {
+      "event": "obtained",
+      "send_ns": 1793572500174347577,
+      "recv_ns": 1793572500174807698,
+      "last_miss_send_ns": 1793572500153914078,
+      "last_miss_recv_ns": 1793572500154225119,
+      "spiffe_ids": [
+        "spiffe://lab.local/agent/parent/exp-root/child/v2s-54a942-07"
+      ],
+      "not_after": "2026-11-01T22:40:00Z",
+      "miss_reasons": {
+        "rpc error: code = PermissionDenied desc = no identity issued": 258
+      },
+      "attempts": 259,
+      "misses": 258,
+      "gap_mean_ns": 20501304,
+      "gap_max_ns": 21029961,
+      "latency_mean_ns": 436399,
+      "latency_max_ns": 2283079
+    },
+    "dispose": 200,
+    "audit_vend_allow": {
+      "timestamp": "2026-11-01T22:34:55.154199664Z",
+      "stage": "vend",
+      "chain_id": "c_6b5870c5343d72c96ca3a8dab10b2bf3",
+      "actor_spiffe_id": "spiffe://lab.local/agent/parent/exp-root",
+      "outcome": "allow",
+      "detail": {
+        "parent_spiffe_id": "spiffe://lab.local/agent/parent/exp-root",
+        "child_spiffe_id": "spiffe://lab.local/agent/parent/exp-root/child/v2s-54a942-07",
+        "requested_scopes": [
+          "resource:read:datasetA"
+        ],
+        "child_scopes": [
+          "resource:read:datasetA"
+        ],
+        "policy_id": "nhi_grants_c_6b5870c5343d72c96ca3a8dab10b2bf3",
+        "entry_id": "6b75297e-9839-49c4-95b0-d855e72a2158",
+        "expires_at": 1793572795,
+        "task_context": "vend to svid"
+      }
+    },
+    "audit_attest_allow": {
+      "timestamp": "2026-11-01T22:34:55.144534986Z",
+      "stage": "attest",
+      "chain_id": "",
+      "actor_spiffe_id": "spiffe://lab.local/agent/parent/exp-root",
+      "outcome": "allow",
+      "detail": {
+        "parent_spiffe_id": "spiffe://lab.local/agent/parent/exp-root",
+        "reason": "JWT-SVID, manifest signature, nonce and child_selectors all verified"
+      }
+    },
+    "agent_log": {
+      "ns": 1793572500163462575,
+      "line": "time=\"2026-11-01T22:35:00Z\" level=info msg=\"Creating X509-SVID\" entry_id=6b75297e-9839-49c4-95b0-d855e72a2158 spiffe_id=\"spiffe://lab.local/agent/parent/exp-root/child/v2s-54a942-07\" subsystem_name=manager"
+    }
+  },
+  {
+    "trial": 8,
+    "wait_ready": {
+      "event": "ready",
+      "send_ns": 1793572507645921713,
+      "recv_ns": 1793572507647717540,
+      "miss_reason": "rpc error: code = PermissionDenied desc = no identity issued"
+    },
+    "vend": {
+      "status": 201,
+      "send_ns": 1793572507895471765,
+      "recv_ns": 1793572507915927753,
+      "round_trip_ns": 20455988,
+      "response": "{\"chain_id\":\"c_2731712f2621731a825c437c02871b67\",\"parent_spiffe_id\":\"spiffe://lab.local/agent/parent/exp-root\",\"child_spiffe_id\":\"spiffe://lab.local/agent/parent/exp-root/child/v2s-54a942-08\",\"child_scopes\":[\"resource:read:datasetA\"],\"entry_id\":\"2e4f15ce-63ee-425c-bef6-5eb2a76a8d33\",\"policy_id\":\"nhi_grants_c_2731712f2621731a825c437c02871b67\",\"issued_at\":1793572507,\"expires_at\":1793572807}\n"
+    },
+    "wait_final": {
+      "event": "obtained",
+      "send_ns": 1793572509429505823,
+      "recv_ns": 1793572509430031895,
+      "last_miss_send_ns": 1793572509409076194,
+      "last_miss_recv_ns": 1793572509409395725,
+      "spiffe_ids": [
+        "spiffe://lab.local/agent/parent/exp-root/child/v2s-54a942-08"
+      ],
+      "not_after": "2026-11-01T22:40:09Z",
+      "miss_reasons": {
+        "rpc error: code = PermissionDenied desc = no identity issued": 87
+      },
+      "attempts": 88,
+      "misses": 87,
+      "gap_mean_ns": 20500966,
+      "gap_max_ns": 20970250,
+      "latency_mean_ns": 455027,
+      "latency_max_ns": 1795827
+    },
+    "dispose": 200,
+    "audit_vend_allow": {
+      "timestamp": "2026-11-01T22:35:07.915874003Z",
+      "stage": "vend",
+      "chain_id": "c_2731712f2621731a825c437c02871b67",
+      "actor_spiffe_id": "spiffe://lab.local/agent/parent/exp-root",
+      "outcome": "allow",
+      "detail": {
+        "parent_spiffe_id": "spiffe://lab.local/agent/parent/exp-root",
+        "child_spiffe_id": "spiffe://lab.local/agent/parent/exp-root/child/v2s-54a942-08",
+        "requested_scopes": [
+          "resource:read:datasetA"
+        ],
+        "child_scopes": [
+          "resource:read:datasetA"
+        ],
+        "policy_id": "nhi_grants_c_2731712f2621731a825c437c02871b67",
+        "entry_id": "2e4f15ce-63ee-425c-bef6-5eb2a76a8d33",
+        "expires_at": 1793572807,
+        "task_context": "vend to svid"
+      }
+    },
+    "audit_attest_allow": {
+      "timestamp": "2026-11-01T22:35:07.905407153Z",
+      "stage": "attest",
+      "chain_id": "",
+      "actor_spiffe_id": "spiffe://lab.local/agent/parent/exp-root",
+      "outcome": "allow",
+      "detail": {
+        "parent_spiffe_id": "spiffe://lab.local/agent/parent/exp-root",
+        "reason": "JWT-SVID, manifest signature, nonce and child_selectors all verified"
+      }
+    },
+    "agent_log": {
+      "ns": 1793572509413410831,
+      "line": "time=\"2026-11-01T22:35:09Z\" level=info msg=\"Creating X509-SVID\" entry_id=2e4f15ce-63ee-425c-bef6-5eb2a76a8d33 spiffe_id=\"spiffe://lab.local/agent/parent/exp-root/child/v2s-54a942-08\" subsystem_name=manager"
+    }
+  },
+  {
+    "trial": 9,
+    "wait_ready": {
+      "event": "ready",
+      "send_ns": 1793572517952402750,
+      "recv_ns": 1793572517953879876,
+      "miss_reason": "rpc error: code = PermissionDenied desc = no identity issued"
+    },
+    "vend": {
+      "status": 201,
+      "send_ns": 1793572518202776092,
+      "recv_ns": 1793572518223023050,
+      "round_trip_ns": 20246958,
+      "response": "{\"chain_id\":\"c_af6258db13174835abd08f2fd3dc6072\",\"parent_spiffe_id\":\"spiffe://lab.local/agent/parent/exp-root\",\"child_spiffe_id\":\"spiffe://lab.local/agent/parent/exp-root/child/v2s-54a942-09\",\"child_scopes\":[\"resource:read:datasetA\"],\"entry_id\":\"02931d6a-623d-4430-a6dc-9f2820f8d9fe\",\"policy_id\":\"nhi_grants_c_af6258db13174835abd08f2fd3dc6072\",\"issued_at\":1793572518,\"expires_at\":1793572818}\n"
+    },
+    "wait_final": {
+      "event": "obtained",
+      "send_ns": 1793572520225783355,
+      "recv_ns": 1793572520226332577,
+      "last_miss_send_ns": 1793572520205237896,
+      "last_miss_recv_ns": 1793572520205671088,
+      "spiffe_ids": [
+        "spiffe://lab.local/agent/parent/exp-root/child/v2s-54a942-09"
+      ],
+      "not_after": "2026-11-01T22:40:20Z",
+      "miss_reasons": {
+        "rpc error: code = PermissionDenied desc = no identity issued": 111
+      },
+      "attempts": 112,
+      "misses": 111,
+      "gap_mean_ns": 20480906,
+      "gap_max_ns": 21005081,
+      "latency_mean_ns": 432232,
+      "latency_max_ns": 1477116
+    },
+    "dispose": 200,
+    "audit_vend_allow": {
+      "timestamp": "2026-11-01T22:35:18.22297426Z",
+      "stage": "vend",
+      "chain_id": "c_af6258db13174835abd08f2fd3dc6072",
+      "actor_spiffe_id": "spiffe://lab.local/agent/parent/exp-root",
+      "outcome": "allow",
+      "detail": {
+        "parent_spiffe_id": "spiffe://lab.local/agent/parent/exp-root",
+        "child_spiffe_id": "spiffe://lab.local/agent/parent/exp-root/child/v2s-54a942-09",
+        "requested_scopes": [
+          "resource:read:datasetA"
+        ],
+        "child_scopes": [
+          "resource:read:datasetA"
+        ],
+        "policy_id": "nhi_grants_c_af6258db13174835abd08f2fd3dc6072",
+        "entry_id": "02931d6a-623d-4430-a6dc-9f2820f8d9fe",
+        "expires_at": 1793572818,
+        "task_context": "vend to svid"
+      }
+    },
+    "audit_attest_allow": {
+      "timestamp": "2026-11-01T22:35:18.212429369Z",
+      "stage": "attest",
+      "chain_id": "",
+      "actor_spiffe_id": "spiffe://lab.local/agent/parent/exp-root",
+      "outcome": "allow",
+      "detail": {
+        "parent_spiffe_id": "spiffe://lab.local/agent/parent/exp-root",
+        "reason": "JWT-SVID, manifest signature, nonce and child_selectors all verified"
+      }
+    },
+    "agent_log": {
+      "ns": 1793572520219670141,
+      "line": "time=\"2026-11-01T22:35:20Z\" level=info msg=\"Creating X509-SVID\" entry_id=02931d6a-623d-4430-a6dc-9f2820f8d9fe spiffe_id=\"spiffe://lab.local/agent/parent/exp-root/child/v2s-54a942-09\" subsystem_name=manager"
+    }
+  },
+  {
+    "trial": 10,
+    "wait_ready": {
+      "event": "ready",
+      "send_ns": 1793572527458549436,
+      "recv_ns": 1793572527460111352,
+      "miss_reason": "rpc error: code = PermissionDenied desc = no identity issued"
+    },
+    "vend": {
+      "status": 201,
+      "send_ns": 1793572527707647032,
+      "recv_ns": 1793572527727890489,
+      "round_trip_ns": 20243457,
+      "response": "{\"chain_id\":\"c_33931b06ac4ed4ad270a73fd2bc2c520\",\"parent_spiffe_id\":\"spiffe://lab.local/agent/parent/exp-root\",\"child_spiffe_id\":\"spiffe://lab.local/agent/parent/exp-root/child/v2s-54a942-10\",\"child_scopes\":[\"resource:read:datasetA\"],\"entry_id\":\"3e8695a8-c118-4866-9b7d-8539f765bdad\",\"policy_id\":\"nhi_grants_c_33931b06ac4ed4ad270a73fd2bc2c520\",\"issued_at\":1793572527,\"expires_at\":1793572827}\n"
+    },
+    "wait_final": {
+      "event": "obtained",
+      "send_ns": 1793572530120758923,
+      "recv_ns": 1793572530122865871,
+      "last_miss_send_ns": 1793572530100373905,
+      "last_miss_recv_ns": 1793572530100645036,
+      "spiffe_ids": [
+        "spiffe://lab.local/agent/parent/exp-root/child/v2s-54a942-10"
+      ],
+      "not_after": "2026-11-01T22:40:30Z",
+      "miss_reasons": {
+        "rpc error: code = PermissionDenied desc = no identity issued": 130
+      },
+      "attempts": 131,
+      "misses": 130,
+      "gap_mean_ns": 20478534,
+      "gap_max_ns": 21013970,
+      "latency_mean_ns": 448894,
+      "latency_max_ns": 2106948
+    },
+    "dispose": 200,
+    "audit_vend_allow": {
+      "timestamp": "2026-11-01T22:35:27.727835969Z",
+      "stage": "vend",
+      "chain_id": "c_33931b06ac4ed4ad270a73fd2bc2c520",
+      "actor_spiffe_id": "spiffe://lab.local/agent/parent/exp-root",
+      "outcome": "allow",
+      "detail": {
+        "parent_spiffe_id": "spiffe://lab.local/agent/parent/exp-root",
+        "child_spiffe_id": "spiffe://lab.local/agent/parent/exp-root/child/v2s-54a942-10",
+        "requested_scopes": [
+          "resource:read:datasetA"
+        ],
+        "child_scopes": [
+          "resource:read:datasetA"
+        ],
+        "policy_id": "nhi_grants_c_33931b06ac4ed4ad270a73fd2bc2c520",
+        "entry_id": "3e8695a8-c118-4866-9b7d-8539f765bdad",
+        "expires_at": 1793572827,
+        "task_context": "vend to svid"
+      }
+    },
+    "audit_attest_allow": {
+      "timestamp": "2026-11-01T22:35:27.717507369Z",
+      "stage": "attest",
+      "chain_id": "",
+      "actor_spiffe_id": "spiffe://lab.local/agent/parent/exp-root",
+      "outcome": "allow",
+      "detail": {
+        "parent_spiffe_id": "spiffe://lab.local/agent/parent/exp-root",
+        "reason": "JWT-SVID, manifest signature, nonce and child_selectors all verified"
+      }
+    },
+    "agent_log": {
+      "ns": 1793572530102601184,
+      "line": "time=\"2026-11-01T22:35:30Z\" level=info msg=\"Creating X509-SVID\" entry_id=3e8695a8-c118-4866-9b7d-8539f765bdad spiffe_id=\"spiffe://lab.local/agent/parent/exp-root/child/v2s-54a942-10\" subsystem_name=manager"
+    }
+  },
+  {
+    "trial": 11,
+    "wait_ready": {
+      "event": "ready",
+      "send_ns": 1793572540160241102,
+      "recv_ns": 1793572540161795538,
+      "miss_reason": "rpc error: code = PermissionDenied desc = no identity issued"
+    },
+    "vend": {
+      "status": 201,
+      "send_ns": 1793572540409180034,
+      "recv_ns": 1793572540429744363,
+      "round_trip_ns": 20564329,
+      "response": "{\"chain_id\":\"c_6fc6e1ce23fe72d437ec1822abf52c3a\",\"parent_spiffe_id\":\"spiffe://lab.local/agent/parent/exp-root\",\"child_spiffe_id\":\"spiffe://lab.local/agent/parent/exp-root/child/v2s-54a942-11\",\"child_scopes\":[\"resource:read:datasetA\"],\"entry_id\":\"05a5d7dc-734c-4ffa-8e2c-4e4bb5ac8ffa\",\"policy_id\":\"nhi_grants_c_6fc6e1ce23fe72d437ec1822abf52c3a\",\"issued_at\":1793572540,\"expires_at\":1793572840}\n"
+    },
+    "wait_final": {
+      "event": "obtained",
+      "send_ns": 1793572545634810308,
+      "recv_ns": 1793572545635656051,
+      "last_miss_send_ns": 1793572545614399260,
+      "last_miss_recv_ns": 1793572545614700441,
+      "spiffe_ids": [
+        "spiffe://lab.local/agent/parent/exp-root/child/v2s-54a942-11"
+      ],
+      "not_after": "2026-11-01T22:40:45Z",
+      "miss_reasons": {
+        "rpc error: code = PermissionDenied desc = no identity issued": 267
+      },
+      "attempts": 268,
+      "misses": 267,
+      "gap_mean_ns": 20504004,
+      "gap_max_ns": 21044011,
+      "latency_mean_ns": 430177,
+      "latency_max_ns": 1554436
+    },
+    "dispose": 200,
+    "audit_vend_allow": {
+      "timestamp": "2026-11-01T22:35:40.429694703Z",
+      "stage": "vend",
+      "chain_id": "c_6fc6e1ce23fe72d437ec1822abf52c3a",
+      "actor_spiffe_id": "spiffe://lab.local/agent/parent/exp-root",
+      "outcome": "allow",
+      "detail": {
+        "parent_spiffe_id": "spiffe://lab.local/agent/parent/exp-root",
+        "child_spiffe_id": "spiffe://lab.local/agent/parent/exp-root/child/v2s-54a942-11",
+        "requested_scopes": [
+          "resource:read:datasetA"
+        ],
+        "child_scopes": [
+          "resource:read:datasetA"
+        ],
+        "policy_id": "nhi_grants_c_6fc6e1ce23fe72d437ec1822abf52c3a",
+        "entry_id": "05a5d7dc-734c-4ffa-8e2c-4e4bb5ac8ffa",
+        "expires_at": 1793572840,
+        "task_context": "vend to svid"
+      }
+    },
+    "audit_attest_allow": {
+      "timestamp": "2026-11-01T22:35:40.419248583Z",
+      "stage": "attest",
+      "chain_id": "",
+      "actor_spiffe_id": "spiffe://lab.local/agent/parent/exp-root",
+      "outcome": "allow",
+      "detail": {
+        "parent_spiffe_id": "spiffe://lab.local/agent/parent/exp-root",
+        "reason": "JWT-SVID, manifest signature, nonce and child_selectors all verified"
+      }
+    },
+    "agent_log": {
+      "ns": 1793572545624784830,
+      "line": "time=\"2026-11-01T22:35:45Z\" level=info msg=\"Creating X509-SVID\" entry_id=05a5d7dc-734c-4ffa-8e2c-4e4bb5ac8ffa spiffe_id=\"spiffe://lab.local/agent/parent/exp-root/child/v2s-54a942-11\" subsystem_name=manager"
+    }
+  },
+  {
+    "trial": 12,
+    "wait_ready": {
+      "event": "ready",
+      "send_ns": 1793572553028538471,
+      "recv_ns": 1793572553029962267,
+      "miss_reason": "rpc error: code = PermissionDenied desc = no identity issued"
+    },
+    "vend": {
+      "status": 201,
+      "send_ns": 1793572553277566921,
+      "recv_ns": 1793572553295729940,
+      "round_trip_ns": 18163019,
+      "response": "{\"chain_id\":\"c_eeb6ad86e2b2e7be96d0f66d8189a4d5\",\"parent_spiffe_id\":\"spiffe://lab.local/agent/parent/exp-root\",\"child_spiffe_id\":\"spiffe://lab.local/agent/parent/exp-root/child/v2s-54a942-12\",\"child_scopes\":[\"resource:read:datasetA\"],\"entry_id\":\"17b55a0c-e1a4-4feb-ae7a-374c24a60e41\",\"policy_id\":\"nhi_grants_c_eeb6ad86e2b2e7be96d0f66d8189a4d5\",\"issued_at\":1793572553,\"expires_at\":1793572853}\n"
+    },
+    "wait_final": {
+      "event": "obtained",
+      "send_ns": 1793572555241444410,
+      "recv_ns": 1793572555242046002,
+      "last_miss_send_ns": 1793572555220856801,
+      "last_miss_recv_ns": 1793572555221322733,
+      "spiffe_ids": [
+        "spiffe://lab.local/agent/parent/exp-root/child/v2s-54a942-12"
+      ],
+      "not_after": "2026-11-01T22:40:55Z",
+      "miss_reasons": {
+        "rpc error: code = PermissionDenied desc = no identity issued": 108
+      },
+      "attempts": 109,
+      "misses": 108,
+      "gap_mean_ns": 20489869,
+      "gap_max_ns": 21039531,
+      "latency_mean_ns": 440161,
+      "latency_max_ns": 1478536
+    },
+    "dispose": 200,
+    "audit_vend_allow": {
+      "timestamp": "2026-11-01T22:35:53.29566591Z",
+      "stage": "vend",
+      "chain_id": "c_eeb6ad86e2b2e7be96d0f66d8189a4d5",
+      "actor_spiffe_id": "spiffe://lab.local/agent/parent/exp-root",
+      "outcome": "allow",
+      "detail": {
+        "parent_spiffe_id": "spiffe://lab.local/agent/parent/exp-root",
+        "child_spiffe_id": "spiffe://lab.local/agent/parent/exp-root/child/v2s-54a942-12",
+        "requested_scopes": [
+          "resource:read:datasetA"
+        ],
+        "child_scopes": [
+          "resource:read:datasetA"
+        ],
+        "policy_id": "nhi_grants_c_eeb6ad86e2b2e7be96d0f66d8189a4d5",
+        "entry_id": "17b55a0c-e1a4-4feb-ae7a-374c24a60e41",
+        "expires_at": 1793572853,
+        "task_context": "vend to svid"
+      }
+    },
+    "audit_attest_allow": {
+      "timestamp": "2026-11-01T22:35:53.286327474Z",
+      "stage": "attest",
+      "chain_id": "",
+      "actor_spiffe_id": "spiffe://lab.local/agent/parent/exp-root",
+      "outcome": "allow",
+      "detail": {
+        "parent_spiffe_id": "spiffe://lab.local/agent/parent/exp-root",
+        "reason": "JWT-SVID, manifest signature, nonce and child_selectors all verified"
+      }
+    },
+    "agent_log": {
+      "ns": 1793572555227435866,
+      "line": "time=\"2026-11-01T22:35:55Z\" level=info msg=\"Creating X509-SVID\" entry_id=17b55a0c-e1a4-4feb-ae7a-374c24a60e41 spiffe_id=\"spiffe://lab.local/agent/parent/exp-root/child/v2s-54a942-12\" subsystem_name=manager"
+    }
+  },
+  {
+    "trial": 13,
+    "wait_ready": {
+      "event": "ready",
+      "send_ns": 1793572562596129427,
+      "recv_ns": 1793572562598187735,
+      "miss_reason": "rpc error: code = PermissionDenied desc = no identity issued"
+    },
+    "vend": {
+      "status": 201,
+      "send_ns": 1793572562845949198,
+      "recv_ns": 1793572562865838694,
+      "round_trip_ns": 19889496,
+      "response": "{\"chain_id\":\"c_845e484abfe36a05d947f89c4a24069a\",\"parent_spiffe_id\":\"spiffe://lab.local/agent/parent/exp-root\",\"child_spiffe_id\":\"spiffe://lab.local/agent/parent/exp-root/child/v2s-54a942-13\",\"child_scopes\":[\"resource:read:datasetA\"],\"entry_id\":\"3d012f85-56b3-4753-b73b-082a20cbbb0d\",\"policy_id\":\"nhi_grants_c_845e484abfe36a05d947f89c4a24069a\",\"issued_at\":1793572562,\"expires_at\":1793572862}\n"
+    },
+    "wait_final": {
+      "event": "obtained",
+      "send_ns": 1793572565196430763,
+      "recv_ns": 1793572565721894792,
+      "last_miss_send_ns": 1793572565176051625,
+      "last_miss_recv_ns": 1793572565176317216,
+      "spiffe_ids": [
+        "spiffe://lab.local/agent/parent/exp-root/child/v2s-54a942-13"
+      ],
+      "not_after": "2026-11-01T22:41:05Z",
+      "miss_reasons": {
+        "rpc error: code = PermissionDenied desc = no identity issued": 127
+      },
+      "attempts": 128,
+      "misses": 127,
+      "gap_mean_ns": 20474813,
+      "gap_max_ns": 20998580,
+      "latency_mean_ns": 4531848,
+      "latency_max_ns": 525464039
+    },
+    "dispose": 200,
+    "audit_vend_allow": {
+      "timestamp": "2026-11-01T22:36:02.865776194Z",
+      "stage": "vend",
+      "chain_id": "c_845e484abfe36a05d947f89c4a24069a",
+      "actor_spiffe_id": "spiffe://lab.local/agent/parent/exp-root",
+      "outcome": "allow",
+      "detail": {
+        "parent_spiffe_id": "spiffe://lab.local/agent/parent/exp-root",
+        "child_spiffe_id": "spiffe://lab.local/agent/parent/exp-root/child/v2s-54a942-13",
+        "requested_scopes": [
+          "resource:read:datasetA"
+        ],
+        "child_scopes": [
+          "resource:read:datasetA"
+        ],
+        "policy_id": "nhi_grants_c_845e484abfe36a05d947f89c4a24069a",
+        "entry_id": "3d012f85-56b3-4753-b73b-082a20cbbb0d",
+        "expires_at": 1793572862,
+        "task_context": "vend to svid"
+      }
+    },
+    "audit_attest_allow": {
+      "timestamp": "2026-11-01T22:36:02.855410944Z",
+      "stage": "attest",
+      "chain_id": "",
+      "actor_spiffe_id": "spiffe://lab.local/agent/parent/exp-root",
+      "outcome": "allow",
+      "detail": {
+        "parent_spiffe_id": "spiffe://lab.local/agent/parent/exp-root",
+        "reason": "JWT-SVID, manifest signature, nonce and child_selectors all verified"
+      }
+    },
+    "agent_log": {
+      "ns": 1793572565196288282,
+      "line": "time=\"2026-11-01T22:36:05Z\" level=info msg=\"Creating X509-SVID\" entry_id=3d012f85-56b3-4753-b73b-082a20cbbb0d spiffe_id=\"spiffe://lab.local/agent/parent/exp-root/child/v2s-54a942-13\" subsystem_name=manager"
+    }
+  },
+  {
+    "trial": 14,
+    "wait_ready": {
+      "event": "ready",
+      "send_ns": 1793572572674231780,
+      "recv_ns": 1793572572675718736,
+      "miss_reason": "rpc error: code = PermissionDenied desc = no identity issued"
+    },
+    "vend": {
+      "status": 201,
+      "send_ns": 1793572572922847195,
+      "recv_ns": 1793572572951479864,
+      "round_trip_ns": 28632669,
+      "response": "{\"chain_id\":\"c_6fda46785ebfffceeb32d6f61ff248a0\",\"parent_spiffe_id\":\"spiffe://lab.local/agent/parent/exp-root\",\"child_spiffe_id\":\"spiffe://lab.local/agent/parent/exp-root/child/v2s-54a942-14\",\"child_scopes\":[\"resource:read:datasetA\"],\"entry_id\":\"fab98d52-af79-442b-8c7c-aee860b4c070\",\"policy_id\":\"nhi_grants_c_6fda46785ebfffceeb32d6f61ff248a0\",\"issued_at\":1793572572,\"expires_at\":1793572872}\n"
+    },
+    "wait_final": {
+      "event": "obtained",
+      "send_ns": 1793572575439612732,
+      "recv_ns": 1793572575440019774,
+      "last_miss_send_ns": 1793572575419289615,
+      "last_miss_recv_ns": 1793572575419509316,
+      "spiffe_ids": [
+        "spiffe://lab.local/agent/parent/exp-root/child/v2s-54a942-14"
+      ],
+      "not_after": "2026-11-01T22:41:15Z",
+      "miss_reasons": {
+        "rpc error: code = PermissionDenied desc = no identity issued": 135
+      },
+      "attempts": 136,
+      "misses": 135,
+      "gap_mean_ns": 20484303,
+      "gap_max_ns": 21036010,
+      "latency_mean_ns": 423795,
+      "latency_max_ns": 1486956
+    },
+    "dispose": 200,
+    "audit_vend_allow": {
+      "timestamp": "2026-11-01T22:36:12.951419633Z",
+      "stage": "vend",
+      "chain_id": "c_6fda46785ebfffceeb32d6f61ff248a0",
+      "actor_spiffe_id": "spiffe://lab.local/agent/parent/exp-root",
+      "outcome": "allow",
+      "detail": {
+        "parent_spiffe_id": "spiffe://lab.local/agent/parent/exp-root",
+        "child_spiffe_id": "spiffe://lab.local/agent/parent/exp-root/child/v2s-54a942-14",
+        "requested_scopes": [
+          "resource:read:datasetA"
+        ],
+        "child_scopes": [
+          "resource:read:datasetA"
+        ],
+        "policy_id": "nhi_grants_c_6fda46785ebfffceeb32d6f61ff248a0",
+        "entry_id": "fab98d52-af79-442b-8c7c-aee860b4c070",
+        "expires_at": 1793572872,
+        "task_context": "vend to svid"
+      }
+    },
+    "audit_attest_allow": {
+      "timestamp": "2026-11-01T22:36:12.940963524Z",
+      "stage": "attest",
+      "chain_id": "",
+      "actor_spiffe_id": "spiffe://lab.local/agent/parent/exp-root",
+      "outcome": "allow",
+      "detail": {
+        "parent_spiffe_id": "spiffe://lab.local/agent/parent/exp-root",
+        "reason": "JWT-SVID, manifest signature, nonce and child_selectors all verified"
+      }
+    },
+    "agent_log": {
+      "ns": 1793572575424828146,
+      "line": "time=\"2026-11-01T22:36:15Z\" level=info msg=\"Creating X509-SVID\" entry_id=fab98d52-af79-442b-8c7c-aee860b4c070 spiffe_id=\"spiffe://lab.local/agent/parent/exp-root/child/v2s-54a942-14\" subsystem_name=manager"
+    }
+  },
+  {
+    "trial": 15,
+    "wait_ready": {
+      "event": "ready",
+      "send_ns": 1793572581980414469,
+      "recv_ns": 1793572581982530287,
+      "miss_reason": "rpc error: code = PermissionDenied desc = no identity issued"
+    },
+    "vend": {
+      "status": 201,
+      "send_ns": 1793572582230145106,
+      "recv_ns": 1793572582250019291,
+      "round_trip_ns": 19874185,
+      "response": "{\"chain_id\":\"c_ed9f952e03fdfb5401bde3dcb4e16a7b\",\"parent_spiffe_id\":\"spiffe://lab.local/agent/parent/exp-root\",\"child_spiffe_id\":\"spiffe://lab.local/agent/parent/exp-root/child/v2s-54a942-15\",\"child_scopes\":[\"resource:read:datasetA\"],\"entry_id\":\"c9bd4ebf-a6a8-40f6-b9e6-a97136b55aee\",\"policy_id\":\"nhi_grants_c_ed9f952e03fdfb5401bde3dcb4e16a7b\",\"issued_at\":1793572582,\"expires_at\":1793572882}\n"
+    },
+    "wait_final": {
+      "event": "obtained",
+      "send_ns": 1793572585668549518,
+      "recv_ns": 1793572585669114720,
+      "last_miss_send_ns": 1793572585648108930,
+      "last_miss_recv_ns": 1793572585648429152,
+      "spiffe_ids": [
+        "spiffe://lab.local/agent/parent/exp-root/child/v2s-54a942-15"
+      ],
+      "not_after": "2026-11-01T22:41:25Z",
+      "miss_reasons": {
+        "rpc error: code = PermissionDenied desc = no identity issued": 180
+      },
+      "attempts": 181,
+      "misses": 180,
+      "gap_mean_ns": 20489639,
+      "gap_max_ns": 21029289,
+      "latency_mean_ns": 441568,
+      "latency_max_ns": 2115818
+    },
+    "dispose": 200,
+    "audit_vend_allow": {
+      "timestamp": "2026-11-01T22:36:22.249963201Z",
+      "stage": "vend",
+      "chain_id": "c_ed9f952e03fdfb5401bde3dcb4e16a7b",
+      "actor_spiffe_id": "spiffe://lab.local/agent/parent/exp-root",
+      "outcome": "allow",
+      "detail": {
+        "parent_spiffe_id": "spiffe://lab.local/agent/parent/exp-root",
+        "child_spiffe_id": "spiffe://lab.local/agent/parent/exp-root/child/v2s-54a942-15",
+        "requested_scopes": [
+          "resource:read:datasetA"
+        ],
+        "child_scopes": [
+          "resource:read:datasetA"
+        ],
+        "policy_id": "nhi_grants_c_ed9f952e03fdfb5401bde3dcb4e16a7b",
+        "entry_id": "c9bd4ebf-a6a8-40f6-b9e6-a97136b55aee",
+        "expires_at": 1793572882,
+        "task_context": "vend to svid"
+      }
+    },
+    "audit_attest_allow": {
+      "timestamp": "2026-11-01T22:36:22.239758932Z",
+      "stage": "attest",
+      "chain_id": "",
+      "actor_spiffe_id": "spiffe://lab.local/agent/parent/exp-root",
+      "outcome": "allow",
+      "detail": {
+        "parent_spiffe_id": "spiffe://lab.local/agent/parent/exp-root",
+        "reason": "JWT-SVID, manifest signature, nonce and child_selectors all verified"
+      }
+    },
+    "agent_log": {
+      "ns": 1793572585652526337,
+      "line": "time=\"2026-11-01T22:36:25Z\" level=info msg=\"Creating X509-SVID\" entry_id=c9bd4ebf-a6a8-40f6-b9e6-a97136b55aee spiffe_id=\"spiffe://lab.local/agent/parent/exp-root/child/v2s-54a942-15\" subsystem_name=manager"
+    }
+  },
+  {
+    "trial": 16,
+    "wait_ready": {
+      "event": "ready",
+      "send_ns": 1793572593925946018,
+      "recv_ns": 1793572593928798099,
+      "miss_reason": "rpc error: code = PermissionDenied desc = no identity issued"
+    },
+    "vend": {
+      "status": 201,
+      "send_ns": 1793572594175709963,
+      "recv_ns": 1793572594195944650,
+      "round_trip_ns": 20234687,
+      "response": "{\"chain_id\":\"c_dd58ff7c63997cd9aca01a88b4405cd0\",\"parent_spiffe_id\":\"spiffe://lab.local/agent/parent/exp-root\",\"child_spiffe_id\":\"spiffe://lab.local/agent/parent/exp-root/child/v2s-54a942-16\",\"child_scopes\":[\"resource:read:datasetA\"],\"entry_id\":\"1fc47e3e-b5c6-48a6-aa11-65752754890f\",\"policy_id\":\"nhi_grants_c_dd58ff7c63997cd9aca01a88b4405cd0\",\"issued_at\":1793572594,\"expires_at\":1793572894}\n"
+    },
+    "wait_final": {
+      "event": "obtained",
+      "send_ns": 1793572600218120655,
+      "recv_ns": 1793572600218635267,
+      "last_miss_send_ns": 1793572600197553557,
+      "last_miss_recv_ns": 1793572600198004859,
+      "spiffe_ids": [
+        "spiffe://lab.local/agent/parent/exp-root/child/v2s-54a942-16"
+      ],
+      "not_after": "2026-11-01T22:41:40Z",
+      "miss_reasons": {
+        "rpc error: code = PermissionDenied desc = no identity issued": 307
+      },
+      "attempts": 308,
+      "misses": 307,
+      "gap_mean_ns": 20495682,
+      "gap_max_ns": 21059989,
+      "latency_mean_ns": 429226,
+      "latency_max_ns": 2852081
+    },
+    "dispose": 200,
+    "audit_vend_allow": {
+      "timestamp": "2026-11-01T22:36:34.195889799Z",
+      "stage": "vend",
+      "chain_id": "c_dd58ff7c63997cd9aca01a88b4405cd0",
+      "actor_spiffe_id": "spiffe://lab.local/agent/parent/exp-root",
+      "outcome": "allow",
+      "detail": {
+        "parent_spiffe_id": "spiffe://lab.local/agent/parent/exp-root",
+        "child_spiffe_id": "spiffe://lab.local/agent/parent/exp-root/child/v2s-54a942-16",
+        "requested_scopes": [
+          "resource:read:datasetA"
+        ],
+        "child_scopes": [
+          "resource:read:datasetA"
+        ],
+        "policy_id": "nhi_grants_c_dd58ff7c63997cd9aca01a88b4405cd0",
+        "entry_id": "1fc47e3e-b5c6-48a6-aa11-65752754890f",
+        "expires_at": 1793572894,
+        "task_context": "vend to svid"
+      }
+    },
+    "audit_attest_allow": {
+      "timestamp": "2026-11-01T22:36:34.18538938Z",
+      "stage": "attest",
+      "chain_id": "",
+      "actor_spiffe_id": "spiffe://lab.local/agent/parent/exp-root",
+      "outcome": "allow",
+      "detail": {
+        "parent_spiffe_id": "spiffe://lab.local/agent/parent/exp-root",
+        "reason": "JWT-SVID, manifest signature, nonce and child_selectors all verified"
+      }
+    },
+    "agent_log": {
+      "ns": 1793572600205018766,
+      "line": "time=\"2026-11-01T22:36:40Z\" level=info msg=\"Creating X509-SVID\" entry_id=1fc47e3e-b5c6-48a6-aa11-65752754890f spiffe_id=\"spiffe://lab.local/agent/parent/exp-root/child/v2s-54a942-16\" subsystem_name=manager"
+    }
+  },
+  {
+    "trial": 17,
+    "wait_ready": {
+      "event": "ready",
+      "send_ns": 1793572606666433012,
+      "recv_ns": 1793572606668122378,
+      "miss_reason": "rpc error: code = PermissionDenied desc = no identity issued"
+    },
+    "vend": {
+      "status": 201,
+      "send_ns": 1793572606914962440,
+      "recv_ns": 1793572606935876569,
+      "round_trip_ns": 20914129,
+      "response": "{\"chain_id\":\"c_7f8782af137473574d6c86ff36c7bc56\",\"parent_spiffe_id\":\"spiffe://lab.local/agent/parent/exp-root\",\"child_spiffe_id\":\"spiffe://lab.local/agent/parent/exp-root/child/v2s-54a942-17\",\"child_scopes\":[\"resource:read:datasetA\"],\"entry_id\":\"064a2fe8-6cb8-4fe5-9f28-b3f707d8e046\",\"policy_id\":\"nhi_grants_c_7f8782af137473574d6c86ff36c7bc56\",\"issued_at\":1793572606,\"expires_at\":1793572906}\n"
+    },
+    "wait_final": {
+      "event": "obtained",
+      "send_ns": 1793572610128629592,
+      "recv_ns": 1793572610129530045,
+      "last_miss_send_ns": 1793572610108149745,
+      "last_miss_recv_ns": 1793572610108509476,
+      "spiffe_ids": [
+        "spiffe://lab.local/agent/parent/exp-root/child/v2s-54a942-17"
+      ],
+      "not_after": "2026-11-01T22:41:50Z",
+      "miss_reasons": {
+        "rpc error: code = PermissionDenied desc = no identity issued": 169
+      },
+      "attempts": 170,
+      "misses": 169,
+      "gap_mean_ns": 20486370,
+      "gap_max_ns": 21006379,
+      "latency_mean_ns": 444746,
+      "latency_max_ns": 1689376
+    },
+    "dispose": 200,
+    "audit_vend_allow": {
+      "timestamp": "2026-11-01T22:36:46.935821089Z",
+      "stage": "vend",
+      "chain_id": "c_7f8782af137473574d6c86ff36c7bc56",
+      "actor_spiffe_id": "spiffe://lab.local/agent/parent/exp-root",
+      "outcome": "allow",
+      "detail": {
+        "parent_spiffe_id": "spiffe://lab.local/agent/parent/exp-root",
+        "child_spiffe_id": "spiffe://lab.local/agent/parent/exp-root/child/v2s-54a942-17",
+        "requested_scopes": [
+          "resource:read:datasetA"
+        ],
+        "child_scopes": [
+          "resource:read:datasetA"
+        ],
+        "policy_id": "nhi_grants_c_7f8782af137473574d6c86ff36c7bc56",
+        "entry_id": "064a2fe8-6cb8-4fe5-9f28-b3f707d8e046",
+        "expires_at": 1793572906,
+        "task_context": "vend to svid"
+      }
+    },
+    "audit_attest_allow": {
+      "timestamp": "2026-11-01T22:36:46.925313069Z",
+      "stage": "attest",
+      "chain_id": "",
+      "actor_spiffe_id": "spiffe://lab.local/agent/parent/exp-root",
+      "outcome": "allow",
+      "detail": {
+        "parent_spiffe_id": "spiffe://lab.local/agent/parent/exp-root",
+        "reason": "JWT-SVID, manifest signature, nonce and child_selectors all verified"
+      }
+    },
+    "agent_log": {
+      "ns": 1793572610116547596,
+      "line": "time=\"2026-11-01T22:36:50Z\" level=info msg=\"Creating X509-SVID\" entry_id=064a2fe8-6cb8-4fe5-9f28-b3f707d8e046 spiffe_id=\"spiffe://lab.local/agent/parent/exp-root/child/v2s-54a942-17\" subsystem_name=manager"
+    }
+  },
+  {
+    "trial": 18,
+    "wait_ready": {
+      "event": "ready",
+      "send_ns": 1793572618241170470,
+      "recv_ns": 1793572618242666966,
+      "miss_reason": "rpc error: code = PermissionDenied desc = no identity issued"
+    },
+    "vend": {
+      "status": 201,
+      "send_ns": 1793572618491095271,
+      "recv_ns": 1793572618511628288,
+      "round_trip_ns": 20533017,
+      "response": "{\"chain_id\":\"c_1d6b955d0f20f91d460bccd932613138\",\"parent_spiffe_id\":\"spiffe://lab.local/agent/parent/exp-root\",\"child_spiffe_id\":\"spiffe://lab.local/agent/parent/exp-root/child/v2s-54a942-18\",\"child_scopes\":[\"resource:read:datasetA\"],\"entry_id\":\"80fe696a-2ac6-4dd5-9d34-b3bab3905ce4\",\"policy_id\":\"nhi_grants_c_1d6b955d0f20f91d460bccd932613138\",\"issued_at\":1793572618,\"expires_at\":1793572918}\n"
+    },
+    "wait_final": {
+      "event": "obtained",
+      "send_ns": 1793572625740981848,
+      "recv_ns": 1793572625741566350,
+      "last_miss_send_ns": 1793572625720595291,
+      "last_miss_recv_ns": 1793572625720866652,
+      "spiffe_ids": [
+        "spiffe://lab.local/agent/parent/exp-root/child/v2s-54a942-18"
+      ],
+      "not_after": "2026-11-01T22:42:05Z",
+      "miss_reasons": {
+        "rpc error: code = PermissionDenied desc = no identity issued": 366
+      },
+      "attempts": 367,
+      "misses": 366,
+      "gap_mean_ns": 20491287,
+      "gap_max_ns": 21063119,
+      "latency_mean_ns": 435356,
+      "latency_max_ns": 1683836
+    },
+    "dispose": 200,
+    "audit_vend_allow": {
+      "timestamp": "2026-11-01T22:36:58.511576698Z",
+      "stage": "vend",
+      "chain_id": "c_1d6b955d0f20f91d460bccd932613138",
+      "actor_spiffe_id": "spiffe://lab.local/agent/parent/exp-root",
+      "outcome": "allow",
+      "detail": {
+        "parent_spiffe_id": "spiffe://lab.local/agent/parent/exp-root",
+        "child_spiffe_id": "spiffe://lab.local/agent/parent/exp-root/child/v2s-54a942-18",
+        "requested_scopes": [
+          "resource:read:datasetA"
+        ],
+        "child_scopes": [
+          "resource:read:datasetA"
+        ],
+        "policy_id": "nhi_grants_c_1d6b955d0f20f91d460bccd932613138",
+        "entry_id": "80fe696a-2ac6-4dd5-9d34-b3bab3905ce4",
+        "expires_at": 1793572918,
+        "task_context": "vend to svid"
+      }
+    },
+    "audit_attest_allow": {
+      "timestamp": "2026-11-01T22:36:58.501167779Z",
+      "stage": "attest",
+      "chain_id": "",
+      "actor_spiffe_id": "spiffe://lab.local/agent/parent/exp-root",
+      "outcome": "allow",
+      "detail": {
+        "parent_spiffe_id": "spiffe://lab.local/agent/parent/exp-root",
+        "reason": "JWT-SVID, manifest signature, nonce and child_selectors all verified"
+      }
+    },
+    "agent_log": {
+      "ns": 1793572625734901505,
+      "line": "time=\"2026-11-01T22:37:05Z\" level=info msg=\"Creating X509-SVID\" entry_id=80fe696a-2ac6-4dd5-9d34-b3bab3905ce4 spiffe_id=\"spiffe://lab.local/agent/parent/exp-root/child/v2s-54a942-18\" subsystem_name=manager"
+    }
+  },
+  {
+    "trial": 19,
+    "wait_ready": {
+      "event": "ready",
+      "send_ns": 1793572632400212720,
+      "recv_ns": 1793572632401721146,
+      "miss_reason": "rpc error: code = PermissionDenied desc = no identity issued"
+    },
+    "vend": {
+      "status": 201,
+      "send_ns": 1793572632650323209,
+      "recv_ns": 1793572632670278074,
+      "round_trip_ns": 19954865,
+      "response": "{\"chain_id\":\"c_80f675c7fd370c8526359cc49adc92db\",\"parent_spiffe_id\":\"spiffe://lab.local/agent/parent/exp-root\",\"child_spiffe_id\":\"spiffe://lab.local/agent/parent/exp-root/child/v2s-54a942-19\",\"child_scopes\":[\"resource:read:datasetA\"],\"entry_id\":\"e8ef3375-0c8c-4eb2-919f-b93c2fa6391a\",\"policy_id\":\"nhi_grants_c_80f675c7fd370c8526359cc49adc92db\",\"issued_at\":1793572632,\"expires_at\":1793572932}\n"
+    },
+    "wait_final": {
+      "event": "obtained",
+      "send_ns": 1793572635986147372,
+      "recv_ns": 1793572635986797254,
+      "last_miss_send_ns": 1793572635965748585,
+      "last_miss_recv_ns": 1793572635966034206,
+      "spiffe_ids": [
+        "spiffe://lab.local/agent/parent/exp-root/child/v2s-54a942-19"
+      ],
+      "not_after": "2026-11-01T22:42:15Z",
+      "miss_reasons": {
+        "rpc error: code = PermissionDenied desc = no identity issued": 175
+      },
+      "attempts": 176,
+      "misses": 175,
+      "gap_mean_ns": 20491055,
+      "gap_max_ns": 20993628,
+      "latency_mean_ns": 440824,
+      "latency_max_ns": 1597846
+    },
+    "dispose": 200,
+    "audit_vend_allow": {
+      "timestamp": "2026-11-01T22:37:12.670221604Z",
+      "stage": "vend",
+      "chain_id": "c_80f675c7fd370c8526359cc49adc92db",
+      "actor_spiffe_id": "spiffe://lab.local/agent/parent/exp-root",
+      "outcome": "allow",
+      "detail": {
+        "parent_spiffe_id": "spiffe://lab.local/agent/parent/exp-root",
+        "child_spiffe_id": "spiffe://lab.local/agent/parent/exp-root/child/v2s-54a942-19",
+        "requested_scopes": [
+          "resource:read:datasetA"
+        ],
+        "child_scopes": [
+          "resource:read:datasetA"
+        ],
+        "policy_id": "nhi_grants_c_80f675c7fd370c8526359cc49adc92db",
+        "entry_id": "e8ef3375-0c8c-4eb2-919f-b93c2fa6391a",
+        "expires_at": 1793572932,
+        "task_context": "vend to svid"
+      }
+    },
+    "audit_attest_allow": {
+      "timestamp": "2026-11-01T22:37:12.660085076Z",
+      "stage": "attest",
+      "chain_id": "",
+      "actor_spiffe_id": "spiffe://lab.local/agent/parent/exp-root",
+      "outcome": "allow",
+      "detail": {
+        "parent_spiffe_id": "spiffe://lab.local/agent/parent/exp-root",
+        "reason": "JWT-SVID, manifest signature, nonce and child_selectors all verified"
+      }
+    },
+    "agent_log": {
+      "ns": 1793572635972044529,
+      "line": "time=\"2026-11-01T22:37:15Z\" level=info msg=\"Creating X509-SVID\" entry_id=e8ef3375-0c8c-4eb2-919f-b93c2fa6391a spiffe_id=\"spiffe://lab.local/agent/parent/exp-root/child/v2s-54a942-19\" subsystem_name=manager"
+    }
+  },
+  {
+    "trial": 20,
+    "wait_ready": {
+      "event": "ready",
+      "send_ns": 1793572643426496395,
+      "recv_ns": 1793572643428548863,
+      "miss_reason": "rpc error: code = PermissionDenied desc = no identity issued"
+    },
+    "vend": {
+      "status": 201,
+      "send_ns": 1793572643681214290,
+      "recv_ns": 1793572643700179621,
+      "round_trip_ns": 18965331,
+      "response": "{\"chain_id\":\"c_7e841163f35d741ad5fed29d7c5314e0\",\"parent_spiffe_id\":\"spiffe://lab.local/agent/parent/exp-root\",\"child_spiffe_id\":\"spiffe://lab.local/agent/parent/exp-root/child/v2s-54a942-20\",\"child_scopes\":[\"resource:read:datasetA\"],\"entry_id\":\"c19b8401-ca71-463b-8afa-b2e23472e597\",\"policy_id\":\"nhi_grants_c_7e841163f35d741ad5fed29d7c5314e0\",\"issued_at\":1793572643,\"expires_at\":1793572943}\n"
+    },
+    "wait_final": {
+      "event": "obtained",
+      "send_ns": 1793572650369514990,
+      "recv_ns": 1793572650369961002,
+      "last_miss_send_ns": 1793572650349150384,
+      "last_miss_recv_ns": 1793572650349397895,
+      "spiffe_ids": [
+        "spiffe://lab.local/agent/parent/exp-root/child/v2s-54a942-20"
+      ],
+      "not_after": "2026-11-01T22:42:30Z",
+      "miss_reasons": {
+        "rpc error: code = PermissionDenied desc = no identity issued": 339
+      },
+      "attempts": 340,
+      "misses": 339,
+      "gap_mean_ns": 20480880,
+      "gap_max_ns": 21045689,
+      "latency_mean_ns": 430941,
+      "latency_max_ns": 2052468
+    },
+    "dispose": 200,
+    "audit_vend_allow": {
+      "timestamp": "2026-11-01T22:37:23.700127121Z",
+      "stage": "vend",
+      "chain_id": "c_7e841163f35d741ad5fed29d7c5314e0",
+      "actor_spiffe_id": "spiffe://lab.local/agent/parent/exp-root",
+      "outcome": "allow",
+      "detail": {
+        "parent_spiffe_id": "spiffe://lab.local/agent/parent/exp-root",
+        "child_spiffe_id": "spiffe://lab.local/agent/parent/exp-root/child/v2s-54a942-20",
+        "requested_scopes": [
+          "resource:read:datasetA"
+        ],
+        "child_scopes": [
+          "resource:read:datasetA"
+        ],
+        "policy_id": "nhi_grants_c_7e841163f35d741ad5fed29d7c5314e0",
+        "entry_id": "c19b8401-ca71-463b-8afa-b2e23472e597",
+        "expires_at": 1793572943,
+        "task_context": "vend to svid"
+      }
+    },
+    "audit_attest_allow": {
+      "timestamp": "2026-11-01T22:37:23.6892587Z",
+      "stage": "attest",
+      "chain_id": "",
+      "actor_spiffe_id": "spiffe://lab.local/agent/parent/exp-root",
+      "outcome": "allow",
+      "detail": {
+        "parent_spiffe_id": "spiffe://lab.local/agent/parent/exp-root",
+        "reason": "JWT-SVID, manifest signature, nonce and child_selectors all verified"
+      }
+    },
+    "agent_log": {
+      "ns": 1793572650356436191,
+      "line": "time=\"2026-11-01T22:37:30Z\" level=info msg=\"Creating X509-SVID\" entry_id=c19b8401-ca71-463b-8afa-b2e23472e597 spiffe_id=\"spiffe://lab.local/agent/parent/exp-root/child/v2s-54a942-20\" subsystem_name=manager"
+    }
+  },
+  {
+    "trial": 21,
+    "wait_ready": {
+      "event": "ready",
+      "send_ns": 1793572657990996409,
+      "recv_ns": 1793572657992652126,
+      "miss_reason": "rpc error: code = PermissionDenied desc = no identity issued"
+    },
+    "vend": {
+      "status": 201,
+      "send_ns": 1793572658239828050,
+      "recv_ns": 1793572658260123585,
+      "round_trip_ns": 20295535,
+      "response": "{\"chain_id\":\"c_be0f842c7da19e1c3f77777aa674db41\",\"parent_spiffe_id\":\"spiffe://lab.local/agent/parent/exp-root\",\"child_spiffe_id\":\"spiffe://lab.local/agent/parent/exp-root/child/v2s-54a942-21\",\"child_scopes\":[\"resource:read:datasetA\"],\"entry_id\":\"e310809b-2238-4fca-b8ab-473e67933676\",\"policy_id\":\"nhi_grants_c_be0f842c7da19e1c3f77777aa674db41\",\"issued_at\":1793572658,\"expires_at\":1793572958}\n"
+    },
+    "wait_final": {
+      "event": "obtained",
+      "send_ns": 1793572660204096381,
+      "recv_ns": 1793572660204763883,
+      "last_miss_send_ns": 1793572660183523264,
+      "last_miss_recv_ns": 1793572660183977355,
+      "spiffe_ids": [
+        "spiffe://lab.local/agent/parent/exp-root/child/v2s-54a942-21"
+      ],
+      "not_after": "2026-11-01T22:42:40Z",
+      "miss_reasons": {
+        "rpc error: code = PermissionDenied desc = no identity issued": 108
+      },
+      "attempts": 109,
+      "misses": 108,
+      "gap_mean_ns": 20491666,
+      "gap_max_ns": 21037778,
+      "latency_mean_ns": 453558,
+      "latency_max_ns": 1655717
+    },
+    "dispose": 200,
+    "audit_vend_allow": {
+      "timestamp": "2026-11-01T22:37:38.259990135Z",
+      "stage": "vend",
+      "chain_id": "c_be0f842c7da19e1c3f77777aa674db41",
+      "actor_spiffe_id": "spiffe://lab.local/agent/parent/exp-root",
+      "outcome": "allow",
+      "detail": {
+        "parent_spiffe_id": "spiffe://lab.local/agent/parent/exp-root",
+        "child_spiffe_id": "spiffe://lab.local/agent/parent/exp-root/child/v2s-54a942-21",
+        "requested_scopes": [
+          "resource:read:datasetA"
+        ],
+        "child_scopes": [
+          "resource:read:datasetA"
+        ],
+        "policy_id": "nhi_grants_c_be0f842c7da19e1c3f77777aa674db41",
+        "entry_id": "e310809b-2238-4fca-b8ab-473e67933676",
+        "expires_at": 1793572958,
+        "task_context": "vend to svid"
+      }
+    },
+    "audit_attest_allow": {
+      "timestamp": "2026-11-01T22:37:38.249757696Z",
+      "stage": "attest",
+      "chain_id": "",
+      "actor_spiffe_id": "spiffe://lab.local/agent/parent/exp-root",
+      "outcome": "allow",
+      "detail": {
+        "parent_spiffe_id": "spiffe://lab.local/agent/parent/exp-root",
+        "reason": "JWT-SVID, manifest signature, nonce and child_selectors all verified"
+      }
+    },
+    "agent_log": {
+      "ns": 1793572660191180222,
+      "line": "time=\"2026-11-01T22:37:40Z\" level=info msg=\"Creating X509-SVID\" entry_id=e310809b-2238-4fca-b8ab-473e67933676 spiffe_id=\"spiffe://lab.local/agent/parent/exp-root/child/v2s-54a942-21\" subsystem_name=manager"
+    }
+  },
+  {
+    "trial": 22,
+    "wait_ready": {
+      "event": "ready",
+      "send_ns": 1793572669364482683,
+      "recv_ns": 1793572669365993179,
+      "miss_reason": "rpc error: code = PermissionDenied desc = no identity issued"
+    },
+    "vend": {
+      "status": 201,
+      "send_ns": 1793572669614448136,
+      "recv_ns": 1793572669636550748,
+      "round_trip_ns": 22102612,
+      "response": "{\"chain_id\":\"c_29834e166d2fab3c352e5894933aa84b\",\"parent_spiffe_id\":\"spiffe://lab.local/agent/parent/exp-root\",\"child_spiffe_id\":\"spiffe://lab.local/agent/parent/exp-root/child/v2s-54a942-22\",\"child_scopes\":[\"resource:read:datasetA\"],\"entry_id\":\"2ed0ddb4-b62c-4884-9f5b-ad5474b13b80\",\"policy_id\":\"nhi_grants_c_29834e166d2fab3c352e5894933aa84b\",\"issued_at\":1793572669,\"expires_at\":1793572969}\n"
+    },
+    "wait_final": {
+      "event": "obtained",
+      "send_ns": 1793572675200748566,
+      "recv_ns": 1793572675201246068,
+      "last_miss_send_ns": 1793572675180368990,
+      "last_miss_recv_ns": 1793572675180632141,
+      "spiffe_ids": [
+        "spiffe://lab.local/agent/parent/exp-root/child/v2s-54a942-22"
+      ],
+      "not_after": "2026-11-01T22:42:55Z",
+      "miss_reasons": {
+        "rpc error: code = PermissionDenied desc = no identity issued": 285
+      },
+      "attempts": 286,
+      "misses": 285,
+      "gap_mean_ns": 20478125,
+      "gap_max_ns": 21033589,
+      "latency_mean_ns": 423769,
+      "latency_max_ns": 2119137
+    },
+    "dispose": 200,
+    "audit_vend_allow": {
+      "timestamp": "2026-11-01T22:37:49.636487688Z",
+      "stage": "vend",
+      "chain_id": "c_29834e166d2fab3c352e5894933aa84b",
+      "actor_spiffe_id": "spiffe://lab.local/agent/parent/exp-root",
+      "outcome": "allow",
+      "detail": {
+        "parent_spiffe_id": "spiffe://lab.local/agent/parent/exp-root",
+        "child_spiffe_id": "spiffe://lab.local/agent/parent/exp-root/child/v2s-54a942-22",
+        "requested_scopes": [
+          "resource:read:datasetA"
+        ],
+        "child_scopes": [
+          "resource:read:datasetA"
+        ],
+        "policy_id": "nhi_grants_c_29834e166d2fab3c352e5894933aa84b",
+        "entry_id": "2ed0ddb4-b62c-4884-9f5b-ad5474b13b80",
+        "expires_at": 1793572969,
+        "task_context": "vend to svid"
+      }
+    },
+    "audit_attest_allow": {
+      "timestamp": "2026-11-01T22:37:49.625834048Z",
+      "stage": "attest",
+      "chain_id": "",
+      "actor_spiffe_id": "spiffe://lab.local/agent/parent/exp-root",
+      "outcome": "allow",
+      "detail": {
+        "parent_spiffe_id": "spiffe://lab.local/agent/parent/exp-root",
+        "reason": "JWT-SVID, manifest signature, nonce and child_selectors all verified"
+      }
+    },
+    "agent_log": {
+      "ns": 1793572675186814094,
+      "line": "time=\"2026-11-01T22:37:55Z\" level=info msg=\"Creating X509-SVID\" entry_id=2ed0ddb4-b62c-4884-9f5b-ad5474b13b80 spiffe_id=\"spiffe://lab.local/agent/parent/exp-root/child/v2s-54a942-22\" subsystem_name=manager"
+    }
+  },
+  {
+    "trial": 23,
+    "wait_ready": {
+      "event": "ready",
+      "send_ns": 1793572682514476118,
+      "recv_ns": 1793572682515915183,
+      "miss_reason": "rpc error: code = PermissionDenied desc = no identity issued"
+    },
+    "vend": {
+      "status": 201,
+      "send_ns": 1793572682764084027,
+      "recv_ns": 1793572682784870615,
+      "round_trip_ns": 20786588,
+      "response": "{\"chain_id\":\"c_c6912a7eb7c3d4400fefd2b7abf1eb2f\",\"parent_spiffe_id\":\"spiffe://lab.local/agent/parent/exp-root\",\"child_spiffe_id\":\"spiffe://lab.local/agent/parent/exp-root/child/v2s-54a942-23\",\"child_scopes\":[\"resource:read:datasetA\"],\"entry_id\":\"71723d36-e000-4bbb-ae20-6d55393779a1\",\"policy_id\":\"nhi_grants_c_c6912a7eb7c3d4400fefd2b7abf1eb2f\",\"issued_at\":1793572682,\"expires_at\":1793572982}\n"
+    },
+    "wait_final": {
+      "event": "obtained",
+      "send_ns": 1793572685235533855,
+      "recv_ns": 1793572685235984837,
+      "last_miss_send_ns": 1793572685214936918,
+      "last_miss_recv_ns": 1793572685215421050,
+      "spiffe_ids": [
+        "spiffe://lab.local/agent/parent/exp-root/child/v2s-54a942-23"
+      ],
+      "not_after": "2026-11-01T22:43:05Z",
+      "miss_reasons": {
+        "rpc error: code = PermissionDenied desc = no identity issued": 133
+      },
+      "attempts": 134,
+      "misses": 133,
+      "gap_mean_ns": 20459080,
+      "gap_max_ns": 20976638,
+      "latency_mean_ns": 422162,
+      "latency_max_ns": 1758166
+    },
+    "dispose": 200,
+    "audit_vend_allow": {
+      "timestamp": "2026-11-01T22:38:02.784809224Z",
+      "stage": "vend",
+      "chain_id": "c_c6912a7eb7c3d4400fefd2b7abf1eb2f",
+      "actor_spiffe_id": "spiffe://lab.local/agent/parent/exp-root",
+      "outcome": "allow",
+      "detail": {
+        "parent_spiffe_id": "spiffe://lab.local/agent/parent/exp-root",
+        "child_spiffe_id": "spiffe://lab.local/agent/parent/exp-root/child/v2s-54a942-23",
+        "requested_scopes": [
+          "resource:read:datasetA"
+        ],
+        "child_scopes": [
+          "resource:read:datasetA"
+        ],
+        "policy_id": "nhi_grants_c_c6912a7eb7c3d4400fefd2b7abf1eb2f",
+        "entry_id": "71723d36-e000-4bbb-ae20-6d55393779a1",
+        "expires_at": 1793572982,
+        "task_context": "vend to svid"
+      }
+    },
+    "audit_attest_allow": {
+      "timestamp": "2026-11-01T22:38:02.774278725Z",
+      "stage": "attest",
+      "chain_id": "",
+      "actor_spiffe_id": "spiffe://lab.local/agent/parent/exp-root",
+      "outcome": "allow",
+      "detail": {
+        "parent_spiffe_id": "spiffe://lab.local/agent/parent/exp-root",
+        "reason": "JWT-SVID, manifest signature, nonce and child_selectors all verified"
+      }
+    },
+    "agent_log": {
+      "ns": 1793572685228721090,
+      "line": "time=\"2026-11-01T22:38:05Z\" level=info msg=\"Creating X509-SVID\" entry_id=71723d36-e000-4bbb-ae20-6d55393779a1 spiffe_id=\"spiffe://lab.local/agent/parent/exp-root/child/v2s-54a942-23\" subsystem_name=manager"
+    }
+  },
+  {
+    "trial": 24,
+    "wait_ready": {
+      "event": "ready",
+      "send_ns": 1793572695183786270,
+      "recv_ns": 1793572695185301526,
+      "miss_reason": "rpc error: code = PermissionDenied desc = no identity issued"
+    },
+    "vend": {
+      "status": 201,
+      "send_ns": 1793572695431824501,
+      "recv_ns": 1793572695451957326,
+      "round_trip_ns": 20132825,
+      "response": "{\"chain_id\":\"c_40a19717bbe877e3e1f35d24ab7edc92\",\"parent_spiffe_id\":\"spiffe://lab.local/agent/parent/exp-root\",\"child_spiffe_id\":\"spiffe://lab.local/agent/parent/exp-root/child/v2s-54a942-24\",\"child_scopes\":[\"resource:read:datasetA\"],\"entry_id\":\"dd8b98d2-fccc-427d-a021-da654fb169a7\",\"policy_id\":\"nhi_grants_c_40a19717bbe877e3e1f35d24ab7edc92\",\"issued_at\":1793572695,\"expires_at\":1793572995}\n"
+    },
+    "wait_final": {
+      "event": "obtained",
+      "send_ns": 1793572699137303502,
+      "recv_ns": 1793572699137889554,
+      "last_miss_send_ns": 1793572699116720105,
+      "last_miss_recv_ns": 1793572699117182607,
+      "spiffe_ids": [
+        "spiffe://lab.local/agent/parent/exp-root/child/v2s-54a942-24"
+      ],
+      "not_after": "2026-11-01T22:43:19Z",
+      "miss_reasons": {
+        "rpc error: code = PermissionDenied desc = no identity issued": 193
+      },
+      "attempts": 194,
+      "misses": 193,
+      "gap_mean_ns": 20484545,
+      "gap_max_ns": 21050408,
+      "latency_mean_ns": 428147,
+      "latency_max_ns": 1949307
+    },
+    "dispose": 200,
+    "audit_vend_allow": {
+      "timestamp": "2026-11-01T22:38:15.451900806Z",
+      "stage": "vend",
+      "chain_id": "c_40a19717bbe877e3e1f35d24ab7edc92",
+      "actor_spiffe_id": "spiffe://lab.local/agent/parent/exp-root",
+      "outcome": "allow",
+      "detail": {
+        "parent_spiffe_id": "spiffe://lab.local/agent/parent/exp-root",
+        "child_spiffe_id": "spiffe://lab.local/agent/parent/exp-root/child/v2s-54a942-24",
+        "requested_scopes": [
+          "resource:read:datasetA"
+        ],
+        "child_scopes": [
+          "resource:read:datasetA"
+        ],
+        "policy_id": "nhi_grants_c_40a19717bbe877e3e1f35d24ab7edc92",
+        "entry_id": "dd8b98d2-fccc-427d-a021-da654fb169a7",
+        "expires_at": 1793572995,
+        "task_context": "vend to svid"
+      }
+    },
+    "audit_attest_allow": {
+      "timestamp": "2026-11-01T22:38:15.441528148Z",
+      "stage": "attest",
+      "chain_id": "",
+      "actor_spiffe_id": "spiffe://lab.local/agent/parent/exp-root",
+      "outcome": "allow",
+      "detail": {
+        "parent_spiffe_id": "spiffe://lab.local/agent/parent/exp-root",
+        "reason": "JWT-SVID, manifest signature, nonce and child_selectors all verified"
+      }
+    },
+    "agent_log": {
+      "ns": 1793572699123209089,
+      "line": "time=\"2026-11-01T22:38:19Z\" level=info msg=\"Creating X509-SVID\" entry_id=dd8b98d2-fccc-427d-a021-da654fb169a7 spiffe_id=\"spiffe://lab.local/agent/parent/exp-root/child/v2s-54a942-24\" subsystem_name=manager"
+    }
+  },
+  {
+    "trial": 25,
+    "wait_ready": {
+      "event": "ready",
+      "send_ns": 1793572709234911167,
+      "recv_ns": 1793572709237021435,
+      "miss_reason": "rpc error: code = PermissionDenied desc = no identity issued"
+    },
+    "vend": {
+      "status": 201,
+      "send_ns": 1793572709484556262,
+      "recv_ns": 1793572709504379265,
+      "round_trip_ns": 19823003,
+      "response": "{\"chain_id\":\"c_5732cea977bc5d422258dbbfdb228a19\",\"parent_spiffe_id\":\"spiffe://lab.local/agent/parent/exp-root\",\"child_spiffe_id\":\"spiffe://lab.local/agent/parent/exp-root/child/v2s-54a942-25\",\"child_scopes\":[\"resource:read:datasetA\"],\"entry_id\":\"938daa70-f5ca-4492-9d80-b16a0e163b0b\",\"policy_id\":\"nhi_grants_c_5732cea977bc5d422258dbbfdb228a19\",\"issued_at\":1793572709,\"expires_at\":1793573009}\n"
+    },
+    "wait_final": {
+      "event": "obtained",
+      "send_ns": 1793572713720831837,
+      "recv_ns": 1793572713721289379,
+      "last_miss_send_ns": 1793572713700451432,
+      "last_miss_recv_ns": 1793572713700713733,
+      "spiffe_ids": [
+        "spiffe://lab.local/agent/parent/exp-root/child/v2s-54a942-25"
+      ],
+      "not_after": "2026-11-01T22:43:33Z",
+      "miss_reasons": {
+        "rpc error: code = PermissionDenied desc = no identity issued": 219
+      },
+      "attempts": 220,
+      "misses": 219,
+      "gap_mean_ns": 20483656,
+      "gap_max_ns": 21036658,
+      "latency_mean_ns": 436401,
+      "latency_max_ns": 2282329
+    },
+    "dispose": 200,
+    "audit_vend_allow": {
+      "timestamp": "2026-11-01T22:38:29.504318925Z",
+      "stage": "vend",
+      "chain_id": "c_5732cea977bc5d422258dbbfdb228a19",
+      "actor_spiffe_id": "spiffe://lab.local/agent/parent/exp-root",
+      "outcome": "allow",
+      "detail": {
+        "parent_spiffe_id": "spiffe://lab.local/agent/parent/exp-root",
+        "child_spiffe_id": "spiffe://lab.local/agent/parent/exp-root/child/v2s-54a942-25",
+        "requested_scopes": [
+          "resource:read:datasetA"
+        ],
+        "child_scopes": [
+          "resource:read:datasetA"
+        ],
+        "policy_id": "nhi_grants_c_5732cea977bc5d422258dbbfdb228a19",
+        "entry_id": "938daa70-f5ca-4492-9d80-b16a0e163b0b",
+        "expires_at": 1793573009,
+        "task_context": "vend to svid"
+      }
+    },
+    "audit_attest_allow": {
+      "timestamp": "2026-11-01T22:38:29.493790686Z",
+      "stage": "attest",
+      "chain_id": "",
+      "actor_spiffe_id": "spiffe://lab.local/agent/parent/exp-root",
+      "outcome": "allow",
+      "detail": {
+        "parent_spiffe_id": "spiffe://lab.local/agent/parent/exp-root",
+        "reason": "JWT-SVID, manifest signature, nonce and child_selectors all verified"
+      }
+    },
+    "agent_log": {
+      "ns": 1793572713717880276,
+      "line": "time=\"2026-11-01T22:38:33Z\" level=info msg=\"Creating X509-SVID\" entry_id=938daa70-f5ca-4492-9d80-b16a0e163b0b spiffe_id=\"spiffe://lab.local/agent/parent/exp-root/child/v2s-54a942-25\" subsystem_name=manager"
+    }
+  },
+  {
+    "trial": 26,
+    "wait_ready": {
+      "event": "ready",
+      "send_ns": 1793572720717524626,
+      "recv_ns": 1793572720718985821,
+      "miss_reason": "rpc error: code = PermissionDenied desc = no identity issued"
+    },
+    "vend": {
+      "status": 201,
+      "send_ns": 1793572720966379567,
+      "recv_ns": 1793572720988722310,
+      "round_trip_ns": 22342743,
+      "response": "{\"chain_id\":\"c_2627bc6b4c6d735780666af283fa655a\",\"parent_spiffe_id\":\"spiffe://lab.local/agent/parent/exp-root\",\"child_spiffe_id\":\"spiffe://lab.local/agent/parent/exp-root/child/v2s-54a942-26\",\"child_scopes\":[\"resource:read:datasetA\"],\"entry_id\":\"46c2b362-d8cc-45e9-9099-088bc91468a3\",\"policy_id\":\"nhi_grants_c_2627bc6b4c6d735780666af283fa655a\",\"issued_at\":1793572720,\"expires_at\":1793573020}\n"
+    },
+    "wait_final": {
+      "event": "obtained",
+      "send_ns": 1793572723935766889,
+      "recv_ns": 1793572723936371202,
+      "last_miss_send_ns": 1793572723914745022,
+      "last_miss_recv_ns": 1793572723915652825,
+      "spiffe_ids": [
+        "spiffe://lab.local/agent/parent/exp-root/child/v2s-54a942-26"
+      ],
+      "not_after": "2026-11-01T22:43:43Z",
+      "miss_reasons": {
+        "rpc error: code = PermissionDenied desc = no identity issued": 157
+      },
+      "attempts": 158,
+      "misses": 157,
+      "gap_mean_ns": 20498358,
+      "gap_max_ns": 21059708,
+      "latency_mean_ns": 434302,
+      "latency_max_ns": 1461185
+    },
+    "dispose": 200,
+    "audit_vend_allow": {
+      "timestamp": "2026-11-01T22:38:40.988664979Z",
+      "stage": "vend",
+      "chain_id": "c_2627bc6b4c6d735780666af283fa655a",
+      "actor_spiffe_id": "spiffe://lab.local/agent/parent/exp-root",
+      "outcome": "allow",
+      "detail": {
+        "parent_spiffe_id": "spiffe://lab.local/agent/parent/exp-root",
+        "child_spiffe_id": "spiffe://lab.local/agent/parent/exp-root/child/v2s-54a942-26",
+        "requested_scopes": [
+          "resource:read:datasetA"
+        ],
+        "child_scopes": [
+          "resource:read:datasetA"
+        ],
+        "policy_id": "nhi_grants_c_2627bc6b4c6d735780666af283fa655a",
+        "entry_id": "46c2b362-d8cc-45e9-9099-088bc91468a3",
+        "expires_at": 1793573020,
+        "task_context": "vend to svid"
+      }
+    },
+    "audit_attest_allow": {
+      "timestamp": "2026-11-01T22:38:40.978758903Z",
+      "stage": "attest",
+      "chain_id": "",
+      "actor_spiffe_id": "spiffe://lab.local/agent/parent/exp-root",
+      "outcome": "allow",
+      "detail": {
+        "parent_spiffe_id": "spiffe://lab.local/agent/parent/exp-root",
+        "reason": "JWT-SVID, manifest signature, nonce and child_selectors all verified"
+      }
+    },
+    "agent_log": {
+      "ns": 1793572723928579363,
+      "line": "time=\"2026-11-01T22:38:43Z\" level=info msg=\"Creating X509-SVID\" entry_id=46c2b362-d8cc-45e9-9099-088bc91468a3 spiffe_id=\"spiffe://lab.local/agent/parent/exp-root/child/v2s-54a942-26\" subsystem_name=manager"
+    }
+  },
+  {
+    "trial": 27,
+    "wait_ready": {
+      "event": "ready",
+      "send_ns": 1793572733343573202,
+      "recv_ns": 1793572733345969581,
+      "miss_reason": "rpc error: code = PermissionDenied desc = no identity issued"
+    },
+    "vend": {
+      "status": 201,
+      "send_ns": 1793572733594960640,
+      "recv_ns": 1793572733615672976,
+      "round_trip_ns": 20712336,
+      "response": "{\"chain_id\":\"c_073c975c6c8b3581a44c6470d79cf60b\",\"parent_spiffe_id\":\"spiffe://lab.local/agent/parent/exp-root\",\"child_spiffe_id\":\"spiffe://lab.local/agent/parent/exp-root/child/v2s-54a942-27\",\"child_scopes\":[\"resource:read:datasetA\"],\"entry_id\":\"a55356c1-69e3-4d11-a6b5-294bb710aa3c\",\"policy_id\":\"nhi_grants_c_073c975c6c8b3581a44c6470d79cf60b\",\"issued_at\":1793572733,\"expires_at\":1793573033}\n"
+    },
+    "wait_final": {
+      "event": "obtained",
+      "send_ns": 1793572738586984335,
+      "recv_ns": 1793572738587487157,
+      "last_miss_send_ns": 1793572738566542119,
+      "last_miss_recv_ns": 1793572738566863111,
+      "spiffe_ids": [
+        "spiffe://lab.local/agent/parent/exp-root/child/v2s-54a942-27"
+      ],
+      "not_after": "2026-11-01T22:43:58Z",
+      "miss_reasons": {
+        "rpc error: code = PermissionDenied desc = no identity issued": 256
+      },
+      "attempts": 257,
+      "misses": 256,
+      "gap_mean_ns": 20482074,
+      "gap_max_ns": 21016938,
+      "latency_mean_ns": 452317,
+      "latency_max_ns": 2396379
+    },
+    "dispose": 200,
+    "audit_vend_allow": {
+      "timestamp": "2026-11-01T22:38:53.615609816Z",
+      "stage": "vend",
+      "chain_id": "c_073c975c6c8b3581a44c6470d79cf60b",
+      "actor_spiffe_id": "spiffe://lab.local/agent/parent/exp-root",
+      "outcome": "allow",
+      "detail": {
+        "parent_spiffe_id": "spiffe://lab.local/agent/parent/exp-root",
+        "child_spiffe_id": "spiffe://lab.local/agent/parent/exp-root/child/v2s-54a942-27",
+        "requested_scopes": [
+          "resource:read:datasetA"
+        ],
+        "child_scopes": [
+          "resource:read:datasetA"
+        ],
+        "policy_id": "nhi_grants_c_073c975c6c8b3581a44c6470d79cf60b",
+        "entry_id": "a55356c1-69e3-4d11-a6b5-294bb710aa3c",
+        "expires_at": 1793573033,
+        "task_context": "vend to svid"
+      }
+    },
+    "audit_attest_allow": {
+      "timestamp": "2026-11-01T22:38:53.605314838Z",
+      "stage": "attest",
+      "chain_id": "",
+      "actor_spiffe_id": "spiffe://lab.local/agent/parent/exp-root",
+      "outcome": "allow",
+      "detail": {
+        "parent_spiffe_id": "spiffe://lab.local/agent/parent/exp-root",
+        "reason": "JWT-SVID, manifest signature, nonce and child_selectors all verified"
+      }
+    },
+    "agent_log": {
+      "ns": 1793572738576761727,
+      "line": "time=\"2026-11-01T22:38:58Z\" level=info msg=\"Creating X509-SVID\" entry_id=a55356c1-69e3-4d11-a6b5-294bb710aa3c spiffe_id=\"spiffe://lab.local/agent/parent/exp-root/child/v2s-54a942-27\" subsystem_name=manager"
+    }
+  },
+  {
+    "trial": 28,
+    "wait_ready": {
+      "event": "ready",
+      "send_ns": 1793572746404151119,
+      "recv_ns": 1793572746406257617,
+      "miss_reason": "rpc error: code = PermissionDenied desc = no identity issued"
+    },
+    "vend": {
+      "status": 201,
+      "send_ns": 1793572746660288083,
+      "recv_ns": 1793572746680941269,
+      "round_trip_ns": 20653186,
+      "response": "{\"chain_id\":\"c_da516afa5e1939b9be5b4bcec9919fbf\",\"parent_spiffe_id\":\"spiffe://lab.local/agent/parent/exp-root\",\"child_spiffe_id\":\"spiffe://lab.local/agent/parent/exp-root/child/v2s-54a942-28\",\"child_scopes\":[\"resource:read:datasetA\"],\"entry_id\":\"bd36dfb9-bf1b-4c59-a473-b287e77593c9\",\"policy_id\":\"nhi_grants_c_da516afa5e1939b9be5b4bcec9919fbf\",\"issued_at\":1793572746,\"expires_at\":1793573046}\n"
+    },
+    "wait_final": {
+      "event": "obtained",
+      "send_ns": 1793572748756733097,
+      "recv_ns": 1793572748757209289,
+      "last_miss_send_ns": 1793572748736190561,
+      "last_miss_recv_ns": 1793572748736618683,
+      "spiffe_ids": [
+        "spiffe://lab.local/agent/parent/exp-root/child/v2s-54a942-28"
+      ],
+      "not_after": "2026-11-01T22:44:08Z",
+      "miss_reasons": {
+        "rpc error: code = PermissionDenied desc = no identity issued": 115
+      },
+      "attempts": 116,
+      "misses": 115,
+      "gap_mean_ns": 20457234,
+      "gap_max_ns": 20922097,
+      "latency_mean_ns": 439132,
+      "latency_max_ns": 2106498
+    },
+    "dispose": 200,
+    "audit_vend_allow": {
+      "timestamp": "2026-11-01T22:39:06.680874509Z",
+      "stage": "vend",
+      "chain_id": "c_da516afa5e1939b9be5b4bcec9919fbf",
+      "actor_spiffe_id": "spiffe://lab.local/agent/parent/exp-root",
+      "outcome": "allow",
+      "detail": {
+        "parent_spiffe_id": "spiffe://lab.local/agent/parent/exp-root",
+        "child_spiffe_id": "spiffe://lab.local/agent/parent/exp-root/child/v2s-54a942-28",
+        "requested_scopes": [
+          "resource:read:datasetA"
+        ],
+        "child_scopes": [
+          "resource:read:datasetA"
+        ],
+        "policy_id": "nhi_grants_c_da516afa5e1939b9be5b4bcec9919fbf",
+        "entry_id": "bd36dfb9-bf1b-4c59-a473-b287e77593c9",
+        "expires_at": 1793573046,
+        "task_context": "vend to svid"
+      }
+    },
+    "audit_attest_allow": {
+      "timestamp": "2026-11-01T22:39:06.67039937Z",
+      "stage": "attest",
+      "chain_id": "",
+      "actor_spiffe_id": "spiffe://lab.local/agent/parent/exp-root",
+      "outcome": "allow",
+      "detail": {
+        "parent_spiffe_id": "spiffe://lab.local/agent/parent/exp-root",
+        "reason": "JWT-SVID, manifest signature, nonce and child_selectors all verified"
+      }
+    },
+    "agent_log": {
+      "ns": 1793572748753598716,
+      "line": "time=\"2026-11-01T22:39:08Z\" level=info msg=\"Creating X509-SVID\" entry_id=bd36dfb9-bf1b-4c59-a473-b287e77593c9 spiffe_id=\"spiffe://lab.local/agent/parent/exp-root/child/v2s-54a942-28\" subsystem_name=manager"
+    }
+  },
+  {
+    "trial": 29,
+    "wait_ready": {
+      "event": "ready",
+      "send_ns": 1793572759784823800,
+      "recv_ns": 1793572759787087858,
+      "miss_reason": "rpc error: code = PermissionDenied desc = no identity issued"
+    },
+    "vend": {
+      "status": 201,
+      "send_ns": 1793572760034757889,
+      "recv_ns": 1793572760055605556,
+      "round_trip_ns": 20847667,
+      "response": "{\"chain_id\":\"c_f6aa085ed50eb288cc5b6bead00ee4cc\",\"parent_spiffe_id\":\"spiffe://lab.local/agent/parent/exp-root\",\"child_spiffe_id\":\"spiffe://lab.local/agent/parent/exp-root/child/v2s-54a942-29\",\"child_scopes\":[\"resource:read:datasetA\"],\"entry_id\":\"22992237-269c-499f-8a48-281ad31bb6c9\",\"policy_id\":\"nhi_grants_c_f6aa085ed50eb288cc5b6bead00ee4cc\",\"issued_at\":1793572760,\"expires_at\":1793573060}\n"
+    },
+    "wait_final": {
+      "event": "obtained",
+      "send_ns": 1793572764230609496,
+      "recv_ns": 1793572764231132558,
+      "last_miss_send_ns": 1793572764210190521,
+      "last_miss_recv_ns": 1793572764210482142,
+      "spiffe_ids": [
+        "spiffe://lab.local/agent/parent/exp-root/child/v2s-54a942-29"
+      ],
+      "not_after": "2026-11-01T22:44:24Z",
+      "miss_reasons": {
+        "rpc error: code = PermissionDenied desc = no identity issued": 217
+      },
+      "attempts": 218,
+      "misses": 217,
+      "gap_mean_ns": 20487491,
+      "gap_max_ns": 21050687,
+      "latency_mean_ns": 436617,
+      "latency_max_ns": 2264058
+    },
+    "dispose": 200,
+    "audit_vend_allow": {
+      "timestamp": "2026-11-01T22:39:20.055545906Z",
+      "stage": "vend",
+      "chain_id": "c_f6aa085ed50eb288cc5b6bead00ee4cc",
+      "actor_spiffe_id": "spiffe://lab.local/agent/parent/exp-root",
+      "outcome": "allow",
+      "detail": {
+        "parent_spiffe_id": "spiffe://lab.local/agent/parent/exp-root",
+        "child_spiffe_id": "spiffe://lab.local/agent/parent/exp-root/child/v2s-54a942-29",
+        "requested_scopes": [
+          "resource:read:datasetA"
+        ],
+        "child_scopes": [
+          "resource:read:datasetA"
+        ],
+        "policy_id": "nhi_grants_c_f6aa085ed50eb288cc5b6bead00ee4cc",
+        "entry_id": "22992237-269c-499f-8a48-281ad31bb6c9",
+        "expires_at": 1793573060,
+        "task_context": "vend to svid"
+      }
+    },
+    "audit_attest_allow": {
+      "timestamp": "2026-11-01T22:39:20.045093597Z",
+      "stage": "attest",
+      "chain_id": "",
+      "actor_spiffe_id": "spiffe://lab.local/agent/parent/exp-root",
+      "outcome": "allow",
+      "detail": {
+        "parent_spiffe_id": "spiffe://lab.local/agent/parent/exp-root",
+        "reason": "JWT-SVID, manifest signature, nonce and child_selectors all verified"
+      }
+    },
+    "agent_log": {
+      "ns": 1793572764213578843,
+      "line": "time=\"2026-11-01T22:39:24Z\" level=info msg=\"Creating X509-SVID\" entry_id=22992237-269c-499f-8a48-281ad31bb6c9 spiffe_id=\"spiffe://lab.local/agent/parent/exp-root/child/v2s-54a942-29\" subsystem_name=manager"
+    }
+  },
+  {
+    "trial": 30,
+    "wait_ready": {
+      "event": "ready",
+      "send_ns": 1793572773905307240,
+      "recv_ns": 1793572773908238371,
+      "miss_reason": "rpc error: code = PermissionDenied desc = no identity issued"
+    },
+    "vend": {
+      "status": 201,
+      "send_ns": 1793572774163913480,
+      "recv_ns": 1793572774186779934,
+      "round_trip_ns": 22866454,
+      "response": "{\"chain_id\":\"c_f3c02ca4a6601c945b339f4d6ef69300\",\"parent_spiffe_id\":\"spiffe://lab.local/agent/parent/exp-root\",\"child_spiffe_id\":\"spiffe://lab.local/agent/parent/exp-root/child/v2s-54a942-30\",\"child_scopes\":[\"resource:read:datasetA\"],\"entry_id\":\"ef757f0c-10c6-44c1-ad24-96f9a44bb691\",\"policy_id\":\"nhi_grants_c_f3c02ca4a6601c945b339f4d6ef69300\",\"issued_at\":1793572774,\"expires_at\":1793573074}\n"
+    },
+    "wait_final": {
+      "event": "obtained",
+      "send_ns": 1793572779826277104,
+      "recv_ns": 1793572779826699215,
+      "last_miss_send_ns": 1793572779805918209,
+      "last_miss_recv_ns": 1793572779806195410,
+      "spiffe_ids": [
+        "spiffe://lab.local/agent/parent/exp-root/child/v2s-54a942-30"
+      ],
+      "not_after": "2026-11-01T22:44:39Z",
+      "miss_reasons": {
+        "rpc error: code = PermissionDenied desc = no identity issued": 289
+      },
+      "attempts": 290,
+      "misses": 289,
+      "gap_mean_ns": 20487784,
+      "gap_max_ns": 21056148,
+      "latency_mean_ns": 440612,
+      "latency_max_ns": 2931131
+    },
+    "dispose": 200,
+    "audit_vend_allow": {
+      "timestamp": "2026-11-01T22:39:34.186721694Z",
+      "stage": "vend",
+      "chain_id": "c_f3c02ca4a6601c945b339f4d6ef69300",
+      "actor_spiffe_id": "spiffe://lab.local/agent/parent/exp-root",
+      "outcome": "allow",
+      "detail": {
+        "parent_spiffe_id": "spiffe://lab.local/agent/parent/exp-root",
+        "child_spiffe_id": "spiffe://lab.local/agent/parent/exp-root/child/v2s-54a942-30",
+        "requested_scopes": [
+          "resource:read:datasetA"
+        ],
+        "child_scopes": [
+          "resource:read:datasetA"
+        ],
+        "policy_id": "nhi_grants_c_f3c02ca4a6601c945b339f4d6ef69300",
+        "entry_id": "ef757f0c-10c6-44c1-ad24-96f9a44bb691",
+        "expires_at": 1793573074,
+        "task_context": "vend to svid"
+      }
+    },
+    "audit_attest_allow": {
+      "timestamp": "2026-11-01T22:39:34.177321769Z",
+      "stage": "attest",
+      "chain_id": "",
+      "actor_spiffe_id": "spiffe://lab.local/agent/parent/exp-root",
+      "outcome": "allow",
+      "detail": {
+        "parent_spiffe_id": "spiffe://lab.local/agent/parent/exp-root",
+        "reason": "JWT-SVID, manifest signature, nonce and child_selectors all verified"
+      }
+    },
+    "agent_log": {
+      "ns": 1793572779816249467,
+      "line": "time=\"2026-11-01T22:39:39Z\" level=info msg=\"Creating X509-SVID\" entry_id=ef757f0c-10c6-44c1-ad24-96f9a44bb691 spiffe_id=\"spiffe://lab.local/agent/parent/exp-root/child/v2s-54a942-30\" subsystem_name=manager"
+    }
+  },
+  {
+    "trial": 31,
+    "wait_ready": {
+      "event": "ready",
+      "send_ns": 1793572788791268731,
+      "recv_ns": 1793572788792734207,
+      "miss_reason": "rpc error: code = PermissionDenied desc = no identity issued"
+    },
+    "vend": {
+      "status": 201,
+      "send_ns": 1793572789040802435,
+      "recv_ns": 1793572789061150720,
+      "round_trip_ns": 20348285,
+      "response": "{\"chain_id\":\"c_f280d0f01d58bee2f473a75124973569\",\"parent_spiffe_id\":\"spiffe://lab.local/agent/parent/exp-root\",\"child_spiffe_id\":\"spiffe://lab.local/agent/parent/exp-root/child/v2s-54a942-31\",\"child_scopes\":[\"resource:read:datasetA\"],\"entry_id\":\"6cf1f332-98aa-47d5-bd96-efe44224593e\",\"policy_id\":\"nhi_grants_c_f280d0f01d58bee2f473a75124973569\",\"issued_at\":1793572789,\"expires_at\":1793573089}\n"
+    },
+    "wait_final": {
+      "event": "obtained",
+      "send_ns": 1793572794548880452,
+      "recv_ns": 1793572795052670276,
+      "last_miss_send_ns": 1793572794528408377,
+      "last_miss_recv_ns": 1793572794528769248,
+      "spiffe_ids": [
+        "spiffe://lab.local/agent/parent/exp-root/child/v2s-54a942-31"
+      ],
+      "not_after": "2026-11-01T22:44:54Z",
+      "miss_reasons": {
+        "rpc error: code = PermissionDenied desc = no identity issued": 281
+      },
+      "attempts": 282,
+      "misses": 281,
+      "gap_mean_ns": 20489721,
+      "gap_max_ns": 21046177,
+      "latency_mean_ns": 2218753,
+      "latency_max_ns": 503789834
+    },
+    "dispose": 200,
+    "audit_vend_allow": {
+      "timestamp": "2026-11-01T22:39:49.06109486Z",
+      "stage": "vend",
+      "chain_id": "c_f280d0f01d58bee2f473a75124973569",
+      "actor_spiffe_id": "spiffe://lab.local/agent/parent/exp-root",
+      "outcome": "allow",
+      "detail": {
+        "parent_spiffe_id": "spiffe://lab.local/agent/parent/exp-root",
+        "child_spiffe_id": "spiffe://lab.local/agent/parent/exp-root/child/v2s-54a942-31",
+        "requested_scopes": [
+          "resource:read:datasetA"
+        ],
+        "child_scopes": [
+          "resource:read:datasetA"
+        ],
+        "policy_id": "nhi_grants_c_f280d0f01d58bee2f473a75124973569",
+        "entry_id": "6cf1f332-98aa-47d5-bd96-efe44224593e",
+        "expires_at": 1793573089,
+        "task_context": "vend to svid"
+      }
+    },
+    "audit_attest_allow": {
+      "timestamp": "2026-11-01T22:39:49.050838462Z",
+      "stage": "attest",
+      "chain_id": "",
+      "actor_spiffe_id": "spiffe://lab.local/agent/parent/exp-root",
+      "outcome": "allow",
+      "detail": {
+        "parent_spiffe_id": "spiffe://lab.local/agent/parent/exp-root",
+        "reason": "JWT-SVID, manifest signature, nonce and child_selectors all verified"
+      }
+    },
+    "agent_log": {
+      "ns": 1793572794548896332,
+      "line": "time=\"2026-11-01T22:39:54Z\" level=info msg=\"Creating X509-SVID\" entry_id=6cf1f332-98aa-47d5-bd96-efe44224593e spiffe_id=\"spiffe://lab.local/agent/parent/exp-root/child/v2s-54a942-31\" subsystem_name=manager"
+    }
+  },
+  {
+    "trial": 32,
+    "wait_ready": {
+      "event": "ready",
+      "send_ns": 1793572801374274931,
+      "recv_ns": 1793572801375882706,
+      "miss_reason": "rpc error: code = PermissionDenied desc = no identity issued"
+    },
+    "vend": {
+      "status": 201,
+      "send_ns": 1793572801625453919,
+      "recv_ns": 1793572801646092494,
+      "round_trip_ns": 20638575,
+      "response": "{\"chain_id\":\"c_7a54ee730bef61dd0bdee031444facc2\",\"parent_spiffe_id\":\"spiffe://lab.local/agent/parent/exp-root\",\"child_spiffe_id\":\"spiffe://lab.local/agent/parent/exp-root/child/v2s-54a942-32\",\"child_scopes\":[\"resource:read:datasetA\"],\"entry_id\":\"388f895e-e061-4cff-b221-a95e96a7249c\",\"policy_id\":\"nhi_grants_c_7a54ee730bef61dd0bdee031444facc2\",\"issued_at\":1793572801,\"expires_at\":1793573101}\n"
+    },
+    "wait_final": {
+      "event": "obtained",
+      "send_ns": 1793572804323811193,
+      "recv_ns": 1793572804324300535,
+      "last_miss_send_ns": 1793572804303390129,
+      "last_miss_recv_ns": 1793572804304691894,
+      "spiffe_ids": [
+        "spiffe://lab.local/agent/parent/exp-root/child/v2s-54a942-32"
+      ],
+      "not_after": "2026-11-01T22:45:04Z",
+      "miss_reasons": {
+        "rpc error: code = PermissionDenied desc = no identity issued": 144
+      },
+      "attempts": 145,
+      "misses": 144,
+      "gap_mean_ns": 20482890,
+      "gap_max_ns": 20971477,
+      "latency_mean_ns": 442910,
+      "latency_max_ns": 1754436
+    },
+    "dispose": 200,
+    "audit_vend_allow": {
+      "timestamp": "2026-11-01T22:40:01.646030084Z",
+      "stage": "vend",
+      "chain_id": "c_7a54ee730bef61dd0bdee031444facc2",
+      "actor_spiffe_id": "spiffe://lab.local/agent/parent/exp-root",
+      "outcome": "allow",
+      "detail": {
+        "parent_spiffe_id": "spiffe://lab.local/agent/parent/exp-root",
+        "child_spiffe_id": "spiffe://lab.local/agent/parent/exp-root/child/v2s-54a942-32",
+        "requested_scopes": [
+          "resource:read:datasetA"
+        ],
+        "child_scopes": [
+          "resource:read:datasetA"
+        ],
+        "policy_id": "nhi_grants_c_7a54ee730bef61dd0bdee031444facc2",
+        "entry_id": "388f895e-e061-4cff-b221-a95e96a7249c",
+        "expires_at": 1793573101,
+        "task_context": "vend to svid"
+      }
+    },
+    "audit_attest_allow": {
+      "timestamp": "2026-11-01T22:40:01.635357445Z",
+      "stage": "attest",
+      "chain_id": "",
+      "actor_spiffe_id": "spiffe://lab.local/agent/parent/exp-root",
+      "outcome": "allow",
+      "detail": {
+        "parent_spiffe_id": "spiffe://lab.local/agent/parent/exp-root",
+        "reason": "JWT-SVID, manifest signature, nonce and child_selectors all verified"
+      }
+    },
+    "agent_log": {
+      "ns": 1793572804309688762,
+      "line": "time=\"2026-11-01T22:40:04Z\" level=info msg=\"Creating X509-SVID\" entry_id=388f895e-e061-4cff-b221-a95e96a7249c spiffe_id=\"spiffe://lab.local/agent/parent/exp-root/child/v2s-54a942-32\" subsystem_name=manager"
+    }
+  },
+  {
+    "trial": 33,
+    "wait_ready": {
+      "event": "ready",
+      "send_ns": 1793572811065948435,
+      "recv_ns": 1793572811067400801,
+      "miss_reason": "rpc error: code = PermissionDenied desc = no identity issued"
+    },
+    "vend": {
+      "status": 201,
+      "send_ns": 1793572811314967795,
+      "recv_ns": 1793572811335156218,
+      "round_trip_ns": 20188423,
+      "response": "{\"chain_id\":\"c_ddf40a94056da051e3ee30620c0460be\",\"parent_spiffe_id\":\"spiffe://lab.local/agent/parent/exp-root\",\"child_spiffe_id\":\"spiffe://lab.local/agent/parent/exp-root/child/v2s-54a942-33\",\"child_scopes\":[\"resource:read:datasetA\"],\"entry_id\":\"c436de24-e277-40df-aa1c-9740521be114\",\"policy_id\":\"nhi_grants_c_ddf40a94056da051e3ee30620c0460be\",\"issued_at\":1793572811,\"expires_at\":1793573111}\n"
+    },
+    "wait_final": {
+      "event": "obtained",
+      "send_ns": 1793572814342538178,
+      "recv_ns": 1793572814343043810,
+      "last_miss_send_ns": 1793572814322167614,
+      "last_miss_recv_ns": 1793572814322450845,
+      "spiffe_ids": [
+        "spiffe://lab.local/agent/parent/exp-root/child/v2s-54a942-33"
+      ],
+      "not_after": "2026-11-01T22:45:14Z",
+      "miss_reasons": {
+        "rpc error: code = PermissionDenied desc = no identity issued": 160
+      },
+      "attempts": 161,
+      "misses": 160,
+      "gap_mean_ns": 20478685,
+      "gap_max_ns": 21024177,
+      "latency_mean_ns": 422393,
+      "latency_max_ns": 1792406
+    },
+    "dispose": 200,
+    "audit_vend_allow": {
+      "timestamp": "2026-11-01T22:40:11.335094008Z",
+      "stage": "vend",
+      "chain_id": "c_ddf40a94056da051e3ee30620c0460be",
+      "actor_spiffe_id": "spiffe://lab.local/agent/parent/exp-root",
+      "outcome": "allow",
+      "detail": {
+        "parent_spiffe_id": "spiffe://lab.local/agent/parent/exp-root",
+        "child_spiffe_id": "spiffe://lab.local/agent/parent/exp-root/child/v2s-54a942-33",
+        "requested_scopes": [
+          "resource:read:datasetA"
+        ],
+        "child_scopes": [
+          "resource:read:datasetA"
+        ],
+        "policy_id": "nhi_grants_c_ddf40a94056da051e3ee30620c0460be",
+        "entry_id": "c436de24-e277-40df-aa1c-9740521be114",
+        "expires_at": 1793573111,
+        "task_context": "vend to svid"
+      }
+    },
+    "audit_attest_allow": {
+      "timestamp": "2026-11-01T22:40:11.324448589Z",
+      "stage": "attest",
+      "chain_id": "",
+      "actor_spiffe_id": "spiffe://lab.local/agent/parent/exp-root",
+      "outcome": "allow",
+      "detail": {
+        "parent_spiffe_id": "spiffe://lab.local/agent/parent/exp-root",
+        "reason": "JWT-SVID, manifest signature, nonce and child_selectors all verified"
+      }
+    },
+    "agent_log": {
+      "ns": 1793572814333613635,
+      "line": "time=\"2026-11-01T22:40:14Z\" level=info msg=\"Creating X509-SVID\" entry_id=c436de24-e277-40df-aa1c-9740521be114 spiffe_id=\"spiffe://lab.local/agent/parent/exp-root/child/v2s-54a942-33\" subsystem_name=manager"
+    }
+  },
+  {
+    "trial": 34,
+    "wait_ready": {
+      "event": "ready",
+      "send_ns": 1793572821895403564,
+      "recv_ns": 1793572821896870759,
+      "miss_reason": "rpc error: code = PermissionDenied desc = no identity issued"
+    },
+    "vend": {
+      "status": 201,
+      "send_ns": 1793572822143900550,
+      "recv_ns": 1793572822162040226,
+      "round_trip_ns": 18139676,
+      "response": "{\"chain_id\":\"c_87525c00de779360889a6c25b2dcb212\",\"parent_spiffe_id\":\"spiffe://lab.local/agent/parent/exp-root\",\"child_spiffe_id\":\"spiffe://lab.local/agent/parent/exp-root/child/v2s-54a942-34\",\"child_scopes\":[\"resource:read:datasetA\"],\"entry_id\":\"d0f4017f-6d87-443e-91fe-316e7df56f74\",\"policy_id\":\"nhi_grants_c_87525c00de779360889a6c25b2dcb212\",\"issued_at\":1793572822,\"expires_at\":1793573122}\n"
+    },
+    "wait_final": {
+      "event": "obtained",
+      "send_ns": 1793572823859539905,
+      "recv_ns": 1793572823859928987,
+      "last_miss_send_ns": 1793572823839205281,
+      "last_miss_recv_ns": 1793572823839458712,
+      "spiffe_ids": [
+        "spiffe://lab.local/agent/parent/exp-root/child/v2s-54a942-34"
+      ],
+      "not_after": "2026-11-01T22:45:23Z",
+      "miss_reasons": {
+        "rpc error: code = PermissionDenied desc = no identity issued": 96
+      },
+      "attempts": 97,
+      "misses": 96,
+      "gap_mean_ns": 20459753,
+      "gap_max_ns": 20892457,
+      "latency_mean_ns": 438283,
+      "latency_max_ns": 2086557
+    },
+    "dispose": 200,
+    "audit_vend_allow": {
+      "timestamp": "2026-11-01T22:40:22.161983426Z",
+      "stage": "vend",
+      "chain_id": "c_87525c00de779360889a6c25b2dcb212",
+      "actor_spiffe_id": "spiffe://lab.local/agent/parent/exp-root",
+      "outcome": "allow",
+      "detail": {
+        "parent_spiffe_id": "spiffe://lab.local/agent/parent/exp-root",
+        "child_spiffe_id": "spiffe://lab.local/agent/parent/exp-root/child/v2s-54a942-34",
+        "requested_scopes": [
+          "resource:read:datasetA"
+        ],
+        "child_scopes": [
+          "resource:read:datasetA"
+        ],
+        "policy_id": "nhi_grants_c_87525c00de779360889a6c25b2dcb212",
+        "entry_id": "d0f4017f-6d87-443e-91fe-316e7df56f74",
+        "expires_at": 1793573122,
+        "task_context": "vend to svid"
+      }
+    },
+    "audit_attest_allow": {
+      "timestamp": "2026-11-01T22:40:22.151496798Z",
+      "stage": "attest",
+      "chain_id": "",
+      "actor_spiffe_id": "spiffe://lab.local/agent/parent/exp-root",
+      "outcome": "allow",
+      "detail": {
+        "parent_spiffe_id": "spiffe://lab.local/agent/parent/exp-root",
+        "reason": "JWT-SVID, manifest signature, nonce and child_selectors all verified"
+      }
+    },
+    "agent_log": {
+      "ns": 1793572823857535798,
+      "line": "time=\"2026-11-01T22:40:23Z\" level=info msg=\"Creating X509-SVID\" entry_id=d0f4017f-6d87-443e-91fe-316e7df56f74 spiffe_id=\"spiffe://lab.local/agent/parent/exp-root/child/v2s-54a942-34\" subsystem_name=manager"
+    }
+  },
+  {
+    "trial": 35,
+    "wait_ready": {
+      "event": "ready",
+      "send_ns": 1793572829486836883,
+      "recv_ns": 1793572829487615696,
+      "miss_reason": "rpc error: code = PermissionDenied desc = no identity issued"
+    },
+    "vend": {
+      "status": 201,
+      "send_ns": 1793572829734987277,
+      "recv_ns": 1793572829754041637,
+      "round_trip_ns": 19054360,
+      "response": "{\"chain_id\":\"c_613606d544d6e904a8d84ba20da45770\",\"parent_spiffe_id\":\"spiffe://lab.local/agent/parent/exp-root\",\"child_spiffe_id\":\"spiffe://lab.local/agent/parent/exp-root/child/v2s-54a942-35\",\"child_scopes\":[\"resource:read:datasetA\"],\"entry_id\":\"72bd40fe-c908-49de-9620-0f9615aa6062\",\"policy_id\":\"nhi_grants_c_613606d544d6e904a8d84ba20da45770\",\"issued_at\":1793572829,\"expires_at\":1793573129}\n"
+    },
+    "wait_final": {
+      "event": "obtained",
+      "send_ns": 1793572833624916064,
+      "recv_ns": 1793572834154863884,
+      "last_miss_send_ns": 1793572833604241979,
+      "last_miss_recv_ns": 1793572833604801181,
+      "spiffe_ids": [
+        "spiffe://lab.local/agent/parent/exp-root/child/v2s-54a942-35"
+      ],
+      "not_after": "2026-11-01T22:45:33Z",
+      "miss_reasons": {
+        "rpc error: code = PermissionDenied desc = no identity issued": 202
+      },
+      "attempts": 203,
+      "misses": 202,
+      "gap_mean_ns": 20485540,
+      "gap_max_ns": 21013967,
+      "latency_mean_ns": 3050144,
+      "latency_max_ns": 529947820
+    },
+    "dispose": 200,
+    "audit_vend_allow": {
+      "timestamp": "2026-11-01T22:40:29.753966696Z",
+      "stage": "vend",
+      "chain_id": "c_613606d544d6e904a8d84ba20da45770",
+      "actor_spiffe_id": "spiffe://lab.local/agent/parent/exp-root",
+      "outcome": "allow",
+      "detail": {
+        "parent_spiffe_id": "spiffe://lab.local/agent/parent/exp-root",
+        "child_spiffe_id": "spiffe://lab.local/agent/parent/exp-root/child/v2s-54a942-35",
+        "requested_scopes": [
+          "resource:read:datasetA"
+        ],
+        "child_scopes": [
+          "resource:read:datasetA"
+        ],
+        "policy_id": "nhi_grants_c_613606d544d6e904a8d84ba20da45770",
+        "entry_id": "72bd40fe-c908-49de-9620-0f9615aa6062",
+        "expires_at": 1793573129,
+        "task_context": "vend to svid"
+      }
+    },
+    "audit_attest_allow": {
+      "timestamp": "2026-11-01T22:40:29.742772846Z",
+      "stage": "attest",
+      "chain_id": "",
+      "actor_spiffe_id": "spiffe://lab.local/agent/parent/exp-root",
+      "outcome": "allow",
+      "detail": {
+        "parent_spiffe_id": "spiffe://lab.local/agent/parent/exp-root",
+        "reason": "JWT-SVID, manifest signature, nonce and child_selectors all verified"
+      }
+    },
+    "agent_log": {
+      "ns": 1793572833624540343,
+      "line": "time=\"2026-11-01T22:40:33Z\" level=info msg=\"Creating X509-SVID\" entry_id=72bd40fe-c908-49de-9620-0f9615aa6062 spiffe_id=\"spiffe://lab.local/agent/parent/exp-root/child/v2s-54a942-35\" subsystem_name=manager"
+    }
+  },
+  {
+    "trial": 36,
+    "wait_ready": {
+      "event": "ready",
+      "send_ns": 1793572842374009783,
+      "recv_ns": 1793572842375472598,
+      "miss_reason": "rpc error: code = PermissionDenied desc = no identity issued"
+    },
+    "vend": {
+      "status": 201,
+      "send_ns": 1793572842623374400,
+      "recv_ns": 1793572842651503382,
+      "round_trip_ns": 28128982,
+      "response": "{\"chain_id\":\"c_52386ea703bd625af1d263ea4de5f8ef\",\"parent_spiffe_id\":\"spiffe://lab.local/agent/parent/exp-root\",\"child_spiffe_id\":\"spiffe://lab.local/agent/parent/exp-root/child/v2s-54a942-36\",\"child_scopes\":[\"resource:read:datasetA\"],\"entry_id\":\"391bdade-2ee9-4e8b-a722-c76ce462df57\",\"policy_id\":\"nhi_grants_c_52386ea703bd625af1d263ea4de5f8ef\",\"issued_at\":1793572842,\"expires_at\":1793573142}\n"
+    },
+    "wait_final": {
+      "event": "obtained",
+      "send_ns": 1793572843787392303,
+      "recv_ns": 1793572843787824865,
+      "last_miss_send_ns": 1793572843766879479,
+      "last_miss_recv_ns": 1793572843767282920,
+      "spiffe_ids": [
+        "spiffe://lab.local/agent/parent/exp-root/child/v2s-54a942-36"
+      ],
+      "not_after": "2026-11-01T22:45:43Z",
+      "miss_reasons": {
+        "rpc error: code = PermissionDenied desc = no identity issued": 69
+      },
+      "attempts": 70,
+      "misses": 69,
+      "gap_mean_ns": 20483804,
+      "gap_max_ns": 20999287,
+      "latency_mean_ns": 443260,
+      "latency_max_ns": 1589106
+    },
+    "dispose": 200,
+    "audit_vend_allow": {
+      "timestamp": "2026-11-01T22:40:42.651447462Z",
+      "stage": "vend",
+      "chain_id": "c_52386ea703bd625af1d263ea4de5f8ef",
+      "actor_spiffe_id": "spiffe://lab.local/agent/parent/exp-root",
+      "outcome": "allow",
+      "detail": {
+        "parent_spiffe_id": "spiffe://lab.local/agent/parent/exp-root",
+        "child_spiffe_id": "spiffe://lab.local/agent/parent/exp-root/child/v2s-54a942-36",
+        "requested_scopes": [
+          "resource:read:datasetA"
+        ],
+        "child_scopes": [
+          "resource:read:datasetA"
+        ],
+        "policy_id": "nhi_grants_c_52386ea703bd625af1d263ea4de5f8ef",
+        "entry_id": "391bdade-2ee9-4e8b-a722-c76ce462df57",
+        "expires_at": 1793573142,
+        "task_context": "vend to svid"
+      }
+    },
+    "audit_attest_allow": {
+      "timestamp": "2026-11-01T22:40:42.631971211Z",
+      "stage": "attest",
+      "chain_id": "",
+      "actor_spiffe_id": "spiffe://lab.local/agent/parent/exp-root",
+      "outcome": "allow",
+      "detail": {
+        "parent_spiffe_id": "spiffe://lab.local/agent/parent/exp-root",
+        "reason": "JWT-SVID, manifest signature, nonce and child_selectors all verified"
+      }
+    },
+    "agent_log": {
+      "ns": 1793572843770280721,
+      "line": "time=\"2026-11-01T22:40:43Z\" level=info msg=\"Creating X509-SVID\" entry_id=391bdade-2ee9-4e8b-a722-c76ce462df57 spiffe_id=\"spiffe://lab.local/agent/parent/exp-root/child/v2s-54a942-36\" subsystem_name=manager"
+    }
+  },
+  {
+    "trial": 37,
+    "wait_ready": {
+      "event": "ready",
+      "send_ns": 1793572849668883373,
+      "recv_ns": 1793572849670335268,
+      "miss_reason": "rpc error: code = PermissionDenied desc = no identity issued"
+    },
+    "vend": {
+      "status": 201,
+      "send_ns": 1793572849916387893,
+      "recv_ns": 1793572849937627260,
+      "round_trip_ns": 21239367,
+      "response": "{\"chain_id\":\"c_79d4662b360b56e4cf24f326620a9087\",\"parent_spiffe_id\":\"spiffe://lab.local/agent/parent/exp-root\",\"child_spiffe_id\":\"spiffe://lab.local/agent/parent/exp-root/child/v2s-54a942-37\",\"child_scopes\":[\"resource:read:datasetA\"],\"entry_id\":\"a07b7ea3-f398-47bd-9871-d42b6ffe1618\",\"policy_id\":\"nhi_grants_c_79d4662b360b56e4cf24f326620a9087\",\"issued_at\":1793572849,\"expires_at\":1793573149}\n"
+    },
+    "wait_final": {
+      "event": "obtained",
+      "send_ns": 1793572857888944158,
+      "recv_ns": 1793572857889368600,
+      "last_miss_send_ns": 1793572857868446764,
+      "last_miss_recv_ns": 1793572857868831015,
+      "spiffe_ids": [
+        "spiffe://lab.local/agent/parent/exp-root/child/v2s-54a942-37"
+      ],
+      "not_after": "2026-11-01T22:45:57Z",
+      "miss_reasons": {
+        "rpc error: code = PermissionDenied desc = no identity issued": 401
+      },
+      "attempts": 402,
+      "misses": 401,
+      "gap_mean_ns": 20498904,
+      "gap_max_ns": 21058387,
+      "latency_mean_ns": 430852,
+      "latency_max_ns": 1742407
+    },
+    "dispose": 200,
+    "audit_vend_allow": {
+      "timestamp": "2026-11-01T22:40:49.937564659Z",
+      "stage": "vend",
+      "chain_id": "c_79d4662b360b56e4cf24f326620a9087",
+      "actor_spiffe_id": "spiffe://lab.local/agent/parent/exp-root",
+      "outcome": "allow",
+      "detail": {
+        "parent_spiffe_id": "spiffe://lab.local/agent/parent/exp-root",
+        "child_spiffe_id": "spiffe://lab.local/agent/parent/exp-root/child/v2s-54a942-37",
+        "requested_scopes": [
+          "resource:read:datasetA"
+        ],
+        "child_scopes": [
+          "resource:read:datasetA"
+        ],
+        "policy_id": "nhi_grants_c_79d4662b360b56e4cf24f326620a9087",
+        "entry_id": "a07b7ea3-f398-47bd-9871-d42b6ffe1618",
+        "expires_at": 1793573149,
+        "task_context": "vend to svid"
+      }
+    },
+    "audit_attest_allow": {
+      "timestamp": "2026-11-01T22:40:49.926938751Z",
+      "stage": "attest",
+      "chain_id": "",
+      "actor_spiffe_id": "spiffe://lab.local/agent/parent/exp-root",
+      "outcome": "allow",
+      "detail": {
+        "parent_spiffe_id": "spiffe://lab.local/agent/parent/exp-root",
+        "reason": "JWT-SVID, manifest signature, nonce and child_selectors all verified"
+      }
+    },
+    "agent_log": {
+      "ns": 1793572857876855134,
+      "line": "time=\"2026-11-01T22:40:57Z\" level=info msg=\"Creating X509-SVID\" entry_id=a07b7ea3-f398-47bd-9871-d42b6ffe1618 spiffe_id=\"spiffe://lab.local/agent/parent/exp-root/child/v2s-54a942-37\" subsystem_name=manager"
+    }
+  },
+  {
+    "trial": 38,
+    "wait_ready": {
+      "event": "ready",
+      "send_ns": 1793572867306589406,
+      "recv_ns": 1793572867308800304,
+      "miss_reason": "rpc error: code = PermissionDenied desc = no identity issued"
+    },
+    "vend": {
+      "status": 201,
+      "send_ns": 1793572867556017590,
+      "recv_ns": 1793572867576612525,
+      "round_trip_ns": 20594935,
+      "response": "{\"chain_id\":\"c_826487e7f0b6718714f53cc262e42f72\",\"parent_spiffe_id\":\"spiffe://lab.local/agent/parent/exp-root\",\"child_spiffe_id\":\"spiffe://lab.local/agent/parent/exp-root/child/v2s-54a942-38\",\"child_scopes\":[\"resource:read:datasetA\"],\"entry_id\":\"adde1301-d3e5-4b0a-8866-47988bf68515\",\"policy_id\":\"nhi_grants_c_826487e7f0b6718714f53cc262e42f72\",\"issued_at\":1793572867,\"expires_at\":1793573167}\n"
+    },
+    "wait_final": {
+      "event": "obtained",
+      "send_ns": 1793572872979924361,
+      "recv_ns": 1793572872980512053,
+      "last_miss_send_ns": 1793572872959375506,
+      "last_miss_recv_ns": 1793572872959805648,
+      "spiffe_ids": [
+        "spiffe://lab.local/agent/parent/exp-root/child/v2s-54a942-38"
+      ],
+      "not_after": "2026-11-01T22:46:12Z",
+      "miss_reasons": {
+        "rpc error: code = PermissionDenied desc = no identity issued": 277
+      },
+      "attempts": 278,
+      "misses": 277,
+      "gap_mean_ns": 20481353,
+      "gap_max_ns": 21030786,
+      "latency_mean_ns": 440978,
+      "latency_max_ns": 2210888
+    },
+    "dispose": 200,
+    "audit_vend_allow": {
+      "timestamp": "2026-11-01T22:41:07.576552765Z",
+      "stage": "vend",
+      "chain_id": "c_826487e7f0b6718714f53cc262e42f72",
+      "actor_spiffe_id": "spiffe://lab.local/agent/parent/exp-root",
+      "outcome": "allow",
+      "detail": {
+        "parent_spiffe_id": "spiffe://lab.local/agent/parent/exp-root",
+        "child_spiffe_id": "spiffe://lab.local/agent/parent/exp-root/child/v2s-54a942-38",
+        "requested_scopes": [
+          "resource:read:datasetA"
+        ],
+        "child_scopes": [
+          "resource:read:datasetA"
+        ],
+        "policy_id": "nhi_grants_c_826487e7f0b6718714f53cc262e42f72",
+        "entry_id": "adde1301-d3e5-4b0a-8866-47988bf68515",
+        "expires_at": 1793573167,
+        "task_context": "vend to svid"
+      }
+    },
+    "audit_attest_allow": {
+      "timestamp": "2026-11-01T22:41:07.565954466Z",
+      "stage": "attest",
+      "chain_id": "",
+      "actor_spiffe_id": "spiffe://lab.local/agent/parent/exp-root",
+      "outcome": "allow",
+      "detail": {
+        "parent_spiffe_id": "spiffe://lab.local/agent/parent/exp-root",
+        "reason": "JWT-SVID, manifest signature, nonce and child_selectors all verified"
+      }
+    },
+    "agent_log": {
+      "ns": 1793572872970038985,
+      "line": "time=\"2026-11-01T22:41:12Z\" level=info msg=\"Creating X509-SVID\" entry_id=adde1301-d3e5-4b0a-8866-47988bf68515 spiffe_id=\"spiffe://lab.local/agent/parent/exp-root/child/v2s-54a942-38\" subsystem_name=manager"
+    }
+  },
+  {
+    "trial": 39,
+    "wait_ready": {
+      "event": "ready",
+      "send_ns": 1793572881971800776,
+      "recv_ns": 1793572881973365002,
+      "miss_reason": "rpc error: code = PermissionDenied desc = no identity issued"
+    },
+    "vend": {
+      "status": 201,
+      "send_ns": 1793572882221703720,
+      "recv_ns": 1793572882242233575,
+      "round_trip_ns": 20529855,
+      "response": "{\"chain_id\":\"c_905dbb7eb8c75da57ea205a74d6161a2\",\"parent_spiffe_id\":\"spiffe://lab.local/agent/parent/exp-root\",\"child_spiffe_id\":\"spiffe://lab.local/agent/parent/exp-root/child/v2s-54a942-39\",\"child_scopes\":[\"resource:read:datasetA\"],\"entry_id\":\"6e33b208-6b52-40ca-92c0-a552222c1020\",\"policy_id\":\"nhi_grants_c_905dbb7eb8c75da57ea205a74d6161a2\",\"issued_at\":1793572882,\"expires_at\":1793573182}\n"
+    },
+    "wait_final": {
+      "event": "obtained",
+      "send_ns": 1793572883507885456,
+      "recv_ns": 1793572883508420347,
+      "last_miss_send_ns": 1793572883487348011,
+      "last_miss_recv_ns": 1793572883487770803,
+      "spiffe_ids": [
+        "spiffe://lab.local/agent/parent/exp-root/child/v2s-54a942-39"
+      ],
+      "not_after": "2026-11-01T22:46:23Z",
+      "miss_reasons": {
+        "rpc error: code = PermissionDenied desc = no identity issued": 75
+      },
+      "attempts": 76,
+      "misses": 75,
+      "gap_mean_ns": 20481129,
+      "gap_max_ns": 20989736,
+      "latency_mean_ns": 448565,
+      "latency_max_ns": 1564226
+    },
+    "dispose": 200,
+    "audit_vend_allow": {
+      "timestamp": "2026-11-01T22:41:22.242170544Z",
+      "stage": "vend",
+      "chain_id": "c_905dbb7eb8c75da57ea205a74d6161a2",
+      "actor_spiffe_id": "spiffe://lab.local/agent/parent/exp-root",
+      "outcome": "allow",
+      "detail": {
+        "parent_spiffe_id": "spiffe://lab.local/agent/parent/exp-root",
+        "child_spiffe_id": "spiffe://lab.local/agent/parent/exp-root/child/v2s-54a942-39",
+        "requested_scopes": [
+          "resource:read:datasetA"
+        ],
+        "child_scopes": [
+          "resource:read:datasetA"
+        ],
+        "policy_id": "nhi_grants_c_905dbb7eb8c75da57ea205a74d6161a2",
+        "entry_id": "6e33b208-6b52-40ca-92c0-a552222c1020",
+        "expires_at": 1793573182,
+        "task_context": "vend to svid"
+      }
+    },
+    "audit_attest_allow": {
+      "timestamp": "2026-11-01T22:41:22.230901074Z",
+      "stage": "attest",
+      "chain_id": "",
+      "actor_spiffe_id": "spiffe://lab.local/agent/parent/exp-root",
+      "outcome": "allow",
+      "detail": {
+        "parent_spiffe_id": "spiffe://lab.local/agent/parent/exp-root",
+        "reason": "JWT-SVID, manifest signature, nonce and child_selectors all verified"
+      }
+    },
+    "agent_log": {
+      "ns": 1793572883499668456,
+      "line": "time=\"2026-11-01T22:41:23Z\" level=info msg=\"Creating X509-SVID\" entry_id=6e33b208-6b52-40ca-92c0-a552222c1020 spiffe_id=\"spiffe://lab.local/agent/parent/exp-root/child/v2s-54a942-39\" subsystem_name=manager"
+    }
+  },
+  {
+    "trial": 40,
+    "wait_ready": {
+      "event": "ready",
+      "send_ns": 1793572895313135951,
+      "recv_ns": 1793572895314883147,
+      "miss_reason": "rpc error: code = PermissionDenied desc = no identity issued"
+    },
+    "vend": {
+      "status": 201,
+      "send_ns": 1793572895562644632,
+      "recv_ns": 1793572895588026804,
+      "round_trip_ns": 25382172,
+      "response": "{\"chain_id\":\"c_d6fcf3c23eb9ea41a8837ea7575cfa60\",\"parent_spiffe_id\":\"spiffe://lab.local/agent/parent/exp-root\",\"child_spiffe_id\":\"spiffe://lab.local/agent/parent/exp-root/child/v2s-54a942-40\",\"child_scopes\":[\"resource:read:datasetA\"],\"entry_id\":\"dd193cc4-cef1-43cd-9e7e-47c987a73f8c\",\"policy_id\":\"nhi_grants_c_d6fcf3c23eb9ea41a8837ea7575cfa60\",\"issued_at\":1793572895,\"expires_at\":1793573195}\n"
+    },
+    "wait_final": {
+      "event": "obtained",
+      "send_ns": 1793572902093240616,
+      "recv_ns": 1793572902093667257,
+      "last_miss_send_ns": 1793572902072771812,
+      "last_miss_recv_ns": 1793572902073126443,
+      "spiffe_ids": [
+        "spiffe://lab.local/agent/parent/exp-root/child/v2s-54a942-40"
+      ],
+      "not_after": "2026-11-01T22:46:42Z",
+      "miss_reasons": {
+        "rpc error: code = PermissionDenied desc = no identity issued": 331
+      },
+      "attempts": 332,
+      "misses": 331,
+      "gap_mean_ns": 20483699,
+      "gap_max_ns": 21036926,
+      "latency_mean_ns": 426540,
+      "latency_max_ns": 2300268
+    },
+    "dispose": 200,
+    "audit_vend_allow": {
+      "timestamp": "2026-11-01T22:41:35.587963974Z",
+      "stage": "vend",
+      "chain_id": "c_d6fcf3c23eb9ea41a8837ea7575cfa60",
+      "actor_spiffe_id": "spiffe://lab.local/agent/parent/exp-root",
+      "outcome": "allow",
+      "detail": {
+        "parent_spiffe_id": "spiffe://lab.local/agent/parent/exp-root",
+        "child_spiffe_id": "spiffe://lab.local/agent/parent/exp-root/child/v2s-54a942-40",
+        "requested_scopes": [
+          "resource:read:datasetA"
+        ],
+        "child_scopes": [
+          "resource:read:datasetA"
+        ],
+        "policy_id": "nhi_grants_c_d6fcf3c23eb9ea41a8837ea7575cfa60",
+        "entry_id": "dd193cc4-cef1-43cd-9e7e-47c987a73f8c",
+        "expires_at": 1793573195,
+        "task_context": "vend to svid"
+      }
+    },
+    "audit_attest_allow": {
+      "timestamp": "2026-11-01T22:41:35.57567261Z",
+      "stage": "attest",
+      "chain_id": "",
+      "actor_spiffe_id": "spiffe://lab.local/agent/parent/exp-root",
+      "outcome": "allow",
+      "detail": {
+        "parent_spiffe_id": "spiffe://lab.local/agent/parent/exp-root",
+        "reason": "JWT-SVID, manifest signature, nonce and child_selectors all verified"
+      }
+    },
+    "agent_log": {
+      "ns": 1793572902077157658,
+      "line": "time=\"2026-11-01T22:41:42Z\" level=info msg=\"Creating X509-SVID\" entry_id=dd193cc4-cef1-43cd-9e7e-47c987a73f8c spiffe_id=\"spiffe://lab.local/agent/parent/exp-root/child/v2s-54a942-40\" subsystem_name=manager"
+    }
+  },
+  {
+    "trial": 41,
+    "wait_ready": {
+      "event": "ready",
+      "send_ns": 1793572911901038747,
+      "recv_ns": 1793572911902485222,
+      "miss_reason": "rpc error: code = PermissionDenied desc = no identity issued"
+    },
+    "vend": {
+      "status": 201,
+      "send_ns": 1793572912149444173,
+      "recv_ns": 1793572912174065262,
+      "round_trip_ns": 24621089,
+      "response": "{\"chain_id\":\"c_3d890f1540d69b05804273783be07d22\",\"parent_spiffe_id\":\"spiffe://lab.local/agent/parent/exp-root\",\"child_spiffe_id\":\"spiffe://lab.local/agent/parent/exp-root/child/v2s-54a942-41\",\"child_scopes\":[\"resource:read:datasetA\"],\"entry_id\":\"5921db16-6ada-42e9-b6d7-ee37aa4955ac\",\"policy_id\":\"nhi_grants_c_3d890f1540d69b05804273783be07d22\",\"issued_at\":1793572912,\"expires_at\":1793573212}\n"
+    },
+    "wait_final": {
+      "event": "obtained",
+      "send_ns": 1793572916859233498,
+      "recv_ns": 1793572916860102552,
+      "last_miss_send_ns": 1793572916838827745,
+      "last_miss_recv_ns": 1793572916839114836,
+      "spiffe_ids": [
+        "spiffe://lab.local/agent/parent/exp-root/child/v2s-54a942-41"
+      ],
+      "not_after": "2026-11-01T22:46:56Z",
+      "miss_reasons": {
+        "rpc error: code = PermissionDenied desc = no identity issued": 242
+      },
+      "attempts": 243,
+      "misses": 242,
+      "gap_mean_ns": 20488408,
+      "gap_max_ns": 21054746,
+      "latency_mean_ns": 420898,
+      "latency_max_ns": 1608856
+    },
+    "dispose": 200,
+    "audit_vend_allow": {
+      "timestamp": "2026-11-01T22:41:52.173943471Z",
+      "stage": "vend",
+      "chain_id": "c_3d890f1540d69b05804273783be07d22",
+      "actor_spiffe_id": "spiffe://lab.local/agent/parent/exp-root",
+      "outcome": "allow",
+      "detail": {
+        "parent_spiffe_id": "spiffe://lab.local/agent/parent/exp-root",
+        "child_spiffe_id": "spiffe://lab.local/agent/parent/exp-root/child/v2s-54a942-41",
+        "requested_scopes": [
+          "resource:read:datasetA"
+        ],
+        "child_scopes": [
+          "resource:read:datasetA"
+        ],
+        "policy_id": "nhi_grants_c_3d890f1540d69b05804273783be07d22",
+        "entry_id": "5921db16-6ada-42e9-b6d7-ee37aa4955ac",
+        "expires_at": 1793573212,
+        "task_context": "vend to svid"
+      }
+    },
+    "audit_attest_allow": {
+      "timestamp": "2026-11-01T22:41:52.161676667Z",
+      "stage": "attest",
+      "chain_id": "",
+      "actor_spiffe_id": "spiffe://lab.local/agent/parent/exp-root",
+      "outcome": "allow",
+      "detail": {
+        "parent_spiffe_id": "spiffe://lab.local/agent/parent/exp-root",
+        "reason": "JWT-SVID, manifest signature, nonce and child_selectors all verified"
+      }
+    },
+    "agent_log": {
+      "ns": 1793572916855146914,
+      "line": "time=\"2026-11-01T22:41:56Z\" level=info msg=\"Creating X509-SVID\" entry_id=5921db16-6ada-42e9-b6d7-ee37aa4955ac spiffe_id=\"spiffe://lab.local/agent/parent/exp-root/child/v2s-54a942-41\" subsystem_name=manager"
+    }
+  },
+  {
+    "trial": 42,
+    "wait_ready": {
+      "event": "ready",
+      "send_ns": 1793572926112377764,
+      "recv_ns": 1793572926113849879,
+      "miss_reason": "rpc error: code = PermissionDenied desc = no identity issued"
+    },
+    "vend": {
+      "status": 201,
+      "send_ns": 1793572926361426801,
+      "recv_ns": 1793572926382403657,
+      "round_trip_ns": 20976856,
+      "response": "{\"chain_id\":\"c_dd56fdd666e2bdc08a022f7583dbde3a\",\"parent_spiffe_id\":\"spiffe://lab.local/agent/parent/exp-root\",\"child_spiffe_id\":\"spiffe://lab.local/agent/parent/exp-root/child/v2s-54a942-42\",\"child_scopes\":[\"resource:read:datasetA\"],\"entry_id\":\"18949b42-c52c-4b4f-9093-fc6e7356bf46\",\"policy_id\":\"nhi_grants_c_dd56fdd666e2bdc08a022f7583dbde3a\",\"issued_at\":1793572926,\"expires_at\":1793573226}\n"
+    },
+    "wait_final": {
+      "event": "obtained",
+      "send_ns": 1793572931950635677,
+      "recv_ns": 1793572931951136778,
+      "last_miss_send_ns": 1793572931930251263,
+      "last_miss_recv_ns": 1793572931930519674,
+      "spiffe_ids": [
+        "spiffe://lab.local/agent/parent/exp-root/child/v2s-54a942-42"
+      ],
+      "not_after": "2026-11-01T22:47:11Z",
+      "miss_reasons": {
+        "rpc error: code = PermissionDenied desc = no identity issued": 285
+      },
+      "attempts": 286,
+      "misses": 285,
+      "gap_mean_ns": 20485115,
+      "gap_max_ns": 21046585,
+      "latency_mean_ns": 434841,
+      "latency_max_ns": 1917757
+    },
+    "dispose": 200,
+    "audit_vend_allow": {
+      "timestamp": "2026-11-01T22:42:06.382347736Z",
+      "stage": "vend",
+      "chain_id": "c_dd56fdd666e2bdc08a022f7583dbde3a",
+      "actor_spiffe_id": "spiffe://lab.local/agent/parent/exp-root",
+      "outcome": "allow",
+      "detail": {
+        "parent_spiffe_id": "spiffe://lab.local/agent/parent/exp-root",
+        "child_spiffe_id": "spiffe://lab.local/agent/parent/exp-root/child/v2s-54a942-42",
+        "requested_scopes": [
+          "resource:read:datasetA"
+        ],
+        "child_scopes": [
+          "resource:read:datasetA"
+        ],
+        "policy_id": "nhi_grants_c_dd56fdd666e2bdc08a022f7583dbde3a",
+        "entry_id": "18949b42-c52c-4b4f-9093-fc6e7356bf46",
+        "expires_at": 1793573226,
+        "task_context": "vend to svid"
+      }
+    },
+    "audit_attest_allow": {
+      "timestamp": "2026-11-01T22:42:06.37202146Z",
+      "stage": "attest",
+      "chain_id": "",
+      "actor_spiffe_id": "spiffe://lab.local/agent/parent/exp-root",
+      "outcome": "allow",
+      "detail": {
+        "parent_spiffe_id": "spiffe://lab.local/agent/parent/exp-root",
+        "reason": "JWT-SVID, manifest signature, nonce and child_selectors all verified"
+      }
+    },
+    "agent_log": {
+      "ns": 1793572931941625864,
+      "line": "time=\"2026-11-01T22:42:11Z\" level=info msg=\"Creating X509-SVID\" entry_id=18949b42-c52c-4b4f-9093-fc6e7356bf46 spiffe_id=\"spiffe://lab.local/agent/parent/exp-root/child/v2s-54a942-42\" subsystem_name=manager"
+    }
+  },
+  {
+    "trial": 43,
+    "wait_ready": {
+      "event": "ready",
+      "send_ns": 1793572939288068919,
+      "recv_ns": 1793572939289603984,
+      "miss_reason": "rpc error: code = PermissionDenied desc = no identity issued"
+    },
+    "vend": {
+      "status": 201,
+      "send_ns": 1793572939536607383,
+      "recv_ns": 1793572939556442004,
+      "round_trip_ns": 19834621,
+      "response": "{\"chain_id\":\"c_5df772eea2c73fa6628b2e4b56456134\",\"parent_spiffe_id\":\"spiffe://lab.local/agent/parent/exp-root\",\"child_spiffe_id\":\"spiffe://lab.local/agent/parent/exp-root/child/v2s-54a942-43\",\"child_scopes\":[\"resource:read:datasetA\"],\"entry_id\":\"3bde1fa6-b15f-4224-afeb-b8870134f165\",\"policy_id\":\"nhi_grants_c_5df772eea2c73fa6628b2e4b56456134\",\"issued_at\":1793572939,\"expires_at\":1793573239}\n"
+    },
+    "wait_final": {
+      "event": "obtained",
+      "send_ns": 1793572947193127751,
+      "recv_ns": 1793572947193722343,
+      "last_miss_send_ns": 1793572947172725707,
+      "last_miss_recv_ns": 1793572947173014968,
+      "spiffe_ids": [
+        "spiffe://lab.local/agent/parent/exp-root/child/v2s-54a942-43"
+      ],
+      "not_after": "2026-11-01T22:47:27Z",
+      "miss_reasons": {
+        "rpc error: code = PermissionDenied desc = no identity issued": 386
+      },
+      "attempts": 387,
+      "misses": 386,
+      "gap_mean_ns": 20479427,
+      "gap_max_ns": 21040016,
+      "latency_mean_ns": 438321,
+      "latency_max_ns": 1744016
+    },
+    "dispose": 200,
+    "audit_vend_allow": {
+      "timestamp": "2026-11-01T22:42:19.556387914Z",
+      "stage": "vend",
+      "chain_id": "c_5df772eea2c73fa6628b2e4b56456134",
+      "actor_spiffe_id": "spiffe://lab.local/agent/parent/exp-root",
+      "outcome": "allow",
+      "detail": {
+        "parent_spiffe_id": "spiffe://lab.local/agent/parent/exp-root",
+        "child_spiffe_id": "spiffe://lab.local/agent/parent/exp-root/child/v2s-54a942-43",
+        "requested_scopes": [
+          "resource:read:datasetA"
+        ],
+        "child_scopes": [
+          "resource:read:datasetA"
+        ],
+        "policy_id": "nhi_grants_c_5df772eea2c73fa6628b2e4b56456134",
+        "entry_id": "3bde1fa6-b15f-4224-afeb-b8870134f165",
+        "expires_at": 1793573239,
+        "task_context": "vend to svid"
+      }
+    },
+    "audit_attest_allow": {
+      "timestamp": "2026-11-01T22:42:19.545856936Z",
+      "stage": "attest",
+      "chain_id": "",
+      "actor_spiffe_id": "spiffe://lab.local/agent/parent/exp-root",
+      "outcome": "allow",
+      "detail": {
+        "parent_spiffe_id": "spiffe://lab.local/agent/parent/exp-root",
+        "reason": "JWT-SVID, manifest signature, nonce and child_selectors all verified"
+      }
+    },
+    "agent_log": {
+      "ns": 1793572947190213180,
+      "line": "time=\"2026-11-01T22:42:27Z\" level=info msg=\"Creating X509-SVID\" entry_id=3bde1fa6-b15f-4224-afeb-b8870134f165 spiffe_id=\"spiffe://lab.local/agent/parent/exp-root/child/v2s-54a942-43\" subsystem_name=manager"
+    }
+  },
+  {
+    "trial": 44,
+    "wait_ready": {
+      "event": "ready",
+      "send_ns": 1793572957081748632,
+      "recv_ns": 1793572957083252968,
+      "miss_reason": "rpc error: code = PermissionDenied desc = no identity issued"
+    },
+    "vend": {
+      "status": 201,
+      "send_ns": 1793572957330274564,
+      "recv_ns": 1793572957350590397,
+      "round_trip_ns": 20315833,
+      "response": "{\"chain_id\":\"c_2f776e0dfd9183097f810bcc50683fbe\",\"parent_spiffe_id\":\"spiffe://lab.local/agent/parent/exp-root\",\"child_spiffe_id\":\"spiffe://lab.local/agent/parent/exp-root/child/v2s-54a942-44\",\"child_scopes\":[\"resource:read:datasetA\"],\"entry_id\":\"210fbf06-d7bb-434c-ab46-d20a996d5e3c\",\"policy_id\":\"nhi_grants_c_2f776e0dfd9183097f810bcc50683fbe\",\"issued_at\":1793572957,\"expires_at\":1793573257}\n"
+    },
+    "wait_final": {
+      "event": "obtained",
+      "send_ns": 1793572962492545883,
+      "recv_ns": 1793572962492984785,
+      "last_miss_send_ns": 1793572962471841339,
+      "last_miss_recv_ns": 1793572962472428051,
+      "spiffe_ids": [
+        "spiffe://lab.local/agent/parent/exp-root/child/v2s-54a942-44"
+      ],
+      "not_after": "2026-11-01T22:47:42Z",
+      "miss_reasons": {
+        "rpc error: code = PermissionDenied desc = no identity issued": 264
+      },
+      "attempts": 265,
+      "misses": 264,
+      "gap_mean_ns": 20495444,
+      "gap_max_ns": 21049385,
+      "latency_mean_ns": 444296,
+      "latency_max_ns": 1772157
+    },
+    "dispose": 200,
+    "audit_vend_allow": {
+      "timestamp": "2026-11-01T22:42:37.350515727Z",
+      "stage": "vend",
+      "chain_id": "c_2f776e0dfd9183097f810bcc50683fbe",
+      "actor_spiffe_id": "spiffe://lab.local/agent/parent/exp-root",
+      "outcome": "allow",
+      "detail": {
+        "parent_spiffe_id": "spiffe://lab.local/agent/parent/exp-root",
+        "child_spiffe_id": "spiffe://lab.local/agent/parent/exp-root/child/v2s-54a942-44",
+        "requested_scopes": [
+          "resource:read:datasetA"
+        ],
+        "child_scopes": [
+          "resource:read:datasetA"
+        ],
+        "policy_id": "nhi_grants_c_2f776e0dfd9183097f810bcc50683fbe",
+        "entry_id": "210fbf06-d7bb-434c-ab46-d20a996d5e3c",
+        "expires_at": 1793573257,
+        "task_context": "vend to svid"
+      }
+    },
+    "audit_attest_allow": {
+      "timestamp": "2026-11-01T22:42:37.339771198Z",
+      "stage": "attest",
+      "chain_id": "",
+      "actor_spiffe_id": "spiffe://lab.local/agent/parent/exp-root",
+      "outcome": "allow",
+      "detail": {
+        "parent_spiffe_id": "spiffe://lab.local/agent/parent/exp-root",
+        "reason": "JWT-SVID, manifest signature, nonce and child_selectors all verified"
+      }
+    },
+    "agent_log": {
+      "ns": 1793572962474939440,
+      "line": "time=\"2026-11-01T22:42:42Z\" level=info msg=\"Creating X509-SVID\" entry_id=210fbf06-d7bb-434c-ab46-d20a996d5e3c spiffe_id=\"spiffe://lab.local/agent/parent/exp-root/child/v2s-54a942-44\" subsystem_name=manager"
+    }
+  },
+  {
+    "trial": 45,
+    "wait_ready": {
+      "event": "ready",
+      "send_ns": 1793572969109821510,
+      "recv_ns": 1793572969111339746,
+      "miss_reason": "rpc error: code = PermissionDenied desc = no identity issued"
+    },
+    "vend": {
+      "status": 201,
+      "send_ns": 1793572969358364582,
+      "recv_ns": 1793572969378801345,
+      "round_trip_ns": 20436763,
+      "response": "{\"chain_id\":\"c_bd7c8c6430e8f85899b2834a8dd1442b\",\"parent_spiffe_id\":\"spiffe://lab.local/agent/parent/exp-root\",\"child_spiffe_id\":\"spiffe://lab.local/agent/parent/exp-root/child/v2s-54a942-45\",\"child_scopes\":[\"resource:read:datasetA\"],\"entry_id\":\"962de8af-79e2-42ef-ba83-e9bd27919dd6\",\"policy_id\":\"nhi_grants_c_bd7c8c6430e8f85899b2834a8dd1442b\",\"issued_at\":1793572969,\"expires_at\":1793573269}\n"
+    },
+    "wait_final": {
+      "event": "obtained",
+      "send_ns": 1793572977365885595,
+      "recv_ns": 1793572977849899509,
+      "last_miss_send_ns": 1793572977345483572,
+      "last_miss_recv_ns": 1793572977345771413,
+      "spiffe_ids": [
+        "spiffe://lab.local/agent/parent/exp-root/child/v2s-54a942-45"
+      ],
+      "not_after": "2026-11-01T22:47:57Z",
+      "miss_reasons": {
+        "rpc error: code = PermissionDenied desc = no identity issued": 403
+      },
+      "attempts": 404,
+      "misses": 403,
+      "gap_mean_ns": 20486511,
+      "gap_max_ns": 21053715,
+      "latency_mean_ns": 1638952,
+      "latency_max_ns": 484013934
+    },
+    "dispose": 200,
+    "audit_vend_allow": {
+      "timestamp": "2026-11-01T22:42:49.378741435Z",
+      "stage": "vend",
+      "chain_id": "c_bd7c8c6430e8f85899b2834a8dd1442b",
+      "actor_spiffe_id": "spiffe://lab.local/agent/parent/exp-root",
+      "outcome": "allow",
+      "detail": {
+        "parent_spiffe_id": "spiffe://lab.local/agent/parent/exp-root",
+        "child_spiffe_id": "spiffe://lab.local/agent/parent/exp-root/child/v2s-54a942-45",
+        "requested_scopes": [
+          "resource:read:datasetA"
+        ],
+        "child_scopes": [
+          "resource:read:datasetA"
+        ],
+        "policy_id": "nhi_grants_c_bd7c8c6430e8f85899b2834a8dd1442b",
+        "entry_id": "962de8af-79e2-42ef-ba83-e9bd27919dd6",
+        "expires_at": 1793573269,
+        "task_context": "vend to svid"
+      }
+    },
+    "audit_attest_allow": {
+      "timestamp": "2026-11-01T22:42:49.368315877Z",
+      "stage": "attest",
+      "chain_id": "",
+      "actor_spiffe_id": "spiffe://lab.local/agent/parent/exp-root",
+      "outcome": "allow",
+      "detail": {
+        "parent_spiffe_id": "spiffe://lab.local/agent/parent/exp-root",
+        "reason": "JWT-SVID, manifest signature, nonce and child_selectors all verified"
+      }
+    },
+    "agent_log": {
+      "ns": 1793572977365831144,
+      "line": "time=\"2026-11-01T22:42:57Z\" level=info msg=\"Creating X509-SVID\" entry_id=962de8af-79e2-42ef-ba83-e9bd27919dd6 spiffe_id=\"spiffe://lab.local/agent/parent/exp-root/child/v2s-54a942-45\" subsystem_name=manager"
+    }
+  },
+  {
+    "trial": 46,
+    "wait_ready": {
+      "event": "ready",
+      "send_ns": 1793572983820736515,
+      "recv_ns": 1793572983822816253,
+      "miss_reason": "rpc error: code = PermissionDenied desc = no identity issued"
+    },
+    "vend": {
+      "status": 201,
+      "send_ns": 1793572984070732440,
+      "recv_ns": 1793572984091873406,
+      "round_trip_ns": 21140966,
+      "response": "{\"chain_id\":\"c_a1ae815c2b9824eedc178760288dd1be\",\"parent_spiffe_id\":\"spiffe://lab.local/agent/parent/exp-root\",\"child_spiffe_id\":\"spiffe://lab.local/agent/parent/exp-root/child/v2s-54a942-46\",\"child_scopes\":[\"resource:read:datasetA\"],\"entry_id\":\"6d8cb705-3cb8-464a-aa68-73261821b049\",\"policy_id\":\"nhi_grants_c_a1ae815c2b9824eedc178760288dd1be\",\"issued_at\":1793572984,\"expires_at\":1793573284}\n"
+    },
+    "wait_final": {
+      "event": "obtained",
+      "send_ns": 1793572992832525141,
+      "recv_ns": 1793572992833186063,
+      "last_miss_send_ns": 1793572992812005878,
+      "last_miss_recv_ns": 1793572992812406459,
+      "spiffe_ids": [
+        "spiffe://lab.local/agent/parent/exp-root/child/v2s-54a942-46"
+      ],
+      "not_after": "2026-11-01T22:48:12Z",
+      "miss_reasons": {
+        "rpc error: code = PermissionDenied desc = no identity issued": 440
+      },
+      "attempts": 441,
+      "misses": 440,
+      "gap_mean_ns": 20481337,
+      "gap_max_ns": 21055986,
+      "latency_mean_ns": 430657,
+      "latency_max_ns": 2079738
+    },
+    "dispose": 200,
+    "audit_vend_allow": {
+      "timestamp": "2026-11-01T22:43:04.091813436Z",
+      "stage": "vend",
+      "chain_id": "c_a1ae815c2b9824eedc178760288dd1be",
+      "actor_spiffe_id": "spiffe://lab.local/agent/parent/exp-root",
+      "outcome": "allow",
+      "detail": {
+        "parent_spiffe_id": "spiffe://lab.local/agent/parent/exp-root",
+        "child_spiffe_id": "spiffe://lab.local/agent/parent/exp-root/child/v2s-54a942-46",
+        "requested_scopes": [
+          "resource:read:datasetA"
+        ],
+        "child_scopes": [
+          "resource:read:datasetA"
+        ],
+        "policy_id": "nhi_grants_c_a1ae815c2b9824eedc178760288dd1be",
+        "entry_id": "6d8cb705-3cb8-464a-aa68-73261821b049",
+        "expires_at": 1793573284,
+        "task_context": "vend to svid"
+      }
+    },
+    "audit_attest_allow": {
+      "timestamp": "2026-11-01T22:43:04.081067528Z",
+      "stage": "attest",
+      "chain_id": "",
+      "actor_spiffe_id": "spiffe://lab.local/agent/parent/exp-root",
+      "outcome": "allow",
+      "detail": {
+        "parent_spiffe_id": "spiffe://lab.local/agent/parent/exp-root",
+        "reason": "JWT-SVID, manifest signature, nonce and child_selectors all verified"
+      }
+    },
+    "agent_log": {
+      "ns": 1793572992819661115,
+      "line": "time=\"2026-11-01T22:43:12Z\" level=info msg=\"Creating X509-SVID\" entry_id=6d8cb705-3cb8-464a-aa68-73261821b049 spiffe_id=\"spiffe://lab.local/agent/parent/exp-root/child/v2s-54a942-46\" subsystem_name=manager"
+    }
+  },
+  {
+    "trial": 47,
+    "wait_ready": {
+      "event": "ready",
+      "send_ns": 1793572998845655229,
+      "recv_ns": 1793572998847683196,
+      "miss_reason": "rpc error: code = PermissionDenied desc = no identity issued"
+    },
+    "vend": {
+      "status": 201,
+      "send_ns": 1793572999096073884,
+      "recv_ns": 1793572999119051146,
+      "round_trip_ns": 22977262,
+      "response": "{\"chain_id\":\"c_3eab3a0b509c5c7606d3e0e653ed62f1\",\"parent_spiffe_id\":\"spiffe://lab.local/agent/parent/exp-root\",\"child_spiffe_id\":\"spiffe://lab.local/agent/parent/exp-root/child/v2s-54a942-47\",\"child_scopes\":[\"resource:read:datasetA\"],\"entry_id\":\"ae7b511d-c811-4233-b441-cdf02fb63af2\",\"policy_id\":\"nhi_grants_c_3eab3a0b509c5c7606d3e0e653ed62f1\",\"issued_at\":1793572999,\"expires_at\":1793573299}\n"
+    },
+    "wait_final": {
+      "event": "obtained",
+      "send_ns": 1793573008188131910,
+      "recv_ns": 1793573008188564242,
+      "last_miss_send_ns": 1793573008168106459,
+      "last_miss_recv_ns": 1793573008169069612,
+      "spiffe_ids": [
+        "spiffe://lab.local/agent/parent/exp-root/child/v2s-54a942-47"
+      ],
+      "not_after": "2026-11-01T22:48:28Z",
+      "miss_reasons": {
+        "rpc error: code = PermissionDenied desc = no identity issued": 456
+      },
+      "attempts": 457,
+      "misses": 456,
+      "gap_mean_ns": 20487887,
+      "gap_max_ns": 21044116,
+      "latency_mean_ns": 441686,
+      "latency_max_ns": 2027967
+    },
+    "dispose": 200,
+    "audit_vend_allow": {
+      "timestamp": "2026-11-01T22:43:19.118980646Z",
+      "stage": "vend",
+      "chain_id": "c_3eab3a0b509c5c7606d3e0e653ed62f1",
+      "actor_spiffe_id": "spiffe://lab.local/agent/parent/exp-root",
+      "outcome": "allow",
+      "detail": {
+        "parent_spiffe_id": "spiffe://lab.local/agent/parent/exp-root",
+        "child_spiffe_id": "spiffe://lab.local/agent/parent/exp-root/child/v2s-54a942-47",
+        "requested_scopes": [
+          "resource:read:datasetA"
+        ],
+        "child_scopes": [
+          "resource:read:datasetA"
+        ],
+        "policy_id": "nhi_grants_c_3eab3a0b509c5c7606d3e0e653ed62f1",
+        "entry_id": "ae7b511d-c811-4233-b441-cdf02fb63af2",
+        "expires_at": 1793573299,
+        "task_context": "vend to svid"
+      }
+    },
+    "audit_attest_allow": {
+      "timestamp": "2026-11-01T22:43:19.10630981Z",
+      "stage": "attest",
+      "chain_id": "",
+      "actor_spiffe_id": "spiffe://lab.local/agent/parent/exp-root",
+      "outcome": "allow",
+      "detail": {
+        "parent_spiffe_id": "spiffe://lab.local/agent/parent/exp-root",
+        "reason": "JWT-SVID, manifest signature, nonce and child_selectors all verified"
+      }
+    },
+    "agent_log": {
+      "ns": 1793573008175072233,
+      "line": "time=\"2026-11-01T22:43:28Z\" level=info msg=\"Creating X509-SVID\" entry_id=ae7b511d-c811-4233-b441-cdf02fb63af2 spiffe_id=\"spiffe://lab.local/agent/parent/exp-root/child/v2s-54a942-47\" subsystem_name=manager"
+    }
+  },
+  {
+    "trial": 48,
+    "wait_ready": {
+      "event": "ready",
+      "send_ns": 1793573015422953729,
+      "recv_ns": 1793573015424497604,
+      "miss_reason": "rpc error: code = PermissionDenied desc = no identity issued"
+    },
+    "vend": {
+      "status": 201,
+      "send_ns": 1793573015673547634,
+      "recv_ns": 1793573015695659523,
+      "round_trip_ns": 22111889,
+      "response": "{\"chain_id\":\"c_29c249593bed058621e1ffbacde2bd58\",\"parent_spiffe_id\":\"spiffe://lab.local/agent/parent/exp-root\",\"child_spiffe_id\":\"spiffe://lab.local/agent/parent/exp-root/child/v2s-54a942-48\",\"child_scopes\":[\"resource:read:datasetA\"],\"entry_id\":\"de8f5557-bbcd-4207-8c00-56844d44f770\",\"policy_id\":\"nhi_grants_c_29c249593bed058621e1ffbacde2bd58\",\"issued_at\":1793573015,\"expires_at\":1793573315}\n"
+    },
+    "wait_final": {
+      "event": "obtained",
+      "send_ns": 1793573022430040218,
+      "recv_ns": 1793573022430460740,
+      "last_miss_send_ns": 1793573022409539215,
+      "last_miss_recv_ns": 1793573022409921786,
+      "spiffe_ids": [
+        "spiffe://lab.local/agent/parent/exp-root/child/v2s-54a942-48"
+      ],
+      "not_after": "2026-11-01T22:48:42Z",
+      "miss_reasons": {
+        "rpc error: code = PermissionDenied desc = no identity issued": 342
+      },
+      "attempts": 343,
+      "misses": 342,
+      "gap_mean_ns": 20488557,
+      "gap_max_ns": 21056575,
+      "latency_mean_ns": 446235,
+      "latency_max_ns": 2253418
+    },
+    "dispose": 200,
+    "audit_vend_allow": {
+      "timestamp": "2026-11-01T22:43:35.695602562Z",
+      "stage": "vend",
+      "chain_id": "c_29c249593bed058621e1ffbacde2bd58",
+      "actor_spiffe_id": "spiffe://lab.local/agent/parent/exp-root",
+      "outcome": "allow",
+      "detail": {
+        "parent_spiffe_id": "spiffe://lab.local/agent/parent/exp-root",
+        "child_spiffe_id": "spiffe://lab.local/agent/parent/exp-root/child/v2s-54a942-48",
+        "requested_scopes": [
+          "resource:read:datasetA"
+        ],
+        "child_scopes": [
+          "resource:read:datasetA"
+        ],
+        "policy_id": "nhi_grants_c_29c249593bed058621e1ffbacde2bd58",
+        "entry_id": "de8f5557-bbcd-4207-8c00-56844d44f770",
+        "expires_at": 1793573315,
+        "task_context": "vend to svid"
+      }
+    },
+    "audit_attest_allow": {
+      "timestamp": "2026-11-01T22:43:35.684765404Z",
+      "stage": "attest",
+      "chain_id": "",
+      "actor_spiffe_id": "spiffe://lab.local/agent/parent/exp-root",
+      "outcome": "allow",
+      "detail": {
+        "parent_spiffe_id": "spiffe://lab.local/agent/parent/exp-root",
+        "reason": "JWT-SVID, manifest signature, nonce and child_selectors all verified"
+      }
+    },
+    "agent_log": {
+      "ns": 1793573022428007081,
+      "line": "time=\"2026-11-01T22:43:42Z\" level=info msg=\"Creating X509-SVID\" entry_id=de8f5557-bbcd-4207-8c00-56844d44f770 spiffe_id=\"spiffe://lab.local/agent/parent/exp-root/child/v2s-54a942-48\" subsystem_name=manager"
+    }
+  },
+  {
+    "trial": 49,
+    "wait_ready": {
+      "event": "ready",
+      "send_ns": 1793573032618424754,
+      "recv_ns": 1793573032619996349,
+      "miss_reason": "rpc error: code = PermissionDenied desc = no identity issued"
+    },
+    "vend": {
+      "status": 201,
+      "send_ns": 1793573032867647172,
+      "recv_ns": 1793573032888966738,
+      "round_trip_ns": 21319566,
+      "response": "{\"chain_id\":\"c_c5fab039f4cd079e07c70469c402e3ba\",\"parent_spiffe_id\":\"spiffe://lab.local/agent/parent/exp-root\",\"child_spiffe_id\":\"spiffe://lab.local/agent/parent/exp-root/child/v2s-54a942-49\",\"child_scopes\":[\"resource:read:datasetA\"],\"entry_id\":\"be8a8bd6-0a85-4805-822c-d1c7d57ca743\",\"policy_id\":\"nhi_grants_c_c5fab039f4cd079e07c70469c402e3ba\",\"issued_at\":1793573032,\"expires_at\":1793573332}\n"
+    },
+    "wait_final": {
+      "event": "obtained",
+      "send_ns": 1793573038293084587,
+      "recv_ns": 1793573038293676310,
+      "last_miss_send_ns": 1793573038272592614,
+      "last_miss_recv_ns": 1793573038272971006,
+      "spiffe_ids": [
+        "spiffe://lab.local/agent/parent/exp-root/child/v2s-54a942-49"
+      ],
+      "not_after": "2026-11-01T22:48:58Z",
+      "miss_reasons": {
+        "rpc error: code = PermissionDenied desc = no identity issued": 277
+      },
+      "attempts": 278,
+      "misses": 277,
+      "gap_mean_ns": 20486136,
+      "gap_max_ns": 21038585,
+      "latency_mean_ns": 437017,
+      "latency_max_ns": 1809366
+    },
+    "dispose": 200,
+    "audit_vend_allow": {
+      "timestamp": "2026-11-01T22:43:52.888908318Z",
+      "stage": "vend",
+      "chain_id": "c_c5fab039f4cd079e07c70469c402e3ba",
+      "actor_spiffe_id": "spiffe://lab.local/agent/parent/exp-root",
+      "outcome": "allow",
+      "detail": {
+        "parent_spiffe_id": "spiffe://lab.local/agent/parent/exp-root",
+        "child_spiffe_id": "spiffe://lab.local/agent/parent/exp-root/child/v2s-54a942-49",
+        "requested_scopes": [
+          "resource:read:datasetA"
+        ],
+        "child_scopes": [
+          "resource:read:datasetA"
+        ],
+        "policy_id": "nhi_grants_c_c5fab039f4cd079e07c70469c402e3ba",
+        "entry_id": "be8a8bd6-0a85-4805-822c-d1c7d57ca743",
+        "expires_at": 1793573332,
+        "task_context": "vend to svid"
+      }
+    },
+    "audit_attest_allow": {
+      "timestamp": "2026-11-01T22:43:52.87827097Z",
+      "stage": "attest",
+      "chain_id": "",
+      "actor_spiffe_id": "spiffe://lab.local/agent/parent/exp-root",
+      "outcome": "allow",
+      "detail": {
+        "parent_spiffe_id": "spiffe://lab.local/agent/parent/exp-root",
+        "reason": "JWT-SVID, manifest signature, nonce and child_selectors all verified"
+      }
+    },
+    "agent_log": {
+      "ns": 1793573038275967926,
+      "line": "time=\"2026-11-01T22:43:58Z\" level=info msg=\"Creating X509-SVID\" entry_id=be8a8bd6-0a85-4805-822c-d1c7d57ca743 spiffe_id=\"spiffe://lab.local/agent/parent/exp-root/child/v2s-54a942-49\" subsystem_name=manager"
+    }
+  },
+  {
+    "trial": 50,
+    "wait_ready": {
+      "event": "ready",
+      "send_ns": 1793573045033168575,
+      "recv_ns": 1793573045034608560,
+      "miss_reason": "rpc error: code = PermissionDenied desc = no identity issued"
+    },
+    "vend": {
+      "status": 201,
+      "send_ns": 1793573045281833801,
+      "recv_ns": 1793573045304978763,
+      "round_trip_ns": 23144962,
+      "response": "{\"chain_id\":\"c_406c4ad416f4d4285ac80bc3b6ef31de\",\"parent_spiffe_id\":\"spiffe://lab.local/agent/parent/exp-root\",\"child_spiffe_id\":\"spiffe://lab.local/agent/parent/exp-root/child/v2s-54a942-50\",\"child_scopes\":[\"resource:read:datasetA\"],\"entry_id\":\"f650b3ed-1edd-40f2-8459-2e6bf869c4ce\",\"policy_id\":\"nhi_grants_c_406c4ad416f4d4285ac80bc3b6ef31de\",\"issued_at\":1793573045,\"expires_at\":1793573345}\n"
+    },
+    "wait_final": {
+      "event": "obtained",
+      "send_ns": 1793573052225666729,
+      "recv_ns": 1793573052752348763,
+      "last_miss_send_ns": 1793573052205195547,
+      "last_miss_recv_ns": 1793573052205547598,
+      "spiffe_ids": [
+        "spiffe://lab.local/agent/parent/exp-root/child/v2s-54a942-50"
+      ],
+      "not_after": "2026-11-01T22:49:12Z",
+      "miss_reasons": {
+        "rpc error: code = PermissionDenied desc = no identity issued": 351
+      },
+      "attempts": 352,
+      "misses": 351,
+      "gap_mean_ns": 20491447,
+      "gap_max_ns": 21035985,
+      "latency_mean_ns": 1926299,
+      "latency_max_ns": 526682024
+    },
+    "dispose": 200,
+    "audit_vend_allow": {
+      "timestamp": "2026-11-01T22:44:05.304907613Z",
+      "stage": "vend",
+      "chain_id": "c_406c4ad416f4d4285ac80bc3b6ef31de",
+      "actor_spiffe_id": "spiffe://lab.local/agent/parent/exp-root",
+      "outcome": "allow",
+      "detail": {
+        "parent_spiffe_id": "spiffe://lab.local/agent/parent/exp-root",
+        "child_spiffe_id": "spiffe://lab.local/agent/parent/exp-root/child/v2s-54a942-50",
+        "requested_scopes": [
+          "resource:read:datasetA"
+        ],
+        "child_scopes": [
+          "resource:read:datasetA"
+        ],
+        "policy_id": "nhi_grants_c_406c4ad416f4d4285ac80bc3b6ef31de",
+        "entry_id": "f650b3ed-1edd-40f2-8459-2e6bf869c4ce",
+        "expires_at": 1793573345,
+        "task_context": "vend to svid"
+      }
+    },
+    "audit_attest_allow": {
+      "timestamp": "2026-11-01T22:44:05.294836857Z",
+      "stage": "attest",
+      "chain_id": "",
+      "actor_spiffe_id": "spiffe://lab.local/agent/parent/exp-root",
+      "outcome": "allow",
+      "detail": {
+        "parent_spiffe_id": "spiffe://lab.local/agent/parent/exp-root",
+        "reason": "JWT-SVID, manifest signature, nonce and child_selectors all verified"
+      }
+    },
+    "agent_log": {
+      "ns": 1793573052225774860,
+      "line": "time=\"2026-11-01T22:44:12Z\" level=info msg=\"Creating X509-SVID\" entry_id=f650b3ed-1edd-40f2-8459-2e6bf869c4ce spiffe_id=\"spiffe://lab.local/agent/parent/exp-root/child/v2s-54a942-50\" subsystem_name=manager"
+    }
+  }
+]

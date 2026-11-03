@@ -1,0 +1,75 @@
+{
+  "benchmark": "vend_to_svid",
+  "run": "2 of 2: random phase",
+  "headline": "vend_to_svid_ms: parent sends POST /delegations (t0) -> child's first Workload API answer holding the new X.509-SVID received (t3)",
+  "harness": "src/experiments/vend_to_svid.py (with the parentsim modes vend-timed and svid-wait), including --jitter-s",
+  "code": {
+    "branch": "feat/vend-to-svid-benchmark",
+    "base_commit": "39eac90",
+    "state": "uncommitted working tree at run time"
+  },
+  "command": "cd src/experiments && CLUSTER_NAME=nhi-lab KUBECTX=kind-bench-v2s TRUST_DOMAIN=lab.local uv run python3 vend_to_svid.py --trials 50 --jitter-s 5 --run-id 20261101T223329Z-vend-to-svid-random-phase",
+  "jitter": {
+    "jitter_s": 5.0,
+    "seed": 1165931526,
+    "why": "run 1 was phase-locked: each trial started once the previous identity had left the child pod, which happens only at a sync of the child's agent, so every vend landed 0.4-1.4 s after a sync. A uniform random 0-5 s wait before each trial puts the vend at a random point of the ~5 s sync cycle."
+  },
+  "cluster": {
+    "kind_cluster": "bench-v2s (throwaway, two nodes); the same cluster and pods as run 1, immediately after it"
+  },
+  "config_changes_on_this_cluster_only": [
+    {
+      "component": "spire-server",
+      "change": "`audit_log_enabled = true` in the server block of the live spire-server ConfigMap (set before run 1, still on)",
+      "repository_manifests_changed": false
+    }
+  ],
+  "from_spire_server_audit": {
+    "child_agent_syncs_seen": 131,
+    "child_agent_sync_gap_ms": {
+      "min": 4513.7,
+      "median": 4963.2,
+      "max": 5467.7
+    },
+    "child_agent_first_sync_after_BatchCreateEntry_ms": {
+      "caught (entry delivered at that sync)": {
+        "n": 28,
+        "min": 1128.4,
+        "max": 5200.2
+      },
+      "missed (entry not delivered until the next sync)": {
+        "n": 22,
+        "min": 55.0,
+        "max": 3603.6
+      },
+      "by_1s_bucket": {
+        "0-1000": {
+          "caught": 0,
+          "missed": 8
+        },
+        "1000-2000": {
+          "caught": 6,
+          "missed": 7
+        },
+        "2000-3000": {
+          "caught": 8,
+          "missed": 3
+        },
+        "3000-4000": {
+          "caught": 7,
+          "missed": 4
+        },
+        "4000-5000": {
+          "caught": 5,
+          "missed": 0
+        },
+        "5000-6000": {
+          "caught": 2,
+          "missed": 0
+        }
+      }
+    },
+    "reading": "a sync under 1 s after the entry was created never delivered it; one 4 s or more after always did; in between it varied. The entry therefore becomes visible to agents some time after the datastore write, by a lag that varied from under 1.2 s to over 3.6 s in this run (over 4.6 s in run 1), consistent with a server-side refresh on a cycle of about 5 s. The SPIRE mechanism was not inspected."
+  },
+  "anomalies": "in trials 13, 31, 35, 45 and 50 the agent held the obtaining Workload API request open for about 0.5 s and answered it with the SVID (svid_window_ms 504-551 ms); t3 is still the moment the child held the SVID."
+}

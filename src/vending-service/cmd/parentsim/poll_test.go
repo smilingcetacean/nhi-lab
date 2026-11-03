@@ -196,7 +196,7 @@ func TestTimedDeleteRecordsBothInstants(t *testing.T) {
 	}))
 	defer srv.Close()
 
-	res, err := timedDelete(context.Background(), srv.Client(), srv.URL+"/delegations/abc", "tok", time.Now)
+	res, err := timedRequest(context.Background(), srv.Client(), http.MethodDelete, srv.URL+"/delegations/abc", "tok", nil, time.Now)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -216,7 +216,7 @@ func TestTimedDeleteReportsErrorStatusWithoutError(t *testing.T) {
 		w.WriteHeader(http.StatusForbidden)
 	}))
 	defer srv.Close()
-	res, err := timedDelete(context.Background(), srv.Client(), srv.URL, "tok", time.Now)
+	res, err := timedRequest(context.Background(), srv.Client(), http.MethodDelete, srv.URL, "tok", nil, time.Now)
 	if err != nil || res.Status != 403 {
 		t.Fatalf("res=%+v err=%v, want status 403 and no error", res, err)
 	}

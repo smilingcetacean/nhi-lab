@@ -528,6 +528,35 @@ REVOCATION_TRIALS ?= 30
 revocation-speed: vending-service-up resource-up experiments-fixtures-up ## Measure DELETE-to-first-denial time for a revoked grandchild (REVOCATION_TRIALS=30)
 	@cd '$(EXPERIMENTS_SRC)' && uv run python3 revocation_speed.py --trials '$(REVOCATION_TRIALS)'
 
+# Vend to identity: VEND_SVID_TRIALS trials (default 50), each timing the gap
+# between P's POST /delegations and the child pod's first Workload API answer
+# that holds the new X.509-SVID, measured by loops running inside the fixture
+# pods (src/experiments/vend_to_svid.py). Not part of `experiments`. Run it on
+# an otherwise idle host. The same fixture-image caveat as revocation-speed
+# applies. VEND_SVID_JITTER_S=J waits a random 0..J s before each trial, so
+# vends land at random points of the SPIRE agent's ~5 s sync cycle rather than
+# just after the sync that cleared the previous trial's identity.
+VEND_SVID_TRIALS ?= 50
+VEND_SVID_JITTER_S ?= 0
+
+.PHONY: vend-to-svid
+vend-to-svid: policy-engine-up vending-service-up experiments-fixtures-up ## Measure vend-to-child-SVID time (VEND_SVID_TRIALS=50, VEND_SVID_JITTER_S=0)
+	@cd '$(EXPERIMENTS_SRC)' && uv run python3 vend_to_svid.py --trials '$(VEND_SVID_TRIALS)' --jitter-s '$(VEND_SVID_JITTER_S)'
+
+# Vend to access: VEND_ACCESS_TRIALS trials (default 50), each timing the gap
+# between P's POST /delegations and the child pod's first 200 from the
+# protected resource with its own JWT-SVID (src/experiments/vend_to_access.py).
+# VEND_ACCESS_STYLE=poll retries every 20 ms; child-py retries as
+# src/agents/child.py does (2 s apart). Not part of `experiments`; the same
+# idle-host, fixture-image and jitter notes as vend-to-svid apply.
+VEND_ACCESS_TRIALS ?= 50
+VEND_ACCESS_STYLE ?= poll
+VEND_ACCESS_JITTER_S ?= 0
+
+.PHONY: vend-to-access
+vend-to-access: policy-engine-up vending-service-up resource-up experiments-fixtures-up ## Measure vend-to-child-access time (VEND_ACCESS_TRIALS=50, VEND_ACCESS_STYLE=poll|child-py, VEND_ACCESS_JITTER_S=0)
+	@cd '$(EXPERIMENTS_SRC)' && uv run python3 vend_to_access.py --style '$(VEND_ACCESS_STYLE)' --trials '$(VEND_ACCESS_TRIALS)' --jitter-s '$(VEND_ACCESS_JITTER_S)'
+
 .PHONY: status
 status: ## Show cluster, pod and SPIRE state
 	@$(KUBECTL) get nodes -o wide

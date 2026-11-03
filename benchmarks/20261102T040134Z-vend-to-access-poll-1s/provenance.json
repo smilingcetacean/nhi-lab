@@ -1,0 +1,52 @@
+{
+  "benchmark": "vend_to_access",
+  "run": "poll: random phase, SPIRE agent sync_interval and server cache_reload_interval both 1 s",
+  "headline": "vend_to_access_ms: P sends POST /delegations (t0) -> C receives the resource's first 200 for GET /datasets/A with its own JWT-SVID",
+  "child_behaviour": "C runs `parentsim access-wait -access-style=poll` before the vend: every 20 ms it fetches a JWT-SVID (audience spiffe://lab.local/svc/resource, one-shot) and, once one for its vended ID arrives, sends GET /datasets/A with it in the same tick, until the first 200. Measures when access first becomes possible.",
+  "harness": "src/experiments/vend_to_access.py (reusing vend_to_svid.py's parts), parentsim modes vend-timed and access-wait",
+  "code": {
+    "branch": "feat/vend-to-svid-benchmark",
+    "base_commit": "39eac90",
+    "state": "uncommitted working tree at run time"
+  },
+  "command": "cd src/experiments && CLUSTER_NAME=nhi-lab KUBECTX=kind-bench-v2a-1s TRUST_DOMAIN=lab.local uv run python3 vend_to_access.py --style poll --trials 50 --jitter-s 5 --run-id 20261102T040134Z-vend-to-access-poll-1s",
+  "jitter": {
+    "jitter_s": 5.0,
+    "seed": 115506412
+  },
+  "cluster": {
+    "kind_cluster": "bench-v2a-1s (throwaway, two nodes), created for the two vend-to-access runs and deleted after them",
+    "bring_up": [
+      "make cluster-up KIND_CLUSTER=bench-v2a-1s",
+      "make spire-up KIND_CLUSTER=bench-v2a-1s",
+      "make policy-engine-up vending-service-up resource-up experiments-fixtures-up KIND_CLUSTER=bench-v2a-1s"
+    ],
+    "note": "the runs were started without make, because the make targets re-apply the repository's SPIRE ConfigMaps"
+  },
+  "config_changes_on_this_cluster_only": [
+    {
+      "component": "spire-server",
+      "change": "in the server block of the live spire-server ConfigMap: `audit_log_enabled = true` and `experimental { cache_reload_interval = \"1s\" }` (default 5 s); StatefulSet restarted",
+      "repository_manifests_changed": false
+    },
+    {
+      "component": "spire-agent",
+      "change": "in the agent block of the live spire-agent ConfigMap: `experimental { sync_interval = \"1s\" }` (default 5 s); DaemonSet restarted after the server",
+      "repository_manifests_changed": false
+    }
+  ],
+  "smoke_run": "2 trials of each style passed every check before the 50-trial runs, on the same cluster and config",
+  "logs": {
+    "dir": "logs/",
+    "files": "logs/{vending-service,spire-server,resource,parent}/trial-NN.log",
+    "window": "contiguous per trial: from the end of the previous trial's window (the first starts 1 s before trial 1) to the moment C held no identity again after the dispose",
+    "timestamp": "first field of each line: the container runtime's capture time (kubectl logs --timestamps); for parent/, the time this host received P's command output",
+    "spire_server_audit_log_enabled": true,
+    "lines": {
+      "vending_service": 150,
+      "spire_server": 1375,
+      "resource": 50,
+      "parent": 200
+    }
+  }
+}

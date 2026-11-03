@@ -1,0 +1,96 @@
+{
+  "benchmark": "vend_to_svid",
+  "run": "3: random phase, SPIRE agent sync_interval and server cache_reload_interval both 1 s",
+  "headline": "vend_to_svid_ms: parent sends POST /delegations (t0) -> child's first Workload API answer holding the new X.509-SVID received (t3)",
+  "harness": "src/experiments/vend_to_svid.py (with the parentsim modes vend-timed and svid-wait), including --jitter-s",
+  "code": {
+    "branch": "feat/vend-to-svid-benchmark",
+    "base_commit": "39eac90",
+    "state": "uncommitted working tree at run time"
+  },
+  "command": "cd src/experiments && CLUSTER_NAME=nhi-lab KUBECTX=kind-bench-v2s-1s TRUST_DOMAIN=lab.local uv run python3 vend_to_svid.py --trials 50 --jitter-s 5 --run-id 20261101T234407Z-vend-to-svid-random-phase-1s",
+  "jitter": {
+    "jitter_s": 5.0,
+    "seed": 144941204,
+    "why": "the same uniform random 0-5 s wait before each trial as run 2, so only the two SPIRE intervals differ; 5 s spans several 1 s cycles, so the vend still lands at a random point of each cycle"
+  },
+  "cluster": {
+    "kind_cluster": "bench-v2s-1s (throwaway, two nodes), created for this run and deleted after it",
+    "bring_up": [
+      "make cluster-up KIND_CLUSTER=bench-v2s-1s",
+      "make spire-up KIND_CLUSTER=bench-v2s-1s",
+      "make policy-engine-up vending-service-up experiments-fixtures-up KIND_CLUSTER=bench-v2s-1s"
+    ],
+    "note": "the run was started without make, because make vend-to-svid re-applies the repository's SPIRE ConfigMaps (entries -> spire-agent -> spire-server)"
+  },
+  "config_changes_on_this_cluster_only": [
+    {
+      "component": "spire-server",
+      "change": "in the server block of the live spire-server ConfigMap: `audit_log_enabled = true` (as in runs 1 and 2) and `experimental { cache_reload_interval = \"1s\" }` (default 5 s); StatefulSet restarted (data on a PVC)",
+      "repository_manifests_changed": false
+    },
+    {
+      "component": "spire-agent",
+      "change": "in the agent block of the live spire-agent ConfigMap: `experimental { sync_interval = \"1s\" }` (default 5 s); DaemonSet restarted",
+      "repository_manifests_changed": false
+    }
+  ],
+  "from_spire_server_audit": {
+    "child_agent_syncs_seen": 256,
+    "child_agent_sync_gap_ms_under_1500": {
+      "n": 255,
+      "min": 902.0,
+      "median": 1011.0,
+      "max": 1102.1
+    },
+    "child_agent_first_sync_after_BatchCreateEntry_ms": {
+      "caught (entry delivered at that sync)": {
+        "n": 25,
+        "min": 212.8,
+        "max": 1021.2
+      },
+      "missed (entry not delivered until a later sync)": {
+        "n": 25,
+        "min": 10.4,
+        "max": 736.6
+      },
+      "by_250ms_bucket": {
+        "0-250": {
+          "caught": 1,
+          "missed": 7
+        },
+        "250-500": {
+          "caught": 5,
+          "missed": 10
+        },
+        "500-750": {
+          "caught": 11,
+          "missed": 8
+        },
+        "750-1000": {
+          "caught": 7,
+          "missed": 0
+        },
+        "1000-1250": {
+          "caught": 1,
+          "missed": 0
+        },
+        "1250-1500": {
+          "caught": 0,
+          "missed": 0
+        }
+      }
+    },
+    "vend_to_svid_ms_median_by_band": {
+      "caught": 732.7,
+      "missed": 1426.5
+    },
+    "child_agent_syncs_missed_counts": {
+      "0": 25,
+      "1": 25
+    },
+    "reading": "a sync under 250 ms after the entry was created delivered it in 1 of 8 trials; one 750 ms or more after always did (8 of 8); the latest sync that missed it came 736.6 ms after creation and the earliest that delivered it 212.8 ms after. With the server's cache_reload_interval at 1 s the lag between the datastore write and agents seeing the entry fell from up to about 4.6 s (runs 1 and 2, 5 s default) to under about 1 s, consistent with that reload being the source of the lag."
+  },
+  "anomalies": "in trials 14, 40 and 42 the agent held the obtaining Workload API request open for about 0.5 s and answered it with the SVID (svid_window_ms 506-570 ms); t3 is still the moment the child held the SVID.",
+  "smoke_run": "2 trials (959.0 and 1285.0 ms) after the config change, not kept"
+}
