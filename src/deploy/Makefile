@@ -557,6 +557,22 @@ VEND_ACCESS_JITTER_S ?= 0
 vend-to-access: policy-engine-up vending-service-up resource-up experiments-fixtures-up ## Measure vend-to-child-access time (VEND_ACCESS_TRIALS=50, VEND_ACCESS_STYLE=poll|child-py, VEND_ACCESS_JITTER_S=0)
 	@cd '$(EXPERIMENTS_SRC)' && uv run python3 vend_to_access.py --style '$(VEND_ACCESS_STYLE)' --trials '$(VEND_ACCESS_TRIALS)' --jitter-s '$(VEND_ACCESS_JITTER_S)'
 
+# Revoke to deny: REVOKE_DENY_TRIALS trials (default 50), each timing the gap
+# between P's DELETE /delegations/{chain_id} and the revoked child's first 403
+# from the protected resource, then its first failed JWT-SVID fetch
+# (src/experiments/revoke_to_deny.py). The child fetches a fresh token from its
+# SPIRE agent and calls the resource every 20 ms from inside its own pod. Not
+# part of `experiments`; the same idle-host and fixture-image notes as
+# vend-to-svid apply (the fixtures need a parentsim with the revoke-wait mode).
+# REVOKE_DENY_JITTER_S=J waits a random 0..J s between the child's first 200 and
+# the DELETE, so the revoke lands at a random point of the agent's sync cycle.
+REVOKE_DENY_TRIALS ?= 50
+REVOKE_DENY_JITTER_S ?= 0
+
+.PHONY: revoke-to-deny
+revoke-to-deny: policy-engine-up vending-service-up resource-up experiments-fixtures-up ## Measure revoke-to-first-403 and revoke-to-identity-gone time (REVOKE_DENY_TRIALS=50, REVOKE_DENY_JITTER_S=0)
+	@cd '$(EXPERIMENTS_SRC)' && uv run python3 revoke_to_deny.py --trials '$(REVOKE_DENY_TRIALS)' --jitter-s '$(REVOKE_DENY_JITTER_S)'
+
 .PHONY: status
 status: ## Show cluster, pod and SPIRE state
 	@$(KUBECTL) get nodes -o wide

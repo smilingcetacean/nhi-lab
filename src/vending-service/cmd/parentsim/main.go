@@ -48,7 +48,7 @@ func main() {
 
 func run() error {
 	if len(os.Args) < 2 {
-		return fmt.Errorf("usage: parentsim <vend|vend-timed|sign|dispose|dispose-timed|get|whoami|call|fetch-jwt|bearer-call|poll|svid-wait|access-wait|x509-check|idle> [flags]")
+		return fmt.Errorf("usage: parentsim <vend|vend-timed|sign|dispose|dispose-timed|get|whoami|call|fetch-jwt|bearer-call|poll|svid-wait|access-wait|revoke-wait|x509-check|idle> [flags]")
 	}
 	mode := os.Args[1]
 
@@ -102,7 +102,10 @@ func run() error {
 	// interval and timeout flags.
 	pollInterval := fs.Duration("poll-interval", 20*time.Millisecond, "target gap between requests in -mode=poll and between fetches in -mode=svid-wait")
 	pollTimeout := fs.Duration("poll-timeout", 30*time.Second, "give up after this long without a denial (-mode=poll) or the expected identity (-mode=svid-wait)")
-	expectID := fs.String("expect-id", "", "in -mode=svid-wait and -mode=access-wait, the SPIFFE ID to wait for")
+	expectID := fs.String("expect-id", "", "in -mode=svid-wait, -mode=access-wait and -mode=revoke-wait, the SPIFFE ID to wait for")
+
+	// "revoke-wait" mode: see revokewait.go. It uses -expect-id, -call-url,
+	// -call-method, -call-audience, -poll-interval and -poll-timeout.
 
 	// "access-wait" mode: see accesswait.go. It also uses -call-url,
 	// -call-method, -call-audience, -poll-interval and -poll-timeout.
@@ -215,28 +218,8 @@ func run() error {
 			}
 			return s.ID.String(), nil
 		}
-		fetchJWT := func(ctx context.Context) (string, string, error) {
-			s, err := client.FetchJWTSVID(ctx, jwtsvid.Params{Audience: *callAudience})
-			if err != nil {
-				return "", "", err
-			}
-			return s.Marshal(), s.ID.String(), nil
-		}
-		resClient := &http.Client{Timeout: 5 * time.Second}
-		call := func(ctx context.Context, token string) (int, error) {
-			req, err := http.NewRequestWithContext(ctx, *callMethod, *callURL, nil)
-			if err != nil {
-				return 0, err
-			}
-			req.Header.Set("Authorization", "Bearer "+token)
-			resp, err := resClient.Do(req)
-			if err != nil {
-				return 0, err
-			}
-			_, _ = io.Copy(io.Discard, resp.Body)
-			resp.Body.Close()
-			return resp.StatusCode, nil
-		}
+		fetchJWT := jwtFetcherFor(client, *callAudience)
+		call := resourceCallerFor(*callMethod, *callURL)
 		ev, err := runAccessWait(context.Background(), fetchX509, fetchJWT, call,
 			accessWaitConfig{Style: *accessStyle, ExpectID: *expectID, Interval: *pollInterval,
 				RetryDelay: *retryDelay, RetryAttempts: *retryAttempts, Timeout: *pollTimeout},
@@ -245,6 +228,30 @@ func run() error {
 			return err
 		}
 		if ev.Event != "granted" {
+			os.Exit(2)
+		}
+		return nil
+	}
+
+	// revoke-wait runs in the pod of a child that holds an identity and is about
+	// to be revoked (see revokewait.go). Like access-wait it holds one Workload
+	// API client for the whole run and fetches no SVID of its own first.
+	if mode == "revoke-wait" {
+		if *expectID == "" || *callURL == "" {
+			return fmt.Errorf("revoke-wait requires -expect-id and -call-url")
+		}
+		client, err := workloadapi.New(context.Background(), workloadapi.WithAddr(*socketPath))
+		if err != nil {
+			return fmt.Errorf("workload API client: %w", err)
+		}
+		defer client.Close()
+		ev, err := runRevokeWait(context.Background(), jwtFetcherFor(client, *callAudience), resourceCallerFor(*callMethod, *callURL),
+			revokeWaitConfig{ExpectID: *expectID, Interval: *pollInterval, Timeout: *pollTimeout},
+			os.Stdout, time.Now)
+		if err != nil {
+			return err
+		}
+		if ev.Event != "identity_gone" {
 			os.Exit(2)
 		}
 		return nil
@@ -391,7 +398,39 @@ func run() error {
 		return postJSON(httpClient, http.MethodGet, base+"/delegations/"+*chainID, jwtSVID.Marshal(), nil)
 
 	default:
-		return fmt.Errorf("unknown mode %q (want vend, vend-timed, sign, dispose, dispose-timed, get, whoami, call, fetch-jwt, bearer-call, poll, svid-wait, access-wait, x509-check)", mode)
+		return fmt.Errorf("unknown mode %q (want vend, vend-timed, sign, dispose, dispose-timed, get, whoami, call, fetch-jwt, bearer-call, poll, svid-wait, access-wait, revoke-wait, x509-check)", mode)
+	}
+}
+
+// jwtFetcherFor returns a jwtFetcher that asks the long-lived Workload API
+// client for a JWT-SVID for audience on every call.
+func jwtFetcherFor(client *workloadapi.Client, audience string) jwtFetcher {
+	return func(ctx context.Context) (string, string, error) {
+		s, err := client.FetchJWTSVID(ctx, jwtsvid.Params{Audience: audience})
+		if err != nil {
+			return "", "", err
+		}
+		return s.Marshal(), s.ID.String(), nil
+	}
+}
+
+// resourceCallerFor returns a resourceCaller that sends method to url with the
+// token as a bearer credential and returns the status.
+func resourceCallerFor(method, url string) resourceCaller {
+	resClient := &http.Client{Timeout: 5 * time.Second}
+	return func(ctx context.Context, token string) (int, error) {
+		req, err := http.NewRequestWithContext(ctx, method, url, nil)
+		if err != nil {
+			return 0, err
+		}
+		req.Header.Set("Authorization", "Bearer "+token)
+		resp, err := resClient.Do(req)
+		if err != nil {
+			return 0, err
+		}
+		_, _ = io.Copy(io.Discard, resp.Body)
+		resp.Body.Close()
+		return resp.StatusCode, nil
 	}
 }
 
