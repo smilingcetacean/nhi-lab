@@ -1,0 +1,912 @@
+{
+  "run": "20261107T181817Z-storage-growth-churn-1s",
+  "phase": "churn",
+  "n": 100,
+  "step": 25,
+  "started": "2026-11-07T18:18:18Z",
+  "finished": "2026-11-07T18:19:44Z",
+  "checkpoints": 9,
+  "host": {
+    "cpu_model": "AMD Ryzen 7 9800X3D 8-Core Processor",
+    "cpu_cores": 16,
+    "memory_total_gib": 30.4,
+    "kernel": "7.3.1-1-cachyos",
+    "os": "Linux",
+    "python": "3.13.14",
+    "docker_server": "29.9.3",
+    "kind": "kind v0.33.0 go1.27.0-X:nodwarf5 linux/amd64",
+    "kubectl_client": "v1.37.2",
+    "kube_context": "kind-bench-sg-churn-1s",
+    "nodes": "NAME                              KUBELET   KERNEL\nbench-sg-churn-1s-control-plane   v1.36.1   7.3.1-1-cachyos\nbench-sg-churn-1s-worker          v1.36.1   7.3.1-1-cachyos",
+    "load_average_start": [
+      1.28,
+      1.22,
+      0.89
+    ],
+    "load_average_end": [
+      0.5,
+      1.01,
+      0.85
+    ],
+    "max_live_children_in_running_pod": 200,
+    "images": {
+      "spire-server": "ghcr.io/spiffe/spire-server:1.15.2",
+      "vending-service": "nhi-lab/vending-service:dev",
+      "policy-engine": "nhi-lab/policy-engine:dev",
+      "opa": "openpolicyagent/opa:1.18.2"
+    },
+    "spire_server_audit_log_enabled": true,
+    "sqlite_python": "3.53.1",
+    "run_seconds": 85.9
+  },
+  "prior_state_before_step0": {
+    "opa_live_modules": 0,
+    "policy_engine_live_grants": 0,
+    "opa_gets_before": 0
+  },
+  "phases": {
+    "churn": {
+      "x": "n_vended_total (cycles)",
+      "fits": {
+        "spire_disk_apparent_bytes": {
+          "ols_bytes_vs_n_vended_total": {
+            "points": 7,
+            "slope": 45400.771508413105,
+            "intercept": 743950.2583387834,
+            "r_squared": 0.8474834356435677,
+            "residual_min": -934026.4091800936,
+            "residual_max": 1299004.1662405613
+          },
+          "loglog_vs_n_vended_total": {
+            "points": 6,
+            "exponent": 0.8758030465352572,
+            "r_squared": 0.9806158030759646
+          },
+          "baseline_step0": 291945.0,
+          "last": 4350001.0
+        },
+        "spire_disk_alloc_bytes": {
+          "ols_bytes_vs_n_vended_total": {
+            "points": 7,
+            "slope": 45371.8028420239,
+            "intercept": 750441.9829954216,
+            "r_squared": 0.8474248903645913,
+            "residual_min": -933574.267197811,
+            "residual_max": 1298151.8749033837
+          },
+          "loglog_vs_n_vended_total": {
+            "points": 6,
+            "exponent": 0.87710881488343,
+            "r_squared": 0.9805758456343977
+          },
+          "baseline_step0": 299008.0,
+          "last": 4354048.0
+        },
+        "vending_disk_apparent_bytes": {
+          "ols_bytes_vs_n_vended_total": {
+            "points": 7,
+            "slope": 39429.15003864677,
+            "intercept": 56514.57717462396,
+            "r_squared": 0.9999755593160621,
+            "residual_min": -14579.079106962308,
+            "residual_max": 7085.418960699346
+          },
+          "loglog_vs_n_vended_total": {
+            "points": 6,
+            "exponent": 1.0052820286529633,
+            "r_squared": 0.9999975495711207
+          },
+          "baseline_step0": 61440.0,
+          "last": 4006515.0
+        },
+        "vending_disk_alloc_bytes": {
+          "ols_bytes_vs_n_vended_total": {
+            "points": 7,
+            "slope": 39434.563291515544,
+            "intercept": 60399.92674950953,
+            "r_squared": 0.9999703352178877,
+            "residual_min": -16896.091325286776,
+            "residual_max": 6661.50995897493
+          },
+          "loglog_vs_n_vended_total": {
+            "points": 6,
+            "exponent": 0.9760787054928761,
+            "r_squared": 0.9997721942946057
+          },
+          "baseline_step0": 61440.0,
+          "last": 4009984.0
+        },
+        "spire_file_datastore_sqlite3_apparent_bytes": {
+          "ols_bytes_vs_n_vended_total": {
+            "points": 7,
+            "slope": 230.68767465366545,
+            "intercept": 142044.00261608895,
+            "r_squared": 0.9119545431677543,
+            "residual_min": -4451.194482430583,
+            "residual_max": 2823.229918544501
+          },
+          "loglog_vs_n_vended_total": {
+            "points": 3,
+            "exponent": 0.9343652214193378,
+            "r_squared": 0.6610809131651716
+          },
+          "baseline_step0": 143360.0,
+          "last": 167936.0
+        },
+        "spire_file_datastore_sqlite3_wal_apparent_bytes": {
+          "ols_bytes_vs_n_vended_total": {
+            "points": 7,
+            "slope": 45170.08383375944,
+            "intercept": 568713.2557226943,
+            "r_squared": 0.8457967689857179,
+            "residual_min": -936849.6390986377,
+            "residual_max": 1296934.5525893336
+          },
+          "loglog_vs_n_vended_total": {
+            "points": 6,
+            "exponent": 0.8748098031497628,
+            "r_squared": 0.9803699599883349
+          },
+          "baseline_step0": 115392.0,
+          "last": 4148872.0
+        },
+        "spire_file_datastore_sqlite3_alloc_bytes": {
+          "ols_bytes_vs_n_vended_total": {
+            "points": 7,
+            "slope": 230.68767465366545,
+            "intercept": 142044.00261608895,
+            "r_squared": 0.9119545431677543,
+            "residual_min": -4451.194482430583,
+            "residual_max": 2823.229918544501
+          },
+          "loglog_vs_n_vended_total": {
+            "points": 3,
+            "exponent": 0.9343652214193378,
+            "r_squared": 0.6610809131651716
+          },
+          "baseline_step0": 143360.0,
+          "last": 167936.0
+        },
+        "spire_file_datastore_sqlite3_wal_alloc_bytes": {
+          "ols_bytes_vs_n_vended_total": {
+            "points": 7,
+            "slope": 45141.11516737023,
+            "intercept": 571533.980379333,
+            "r_squared": 0.8457364741610598,
+            "residual_min": -936397.4971163562,
+            "residual_max": 1296082.2612521555
+          },
+          "loglog_vs_n_vended_total": {
+            "points": 6,
+            "exponent": 0.8761148432103147,
+            "r_squared": 0.9803297878106527
+          },
+          "baseline_step0": 118784.0,
+          "last": 4149248.0
+        },
+        "vending_file_vending_db_alloc_bytes": {
+          "ols_bytes_vs_n_vended_total": {
+            "points": 7,
+            "slope": 0.0,
+            "intercept": 28672.0,
+            "r_squared": null,
+            "residual_min": 0.0,
+            "residual_max": 0.0
+          },
+          "loglog_vs_n_vended_total": null,
+          "baseline_step0": 28672.0,
+          "last": 28672.0
+        },
+        "vending_file_vending_db_wal_alloc_bytes": {
+          "ols_bytes_vs_n_vended_total": {
+            "points": 7,
+            "slope": 38050.559010642726,
+            "intercept": -2510.775670372881,
+            "r_squared": 0.9999706707229626,
+            "residual_min": -15857.174861763371,
+            "residual_max": 6734.874606100377
+          },
+          "loglog_vs_n_vended_total": {
+            "points": 6,
+            "exponent": 0.9862335222045953,
+            "r_squared": 0.9999224261983212
+          },
+          "baseline_step0": 0.0,
+          "last": 3809280.0
+        },
+        "spire_file_datastore_sqlite3_shm_apparent_bytes": {
+          "ols_bytes_vs_n_vended_total": {
+            "points": 7,
+            "slope": 0.0,
+            "intercept": 32768.0,
+            "r_squared": null,
+            "residual_min": 0.0,
+            "residual_max": 0.0
+          },
+          "loglog_vs_n_vended_total": null,
+          "baseline_step0": 32768.0,
+          "last": 32768.0
+        },
+        "vending_file_vending_db_shm_apparent_bytes": {
+          "ols_bytes_vs_n_vended_total": {
+            "points": 7,
+            "slope": 0.0,
+            "intercept": 32768.0,
+            "r_squared": null,
+            "residual_min": 0.0,
+            "residual_max": 0.0
+          },
+          "loglog_vs_n_vended_total": null,
+          "baseline_step0": 32768.0,
+          "last": 32768.0
+        },
+        "vending_file_vending_db_apparent_bytes": {
+          "ols_bytes_vs_n_vended_total": {
+            "points": 7,
+            "slope": 0.0,
+            "intercept": 28672.0,
+            "r_squared": null,
+            "residual_min": 0.0,
+            "residual_max": 0.0
+          },
+          "loglog_vs_n_vended_total": null,
+          "baseline_step0": 28672.0,
+          "last": 28672.0
+        },
+        "vending_file_vending_db_wal_apparent_bytes": {
+          "ols_bytes_vs_n_vended_total": {
+            "points": 7,
+            "slope": 38047.53279029668,
+            "intercept": -4924.827992151491,
+            "r_squared": 0.9999737530664422,
+            "residual_min": -14579.811522682663,
+            "residual_max": 7083.548962483183
+          },
+          "loglog_vs_n_vended_total": {
+            "points": 6,
+            "exponent": 1.0054762562565407,
+            "r_squared": 0.9999973745665204
+          },
+          "baseline_step0": 0.0,
+          "last": 3806912.0
+        },
+        "vending_file_audit_jsonl_apparent_bytes": {
+          "ols_bytes_vs_n_vended_total": {
+            "points": 7,
+            "slope": 1381.6172483500802,
+            "intercept": -0.5948332243351615,
+            "r_squared": 0.9999999992513289,
+            "residual_min": -2.698793031682726,
+            "residual_max": 1.8699982163088862
+          },
+          "loglog_vs_n_vended_total": {
+            "points": 6,
+            "exponent": 1.0000060829017832,
+            "r_squared": 0.9999999859988491
+          },
+          "baseline_step0": 0.0,
+          "last": 138163.0
+        },
+        "spire_db_used_bytes": {
+          "ols_bytes_vs_n_vended_total": {
+            "points": 7,
+            "slope": 287.4311195671562,
+            "intercept": 143503.9895356442,
+            "r_squared": 0.9918851131793135,
+            "residual_min": -1221.3235031809309,
+            "residual_max": 1868.454485997965
+          },
+          "loglog_vs_n_vended_total": {
+            "points": 4,
+            "exponent": 0.8759784438720022,
+            "r_squared": 0.9887635522192972
+          },
+          "baseline_step0": 143360.0,
+          "last": 172032.0
+        },
+        "vending_db_used_bytes": {
+          "ols_bytes_vs_n_vended_total": {
+            "points": 7,
+            "slope": 560.737261430525,
+            "intercept": 25959.63897972531,
+            "r_squared": 0.9610041507209471,
+            "residual_min": -8940.502051251562,
+            "residual_max": 3982.6348772221972
+          },
+          "loglog_vs_n_vended_total": {
+            "points": 4,
+            "exponent": 1.4487253728786285,
+            "r_squared": 0.9704286030219617
+          },
+          "baseline_step0": 28672.0,
+          "last": 86016.0
+        },
+        "spire_db_dbstat_bytes": {
+          "ols_bytes_vs_n_vended_total": {
+            "points": 7,
+            "slope": 287.4311195671562,
+            "intercept": 143503.9895356442,
+            "r_squared": 0.9918851131793135,
+            "residual_min": -1221.3235031809309,
+            "residual_max": 1868.454485997965
+          },
+          "loglog_vs_n_vended_total": {
+            "points": 4,
+            "exponent": 0.8759784438720022,
+            "r_squared": 0.9887635522192972
+          },
+          "baseline_step0": 143360.0,
+          "last": 172032.0
+        },
+        "vending_db_dbstat_bytes": {
+          "ols_bytes_vs_n_vended_total": {
+            "points": 7,
+            "slope": 560.737261430525,
+            "intercept": 25959.63897972531,
+            "r_squared": 0.9610041507209471,
+            "residual_min": -8940.502051251562,
+            "residual_max": 3982.6348772221972
+          },
+          "loglog_vs_n_vended_total": {
+            "points": 4,
+            "exponent": 1.4487253728786285,
+            "r_squared": 0.9704286030219617
+          },
+          "baseline_step0": 28672.0,
+          "last": 86016.0
+        },
+        "spire_server_writable_used_bytes": {
+          "ols_bytes_vs_n_vended_total": {
+            "points": 7,
+            "slope": 0.0,
+            "intercept": 8192.0,
+            "r_squared": null,
+            "residual_min": 0.0,
+            "residual_max": 0.0
+          },
+          "loglog_vs_n_vended_total": null,
+          "baseline_step0": 8192.0,
+          "last": 8192.0
+        },
+        "vending_service_writable_used_bytes": {
+          "ols_bytes_vs_n_vended_total": {
+            "points": 7,
+            "slope": 0.0,
+            "intercept": 8192.0,
+            "r_squared": null,
+            "residual_min": 0.0,
+            "residual_max": 0.0
+          },
+          "loglog_vs_n_vended_total": null,
+          "baseline_step0": 8192.0,
+          "last": 8192.0
+        },
+        "policy_engine_writable_used_bytes": {
+          "ols_bytes_vs_n_vended_total": {
+            "points": 7,
+            "slope": 0.0,
+            "intercept": 8192.0,
+            "r_squared": null,
+            "residual_min": 0.0,
+            "residual_max": 0.0
+          },
+          "loglog_vs_n_vended_total": null,
+          "baseline_step0": 8192.0,
+          "last": 8192.0
+        },
+        "opa_writable_used_bytes": {
+          "ols_bytes_vs_n_vended_total": {
+            "points": 7,
+            "slope": 0.0,
+            "intercept": 8192.0,
+            "r_squared": null,
+            "residual_min": 0.0,
+            "residual_max": 0.0
+          },
+          "loglog_vs_n_vended_total": null,
+          "baseline_step0": 8192.0,
+          "last": 8192.0
+        },
+        "spire_server_mem_working_set_bytes": {
+          "ols_bytes_vs_n_vended_total": {
+            "points": 7,
+            "slope": 1726.4132231404958,
+            "intercept": 33951371.63636363,
+            "r_squared": 0.04694895854679215,
+            "residual_min": -376459.636363633,
+            "residual_max": 486069.9504132271
+          },
+          "loglog_vs_n_vended_total": {
+            "points": 6,
+            "exponent": 0.18286288202800974,
+            "r_squared": 0.11074084453292588
+          },
+          "baseline_step0": 33574912.0,
+          "last": 33984512.0
+        },
+        "vending_service_mem_working_set_bytes": {
+          "ols_bytes_vs_n_vended_total": {
+            "points": 7,
+            "slope": 58024.37338724062,
+            "intercept": 10311957.93328973,
+            "r_squared": 0.7299120734925935,
+            "residual_min": -2656533.933289731,
+            "residual_max": 1315335.3973482382
+          },
+          "loglog_vs_n_vended_total": {
+            "points": 6,
+            "exponent": 0.16427815276559227,
+            "r_squared": 0.822141147456118
+          },
+          "baseline_step0": 7655424.0,
+          "last": 15024128.0
+        },
+        "policy_engine_mem_working_set_bytes": {
+          "ols_bytes_vs_n_vended_total": {
+            "points": 7,
+            "slope": 54483.631131458475,
+            "intercept": 7535866.474820143,
+            "r_squared": 0.701400046828348,
+            "residual_min": -2301178.4748201426,
+            "residual_max": 2058842.7468933947
+          },
+          "loglog_vs_n_vended_total": {
+            "points": 6,
+            "exponent": 0.23727887999513939,
+            "r_squared": 0.9275710570477896
+          },
+          "baseline_step0": 5234688.0,
+          "last": 11808768.0
+        },
+        "opa_mem_working_set_bytes": {
+          "ols_bytes_vs_n_vended_total": {
+            "points": 7,
+            "slope": 64740.19145014567,
+            "intercept": 19596525.080444735,
+            "r_squared": 0.7073279268363051,
+            "residual_min": -2761965.0804447345,
+            "residual_max": 2111690.133301623
+          },
+          "loglog_vs_n_vended_total": {
+            "points": 6,
+            "exponent": 0.23570028034768872,
+            "r_squared": 0.9864834870650496
+          },
+          "baseline_step0": 16834560.0,
+          "last": 24743936.0
+        }
+      },
+      "rows": {
+        "spire_rows_attested_node_entries": {
+          "rows_first": 2,
+          "rows_last": 2,
+          "ols_slope_rows_per_n_vended_total": 0.0
+        },
+        "spire_rows_attested_node_entries_events": {
+          "rows_first": 12,
+          "rows_last": 12,
+          "ols_slope_rows_per_n_vended_total": 0.0
+        },
+        "spire_rows_bundles": {
+          "rows_first": 1,
+          "rows_last": 1,
+          "ols_slope_rows_per_n_vended_total": 0.0
+        },
+        "spire_rows_ca_journals": {
+          "rows_first": 1,
+          "rows_last": 1,
+          "ols_slope_rows_per_n_vended_total": 0.0
+        },
+        "spire_rows_dns_names": {
+          "rows_first": 6,
+          "rows_last": 6,
+          "ols_slope_rows_per_n_vended_total": 0.0
+        },
+        "spire_rows_federated_registration_entries": {
+          "rows_first": 0,
+          "rows_last": 0,
+          "ols_slope_rows_per_n_vended_total": 0.0
+        },
+        "spire_rows_federated_trust_domains": {
+          "rows_first": 0,
+          "rows_last": 0,
+          "ols_slope_rows_per_n_vended_total": 0.0
+        },
+        "spire_rows_join_tokens": {
+          "rows_first": 0,
+          "rows_last": 0,
+          "ols_slope_rows_per_n_vended_total": 0.0
+        },
+        "spire_rows_migrations": {
+          "rows_first": 1,
+          "rows_last": 1,
+          "ols_slope_rows_per_n_vended_total": 0.0
+        },
+        "spire_rows_node_resolver_map_entries": {
+          "rows_first": 16,
+          "rows_last": 16,
+          "ols_slope_rows_per_n_vended_total": 0.0
+        },
+        "spire_rows_registered_entries": {
+          "rows_first": 12,
+          "rows_last": 12,
+          "ols_slope_rows_per_n_vended_total": 0.0
+        },
+        "spire_rows_registered_entries_events": {
+          "rows_first": 12,
+          "rows_last": 212,
+          "ols_slope_rows_per_n_vended_total": 2.0
+        },
+        "spire_rows_selectors": {
+          "rows_first": 23,
+          "rows_last": 23,
+          "ols_slope_rows_per_n_vended_total": 0.0
+        },
+        "spire_rows_sqlite_sequence": {
+          "rows_first": 10,
+          "rows_last": 10,
+          "ols_slope_rows_per_n_vended_total": 0.0
+        },
+        "vending_rows_delegations": {
+          "rows_first": 0,
+          "rows_last": 100,
+          "ols_slope_rows_per_n_vended_total": 1.0
+        },
+        "vending_rows_used_nonces": {
+          "rows_first": 0,
+          "rows_last": 100,
+          "ols_slope_rows_per_n_vended_total": 1.0
+        }
+      }
+    }
+  },
+  "idle": {
+    "idle_start": {
+      "from_step": 0,
+      "to_step": 1,
+      "seconds": 31.5,
+      "change": {
+        "spire_disk_apparent_bytes": 0,
+        "spire_disk_alloc_bytes": 0,
+        "vending_disk_apparent_bytes": 0,
+        "vending_disk_alloc_bytes": 0,
+        "spire_file_datastore_sqlite3_apparent_bytes": 0,
+        "spire_file_datastore_sqlite3_wal_apparent_bytes": 0,
+        "spire_file_datastore_sqlite3_alloc_bytes": 0,
+        "spire_file_datastore_sqlite3_wal_alloc_bytes": 0,
+        "vending_file_vending_db_alloc_bytes": 0,
+        "vending_file_vending_db_wal_alloc_bytes": 0,
+        "spire_file_datastore_sqlite3_shm_apparent_bytes": 0,
+        "vending_file_vending_db_shm_apparent_bytes": 0,
+        "vending_file_vending_db_apparent_bytes": 0,
+        "vending_file_vending_db_wal_apparent_bytes": 0,
+        "vending_file_audit_jsonl_apparent_bytes": 0,
+        "spire_db_used_bytes": 0,
+        "vending_db_used_bytes": 0,
+        "spire_db_dbstat_bytes": 0,
+        "vending_db_dbstat_bytes": 0,
+        "spire_server_writable_used_bytes": 0,
+        "vending_service_writable_used_bytes": 0,
+        "policy_engine_writable_used_bytes": 0,
+        "opa_writable_used_bytes": 0,
+        "spire_server_mem_working_set_bytes": 323584,
+        "vending_service_mem_working_set_bytes": 32768,
+        "policy_engine_mem_working_set_bytes": 0,
+        "opa_mem_working_set_bytes": 143360,
+        "opa_live_modules": 0,
+        "spire_entry_count": 0,
+        "spire_rows_attested_node_entries": 0,
+        "spire_rows_attested_node_entries_events": 0,
+        "spire_rows_bundles": 0,
+        "spire_rows_ca_journals": 0,
+        "spire_rows_dns_names": 0,
+        "spire_rows_federated_registration_entries": 0,
+        "spire_rows_federated_trust_domains": 0,
+        "spire_rows_join_tokens": 0,
+        "spire_rows_migrations": 0,
+        "spire_rows_node_resolver_map_entries": 0,
+        "spire_rows_registered_entries": 0,
+        "spire_rows_registered_entries_events": 0,
+        "spire_rows_selectors": 0,
+        "spire_rows_sqlite_sequence": 0,
+        "vending_rows_delegations": 0,
+        "vending_rows_used_nonces": 0
+      },
+      "per_second": {
+        "spire_server_mem_working_set_bytes": 10279.68742501655,
+        "vending_service_mem_working_set_bytes": 1040.9810050649671,
+        "opa_mem_working_set_bytes": 4554.291897159231
+      },
+      "note": "per_second lists only the metrics that changed; the writable-layer and memory values are runtime samples"
+    },
+    "idle_end": {
+      "from_step": 7,
+      "to_step": 8,
+      "seconds": 31.4,
+      "change": {
+        "spire_disk_apparent_bytes": 0,
+        "spire_disk_alloc_bytes": 0,
+        "vending_disk_apparent_bytes": 0,
+        "vending_disk_alloc_bytes": 0,
+        "spire_file_datastore_sqlite3_apparent_bytes": 0,
+        "spire_file_datastore_sqlite3_wal_apparent_bytes": 0,
+        "spire_file_datastore_sqlite3_alloc_bytes": 0,
+        "spire_file_datastore_sqlite3_wal_alloc_bytes": 0,
+        "vending_file_vending_db_alloc_bytes": 0,
+        "vending_file_vending_db_wal_alloc_bytes": 0,
+        "spire_file_datastore_sqlite3_shm_apparent_bytes": 0,
+        "vending_file_vending_db_shm_apparent_bytes": 0,
+        "vending_file_vending_db_apparent_bytes": 0,
+        "vending_file_vending_db_wal_apparent_bytes": 0,
+        "vending_file_audit_jsonl_apparent_bytes": 0,
+        "spire_db_used_bytes": 0,
+        "vending_db_used_bytes": 0,
+        "spire_db_dbstat_bytes": 0,
+        "vending_db_dbstat_bytes": 0,
+        "spire_server_writable_used_bytes": 0,
+        "vending_service_writable_used_bytes": 0,
+        "policy_engine_writable_used_bytes": 0,
+        "opa_writable_used_bytes": 0,
+        "spire_server_mem_working_set_bytes": 307200,
+        "vending_service_mem_working_set_bytes": -270336,
+        "policy_engine_mem_working_set_bytes": 0,
+        "opa_mem_working_set_bytes": -12288,
+        "opa_live_modules": 0,
+        "spire_entry_count": 0,
+        "spire_rows_attested_node_entries": 0,
+        "spire_rows_attested_node_entries_events": 0,
+        "spire_rows_bundles": 0,
+        "spire_rows_ca_journals": 0,
+        "spire_rows_dns_names": 0,
+        "spire_rows_federated_registration_entries": 0,
+        "spire_rows_federated_trust_domains": 0,
+        "spire_rows_join_tokens": 0,
+        "spire_rows_migrations": 0,
+        "spire_rows_node_resolver_map_entries": 0,
+        "spire_rows_registered_entries": 0,
+        "spire_rows_registered_entries_events": 0,
+        "spire_rows_selectors": 0,
+        "spire_rows_sqlite_sequence": 0,
+        "vending_rows_delegations": 0,
+        "vending_rows_used_nonces": 0
+      },
+      "per_second": {
+        "spire_server_mem_working_set_bytes": 9775.345218736415,
+        "vending_service_mem_working_set_bytes": -8602.303792488045,
+        "opa_mem_working_set_bytes": -391.01380874945653
+      },
+      "note": "per_second lists only the metrics that changed; the writable-layer and memory values are runtime samples"
+    }
+  },
+  "wal": {
+    "spire": {
+      "frame_bytes": 4120,
+      "autocheckpoint_threshold_bytes_1000_frames": 4120032,
+      "series": [
+        {
+          "step": 0,
+          "phase": "churn",
+          "ops_so_far": 0,
+          "wal_apparent_bytes": 115392
+        },
+        {
+          "step": 1,
+          "phase": "idle-start",
+          "ops_so_far": 0,
+          "wal_apparent_bytes": 115392
+        },
+        {
+          "step": 2,
+          "phase": "churn",
+          "ops_so_far": 2,
+          "wal_apparent_bytes": 206032
+        },
+        {
+          "step": 3,
+          "phase": "churn",
+          "ops_so_far": 4,
+          "wal_apparent_bytes": 296672
+        },
+        {
+          "step": 4,
+          "phase": "churn",
+          "ops_so_far": 50,
+          "wal_apparent_bytes": 2393752
+        },
+        {
+          "step": 5,
+          "phase": "churn",
+          "ops_so_far": 100,
+          "wal_apparent_bytes": 4124152
+        },
+        {
+          "step": 6,
+          "phase": "churn",
+          "ops_so_far": 150,
+          "wal_apparent_bytes": 4124152
+        },
+        {
+          "step": 7,
+          "phase": "churn",
+          "ops_so_far": 200,
+          "wal_apparent_bytes": 4148872
+        },
+        {
+          "step": 8,
+          "phase": "idle-end",
+          "ops_so_far": 200,
+          "wal_apparent_bytes": 4148872
+        }
+      ],
+      "first_checkpoint_at_or_over_threshold": {
+        "step": 5,
+        "phase": "churn",
+        "ops_so_far": 100,
+        "wal_apparent_bytes": 4124152
+      },
+      "max_wal_apparent_bytes": 4148872,
+      "max_reached_at_step": 7,
+      "size_never_changes_after": {
+        "step": 7,
+        "phase": "churn",
+        "ops_so_far": 200,
+        "wal_apparent_bytes": 4148872
+      },
+      "decreased_between_checkpoints": false,
+      "note": "ops_so_far = vends + disposes; checkpoints are 25 children apart, so the exact operation is not resolved"
+    },
+    "vending": {
+      "frame_bytes": 4120,
+      "autocheckpoint_threshold_bytes_1000_frames": 4120032,
+      "series": [
+        {
+          "step": 0,
+          "phase": "churn",
+          "ops_so_far": 0,
+          "wal_apparent_bytes": 0
+        },
+        {
+          "step": 1,
+          "phase": "idle-start",
+          "ops_so_far": 0,
+          "wal_apparent_bytes": 0
+        },
+        {
+          "step": 2,
+          "phase": "churn",
+          "ops_so_far": 2,
+          "wal_apparent_bytes": 37112
+        },
+        {
+          "step": 3,
+          "phase": "churn",
+          "ops_so_far": 4,
+          "wal_apparent_bytes": 74192
+        },
+        {
+          "step": 4,
+          "phase": "churn",
+          "ops_so_far": 50,
+          "wal_apparent_bytes": 939392
+        },
+        {
+          "step": 5,
+          "phase": "churn",
+          "ops_so_far": 100,
+          "wal_apparent_bytes": 1882872
+        },
+        {
+          "step": 6,
+          "phase": "churn",
+          "ops_so_far": 150,
+          "wal_apparent_bytes": 2851072
+        },
+        {
+          "step": 7,
+          "phase": "churn",
+          "ops_so_far": 200,
+          "wal_apparent_bytes": 3806912
+        },
+        {
+          "step": 8,
+          "phase": "idle-end",
+          "ops_so_far": 200,
+          "wal_apparent_bytes": 3806912
+        }
+      ],
+      "first_checkpoint_at_or_over_threshold": null,
+      "max_wal_apparent_bytes": 3806912,
+      "max_reached_at_step": 7,
+      "size_never_changes_after": null,
+      "decreased_between_checkpoints": false,
+      "note": "ops_so_far = vends + disposes; checkpoints are 25 children apart, so the exact operation is not resolved"
+    }
+  },
+  "opa": {
+    "gets_matched_to_vends": 100,
+    "gets_unassigned": 0,
+    "ols_resp_bytes_vs_live_modules": null
+  },
+  "checks": {
+    "vending_delegations_plus_1_per_vend_unchanged_on_dispose": {
+      "description": "vending.delegations = baseline + vends so far (a dispose only sets revoked_at)",
+      "ok": true,
+      "points": 9,
+      "mismatches": []
+    },
+    "vending_used_nonces_plus_1_per_vend": {
+      "description": "vending.used_nonces = baseline + vends so far",
+      "ok": true,
+      "points": 9,
+      "mismatches": []
+    },
+    "vending_unrevoked_delegations_equal_live": {
+      "description": "vending.delegations with revoked_at NULL = baseline + live children",
+      "ok": true,
+      "points": 9,
+      "mismatches": []
+    },
+    "spire_registered_entries_plus_1_per_vend_minus_1_per_dispose": {
+      "description": "spire registered_entries = baseline + live children",
+      "ok": true,
+      "points": 9,
+      "mismatches": []
+    },
+    "spire_selector_rows_plus_2_per_live_child": {
+      "description": "spire selectors = baseline + 2 x live children (k8s:ns, k8s:pod-name)",
+      "ok": true,
+      "points": 9,
+      "mismatches": []
+    },
+    "opa_modules_plus_1_per_vend_minus_1_per_dispose": {
+      "description": "OPA live nhi_grants_* modules (request log) = modules before step 0 + live children",
+      "ok": true,
+      "points": 9,
+      "mismatches": []
+    },
+    "policy_engine_audit_matches_opa": {
+      "description": "policy engine allowed vends - allowed disposes (audit events) = OPA live modules",
+      "ok": true,
+      "points": 9,
+      "mismatches": []
+    },
+    "spire_entry_count_consistent": {
+      "description": "`spire-server entry count` = registered_entries rows = baseline + live children",
+      "ok": true,
+      "points": 9,
+      "mismatches": []
+    },
+    "all_quick_check_ok": {
+      "description": "PRAGMA quick_check = ok for both databases, first try",
+      "ok": true,
+      "points": 9,
+      "mismatches": []
+    },
+    "no_container_restarts": {
+      "description": "no pod or container restart since the run started",
+      "ok": true,
+      "points": 9,
+      "mismatches": []
+    },
+    "spire_event_rows_plus_1_per_create_and_per_delete": {
+      "description": "spire registered_entries_events = baseline + vends so far + disposes so far",
+      "ok": true,
+      "points": 9,
+      "mismatches": []
+    },
+    "op_statuses": {
+      "description": "every vend answered 201 and every dispose 200",
+      "ok": true,
+      "vends": 100,
+      "disposes": 100,
+      "statuses": {
+        "vend_201": 100,
+        "dispose_200": 100
+      }
+    },
+    "all_ok": true
+  },
+  "metrics": {
+    "opa_diagnostic_listener": "error: SSLError: [SSL: TLSV13_ALERT_CERTIFICATE_REQUIRED] tlsv13 alert certificate required (_ssl.c:2660)"
+  }
+}

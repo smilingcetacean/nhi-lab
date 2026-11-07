@@ -1,0 +1,4 @@
+2026-11-07T18:14:00.038521284Z {"client_addr":"10.244.1.5:41846","level":"info","msg":"Received request.","req_id":3,"req_method":"GET","req_path":"/v1/policies","time":"2026-11-07T18:14:00Z"}
+2026-11-07T18:14:00.039391088Z {"client_addr":"10.244.1.5:41846","level":"info","msg":"Sent response.","req_id":3,"req_method":"GET","req_path":"/v1/policies","resp_bytes":39369,"resp_duration":0.887615,"resp_status":200,"time":"2026-11-07T18:14:00Z"}
+2026-11-07T18:14:00.039659979Z {"client_addr":"10.244.1.5:41846","level":"info","msg":"Received request.","req_id":4,"req_method":"PUT","req_path":"/v1/policies/nhi_grants_c_7a14c06cea9ed3aba53fbeed3c4d981c","time":"2026-11-07T18:14:00Z"}
+2026-11-07T18:14:00.042180241Z {"client_addr":"10.244.1.5:41846","level":"info","msg":"Sent response.","req_id":4,"req_method":"PUT","req_path":"/v1/policies/nhi_grants_c_7a14c06cea9ed3aba53fbeed3c4d981c","resp_bytes":3,"resp_duration":2.513612,"resp_status":200,"time":"2026-11-07T18:14:00Z"}

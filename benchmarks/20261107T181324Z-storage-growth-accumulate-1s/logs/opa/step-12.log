@@ -1,0 +1,3 @@
+2026-11-07T18:14:28.819307854Z 2026/11/07 18:14:28 http: TLS handshake error from 10.244.1.1:37056: EOF
+2026-11-07T18:14:28.927407581Z {"client_addr":"10.244.1.5:41846","level":"info","msg":"Received request.","req_id":401,"req_method":"DELETE","req_path":"/v1/policies/nhi_grants_c_dccb0faa211e69033483bd3679fbf693","time":"2026-11-07T18:14:28Z"}
+2026-11-07T18:14:28.946902894Z {"client_addr":"10.244.1.5:41846","level":"info","msg":"Sent response.","req_id":401,"req_method":"DELETE","req_path":"/v1/policies/nhi_grants_c_dccb0faa211e69033483bd3679fbf693","resp_bytes":3,"resp_duration":19.509483,"resp_status":200,"time":"2026-11-07T18:14:28Z"}

@@ -1,0 +1,173 @@
+{
+  "benchmark": "storage_growth",
+  "run": "churn, n = 100, checkpoints every 25 children plus 0, 1, 2 and n; SPIRE agent sync_interval and server cache_reload_interval both 1 s; MAX_LIVE_CHILDREN = 200",
+  "headline": "bytes on disk of the SPIRE server and vending service volumes, and the logical SQLite content (page counts, per-table dbstat bytes, row counts), against the number of children vended by exp-root; accumulate is followed by a drain (dispose all, oldest first), churn is vend-then-dispose cycles",
+  "secondary": "container writable-layer bytes and memory working set (crictl), OPA grant-module count from OPA's request log, size of GET /v1/policies per vend (resp_bytes) and its projection to the policy engine's 4 MiB read limit",
+  "harness": "src/experiments/storage_growth.py (reusing lib/cluster.py, revocation_speed.py and vend_to_svid.py's parts), parentsim modes vend and dispose",
+  "inputs_per_child": {
+    "child_path_hint": "child/sg-NNNNN",
+    "selectors": "k8s:ns=agents,k8s:pod-name=sg-NNNNN (no such pod exists)",
+    "scopes": "resource:read:datasetA",
+    "task_context": "storage growth",
+    "ttl_seconds": 3600,
+    "nonce": "sg-chu-NNNNN (NNNNN: 5-digit zero-padded index)"
+  },
+  "code": {
+    "branch": "feat/storage-growth-benchmark",
+    "base_commit": "ea5a5be",
+    "state": "uncommitted working tree at run time"
+  },
+  "command": "cd src/experiments && CLUSTER_NAME=nhi-lab KUBECTX=kind-bench-sg-churn-1s TRUST_DOMAIN=lab.local uv run python3 storage_growth.py --phase churn --n 100 --step 25 --run-id 20261107T181817Z-storage-growth-churn-1s",
+  "cluster": {
+    "kind_cluster": "bench-sg-churn-1s (throwaway, two nodes), created for this run and deleted after it",
+    "bring_up": [
+      "make cluster-up KIND_CLUSTER=bench-sg-churn-1s",
+      "make spire-up KIND_CLUSTER=bench-sg-churn-1s",
+      "make policy-engine-up vending-service-up resource-up experiments-fixtures-up KIND_CLUSTER=bench-sg-churn-1s"
+    ],
+    "note": "the config changes below were made after the last make target, because the make targets re-apply the repository's manifests; make was not run again on the cluster",
+    "nodes_and_dirs": {
+      "spire-server": {
+        "node": "bench-sg-churn-1s-worker",
+        "pvc": "spire-data-spire-server-0",
+        "pv_capacity": "1Gi",
+        "dir_on_node": "/var/local-path-provisioner/pvc-984af635-de4e-4366-8f8d-ee801e4c05f4_spire_spire-data-spire-server-0"
+      },
+      "vending-service": {
+        "node": "bench-sg-churn-1s-worker",
+        "pvc": "vending-data",
+        "pv_capacity": "256Mi",
+        "dir_on_node": "/var/local-path-provisioner/pvc-24065737-e7f7-4716-95cd-a4c4bb823ac2_nhi_vending-data"
+      },
+      "policy-engine": {
+        "node": "bench-sg-churn-1s-worker",
+        "pvc": null,
+        "pv_capacity": null,
+        "dir_on_node": null
+      },
+      "opa": {
+        "node": "bench-sg-churn-1s-worker",
+        "pvc": null,
+        "pv_capacity": null,
+        "dir_on_node": null
+      }
+    }
+  },
+  "config_changes_on_this_cluster_only": [
+    {
+      "component": "spire-server",
+      "change": "in the server block of the live spire-server ConfigMap: `audit_log_enabled = true` and `experimental { cache_reload_interval = \"1s\" }` (default 5 s); StatefulSet restarted",
+      "repository_manifests_changed": false
+    },
+    {
+      "component": "spire-agent",
+      "change": "in the agent block of the live spire-agent ConfigMap: `experimental { sync_interval = \"1s\" }` (default 5 s); DaemonSet restarted after the server",
+      "repository_manifests_changed": false
+    },
+    {
+      "component": "vending-service",
+      "change": "`kubectl -n nhi set env deployment/vending-service MAX_LIVE_CHILDREN=200` (manifest default 8); Recreate rollout, the PVC persisted; checked in the running pod's spec",
+      "repository_manifests_changed": false
+    }
+  ],
+  "measurement_notes": {
+    "pause": "1.0 s before each checkpoint so in-flight writes land",
+    "on_disk": "docker exec <node> find <pv dir> -maxdepth 1 -type f -exec stat -c '%n|%s|%b|%B'; apparent = %s, allocated = %b x %B; read from outside the pods",
+    "logical": "database + -wal + -shm streamed out of the node with tar into a scratch directory and opened there; dbstat gives pages, pgsize and unused per table and index",
+    "writable_layer": "crictl stats; the runtime refreshes writableLayer on its own period, so each value has an age column (<container>_writable_age_s)",
+    "opa_modules": "live count = 2xx PUTs minus DELETEs of /v1/policies/nhi_grants_* in OPA's request log (container opa); GET /v1/policies sizes = resp_bytes of its 'Sent response.' lines; no GET happens during the drain",
+    "opa_diagnostic_listener": "error: SSLError: [SSL: TLSV13_ALERT_CERTIFICATE_REQUIRED] tlsv13 alert certificate required (_ssl.c:2660)",
+    "log_bytes": "container log byte counts are not measured"
+  },
+  "not_populated": {
+    "opa_heap_inuse_bytes, opa_alloc_bytes": "OPA's diagnostic listener (--diagnostic-addr, /metrics) also requires a client certificate: --authentication=tls applies to every listener, and the harness holds no SVID that OPA trusts (the TLS error is in opa_metrics_status). OPA's key material was not touched. The OPA in-memory footprint is therefore the crictl memory working set only (opa_mem_working_set_bytes), which is noisy (GC). The headline OPA numbers are the live module count and the GET /v1/policies resp_bytes."
+  },
+  "idle_control": "after checkpoint 0 and after the last checkpoint the run waits 30 s with no operations and takes a checkpoint (phase idle-start / idle-end); idle rows are excluded from the fits and reported as per-second changes in the summary ('idle')",
+  "config_script_output": [
+    "configmap/spire-server replaced",
+    "configmap/spire-agent replaced",
+    "statefulset.apps/spire-server restarted",
+    "Waiting for partitioned roll out to finish: 0 out of 1 new pods have been updated...",
+    "Waiting for 1 pods to be ready...",
+    "Waiting for 1 pods to be ready...",
+    "Waiting for 1 pods to be ready...",
+    "partitioned roll out complete: 1 new pods have been updated...",
+    "daemonset.apps/spire-agent restarted",
+    "Waiting for daemon set \"spire-agent\" rollout to finish: 0 out of 2 new pods have been updated...",
+    "Waiting for daemon set \"spire-agent\" rollout to finish: 1 out of 2 new pods have been updated...",
+    "Waiting for daemon set \"spire-agent\" rollout to finish: 1 out of 2 new pods have been updated...",
+    "Waiting for daemon set \"spire-agent\" rollout to finish: 1 of 2 updated pods are available...",
+    "daemon set \"spire-agent\" successfully rolled out",
+    "deployment.apps/vending-service env updated",
+    "Waiting for deployment \"vending-service\" rollout to finish: 0 out of 1 new replicas have been updated...",
+    "Waiting for deployment \"vending-service\" rollout to finish: 0 out of 1 new replicas have been updated...",
+    "Waiting for deployment \"vending-service\" rollout to finish: 0 out of 1 new replicas have been updated...",
+    "Waiting for deployment \"vending-service\" rollout to finish: 0 out of 1 new replicas have been updated...",
+    "Waiting for deployment \"vending-service\" rollout to finish: 0 of 1 updated replicas are available...",
+    "deployment \"vending-service\" successfully rolled out",
+    "--- verify",
+    "server {",
+    "    audit_log_enabled = true",
+    "    experimental {",
+    "        cache_reload_interval = \"1s\"",
+    "    }",
+    "    bind_address   = \"0.0.0.0\"",
+    "    bind_port      = \"8081\"",
+    "",
+    "    # Trust domain is fixed lab-wide (SPIFFE IDs, OPA rules and tests all",
+    "    # embed it). Do not change.",
+    "    trust_domain   = \"lab.local\"",
+    "",
+    "agent {",
+    "    experimental {",
+    "        sync_interval = \"1s\"",
+    "    }",
+    "    data_dir          = \"/run/spire/agent-data\"",
+    "    log_level         = \"INFO\"",
+    "    server_address    = \"spire-server.spire.svc.cluster.local\"",
+    "    server_port       = \"8081\"",
+    "",
+    "    # Workload API endpoint. Shared into workload pods by hostPath",
+    "    # (not the SPIFFE CSI driver); the hostPath directory is",
+    "    # /run/spire/sockets on the node.",
+    "[{'name': 'MAX_LIVE_CHILDREN', 'value': '200'}]",
+    "NAMESPACE            NAME                                                      READY   STATUS    RESTARTS   AGE",
+    "agents               experiments-attacker-c7c7dcc66-k6qlq                      1/1     Running   0          28s",
+    "agents               experiments-child-85c8bd56cc-swnfr                        1/1     Running   0          28s",
+    "agents               experiments-grandchild-7f645577d6-q5ns4                   1/1     Running   0          27s",
+    "agents               experiments-parent-fc985bd87-zftwn                        1/1     Running   0          28s",
+    "agents               nhi-test-workload-5965cbf6f8-vl4xx                        1/1     Running   0          78s",
+    "kube-system          coredns-589f44dc88-bptk6                                  1/1     Running   0          2m11s",
+    "kube-system          coredns-589f44dc88-rnrnw                                  1/1     Running   0          2m11s",
+    "kube-system          etcd-bench-sg-churn-1s-control-plane                      1/1     Running   0          2m20s",
+    "kube-system          kindnet-s56mt                                             1/1     Running   0          2m7s",
+    "kube-system          kindnet-tg28z                                             1/1     Running   0          2m11s",
+    "kube-system          kube-apiserver-bench-sg-churn-1s-control-plane            1/1     Running   0          2m20s",
+    "kube-system          kube-controller-manager-bench-sg-churn-1s-control-plane   1/1     Running   0          2m20s",
+    "kube-system          kube-proxy-72hfn                                          1/1     Running   0          2m11s",
+    "kube-system          kube-proxy-8lggf                                          1/1     Running   0          2m7s",
+    "kube-system          kube-scheduler-bench-sg-churn-1s-control-plane            1/1     Running   0          2m20s",
+    "local-path-storage   local-path-provisioner-855c7b7774-c6zrw                   1/1     Running   0          2m11s",
+    "nhi                  policy-engine-9f7dd98c4-2f25f                             1/1     Running   0          78s",
+    "nhi                  resource-66f9fdcb44-p6m9m                                 1/1     Running   0          41s",
+    "nhi                  vending-service-859cc75bbd-8fqgm                          1/1     Running   0          6s",
+    "opa                  opa-5c54cb55fb-9wrt5                                      2/2     Running   0          87s",
+    "spire                spire-agent-dpvlt                                         1/1     Running   0          19s",
+    "spire                spire-agent-th8l9                                         1/1     Running   0          12s",
+    "spire                spire-server-0                                            1/1     Running   0          25s",
+    "cfg-exit=0"
+  ],
+  "logs": {
+    "dir": "logs/",
+    "files": "logs/{vending-service,spire-server,policy-engine,opa}/step-NN.log",
+    "window": "contiguous per step: step 00 starts 1 s before the harness's first action; step NN runs from the end of step NN-1's window to the end of checkpoint NN's measurements",
+    "timestamp": "first field of each line: the container runtime's capture time (kubectl logs --timestamps)",
+    "spire_server_audit_log_enabled": true,
+    "lines": {
+      "spire_server": 666,
+      "vending_service": 300,
+      "policy_engine": 226,
+      "opa": 627
+    }
+  }
+}

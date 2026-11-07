@@ -1,0 +1,1 @@
+2026-11-07T18:14:28.946992855Z {"timestamp":"2026-11-07T18:14:28.946961094Z","stage":"dispose","chain_id":"c_dccb0faa211e69033483bd3679fbf693","actor_spiffe_id":"spiffe://lab.local/svc/vending-service","outcome":"allow","detail":{"policy_id":"nhi_grants_c_dccb0faa211e69033483bd3679fbf693","reason":"grant module removed"}}

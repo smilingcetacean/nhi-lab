@@ -1,0 +1,2 @@
+2026-11-07T18:14:30.447427030Z {"client_addr":"10.244.1.5:41846","level":"info","msg":"Received request.","req_id":402,"req_method":"DELETE","req_path":"/v1/policies/nhi_grants_c_7a14c06cea9ed3aba53fbeed3c4d981c","time":"2026-11-07T18:14:30Z"}
+2026-11-07T18:14:30.466481841Z {"client_addr":"10.244.1.5:41846","level":"info","msg":"Sent response.","req_id":402,"req_method":"DELETE","req_path":"/v1/policies/nhi_grants_c_7a14c06cea9ed3aba53fbeed3c4d981c","resp_bytes":3,"resp_duration":19.068851,"resp_status":200,"time":"2026-11-07T18:14:30Z"}
