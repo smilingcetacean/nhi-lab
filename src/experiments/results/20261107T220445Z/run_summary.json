@@ -1,0 +1,25 @@
+{
+  "suites": {
+    "negative_tests": {
+      "exit_code": 0,
+      "elapsed_s": 19.7,
+      "pass": true
+    },
+    "multi_hop": {
+      "exit_code": 0,
+      "elapsed_s": 13.2,
+      "pass": true
+    },
+    "functional_tests": {
+      "exit_code": 0,
+      "elapsed_s": 111.2,
+      "pass": true
+    },
+    "performance": {
+      "exit_code": 0,
+      "elapsed_s": 523.1,
+      "pass": true
+    }
+  },
+  "run_id": "20261107T220445Z"
+}
