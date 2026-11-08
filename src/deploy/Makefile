@@ -6,6 +6,8 @@
 #
 # Canonical bring-up:
 #     make clean && make cluster-up && make spire-up && make verify
+# or, for every component at once with a host-tool check first, ./install.sh
+# from the repository root.
 
 SHELL := /usr/bin/env bash
 .SHELLFLAGS := -euo pipefail -c
@@ -216,6 +218,31 @@ test-workload: entries ## Deploy the static test workload in namespace agents
 verify: ## Verify the baseline (attestation, X.509/JWT-SVIDs, authenticated OPA)
 	@bash '$(SCRIPTS)/verify.sh'
 
+# The first prerequisite of every target that builds onto or tests the base
+# deployment. Without it, such a target on a cluster where `spire-up` never ran
+# would build its images, deploy half of SPIRE through `entries`, and then stop
+# partway on a symptom far from the cause. This stops it first, in about a
+# second, and says what to run. It checks that the kube context answers, that
+# the SPIRE server is Ready and that OPA is available. It is not in `make help`:
+# it is a prerequisite, not something to run on its own.
+INSTALL_HINT := $(if $(filter-out nhi-lab,$(KIND_CLUSTER)),KIND_CLUSTER=$(KIND_CLUSTER) )./install.sh
+CLUSTER_ARG  := $(if $(filter-out nhi-lab,$(KIND_CLUSTER)), KIND_CLUSTER=$(KIND_CLUSTER))
+
+.PHONY: require-base
+require-base:
+	@if ! $(KUBECTL) --request-timeout=10s get --raw /readyz >/dev/null 2>&1; then \
+	  echo "!! no reachable kind cluster '$(KIND_CLUSTER)' (kube context '$(KUBECTX)')." >&2; \
+	  echo "!! Bring the lab up first: $(INSTALL_HINT)   (or: make cluster-up$(CLUSTER_ARG) && make spire-up$(CLUSTER_ARG))" >&2; \
+	  exit 1; \
+	fi
+	@ss=$$($(KUBECTL) --request-timeout=10s get statefulset spire-server -n spire -o jsonpath='{.status.readyReplicas}' 2>/dev/null || true); \
+	opa=$$($(KUBECTL) --request-timeout=10s get deployment opa -n opa -o jsonpath='{.status.availableReplicas}' 2>/dev/null || true); \
+	if [ "$${ss:-0}" -lt 1 ] || [ "$${opa:-0}" -lt 1 ]; then \
+	  echo "!! the base deployment is not up on kind cluster '$(KIND_CLUSTER)' (SPIRE server ready: $${ss:-0}, OPA available: $${opa:-0})." >&2; \
+	  echo "!! Bring the lab up first: $(INSTALL_HINT)   (or: make spire-up$(CLUSTER_ARG))" >&2; \
+	  exit 1; \
+	fi
+
 # ---------------------------------------------------------------------------
 # Protected resource
 # ---------------------------------------------------------------------------
@@ -231,14 +258,18 @@ resource-test: ## Unit-test the protected resource
 resource-image: ## Build the resource image and side-load it into kind
 	$(call build_and_load_image,$(RESOURCE_IMG),$(RESOURCE_SRC),$(RESOURCE_SRC)/Dockerfile)
 
+# The restart puts a rebuilt image onto a running cluster, as in
+# vending-service-up: the `:dev` tag is fixed and imagePullPolicy is Never, so
+# `apply` of an unchanged manifest starts no new pod.
 .PHONY: resource-up
-resource-up: resource-image entries ## Deploy the protected resource
+resource-up: require-base resource-image entries ## Deploy the protected resource
 	@echo ">> deploying the protected resource"
 	@$(KUBECTL) apply -f '$(MANIFESTS)/resource/'
+	@$(KUBECTL) rollout restart deployment/resource -n nhi
 	@$(KUBECTL) rollout status deployment/resource -n nhi --timeout=180s
 
 .PHONY: verify-resource
-verify-resource: resource-test resource-up ## Verify the resource (default deny, then grant)
+verify-resource: require-base resource-test resource-up ## Verify the resource (default deny, then grant)
 	@bash '$(SCRIPTS)/verify-resource.sh'
 
 .PHONY: logs-resource
@@ -266,16 +297,20 @@ policy-engine-test: ## Unit-test the policy engine
 policy-engine-image: ## Build the policy engine image and side-load it into kind
 	$(call build_and_load_image,$(POLICY_ENGINE_IMG),$(POLICY_ENGINE_SRC),$(POLICY_ENGINE_SRC)/Dockerfile)
 
-# Re-applies manifests/policy-engine/ (including the bootstrap ConfigMap) and
-# waits for the rollout; spire-up only pre-declares the Deployment.
+# Re-applies manifests/policy-engine/ (including the bootstrap ConfigMap),
+# restarts the Deployment and waits for the rollout; spire-up only
+# pre-declares the Deployment. The restart puts a rebuilt image onto a running
+# cluster, as in vending-service-up, and makes the new pod read the current
+# bootstrap ConfigMap, which the engine loads only at startup.
 .PHONY: policy-engine-up
-policy-engine-up: policy-engine-image entries ## Build, load and (re)deploy the policy engine
+policy-engine-up: require-base policy-engine-image entries ## Build, load and (re)deploy the policy engine
 	@echo ">> deploying the policy engine"
 	@$(KUBECTL) apply -f '$(MANIFESTS)/policy-engine/'
+	@$(KUBECTL) rollout restart deployment/policy-engine -n nhi
 	@$(KUBECTL) rollout status deployment/policy-engine -n nhi --timeout=180s
 
 .PHONY: verify-policy
-verify-policy: policy-engine-test policy-engine-up resource-up ## Verify the policy engine (synthesis + OPA push/removal)
+verify-policy: require-base policy-engine-test policy-engine-up resource-up ## Verify the policy engine (synthesis + OPA push/removal)
 	@bash '$(SCRIPTS)/verify-policy.sh'
 
 .PHONY: logs-policy-engine
@@ -312,14 +347,14 @@ parentsim-image: ## Build the parentsim test-harness image and side-load it into
 # start. The store is durable (a PersistentVolumeClaim), so the restart clears
 # no delegation records, nonces or audit events.
 .PHONY: vending-service-up
-vending-service-up: vending-service-image entries ## Build, load and (re)deploy the vending service
+vending-service-up: require-base vending-service-image entries ## Build, load and (re)deploy the vending service
 	@echo ">> deploying the vending service"
 	@$(KUBECTL) apply -f '$(MANIFESTS)/vending-service/'
 	@$(KUBECTL) rollout restart deployment/vending-service -n nhi
 	@$(KUBECTL) rollout status deployment/vending-service -n nhi --timeout=180s
 
 .PHONY: verify-vending
-verify-vending: vending-service-test policy-engine-up vending-service-up parentsim-image resource-up ## Verify the vending service (in-cluster spawn/attest/vend/operate/dispose)
+verify-vending: require-base vending-service-test policy-engine-up vending-service-up parentsim-image resource-up ## Verify the vending service (in-cluster spawn/attest/vend/operate/dispose)
 	@bash '$(SCRIPTS)/verify-vending.sh'
 
 # Proves the vending store and its audit trail survive a pod restart: vends a
@@ -327,7 +362,7 @@ verify-vending: vending-service-test policy-engine-up vending-service-up parents
 # disposal through the API, the reaper, the audit file and replay protection
 # against the NEW pod. Same prerequisites as verify-vending.
 .PHONY: verify-persistence
-verify-persistence: vending-service-test policy-engine-up vending-service-up parentsim-image resource-up ## Verify the vending store, reaper, audit trail and nonces survive a pod restart
+verify-persistence: require-base vending-service-test policy-engine-up vending-service-up parentsim-image resource-up ## Verify the vending store, reaper, audit trail and nonces survive a pod restart
 	@bash '$(SCRIPTS)/verify-persistence.sh'
 
 # Proves the revocation, TTL and creation-limit rules on a live cluster: a
@@ -339,7 +374,7 @@ verify-persistence: vending-service-test policy-engine-up vending-service-up par
 # grandchild pods form the P -> C -> G chain. It restarts the vending service to
 # change its limits and puts the shipped values back afterwards.
 .PHONY: verify-disposal
-verify-disposal: rego-test vending-service-test policy-engine-test policy-engine-up vending-service-up parentsim-image resource-up experiments-fixtures-up ## Verify cascade revocation, TTL attenuation and creation limits end to end
+verify-disposal: require-base rego-test vending-service-test policy-engine-test policy-engine-up vending-service-up parentsim-image resource-up experiments-fixtures-up ## Verify cascade revocation, TTL attenuation and creation limits end to end
 	@bash '$(SCRIPTS)/verify-disposal.sh'
 
 .PHONY: logs-vending-service
@@ -391,7 +426,7 @@ opencode-image: agents-image ## Build the OpenCode parent image and side-load it
 # `policy-engine-up` (re-applies the bootstrap ConfigMap naming the demo
 # parent's Π(P) — manifests/policy-engine/36-policy-engine-bootstrap.yaml).
 .PHONY: demo
-demo: agents-test agents-image entries policy-engine-up vending-service-up resource-up ## Run the full spawn/attest/vend/operate/dispose demo
+demo: require-base agents-test agents-image entries policy-engine-up vending-service-up resource-up ## Run the full spawn/attest/vend/operate/dispose demo
 	@bash '$(SCRIPTS)/demo.sh'
 
 .PHONY: logs-demo-parent
@@ -431,7 +466,7 @@ present-key-check:
 #   4. the pod is deleted and re-applied: pod specs are immutable, and a new
 #      pod starts with the current image and Secret.
 .PHONY: present-up
-present-up: present-key-check agents-test agents-image entries policy-engine-up vending-service-up resource-up opencode-image ## Deploy the OpenCode parent pod (ANTHROPIC_KEY_FILE=<file> supplies the LLM key)
+present-up: present-key-check require-base agents-test agents-image entries policy-engine-up vending-service-up resource-up opencode-image ## Deploy the OpenCode parent pod (ANTHROPIC_KEY_FILE=<file> supplies the LLM key)
 	@if [ -n '$(ANTHROPIC_KEY_FILE)' ]; then \
 	  $(KUBECTL) create secret generic opencode-llm -n agents \
 	    --from-env-file='$(PRESENT_KEY_FILE)' --dry-run=client -o yaml \
@@ -483,7 +518,7 @@ present-audit: ## Stream live audit events from the parent, vending service, pol
 # ID/SPIRE entry/OPA grant are all uniquely minted. See
 # scripts/demo-identity-uniqueness.sh for the full rationale.
 .PHONY: demo-identity-uniqueness
-demo-identity-uniqueness: vending-service-up resource-up experiments-fixtures-up ## Short demo: one parent vends 3 children, each uniquely identified
+demo-identity-uniqueness: require-base vending-service-up resource-up experiments-fixtures-up ## Short demo: one parent vends 3 children, each uniquely identified
 	@bash '$(SCRIPTS)/demo-identity-uniqueness.sh'
 
 # ---------------------------------------------------------------------------
@@ -493,7 +528,7 @@ demo-identity-uniqueness: vending-service-up resource-up experiments-fixtures-up
 EXPERIMENTS_SRC := $(abspath $(DEPLOY_DIR)/../experiments)
 
 .PHONY: experiments-fixtures-up
-experiments-fixtures-up: parentsim-image entries policy-engine-up ## Deploy the experiment fixtures (parent/child/grandchild/attacker)
+experiments-fixtures-up: require-base parentsim-image entries policy-engine-up ## Deploy the experiment fixtures (parent/child/grandchild/attacker)
 	@echo ">> deploying experiment fixtures"
 	@$(KUBECTL) apply -f '$(MANIFESTS)/experiments/'
 	@$(KUBECTL) rollout status deployment/experiments-parent -n agents --timeout=150s
@@ -513,7 +548,7 @@ experiments-fixtures-down: ## Tear down the experiment fixtures
 # the randomized-scope functional suite has more than a singleton to
 # randomize over — manifests/policy-engine/36-policy-engine-bootstrap.yaml).
 .PHONY: experiments
-experiments: vending-service-up resource-up experiments-fixtures-up ## Run the experiment suites (negative, multi-hop, functional, performance)
+experiments: require-base vending-service-up resource-up experiments-fixtures-up ## Run the experiment suites (negative, multi-hop, functional, performance)
 	@cd '$(EXPERIMENTS_SRC)' && uv run python3 run_all.py
 
 # Revocation speed: 30 trials of P -> C -> G, each timing the gap between P's
@@ -525,7 +560,7 @@ experiments: vending-service-up resource-up experiments-fixtures-up ## Run the e
 REVOCATION_TRIALS ?= 30
 
 .PHONY: revocation-speed
-revocation-speed: vending-service-up resource-up experiments-fixtures-up ## Measure DELETE-to-first-denial time for a revoked grandchild (REVOCATION_TRIALS=30)
+revocation-speed: require-base vending-service-up resource-up experiments-fixtures-up ## Measure DELETE-to-first-denial time for a revoked grandchild (REVOCATION_TRIALS=30)
 	@cd '$(EXPERIMENTS_SRC)' && uv run python3 revocation_speed.py --trials '$(REVOCATION_TRIALS)'
 
 # Vend to identity: VEND_SVID_TRIALS trials (default 50), each timing the gap
@@ -540,7 +575,7 @@ VEND_SVID_TRIALS ?= 50
 VEND_SVID_JITTER_S ?= 0
 
 .PHONY: vend-to-svid
-vend-to-svid: policy-engine-up vending-service-up experiments-fixtures-up ## Measure vend-to-child-SVID time (VEND_SVID_TRIALS=50, VEND_SVID_JITTER_S=0)
+vend-to-svid: require-base policy-engine-up vending-service-up experiments-fixtures-up ## Measure vend-to-child-SVID time (VEND_SVID_TRIALS=50, VEND_SVID_JITTER_S=0)
 	@cd '$(EXPERIMENTS_SRC)' && uv run python3 vend_to_svid.py --trials '$(VEND_SVID_TRIALS)' --jitter-s '$(VEND_SVID_JITTER_S)'
 
 # Vend to access: VEND_ACCESS_TRIALS trials (default 50), each timing the gap
@@ -554,7 +589,7 @@ VEND_ACCESS_STYLE ?= poll
 VEND_ACCESS_JITTER_S ?= 0
 
 .PHONY: vend-to-access
-vend-to-access: policy-engine-up vending-service-up resource-up experiments-fixtures-up ## Measure vend-to-child-access time (VEND_ACCESS_TRIALS=50, VEND_ACCESS_STYLE=poll|child-py, VEND_ACCESS_JITTER_S=0)
+vend-to-access: require-base policy-engine-up vending-service-up resource-up experiments-fixtures-up ## Measure vend-to-child-access time (VEND_ACCESS_TRIALS=50, VEND_ACCESS_STYLE=poll|child-py, VEND_ACCESS_JITTER_S=0)
 	@cd '$(EXPERIMENTS_SRC)' && uv run python3 vend_to_access.py --style '$(VEND_ACCESS_STYLE)' --trials '$(VEND_ACCESS_TRIALS)' --jitter-s '$(VEND_ACCESS_JITTER_S)'
 
 # Revoke to deny: REVOKE_DENY_TRIALS trials (default 50), each timing the gap
@@ -570,7 +605,7 @@ REVOKE_DENY_TRIALS ?= 50
 REVOKE_DENY_JITTER_S ?= 0
 
 .PHONY: revoke-to-deny
-revoke-to-deny: policy-engine-up vending-service-up resource-up experiments-fixtures-up ## Measure revoke-to-first-403 and revoke-to-identity-gone time (REVOKE_DENY_TRIALS=50, REVOKE_DENY_JITTER_S=0)
+revoke-to-deny: require-base policy-engine-up vending-service-up resource-up experiments-fixtures-up ## Measure revoke-to-first-403 and revoke-to-identity-gone time (REVOKE_DENY_TRIALS=50, REVOKE_DENY_JITTER_S=0)
 	@cd '$(EXPERIMENTS_SRC)' && uv run python3 revoke_to_deny.py --trials '$(REVOKE_DENY_TRIALS)' --jitter-s '$(REVOKE_DENY_JITTER_S)'
 
 .PHONY: status

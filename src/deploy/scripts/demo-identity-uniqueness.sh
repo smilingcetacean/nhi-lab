@@ -16,15 +16,15 @@
 # resource scopes per manifests/policy-engine/36-policy-engine-bootstrap.yaml),
 # exactly the pattern verify-vending.sh and src/experiments already use.
 #
-# Unlike verify-vending.sh, nonces are left RANDOM (parentsim generates one when
-# -nonce is omitted) rather than fixed, so this script is safely re-runnable
-# against a cluster that already has state on it (no vending-service restart
-# needed, no risk of a stale "already used" 409 from a PRIOR run of this same
-# script).
+# Nonces are left RANDOM (parentsim generates one when -nonce is omitted). The
+# vending service's nonce table is durable (it lives on a PersistentVolumeClaim
+# and survives pod restarts), so a fixed nonce from an earlier run of this
+# script would be refused as a replay (409). Random nonces keep the script
+# re-runnable against a cluster that already has state on it.
 #
 # Prerequisites (see `make -C src/deploy demo-identity-uniqueness` for the
 # one-liner): cluster-up, spire-up, vending-service-up, resource-up,
-# experiments-fixtures-up.
+# experiments-fixtures-up. ./install.sh brings all of them up.
 set -uo pipefail
 
 CLUSTER_NAME="${CLUSTER_NAME:-nhi-lab}"

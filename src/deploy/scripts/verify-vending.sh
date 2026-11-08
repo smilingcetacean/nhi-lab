@@ -116,7 +116,10 @@ echo "    | parent=${PARENT_POD}  attacker=${ATTACKER_POD}  child=${CHILD_POD}  
 step "Rolling the policy engine so it picks up the vend-verify bootstrap parent"
 "${KUBECTL[@]}" apply -f "${MANIFESTS}/policy-engine/" >/dev/null 2>&1
 "${KUBECTL[@]}" rollout restart deployment/policy-engine -n nhi >/dev/null 2>&1
-if "${KUBECTL[@]}" rollout status deployment/policy-engine -n nhi --timeout=120s >/dev/null 2>&1; then
+# The rollout's own progress is shown, so a slow or stuck restart is visible
+# here rather than only as a failed vend further down. pipefail makes the
+# `if` test rollout status, not indent.
+if "${KUBECTL[@]}" rollout status deployment/policy-engine -n nhi --timeout=120s 2>&1 | indent; then
   pass "policy engine restarted"
 else
   fail "policy engine did not roll out"
