@@ -1,0 +1,23 @@
+{
+  "session_id": "20261109T024542Z",
+  "purpose": "Live falsification of the five negative-test guards with the corrected negative_tests.py, on two independent throwaway clusters",
+  "compared_with": "benchmarks/tests/20261109T020524Z/falsification/ (same mutations, original suite)",
+  "overall": "PASS",
+  "criteria": {
+    "clean_image_two_runs_back_to_back": "5/5 and 5/5 on both clusters",
+    "each_mutation_fails_only_its_own_test": true,
+    "reverted_runs_pass_first_attempt_without_manual_cleanup": true,
+    "t4_jwt_subject_matches_own_child_in_every_run": true,
+    "g3_replay_never_matched_forged_signature_event": true,
+    "run_all_skip_performance": "PASS (src/experiments/results/20261109T025203Z/)"
+  },
+  "original_suite_for_contrast": {
+    "g1_mutated": "forged_parent_signature and credential_use_after_revocation both failed",
+    "g1_and_g2_reverted": "4/5 until the wrongly minted delegations were disposed by hand",
+    "g3_mutated": "replay test matched the forged-signature test's audit event"
+  },
+  "streams": {
+    "primary": "primary/ (cluster nhi-t-negfix)",
+    "replication": "replication/ (cluster nhi-t-negver)"
+  }
+}

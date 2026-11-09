@@ -1,0 +1,151 @@
+{
+  "generated_at": "2026-11-09T03:06:46Z",
+  "precondition": {
+    "pass": true,
+    "detail": "no pod in agents runs as nhi-exp-negtest-nopod (6 pods checked)"
+  },
+  "results": [
+    {
+      "test": "forged_parent_signature",
+      "pass": true,
+      "http_code": 401,
+      "expected_http_code": 401,
+      "audit_event": {
+        "timestamp": "2026-11-09T03:06:22.766859985Z",
+        "stage": "attest",
+        "chain_id": "",
+        "actor_spiffe_id": "spiffe://lab.local/agent/parent/exp-root",
+        "outcome": "deny",
+        "detail": {
+          "parent_spiffe_id": "spiffe://lab.local/agent/parent/exp-root",
+          "reason": "manifest signature verification failed: signature does not verify against the x5c leaf certificate's key: go-jose/go-jose: error in cryptographic primitive"
+        }
+      },
+      "audit_candidate_count": 1,
+      "new_parent_events": [
+        {
+          "timestamp": "2026-11-09T03:06:22.766859985Z",
+          "stage": "attest",
+          "chain_id": "",
+          "actor_spiffe_id": "spiffe://lab.local/agent/parent/exp-root",
+          "outcome": "deny",
+          "detail": {
+            "parent_spiffe_id": "spiffe://lab.local/agent/parent/exp-root",
+            "reason": "manifest signature verification failed: signature does not verify against the x5c leaf certificate's key: go-jose/go-jose: error in cryptographic primitive"
+          }
+        }
+      ],
+      "no_entry_created": true,
+      "unexpected_delegation_disposed": null,
+      "response_body": "{\"error\":\"Unauthorized\",\"reason\":\"manifest signature verification failed: signature does not verify against the x5c leaf certificate's key: go-jose/go-jose: error in cryptographic primitive\"}  command terminated with exit code 2"
+    },
+    {
+      "test": "scope_escalation_manifest",
+      "pass": true,
+      "http_code": 403,
+      "expected_http_code": 403,
+      "audit_event": {
+        "timestamp": "2026-11-09T03:06:22.938198368Z",
+        "stage": "vend",
+        "chain_id": "c_300a4656ffc1fbe55cf629b4c2b5ea3c",
+        "actor_spiffe_id": "spiffe://lab.local/agent/parent/exp-root",
+        "outcome": "deny",
+        "detail": {
+          "parent_spiffe_id": "spiffe://lab.local/agent/parent/exp-root",
+          "child_spiffe_id": "spiffe://lab.local/agent/parent/exp-root/child/negtest-escalate-37181ee79d",
+          "requested_scopes": [
+            "resource:admin:everything"
+          ],
+          "policy_id": "nhi_grants_c_300a4656ffc1fbe55cf629b4c2b5ea3c",
+          "reason": "policy engine granted no scopes (\u03a0(requested) \u2229 \u03a0(parent) = \u2205) \u2014 refusing to mint an identity with no authority"
+        }
+      },
+      "audit_candidate_count": 1,
+      "no_entry_created": true,
+      "unexpected_delegation_disposed": null,
+      "response_body": "{\"error\":\"Forbidden\",\"reason\":\"policy engine granted no scopes (\u03a0(requested) \u2229 \u03a0(parent) = \u2205) \u2014 refusing to mint an identity with no authority\"}  command terminated with exit code 2"
+    },
+    {
+      "test": "replay_captured_manifest",
+      "pass": true,
+      "first_http_code": 201,
+      "second_http_code": 409,
+      "expected": "201 then 409",
+      "audit_event": {
+        "timestamp": "2026-11-09T03:06:23.198677767Z",
+        "stage": "attest",
+        "chain_id": "",
+        "actor_spiffe_id": "spiffe://lab.local/agent/parent/exp-root",
+        "outcome": "deny",
+        "detail": {
+          "parent_spiffe_id": "spiffe://lab.local/agent/parent/exp-root",
+          "reason": "nonce has already been used for this parent (replay refused)"
+        }
+      },
+      "audit_candidate_count": 1,
+      "new_parent_events": [
+        {
+          "timestamp": "2026-11-09T03:06:23.198677767Z",
+          "stage": "attest",
+          "chain_id": "",
+          "actor_spiffe_id": "spiffe://lab.local/agent/parent/exp-root",
+          "outcome": "deny",
+          "detail": {
+            "parent_spiffe_id": "spiffe://lab.local/agent/parent/exp-root",
+            "reason": "nonce has already been used for this parent (replay refused)"
+          }
+        }
+      ],
+      "unexpected_delegation_disposed": null
+    },
+    {
+      "test": "credential_use_after_revocation",
+      "pass": true,
+      "child_obtained_svid": true,
+      "captured_jwt_before_disposal": true,
+      "captured_jwt_subject": "spiffe://lab.local/agent/parent/exp-root/child/negtest-revoke-5c8aaff862",
+      "expected_jwt_subject": "spiffe://lab.local/agent/parent/exp-root/child/negtest-revoke-5c8aaff862",
+      "dispose_http_code": 200,
+      "replay_http_code_after_disposal": 403,
+      "expected": 403,
+      "audit_event": {
+        "timestamp": "2026-11-09T03:06:31.800329191Z",
+        "stage": "operate",
+        "chain_id": "",
+        "actor_spiffe_id": "spiffe://lab.local/agent/parent/exp-root/child/negtest-revoke-5c8aaff862",
+        "outcome": "deny",
+        "detail": {
+          "method": "GET",
+          "path": "/datasets/A",
+          "required_scopes": [
+            "resource:read:datasetA"
+          ],
+          "chain_id_source": "absent",
+          "reason": "policy denied",
+          "policy_decision": false,
+          "decision_latency_ms": 0.680813
+        }
+      }
+    },
+    {
+      "test": "orphaned_child_reaper",
+      "pass": true,
+      "entry_reaped": true,
+      "audit_event": {
+        "timestamp": "2026-11-09T03:06:45.852252018Z",
+        "stage": "dispose",
+        "chain_id": "c_00c3653400e5c421c66f917bc002f535",
+        "actor_spiffe_id": "spiffe://lab.local/svc/vending-service",
+        "outcome": "allow",
+        "detail": {
+          "parent_spiffe_id": "spiffe://lab.local/agent/parent/exp-root",
+          "child_spiffe_id": "spiffe://lab.local/agent/parent/exp-root/child/negtest-orphan-17fe6b2b5a",
+          "policy_id": "nhi_grants_c_00c3653400e5c421c66f917bc002f535",
+          "entry_id": "a87a5823-d167-4fec-8c8c-a071085961d4",
+          "reason": "ttl_expired"
+        }
+      },
+      "chain_id": "c_00c3653400e5c421c66f917bc002f535"
+    }
+  ]
+}

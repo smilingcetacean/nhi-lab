@@ -1,0 +1,141 @@
+{
+  "generated_at": "2026-11-09T03:07:20Z",
+  "precondition": {
+    "pass": true,
+    "detail": "no pod in agents runs as nhi-exp-negtest-nopod (6 pods checked)"
+  },
+  "results": [
+    {
+      "test": "forged_parent_signature",
+      "pass": true,
+      "http_code": 401,
+      "expected_http_code": 401,
+      "audit_event": {
+        "timestamp": "2026-11-09T03:06:57.819827394Z",
+        "stage": "attest",
+        "chain_id": "",
+        "actor_spiffe_id": "spiffe://lab.local/agent/parent/exp-root",
+        "outcome": "deny",
+        "detail": {
+          "parent_spiffe_id": "spiffe://lab.local/agent/parent/exp-root",
+          "reason": "manifest signature verification failed: signature does not verify against the x5c leaf certificate's key: go-jose/go-jose: error in cryptographic primitive"
+        }
+      },
+      "audit_candidate_count": 1,
+      "new_parent_events": [
+        {
+          "timestamp": "2026-11-09T03:06:57.819827394Z",
+          "stage": "attest",
+          "chain_id": "",
+          "actor_spiffe_id": "spiffe://lab.local/agent/parent/exp-root",
+          "outcome": "deny",
+          "detail": {
+            "parent_spiffe_id": "spiffe://lab.local/agent/parent/exp-root",
+            "reason": "manifest signature verification failed: signature does not verify against the x5c leaf certificate's key: go-jose/go-jose: error in cryptographic primitive"
+          }
+        }
+      ],
+      "no_entry_created": true,
+      "unexpected_delegation_disposed": null,
+      "response_body": "{\"error\":\"Unauthorized\",\"reason\":\"manifest signature verification failed: signature does not verify against the x5c leaf certificate's key: go-jose/go-jose: error in cryptographic primitive\"}  command terminated with exit code 2"
+    },
+    {
+      "test": "scope_escalation_manifest",
+      "pass": true,
+      "http_code": 403,
+      "expected_http_code": 403,
+      "audit_event": {
+        "timestamp": "2026-11-09T03:06:57.992395632Z",
+        "stage": "vend",
+        "chain_id": "c_e69ec46867a97f73abb84f0de69af491",
+        "actor_spiffe_id": "spiffe://lab.local/agent/parent/exp-root",
+        "outcome": "deny",
+        "detail": {
+          "parent_spiffe_id": "spiffe://lab.local/agent/parent/exp-root",
+          "child_spiffe_id": "spiffe://lab.local/agent/parent/exp-root/child/negtest-escalate-6492e6b91e",
+          "requested_scopes": [
+            "resource:admin:everything"
+          ],
+          "policy_id": "nhi_grants_c_e69ec46867a97f73abb84f0de69af491",
+          "reason": "policy engine granted no scopes (\u03a0(requested) \u2229 \u03a0(parent) = \u2205) \u2014 refusing to mint an identity with no authority"
+        }
+      },
+      "audit_candidate_count": 1,
+      "no_entry_created": true,
+      "unexpected_delegation_disposed": null,
+      "response_body": "{\"error\":\"Forbidden\",\"reason\":\"policy engine granted no scopes (\u03a0(requested) \u2229 \u03a0(parent) = \u2205) \u2014 refusing to mint an identity with no authority\"}  command terminated with exit code 2"
+    },
+    {
+      "test": "replay_captured_manifest",
+      "pass": false,
+      "first_http_code": 201,
+      "second_http_code": 500,
+      "expected": "201 then 409",
+      "audit_event": null,
+      "audit_candidate_count": 0,
+      "new_parent_events": [
+        {
+          "timestamp": "2026-11-09T03:06:58.254097198Z",
+          "stage": "attest",
+          "chain_id": "",
+          "actor_spiffe_id": "spiffe://lab.local/agent/parent/exp-root",
+          "outcome": "error",
+          "detail": {
+            "parent_spiffe_id": "spiffe://lab.local/agent/parent/exp-root",
+            "reason": "could not record nonce: nonce already used"
+          }
+        }
+      ],
+      "unexpected_delegation_disposed": null
+    },
+    {
+      "test": "credential_use_after_revocation",
+      "pass": true,
+      "child_obtained_svid": true,
+      "captured_jwt_before_disposal": true,
+      "captured_jwt_subject": "spiffe://lab.local/agent/parent/exp-root/child/negtest-revoke-b6761f8ff2",
+      "expected_jwt_subject": "spiffe://lab.local/agent/parent/exp-root/child/negtest-revoke-b6761f8ff2",
+      "dispose_http_code": 200,
+      "replay_http_code_after_disposal": 403,
+      "expected": 403,
+      "audit_event": {
+        "timestamp": "2026-11-09T03:07:10.169230995Z",
+        "stage": "operate",
+        "chain_id": "",
+        "actor_spiffe_id": "spiffe://lab.local/agent/parent/exp-root/child/negtest-revoke-b6761f8ff2",
+        "outcome": "deny",
+        "detail": {
+          "method": "GET",
+          "path": "/datasets/A",
+          "required_scopes": [
+            "resource:read:datasetA"
+          ],
+          "chain_id_source": "absent",
+          "reason": "policy denied",
+          "policy_decision": false,
+          "decision_latency_ms": 0.682173
+        }
+      }
+    },
+    {
+      "test": "orphaned_child_reaper",
+      "pass": true,
+      "entry_reaped": true,
+      "audit_event": {
+        "timestamp": "2026-11-09T03:07:20.250077367Z",
+        "stage": "dispose",
+        "chain_id": "c_88eafb264c04cf3c6751606badb49d34",
+        "actor_spiffe_id": "spiffe://lab.local/svc/vending-service",
+        "outcome": "allow",
+        "detail": {
+          "parent_spiffe_id": "spiffe://lab.local/agent/parent/exp-root",
+          "child_spiffe_id": "spiffe://lab.local/agent/parent/exp-root/child/negtest-orphan-b75a3bcb05",
+          "policy_id": "nhi_grants_c_88eafb264c04cf3c6751606badb49d34",
+          "entry_id": "f6c40d71-f4e1-48f2-bd28-e9730a4c1162",
+          "reason": "ttl_expired"
+        }
+      },
+      "chain_id": "c_88eafb264c04cf3c6751606badb49d34"
+    }
+  ]
+}

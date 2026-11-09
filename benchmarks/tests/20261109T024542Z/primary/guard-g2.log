@@ -1,0 +1,39 @@
+== g2 START 2026-11-08 21:53:26 EST
+docker image id: sha256:3a993db113ac9cf2609c7a97c80dfcc8db1563c20608af193c7834bcc6d47f35
+load exit=0
+deployment.apps/vending-service image updated
+Waiting for deployment "vending-service" rollout to finish: 0 out of 1 new replicas have been updated...
+Waiting for deployment "vending-service" rollout to finish: 0 out of 1 new replicas have been updated...
+Waiting for deployment "vending-service" rollout to finish: 0 out of 1 new replicas have been updated...
+Waiting for deployment "vending-service" rollout to finish: 0 out of 1 new replicas have been updated...
+Waiting for deployment "vending-service" rollout to finish: 0 of 1 updated replicas are available...
+deployment "vending-service" successfully rolled out
+rollout exit=0
+imageID mutated: docker.io/library/import-2026-11-09@sha256:c5ad80d81dd2480c8b3e6f13ea7d218b475181bd812fefb489ad79ecf4075168
+CHECK imageID differs from baseline: OK
+  [PASS] forged_parent_signature
+  [FAIL] scope_escalation_manifest
+  [PASS] replay_captured_manifest
+  [PASS] credential_use_after_revocation
+  [PASS] orphaned_child_reaper
+1/5 negative tests FAILED
+EXIT=1
+== g2 RESTORE 2026-11-08 21:54:00 EST
+deployment.apps/vending-service image updated
+Waiting for deployment "vending-service" rollout to finish: 0 out of 1 new replicas have been updated...
+Waiting for deployment "vending-service" rollout to finish: 0 out of 1 new replicas have been updated...
+Waiting for deployment "vending-service" rollout to finish: 0 out of 1 new replicas have been updated...
+Waiting for deployment "vending-service" rollout to finish: 0 out of 1 new replicas have been updated...
+Waiting for deployment "vending-service" rollout to finish: 0 of 1 updated replicas are available...
+deployment "vending-service" successfully rolled out
+rollout exit=0
+imageID reverted: docker.io/library/import-2026-11-09@sha256:a6a08922be05b53ff1bed001c0e109edcf32605d406b695ce228be39e7613273
+CHECK imageID matches baseline: OK
+  [PASS] forged_parent_signature
+  [PASS] scope_escalation_manifest
+  [PASS] replay_captured_manifest
+  [PASS] credential_use_after_revocation
+  [PASS] orphaned_child_reaper
+all 5 negative tests PASSED (denial + audit event both confirmed)
+EXIT=0
+== g2 END 2026-11-08 21:54:33 EST

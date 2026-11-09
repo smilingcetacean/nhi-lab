@@ -1,0 +1,38 @@
+== g3 START 2026-11-08 21:54:38 EST
+docker image id: sha256:156a0c8823901a4d3d9f04f2c0f134b815ed399af011fb1387b2c50a565cd0be
+load exit=0
+deployment.apps/vending-service image updated
+Waiting for deployment "vending-service" rollout to finish: 0 out of 1 new replicas have been updated...
+Waiting for deployment "vending-service" rollout to finish: 0 out of 1 new replicas have been updated...
+Waiting for deployment "vending-service" rollout to finish: 0 out of 1 new replicas have been updated...
+Waiting for deployment "vending-service" rollout to finish: 0 of 1 updated replicas are available...
+deployment "vending-service" successfully rolled out
+rollout exit=0
+imageID mutated: docker.io/library/import-2026-11-09@sha256:7564d2dc1598bdc95bc9fb93ae75367a8407fcde49f6bcecaa5ba6b0bb967f5a
+CHECK imageID differs from baseline: OK
+  [PASS] forged_parent_signature
+  [PASS] scope_escalation_manifest
+  [FAIL] replay_captured_manifest
+  [PASS] credential_use_after_revocation
+  [PASS] orphaned_child_reaper
+1/5 negative tests FAILED
+EXIT=1
+== g3 RESTORE 2026-11-08 21:55:14 EST
+deployment.apps/vending-service image updated
+Waiting for deployment "vending-service" rollout to finish: 0 out of 1 new replicas have been updated...
+Waiting for deployment "vending-service" rollout to finish: 0 out of 1 new replicas have been updated...
+Waiting for deployment "vending-service" rollout to finish: 0 out of 1 new replicas have been updated...
+Waiting for deployment "vending-service" rollout to finish: 0 out of 1 new replicas have been updated...
+Waiting for deployment "vending-service" rollout to finish: 0 of 1 updated replicas are available...
+deployment "vending-service" successfully rolled out
+rollout exit=0
+imageID reverted: docker.io/library/import-2026-11-09@sha256:a6a08922be05b53ff1bed001c0e109edcf32605d406b695ce228be39e7613273
+CHECK imageID matches baseline: OK
+  [PASS] forged_parent_signature
+  [PASS] scope_escalation_manifest
+  [PASS] replay_captured_manifest
+  [PASS] credential_use_after_revocation
+  [PASS] orphaned_child_reaper
+all 5 negative tests PASSED (denial + audit event both confirmed)
+EXIT=0
+== g3 END 2026-11-08 21:55:46 EST

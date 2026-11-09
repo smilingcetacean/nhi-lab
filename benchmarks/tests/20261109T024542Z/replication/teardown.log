@@ -1,0 +1,33 @@
+Deleting cluster "nhi-t-negver" ...
+Deleted nodes: ["nhi-t-negver-control-plane" "nhi-t-negver-worker"]
+Untagged: nhi-lab/vending-service:negver-g1
+Deleted: sha256:b65b3053f2805ca6664ee9dad7dbd8a3efc8af474f9750f7674e6735d9b2be08
+Deleted: sha256:2591da57f0eccfea197564fa3ccde780f1d665ef358e3e3848e315faa14006f8
+Deleted: sha256:6644a1518eda5cad5665a58358516d73eedc5727072eaf4c2ba60cdbfdaa6886
+Deleted: sha256:441eb6ac29dc802033da45576991a07c95089f39ce1b1de104d9eb1ecc9cae7f
+Untagged: nhi-lab/vending-service:negver-g2
+Deleted: sha256:a963d2bea13776883c3a69361b3c7d97fba0bcca11308b9036c8b2f9e9ccf825
+Deleted: sha256:e34c5f9c493bd454c02909a90320d29835d97fb0003a137018a1c42af13a0869
+Deleted: sha256:80ed19d265868dde965d5ad420be1aeaa6e501114f5c4cf15d2c051f74bac531
+Deleted: sha256:799f5193abcdeaf5c9102efa01622e3032f34d1f219d756afa0d11a6e66344df
+Untagged: nhi-lab/vending-service:negver-g3
+Deleted: sha256:769dcc73455bf525a96029d46cfe7dc30ae2be67b29fe7d2d403e6e09283e95b
+Deleted: sha256:2009596affeb54301de9a5862ced21a6e90459919b2d8f04d68aaee641273b89
+Deleted: sha256:40462559101871f0bf607a16ea47f71a6269f7e1ce143c632e4b460577b0251a
+Deleted: sha256:914c3337613042031ff4ee02c8f4c4ac6eab9f93d7ea87c289e0b3c95f38cf7c
+Untagged: nhi-lab/vending-service:negver-g4
+Deleted: sha256:0d9f7c5324241f30b3e6e27730eff49a94fd7c122a86adbee21113643def5be9
+Deleted: sha256:9a937fc491de91d5a0365b6a51a0767890062e31e6e33ad694fdafa6e0f3b757
+Deleted: sha256:ce6f93b798c6886c7027b6bc38f490fddc916662074f3ae969461dc2befd66bb
+Deleted: sha256:5907ef222f50725414864b7d3ab91f538e023a0c809256221d495118fdbfea86
+Untagged: nhi-lab/vending-service:negver-g5
+Deleted: sha256:9036fcadbac81e1673f4af1db6809946c35fc78e241ced9762e8f27ee77df11f
+Deleted: sha256:d8b4cd05427bc9ac656b198f1e89d04f60ab6559c38ca91a387bba9e934adce1
+Deleted: sha256:515be24bd4f927599a4bc479b10ead1cb7adbd7fdf2bcba911e1c253ea365b4a
+Deleted: sha256:27bf07123e9bd49c273dc76a906689245ee226ac93b1785d2aee8ccac81f1c34
+--- kind get clusters:
+No kind clusters found.
+--- vending-service images:
+nhi-lab-check/vending-service:mine 1b1554138a53
+nhi-lab/vending-service:dev 1b1554138a53
+dev id before: 1b1554138a53

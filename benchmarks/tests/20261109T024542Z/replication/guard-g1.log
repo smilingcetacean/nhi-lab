@@ -1,0 +1,41 @@
+== g1 START 2026-11-09T03:04:33Z
+local image id: sha256:b65b3053f2805ca6664ee9dad7dbd8a3efc8af474f9750f7674e6735d9b2be08
+load exit=0
+deployment.apps/vending-service image updated
+Waiting for deployment "vending-service" rollout to finish: 0 out of 1 new replicas have been updated...
+Waiting for deployment "vending-service" rollout to finish: 0 out of 1 new replicas have been updated...
+Waiting for deployment "vending-service" rollout to finish: 0 out of 1 new replicas have been updated...
+Waiting for deployment "vending-service" rollout to finish: 0 out of 1 new replicas have been updated...
+Waiting for deployment "vending-service" rollout to finish: 0 of 1 updated replicas are available...
+deployment "vending-service" successfully rolled out
+rollout exit=0
+imageID mutated: docker.io/library/import-2026-11-09@sha256:e4b3d7c07dd71a0e23b611ddfbef9490f6839b3bcf2e1f28afb02baeab3bf2ea
+CHECK mutated imageID != baseline: OK
+precondition: no pod in agents runs as nhi-exp-negtest-nopod (6 pods checked)
+  [FAIL] forged_parent_signature
+  [PASS] scope_escalation_manifest
+  [PASS] replay_captured_manifest
+  [PASS] credential_use_after_revocation
+  [PASS] orphaned_child_reaper
+1/5 negative tests FAILED
+EXIT=1
+== g1 RESTORE 2026-11-09T03:05:07Z
+deployment.apps/vending-service image updated
+Waiting for deployment "vending-service" rollout to finish: 0 out of 1 new replicas have been updated...
+Waiting for deployment "vending-service" rollout to finish: 0 out of 1 new replicas have been updated...
+Waiting for deployment "vending-service" rollout to finish: 0 out of 1 new replicas have been updated...
+Waiting for deployment "vending-service" rollout to finish: 0 out of 1 new replicas have been updated...
+Waiting for deployment "vending-service" rollout to finish: 0 of 1 updated replicas are available...
+deployment "vending-service" successfully rolled out
+rollout exit=0
+imageID reverted: docker.io/library/import-2026-11-09@sha256:a6a08922be05b53ff1bed001c0e109edcf32605d406b695ce228be39e7613273
+CHECK reverted imageID == baseline: OK
+precondition: no pod in agents runs as nhi-exp-negtest-nopod (6 pods checked)
+  [PASS] forged_parent_signature
+  [PASS] scope_escalation_manifest
+  [PASS] replay_captured_manifest
+  [PASS] credential_use_after_revocation
+  [PASS] orphaned_child_reaper
+all 5 negative tests PASSED (denial + audit event both confirmed)
+EXIT=0
+== g1 END 2026-11-09T03:05:40Z

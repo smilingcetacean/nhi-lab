@@ -1,0 +1,185 @@
+{
+  "git_base": "0b0fcca (main 58a8c7d plus the committed rerun results)",
+  "suite": "src/experiments/negative_tests.py as committed alongside these results (isolated selectors, correlated audit matching)",
+  "lab_config_changed": false,
+  "live_change": "only the vending-service image, always restored to :dev; REAPER_INTERVAL 15s and MAX_LIVE_CHILDREN 8 as shipped",
+  "mutations": "g1.diff to g5.diff, identical to benchmarks/tests/20261109T020524Z/falsification/gN.diff, applied with patch -p1 inside a scratch copy of src/vending-service, never the working tree",
+  "protocol": "bring the lab up with install.sh; run negative_tests.py twice on the clean image; for each guard gN: build nhi-lab/vending-service:<tag>-gN from a scratch copy of src/vending-service patched with gN.diff, load it into this cluster only, kubectl set image, run negative_tests.py, restore the :dev image already in the cluster, run negative_tests.py again; delete the cluster",
+  "tool_versions": {
+    "docker": "29.9.3",
+    "kind": "v0.33.0",
+    "kubectl_client": "v1.37.2",
+    "go": "1.26.5",
+    "opa": "1.18.2",
+    "uv": "0.11.30",
+    "python": "3.14.9"
+  },
+  "host": {
+    "cpus": 16,
+    "mem_total_kb": 31877380
+  },
+  "stream": "replication",
+  "purpose": "independent repetition of the primary protocol on a separate cluster, with mutation trees rebuilt from the committed diffs",
+  "kind_cluster": "nhi-t-negver",
+  "image_tag_prefix": "nhi-lab/vending-service:negver",
+  "bringup_duration": "2m 52s (install.log)",
+  "offline_checks": "offline_verify.log: precondition, subject, candidate-count and stale-event cases exercised with mocked inputs",
+  "runs": [
+    {
+      "label": "clean-run1",
+      "finished_utc": "2026-11-09T03:04:03Z",
+      "image": "nhi-lab/vending-service:dev",
+      "tests": {
+        "forged_parent_signature": "PASS",
+        "scope_escalation_manifest": "PASS",
+        "replay_captured_manifest": "PASS",
+        "credential_use_after_revocation": "PASS",
+        "orphaned_child_reaper": "PASS"
+      },
+      "t4_captured_jwt_subject_is_own_child": true
+    },
+    {
+      "label": "clean-run2",
+      "finished_utc": "2026-11-09T03:04:19Z",
+      "image": "nhi-lab/vending-service:dev",
+      "tests": {
+        "forged_parent_signature": "PASS",
+        "scope_escalation_manifest": "PASS",
+        "replay_captured_manifest": "PASS",
+        "credential_use_after_revocation": "PASS",
+        "orphaned_child_reaper": "PASS"
+      },
+      "t4_captured_jwt_subject_is_own_child": true
+    },
+    {
+      "label": "g1-mutated",
+      "finished_utc": "2026-11-09T03:05:07Z",
+      "image": "falsify image g1",
+      "tests": {
+        "forged_parent_signature": "FAIL",
+        "scope_escalation_manifest": "PASS",
+        "replay_captured_manifest": "PASS",
+        "credential_use_after_revocation": "PASS",
+        "orphaned_child_reaper": "PASS"
+      },
+      "t4_captured_jwt_subject_is_own_child": true
+    },
+    {
+      "label": "g1-reverted",
+      "finished_utc": "2026-11-09T03:05:40Z",
+      "image": "nhi-lab/vending-service:dev",
+      "tests": {
+        "forged_parent_signature": "PASS",
+        "scope_escalation_manifest": "PASS",
+        "replay_captured_manifest": "PASS",
+        "credential_use_after_revocation": "PASS",
+        "orphaned_child_reaper": "PASS"
+      },
+      "t4_captured_jwt_subject_is_own_child": true
+    },
+    {
+      "label": "g2-mutated",
+      "finished_utc": "2026-11-09T03:06:14Z",
+      "image": "falsify image g2",
+      "tests": {
+        "forged_parent_signature": "PASS",
+        "scope_escalation_manifest": "FAIL",
+        "replay_captured_manifest": "PASS",
+        "credential_use_after_revocation": "PASS",
+        "orphaned_child_reaper": "PASS"
+      },
+      "t4_captured_jwt_subject_is_own_child": true
+    },
+    {
+      "label": "g2-reverted",
+      "finished_utc": "2026-11-09T03:06:46Z",
+      "image": "nhi-lab/vending-service:dev",
+      "tests": {
+        "forged_parent_signature": "PASS",
+        "scope_escalation_manifest": "PASS",
+        "replay_captured_manifest": "PASS",
+        "credential_use_after_revocation": "PASS",
+        "orphaned_child_reaper": "PASS"
+      },
+      "t4_captured_jwt_subject_is_own_child": true
+    },
+    {
+      "label": "g3-mutated",
+      "finished_utc": "2026-11-09T03:07:20Z",
+      "image": "falsify image g3",
+      "tests": {
+        "forged_parent_signature": "PASS",
+        "scope_escalation_manifest": "PASS",
+        "replay_captured_manifest": "FAIL",
+        "credential_use_after_revocation": "PASS",
+        "orphaned_child_reaper": "PASS"
+      },
+      "t4_captured_jwt_subject_is_own_child": true
+    },
+    {
+      "label": "g3-reverted",
+      "finished_utc": "2026-11-09T03:07:53Z",
+      "image": "nhi-lab/vending-service:dev",
+      "tests": {
+        "forged_parent_signature": "PASS",
+        "scope_escalation_manifest": "PASS",
+        "replay_captured_manifest": "PASS",
+        "credential_use_after_revocation": "PASS",
+        "orphaned_child_reaper": "PASS"
+      },
+      "t4_captured_jwt_subject_is_own_child": true
+    },
+    {
+      "label": "g4-mutated",
+      "finished_utc": "2026-11-09T03:08:28Z",
+      "image": "falsify image g4",
+      "tests": {
+        "forged_parent_signature": "PASS",
+        "scope_escalation_manifest": "PASS",
+        "replay_captured_manifest": "PASS",
+        "credential_use_after_revocation": "FAIL",
+        "orphaned_child_reaper": "PASS"
+      },
+      "t4_captured_jwt_subject_is_own_child": true
+    },
+    {
+      "label": "g4-reverted",
+      "finished_utc": "2026-11-09T03:09:00Z",
+      "image": "nhi-lab/vending-service:dev",
+      "tests": {
+        "forged_parent_signature": "PASS",
+        "scope_escalation_manifest": "PASS",
+        "replay_captured_manifest": "PASS",
+        "credential_use_after_revocation": "PASS",
+        "orphaned_child_reaper": "PASS"
+      },
+      "t4_captured_jwt_subject_is_own_child": true
+    },
+    {
+      "label": "g5-mutated",
+      "finished_utc": "2026-11-09T03:09:56Z",
+      "image": "falsify image g5",
+      "tests": {
+        "forged_parent_signature": "PASS",
+        "scope_escalation_manifest": "PASS",
+        "replay_captured_manifest": "PASS",
+        "credential_use_after_revocation": "PASS",
+        "orphaned_child_reaper": "FAIL"
+      },
+      "t4_captured_jwt_subject_is_own_child": true
+    },
+    {
+      "label": "g5-reverted",
+      "finished_utc": "2026-11-09T03:10:28Z",
+      "image": "nhi-lab/vending-service:dev",
+      "tests": {
+        "forged_parent_signature": "PASS",
+        "scope_escalation_manifest": "PASS",
+        "replay_captured_manifest": "PASS",
+        "credential_use_after_revocation": "PASS",
+        "orphaned_child_reaper": "PASS"
+      },
+      "t4_captured_jwt_subject_is_own_child": true
+    }
+  ]
+}

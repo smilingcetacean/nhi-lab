@@ -1,0 +1,3 @@
+precondition with offending pod: (False, 'pod(s) in agents run as nhi-exp-negtest-nopod: intruder')
+T4 pass: False | captured_jwt_subject: spiffe://lab.local/agent/parent/exp-root/child/negtest-forged-deadbeef00
+T4 mismatch: captured JWT-SVID belongs to spiffe://lab.local/agent/parent/exp-root/child/negtest-forged-deadbeef00, not to this test's child spiffe://lab.local/agent/parent/exp-root/child/negtest-revoke-fixedrid01

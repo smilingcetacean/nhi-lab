@@ -1,0 +1,120 @@
+{
+  "generated_at": "2026-11-09T02:50:09Z",
+  "run_id": "696a7db8",
+  "hop1_vend": {
+    "http_code": 201,
+    "body": "{\"chain_id\":\"c_87aaa93ddaa602dc84c8249b715a4eb9\",\"parent_spiffe_id\":\"spiffe://lab.local/agent/parent/exp-root\",\"child_spiffe_id\":\"spiffe://lab.local/agent/parent/exp-root/child/mh-c-696a7db8\",\"child_scopes\":[\"resource:read:datasetA\",\"resource:read:datasetB\"],\"entry_id\":\"49194412-9131-4ca9-b922-faf90ac402bf\",\"policy_id\":\"nhi_grants_c_87aaa93ddaa602dc84c8249b715a4eb9\",\"issued_at\":1794192609,\"expires_at\":1794193209}"
+  },
+  "hop1_child_obtained_svid": true,
+  "hop1_pi_c_subset_of_pi_p": true,
+  "hop2_vend": {
+    "http_code": 201,
+    "body": "{\"chain_id\":\"c_63776c30414dce08b5562e8bd140f261\",\"parent_spiffe_id\":\"spiffe://lab.local/agent/parent/exp-root/child/mh-c-696a7db8\",\"child_spiffe_id\":\"spiffe://lab.local/agent/parent/exp-root/child/mh-c-696a7db8/child/mh-g-696a7db8\",\"child_scopes\":[\"resource:read:datasetA\",\"resource:read:datasetB\"],\"entry_id\":\"2eeb20e5-1cae-4f8e-a79d-d83176603a2b\",\"policy_id\":\"nhi_grants_c_63776c30414dce08b5562e8bd140f261\",\"issued_at\":1794192615,\"expires_at\":1794193209}"
+  },
+  "hop2_pi_g_subset_of_pi_c": true,
+  "hop2_jobs_escalation_attenuated": true,
+  "hop2_grandchild_obtained_svid": true,
+  "grandchild_get_datasetA": 200,
+  "grandchild_post_jobs_denied": 403,
+  "hop1_audit_event": {
+    "timestamp": "2026-11-09T02:50:09.315389403Z",
+    "stage": "vend",
+    "chain_id": "c_87aaa93ddaa602dc84c8249b715a4eb9",
+    "actor_spiffe_id": "spiffe://lab.local/agent/parent/exp-root",
+    "outcome": "allow",
+    "detail": {
+      "parent_spiffe_id": "spiffe://lab.local/agent/parent/exp-root",
+      "child_spiffe_id": "spiffe://lab.local/agent/parent/exp-root/child/mh-c-696a7db8",
+      "requested_scopes": [
+        "resource:read:datasetA",
+        "resource:read:datasetB"
+      ],
+      "child_scopes": [
+        "resource:read:datasetA",
+        "resource:read:datasetB"
+      ],
+      "policy_id": "nhi_grants_c_87aaa93ddaa602dc84c8249b715a4eb9",
+      "entry_id": "49194412-9131-4ca9-b922-faf90ac402bf",
+      "expires_at": 1794193209,
+      "task_context": "experiment multi-hop hop1 (P->C)"
+    }
+  },
+  "hop2_audit_event": {
+    "timestamp": "2026-11-09T02:50:15.592611393Z",
+    "stage": "vend",
+    "chain_id": "c_63776c30414dce08b5562e8bd140f261",
+    "actor_spiffe_id": "spiffe://lab.local/agent/parent/exp-root/child/mh-c-696a7db8",
+    "outcome": "allow",
+    "detail": {
+      "parent_spiffe_id": "spiffe://lab.local/agent/parent/exp-root/child/mh-c-696a7db8",
+      "child_spiffe_id": "spiffe://lab.local/agent/parent/exp-root/child/mh-c-696a7db8/child/mh-g-696a7db8",
+      "requested_scopes": [
+        "resource:read:datasetA",
+        "resource:read:datasetB",
+        "resource:write:jobs"
+      ],
+      "child_scopes": [
+        "resource:read:datasetA",
+        "resource:read:datasetB"
+      ],
+      "policy_id": "nhi_grants_c_63776c30414dce08b5562e8bd140f261",
+      "entry_id": "2eeb20e5-1cae-4f8e-a79d-d83176603a2b",
+      "expires_at": 1794193209,
+      "task_context": "experiment multi-hop hop2 (C->G, jobs escalation attempt)",
+      "reason": "ttl_seconds shortened: requested 600 s, granted 594 s (a child cannot outlive its parent's earliest live grant)"
+    }
+  },
+  "lineage_traceable_via_audit": true,
+  "grandchild_jwt_captured": true,
+  "dispose_child_http_code": 200,
+  "grandchild_get_datasetA_after_cascade": 403,
+  "grandchild_resource_deny_event": {
+    "timestamp": "2026-11-09T02:50:20.05177702Z",
+    "stage": "operate",
+    "chain_id": "",
+    "actor_spiffe_id": "spiffe://lab.local/agent/parent/exp-root/child/mh-c-696a7db8/child/mh-g-696a7db8",
+    "outcome": "deny",
+    "detail": {
+      "method": "GET",
+      "path": "/datasets/A",
+      "required_scopes": [
+        "resource:read:datasetA"
+      ],
+      "chain_id_source": "absent",
+      "reason": "policy denied",
+      "policy_decision": false,
+      "decision_latency_ms": 0.515662
+    }
+  },
+  "grandchild_delegation_after_cascade": {
+    "chain_id": "c_63776c30414dce08b5562e8bd140f261",
+    "parent_spiffe_id": "spiffe://lab.local/agent/parent/exp-root/child/mh-c-696a7db8",
+    "child_spiffe_id": "spiffe://lab.local/agent/parent/exp-root/child/mh-c-696a7db8/child/mh-g-696a7db8",
+    "child_scopes": [
+      "resource:read:datasetA",
+      "resource:read:datasetB"
+    ],
+    "entry_id": "2eeb20e5-1cae-4f8e-a79d-d83176603a2b",
+    "policy_id": "nhi_grants_c_63776c30414dce08b5562e8bd140f261",
+    "issued_at": 1794192615,
+    "expires_at": 1794193209,
+    "revoked_at": 1794192619,
+    "revocation_reason": "ancestor_revoked: c_87aaa93ddaa602dc84c8249b715a4eb9"
+  },
+  "grandchild_dispose_event": {
+    "timestamp": "2026-11-09T02:50:20.003014707Z",
+    "stage": "dispose",
+    "chain_id": "c_63776c30414dce08b5562e8bd140f261",
+    "actor_spiffe_id": "spiffe://lab.local/agent/parent/exp-root",
+    "outcome": "allow",
+    "detail": {
+      "parent_spiffe_id": "spiffe://lab.local/agent/parent/exp-root/child/mh-c-696a7db8",
+      "child_spiffe_id": "spiffe://lab.local/agent/parent/exp-root/child/mh-c-696a7db8/child/mh-g-696a7db8",
+      "policy_id": "nhi_grants_c_63776c30414dce08b5562e8bd140f261",
+      "entry_id": "2eeb20e5-1cae-4f8e-a79d-d83176603a2b",
+      "reason": "ancestor_revoked: c_87aaa93ddaa602dc84c8249b715a4eb9"
+    }
+  },
+  "grandchild_entry_gone": true,
+  "overall_pass": true
+}

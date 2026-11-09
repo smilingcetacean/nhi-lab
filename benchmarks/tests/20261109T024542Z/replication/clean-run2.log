@@ -1,0 +1,50 @@
+START 2026-11-09T03:04:03Z label=clean-run2
+vs image:   nhi-lab/vending-service:dev
+vs imageID: docker.io/library/import-2026-11-09@sha256:a6a08922be05b53ff1bed001c0e109edcf32605d406b695ce228be39e7613273
+== negative test suite ==
+parent=experiments-parent-fc985bd87-jrxrd attacker=experiments-attacker-c7c7dcc66-g5mbk child=experiments-child-85c8bd56cc-69q2l
+precondition: no pod in agents runs as nhi-exp-negtest-nopod (6 pods checked)
+  [PASS] forged_parent_signature
+      http_code: 401
+      expected_http_code: 401
+      audit_event: {'timestamp': '2026-11-09T03:04:03.840301393Z', 'stage': 'attest', 'chain_id': '', 'actor_spiffe_id': 'spiffe://lab.local/agent/parent/exp-root', 'outcome': 'deny', 'detail': {'parent_spiffe_id': 'spiffe://lab.local/agent/parent/exp-root', 'reason': "manifest signature verification failed: signature does not verify against the x5c leaf certificate's key: go-jose/go-jose: error in cryptographic primitive"}}
+      audit_candidate_count: 1
+      new_parent_events: [{'timestamp': '2026-11-09T03:04:03.840301393Z', 'stage': 'attest', 'chain_id': '', 'actor_spiffe_id': 'spiffe://lab.local/agent/parent/exp-root', 'outcome': 'deny', 'detail': {'parent_spiffe_id': 'spiffe://lab.local/agent/parent/exp-root', 'reason': "manifest signature verification failed: signature does not verify against the x5c leaf certificate's key: go-jose/go-jose: error in cryptographic primitive"}}]
+      no_entry_created: True
+      unexpected_delegation_disposed: None
+      response_body: {"error":"Unauthorized","reason":"manifest signature verification failed: signature does not verify against the x5c leaf certificate's key: go-jose/go-jose: error in cryptographic primitive"}  command terminated with exit code 2
+  [PASS] scope_escalation_manifest
+      http_code: 403
+      expected_http_code: 403
+      audit_event: {'timestamp': '2026-11-09T03:04:03.99781412Z', 'stage': 'vend', 'chain_id': 'c_9ff560a1b2ba12fea82acb5c6ba499cf', 'actor_spiffe_id': 'spiffe://lab.local/agent/parent/exp-root', 'outcome': 'deny', 'detail': {'parent_spiffe_id': 'spiffe://lab.local/agent/parent/exp-root', 'child_spiffe_id': 'spiffe://lab.local/agent/parent/exp-root/child/negtest-escalate-7d11c1c728', 'requested_scopes': ['resource:admin:everything'], 'policy_id': 'nhi_grants_c_9ff560a1b2ba12fea82acb5c6ba499cf', 'reason': 'policy engine granted no scopes (Π(requested) ∩ Π(parent) = ∅) — refusing to mint an identity with no authority'}}
+      audit_candidate_count: 1
+      no_entry_created: True
+      unexpected_delegation_disposed: None
+      response_body: {"error":"Forbidden","reason":"policy engine granted no scopes (Π(requested) ∩ Π(parent) = ∅) — refusing to mint an identity with no authority"}  command terminated with exit code 2
+  [PASS] replay_captured_manifest
+      first_http_code: 201
+      second_http_code: 409
+      expected: 201 then 409
+      audit_event: {'timestamp': '2026-11-09T03:04:04.255713925Z', 'stage': 'attest', 'chain_id': '', 'actor_spiffe_id': 'spiffe://lab.local/agent/parent/exp-root', 'outcome': 'deny', 'detail': {'parent_spiffe_id': 'spiffe://lab.local/agent/parent/exp-root', 'reason': 'nonce has already been used for this parent (replay refused)'}}
+      audit_candidate_count: 1
+      new_parent_events: [{'timestamp': '2026-11-09T03:04:04.255713925Z', 'stage': 'attest', 'chain_id': '', 'actor_spiffe_id': 'spiffe://lab.local/agent/parent/exp-root', 'outcome': 'deny', 'detail': {'parent_spiffe_id': 'spiffe://lab.local/agent/parent/exp-root', 'reason': 'nonce has already been used for this parent (replay refused)'}}]
+      unexpected_delegation_disposed: None
+  [PASS] credential_use_after_revocation
+      child_obtained_svid: True
+      captured_jwt_before_disposal: True
+      captured_jwt_subject: spiffe://lab.local/agent/parent/exp-root/child/negtest-revoke-dc770c617c
+      expected_jwt_subject: spiffe://lab.local/agent/parent/exp-root/child/negtest-revoke-dc770c617c
+      dispose_http_code: 200
+      replay_http_code_after_disposal: 403
+      expected: 403
+      audit_event: {'timestamp': '2026-11-09T03:04:12.855943694Z', 'stage': 'operate', 'chain_id': '', 'actor_spiffe_id': 'spiffe://lab.local/agent/parent/exp-root/child/negtest-revoke-dc770c617c', 'outcome': 'deny', 'detail': {'method': 'GET', 'path': '/datasets/A', 'required_scopes': ['resource:read:datasetA'], 'chain_id_source': 'absent', 'reason': 'policy denied', 'policy_decision': False, 'decision_latency_ms': 0.673653}}
+  [PASS] orphaned_child_reaper
+      entry_reaped: True
+      audit_event: {'timestamp': '2026-11-09T03:04:18.224110664Z', 'stage': 'dispose', 'chain_id': 'c_820d8c42c26c70654a3c87e0c37c7879', 'actor_spiffe_id': 'spiffe://lab.local/svc/vending-service', 'outcome': 'allow', 'detail': {'parent_spiffe_id': 'spiffe://lab.local/agent/parent/exp-root', 'child_spiffe_id': 'spiffe://lab.local/agent/parent/exp-root/child/negtest-orphan-fa554f95e5', 'policy_id': 'nhi_grants_c_820d8c42c26c70654a3c87e0c37c7879', 'entry_id': 'ab1a9f34-80c1-4287-88c8-3f471d5d8a24', 'reason': 'ttl_expired'}}
+      chain_id: c_820d8c42c26c70654a3c87e0c37c7879
+
+wrote <repo>/src/experiments/results/latest/negative_tests.json
+
+all 5 negative tests PASSED (denial + audit event both confirmed)
+EXIT=0
+END 2026-11-09T03:04:19Z

@@ -1,0 +1,19 @@
+| clean-run1 | dev | PASS | PASS | PASS | PASS | PASS | negtest-revoke-c229da87c6 (match=True) |
+| clean-run2 | dev | PASS | PASS | PASS | PASS | PASS | negtest-revoke-b2acae5655 (match=True) |
+| run-all-negative_tests | dev (run_all) | PASS | PASS | PASS | PASS | PASS | negtest-revoke-dd7e53fee6 (match=True) |
+| g1-mutated | negfix-g1 | FAIL | PASS | PASS | PASS | PASS | negtest-revoke-d75ad101af (match=True) |
+| g1-reverted | dev | PASS | PASS | PASS | PASS | PASS | negtest-revoke-8c33f22b28 (match=True) |
+| g2-mutated | negfix-g2 | PASS | FAIL | PASS | PASS | PASS | negtest-revoke-d9e7f6f3e8 (match=True) |
+| g2-reverted | dev | PASS | PASS | PASS | PASS | PASS | negtest-revoke-984d9a1583 (match=True) |
+| g3-mutated | negfix-g3 | PASS | PASS | FAIL | PASS | PASS | negtest-revoke-502da51566 (match=True) |
+| g3-reverted | dev | PASS | PASS | PASS | PASS | PASS | negtest-revoke-6dc3d31021 (match=True) |
+| g4-mutated | negfix-g4 | PASS | PASS | PASS | FAIL | PASS | negtest-revoke-4821f55e3a (match=True) |
+| g4-reverted | dev | PASS | PASS | PASS | PASS | PASS | negtest-revoke-a11d312fcf (match=True) |
+| g5-mutated | negfix-g5 | PASS | PASS | PASS | PASS | FAIL | negtest-revoke-92ed3c6393 (match=True) |
+| g5-reverted | dev | PASS | PASS | PASS | PASS | PASS | negtest-revoke-32f41ed755 (match=True) |
+
+g1-mutated {"test": "forged_parent_signature", "pass": false, "http_code": 201, "expected_http_code": 401, "audit_candidate_count": 0, "no_entry_created": false, "unexpected_delegation_disposed": {"chain_id": "c_b49be610df54a6c6e548e4386e33354c", "dispose_http_code": 200}}
+g2-mutated {"test": "scope_escalation_manifest", "pass": false, "http_code": 201, "expected_http_code": 403, "audit_candidate_count": 0, "no_entry_created": false, "unexpected_delegation_disposed": {"chain_id": "c_272528bbac432379d1dc026652bd7808", "dispose_http_code": 200}}
+g3-mutated {"test": "replay_captured_manifest", "pass": false, "first_http_code": 201, "second_http_code": 500, "expected": "201 then 409", "audit_candidate_count": 0, "unexpected_delegation_disposed": null}
+g4-mutated {"test": "credential_use_after_revocation", "pass": false, "child_obtained_svid": true, "captured_jwt_before_disposal": true, "captured_jwt_subject": "spiffe://lab.local/agent/parent/exp-root/child/negtest-revoke-4821f55e3a", "expected_jwt_subject": "spiffe://lab.local/agent/parent/exp-root/child/negtest-revoke-4821f55e3a", "dispose_http_code": 200, "replay_http_code_after_disposal": 200, "expected": 403}
+g5-mutated {"test": "orphaned_child_reaper", "pass": false, "entry_reaped": false, "chain_id": "c_8889bc8e6426e008e39ba57e10ed61bc"}

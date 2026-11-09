@@ -1,0 +1,10 @@
+A precondition on kubectl failure -> raises KubectlError (loud): simulated failure
+B jwt_subject(no sub) = None
+B jwt_subject(garbage) = None
+B jwt_subject(sub int) = None
+C T4 no-sub: pass=False subject=None
+C T4 own-sub: pass=True subject=spiffe://lab.local/agent/parent/exp-root/child/negtest-revoke-rid0000001
+D forged unexpected-201 order: ['vend', 'entry_exists', 'dispose'] pass= False no_entry_created= False disposed= {'chain_id': 'c_bad', 'dispose_http_code': 200}
+E forged two new candidates: pass= False count= 2
+F forged stale-only: pass= False count= 0
+G escalation foreign-child-only: pass= False count= 0

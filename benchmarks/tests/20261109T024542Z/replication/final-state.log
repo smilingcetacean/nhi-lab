@@ -1,0 +1,6 @@
+final vs image: nhi-lab/vending-service:dev
+final imageID:  docker.io/library/import-2026-11-09@sha256:a6a08922be05b53ff1bed001c0e109edcf32605d406b695ce228be39e7613273
+baseline:       docker.io/library/import-2026-11-09@sha256:a6a08922be05b53ff1bed001c0e109edcf32605d406b695ce228be39e7613273
+spire entries under exp-root/child/negtest:
+  none
+SVIDs held by experiments-child pod:

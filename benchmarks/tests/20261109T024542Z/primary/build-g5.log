@@ -1,0 +1,5 @@
+DEPRECATED: The legacy builder is deprecated and will be removed in a future release.
+            Install the buildx component to build images with BuildKit:
+            https://docs.docker.com/go/buildx/
+
+sha256:d5859e5f4e922fbb34b822eeaefe15a5bc3dc03157220c0c63efea68c5c973b4

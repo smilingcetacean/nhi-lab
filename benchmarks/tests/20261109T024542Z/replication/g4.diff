@@ -1,0 +1,11 @@
+--- a/cmd/vending-service/main.go
++++ b/cmd/vending-service/main.go
+@@ -861,7 +861,7 @@
+ // below it) is denied, even if the later steps fail. The row is marked revoked
+ // last, so a failure anywhere leaves it live for the reaper to retry.
+ func (s *server) disposeChain(ctx context.Context, rec store.DelegationRecord, actor, reason string) error {
+-	if err := s.policyEngine.Dispose(ctx, rec.ChainID); err != nil {
++	if err := error(nil); err != nil {
+ 		return fmt.Errorf("could not remove grant module: %w", err)
+ 	}
+ 	if err := s.entries.DeleteEntry(ctx, rec.EntryID); err != nil {

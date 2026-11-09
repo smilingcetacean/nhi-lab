@@ -1,0 +1,40 @@
+== g3 START 2026-11-09T03:06:46Z
+local image id: sha256:769dcc73455bf525a96029d46cfe7dc30ae2be67b29fe7d2d403e6e09283e95b
+load exit=0
+deployment.apps/vending-service image updated
+Waiting for deployment "vending-service" rollout to finish: 0 out of 1 new replicas have been updated...
+Waiting for deployment "vending-service" rollout to finish: 0 out of 1 new replicas have been updated...
+Waiting for deployment "vending-service" rollout to finish: 0 out of 1 new replicas have been updated...
+Waiting for deployment "vending-service" rollout to finish: 0 of 1 updated replicas are available...
+deployment "vending-service" successfully rolled out
+rollout exit=0
+imageID mutated: docker.io/library/import-2026-11-09@sha256:af85b3fd32ce09ab93b345088812b4ebd5df8ac15def0f506d9054452dda7926
+CHECK mutated imageID != baseline: OK
+precondition: no pod in agents runs as nhi-exp-negtest-nopod (6 pods checked)
+  [PASS] forged_parent_signature
+  [PASS] scope_escalation_manifest
+  [FAIL] replay_captured_manifest
+  [PASS] credential_use_after_revocation
+  [PASS] orphaned_child_reaper
+1/5 negative tests FAILED
+EXIT=1
+== g3 RESTORE 2026-11-09T03:07:20Z
+deployment.apps/vending-service image updated
+Waiting for deployment "vending-service" rollout to finish: 0 out of 1 new replicas have been updated...
+Waiting for deployment "vending-service" rollout to finish: 0 out of 1 new replicas have been updated...
+Waiting for deployment "vending-service" rollout to finish: 0 out of 1 new replicas have been updated...
+Waiting for deployment "vending-service" rollout to finish: 0 out of 1 new replicas have been updated...
+Waiting for deployment "vending-service" rollout to finish: 0 of 1 updated replicas are available...
+deployment "vending-service" successfully rolled out
+rollout exit=0
+imageID reverted: docker.io/library/import-2026-11-09@sha256:a6a08922be05b53ff1bed001c0e109edcf32605d406b695ce228be39e7613273
+CHECK reverted imageID == baseline: OK
+precondition: no pod in agents runs as nhi-exp-negtest-nopod (6 pods checked)
+  [PASS] forged_parent_signature
+  [PASS] scope_escalation_manifest
+  [PASS] replay_captured_manifest
+  [PASS] credential_use_after_revocation
+  [PASS] orphaned_child_reaper
+all 5 negative tests PASSED (denial + audit event both confirmed)
+EXIT=0
+== g3 END 2026-11-09T03:07:53Z

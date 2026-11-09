@@ -1,0 +1,50 @@
+START 2026-11-08 21:52:22 EST label=g1-mutated
+vending-service imageID: docker.io/library/import-2026-11-09@sha256:d6c969e6128fac6ba0af1775809f5d9a2d6a276b52baa79e5f1b2feda92c28de
+vending-service image:   nhi-lab/vending-service:negfix-g1
+== negative test suite ==
+parent=experiments-parent-fc985bd87-cxwgq attacker=experiments-attacker-c7c7dcc66-5fs8s child=experiments-child-85c8bd56cc-lr9fz
+precondition: no pod in agents runs as nhi-exp-negtest-nopod (6 pods checked)
+  [FAIL] forged_parent_signature
+      http_code: 201
+      expected_http_code: 401
+      audit_event: None
+      audit_candidate_count: 0
+      new_parent_events: [{'timestamp': '2026-11-09T02:52:22.994821237Z', 'stage': 'attest', 'chain_id': '', 'actor_spiffe_id': 'spiffe://lab.local/agent/parent/exp-root', 'outcome': 'allow', 'detail': {'parent_spiffe_id': 'spiffe://lab.local/agent/parent/exp-root', 'reason': 'JWT-SVID, manifest signature, nonce and child_selectors all verified'}}, {'timestamp': '2026-11-09T02:52:23.007247091Z', 'stage': 'vend', 'chain_id': 'c_b49be610df54a6c6e548e4386e33354c', 'actor_spiffe_id': 'spiffe://lab.local/agent/parent/exp-root', 'outcome': 'allow', 'detail': {'parent_spiffe_id': 'spiffe://lab.local/agent/parent/exp-root', 'child_spiffe_id': 'spiffe://lab.local/agent/parent/exp-root/child/negtest-forged-452c5ff1eb', 'requested_scopes': ['resource:read:datasetA'], 'child_scopes': ['resource:read:datasetA'], 'policy_id': 'nhi_grants_c_b49be610df54a6c6e548e4386e33354c', 'entry_id': '767a2d87-8ffd-400b-b254-edeae2f94014', 'expires_at': 1794193042, 'task_context': 'parentsim demo task'}}]
+      no_entry_created: False
+      unexpected_delegation_disposed: {'chain_id': 'c_b49be610df54a6c6e548e4386e33354c', 'dispose_http_code': 200}
+      response_body: {"chain_id":"c_b49be610df54a6c6e548e4386e33354c","parent_spiffe_id":"spiffe://lab.local/agent/parent/exp-root","child_spiffe_id":"spiffe://lab.local/agent/parent/exp-root/child/negtest-forged-452c5ff1eb","child_scopes":["resource:read:datasetA"],"entry_id":"767a2d87-8ffd-400b-b254-edeae2f94014","policy_id":"nhi_grants_c_b49be610df54a6c6e548e4386e33354c","issued_at":1794192743,"expires_at":1794193042}
+  [PASS] scope_escalation_manifest
+      http_code: 403
+      expected_http_code: 403
+      audit_event: {'timestamp': '2026-11-09T02:52:28.609025702Z', 'stage': 'vend', 'chain_id': 'c_5b351c071d2c95f24a76bfbeed4b7f02', 'actor_spiffe_id': 'spiffe://lab.local/agent/parent/exp-root', 'outcome': 'deny', 'detail': {'parent_spiffe_id': 'spiffe://lab.local/agent/parent/exp-root', 'child_spiffe_id': 'spiffe://lab.local/agent/parent/exp-root/child/negtest-escalate-2ceb46af03', 'requested_scopes': ['resource:admin:everything'], 'policy_id': 'nhi_grants_c_5b351c071d2c95f24a76bfbeed4b7f02', 'reason': 'policy engine granted no scopes (Π(requested) ∩ Π(parent) = ∅) — refusing to mint an identity with no authority'}}
+      audit_candidate_count: 1
+      no_entry_created: True
+      unexpected_delegation_disposed: None
+      response_body: {"error":"Forbidden","reason":"policy engine granted no scopes (Π(requested) ∩ Π(parent) = ∅) — refusing to mint an identity with no authority"}  command terminated with exit code 2
+  [PASS] replay_captured_manifest
+      first_http_code: 201
+      second_http_code: 409
+      expected: 201 then 409
+      audit_event: {'timestamp': '2026-11-09T02:52:28.865688646Z', 'stage': 'attest', 'chain_id': '', 'actor_spiffe_id': 'spiffe://lab.local/agent/parent/exp-root', 'outcome': 'deny', 'detail': {'parent_spiffe_id': 'spiffe://lab.local/agent/parent/exp-root', 'reason': 'nonce has already been used for this parent (replay refused)'}}
+      audit_candidate_count: 1
+      new_parent_events: [{'timestamp': '2026-11-09T02:52:28.865688646Z', 'stage': 'attest', 'chain_id': '', 'actor_spiffe_id': 'spiffe://lab.local/agent/parent/exp-root', 'outcome': 'deny', 'detail': {'parent_spiffe_id': 'spiffe://lab.local/agent/parent/exp-root', 'reason': 'nonce has already been used for this parent (replay refused)'}}]
+      unexpected_delegation_disposed: None
+  [PASS] credential_use_after_revocation
+      child_obtained_svid: True
+      captured_jwt_before_disposal: True
+      captured_jwt_subject: spiffe://lab.local/agent/parent/exp-root/child/negtest-revoke-d75ad101af
+      expected_jwt_subject: spiffe://lab.local/agent/parent/exp-root/child/negtest-revoke-d75ad101af
+      dispose_http_code: 200
+      replay_http_code_after_disposal: 403
+      expected: 403
+      audit_event: {'timestamp': '2026-11-09T02:52:35.405233241Z', 'stage': 'operate', 'chain_id': '', 'actor_spiffe_id': 'spiffe://lab.local/agent/parent/exp-root/child/negtest-revoke-d75ad101af', 'outcome': 'deny', 'detail': {'method': 'GET', 'path': '/datasets/A', 'required_scopes': ['resource:read:datasetA'], 'chain_id_source': 'absent', 'reason': 'policy denied', 'policy_decision': False, 'decision_latency_ms': 0.754803}}
+  [PASS] orphaned_child_reaper
+      entry_reaped: True
+      audit_event: {'timestamp': '2026-11-09T02:52:47.503834012Z', 'stage': 'dispose', 'chain_id': 'c_5ef5371e04ce0e6b1a2436083abdd4d6', 'actor_spiffe_id': 'spiffe://lab.local/svc/vending-service', 'outcome': 'allow', 'detail': {'parent_spiffe_id': 'spiffe://lab.local/agent/parent/exp-root', 'child_spiffe_id': 'spiffe://lab.local/agent/parent/exp-root/child/negtest-orphan-2dc8e830ee', 'policy_id': 'nhi_grants_c_5ef5371e04ce0e6b1a2436083abdd4d6', 'entry_id': '23cdd776-64b8-4301-a917-77edd18a14ee', 'reason': 'ttl_expired'}}
+      chain_id: c_5ef5371e04ce0e6b1a2436083abdd4d6
+
+wrote <repo>/src/experiments/results/latest/negative_tests.json
+
+1/5 negative tests FAILED
+EXIT=1
+END 2026-11-08 21:52:47 EST
