@@ -1,0 +1,284 @@
+ok  	nhi-lab/policy-engine	0.012s
+>> building nhi-lab/policy-engine:dev
+DEPRECATED: The legacy builder is deprecated and will be removed in a future release.
+            Install the buildx component to build images with BuildKit:
+            https://docs.docker.com/go/buildx/
+
+>> loading nhi-lab/policy-engine:dev into kind/nhi-t-vcore
+namespace/spire unchanged
+namespace/opa unchanged
+namespace/nhi unchanged
+namespace/agents unchanged
+>> deploying SPIRE server 1.15.2
+serviceaccount/spire-server unchanged
+clusterrole.rbac.authorization.k8s.io/spire-server-node-attestor unchanged
+clusterrolebinding.rbac.authorization.k8s.io/spire-server-node-attestor unchanged
+role.rbac.authorization.k8s.io/spire-server-bundle-publisher unchanged
+rolebinding.rbac.authorization.k8s.io/spire-server-bundle-publisher unchanged
+configmap/spire-server unchanged
+configmap/spire-bundle unchanged
+service/spire-server unchanged
+statefulset.apps/spire-server configured
+>> waiting for spire-server to become Ready
+partitioned roll out complete: 1 new pods have been updated...
+>> waiting for the spire-bundle ConfigMap to be populated
+>> trust bundle published (809 bytes)
+>> deploying SPIRE agent 1.15.2
+serviceaccount/spire-agent unchanged
+clusterrole.rbac.authorization.k8s.io/spire-agent-workload-attestor unchanged
+clusterrolebinding.rbac.authorization.k8s.io/spire-agent-workload-attestor unchanged
+configmap/spire-agent unchanged
+daemonset.apps/spire-agent unchanged
+>> waiting for spire-agent DaemonSet to become Ready
+daemon set "spire-agent" successfully rolled out
+>> waiting for node attestation to complete
+>> 2 agents attested via k8s_psat
+Registering static SPIRE entries in trust domain lab.local
+  = node alias: spiffe://lab.local/node/nhi-lab (already registered)
+  = static test workload: spiffe://lab.local/svc/test-workload (already registered)
+  = properly-shaped child test identity (verify-policy only): spiffe://lab.local/agent/parent/policy-verify/child/policy-verify-child (already registered)
+  = OPA server: spiffe://lab.local/svc/opa (already registered)
+  = policy engine: spiffe://lab.local/svc/policy-engine (already registered)
+  = protected resource: spiffe://lab.local/svc/resource (already registered)
+  = vending service: spiffe://lab.local/svc/vending-service (already registered)
+  = vend-verify parent (verify-vending only): spiffe://lab.local/agent/parent/vend-verify (already registered)
+  = demo parent: spiffe://lab.local/agent/parent/demo (already registered)
+  = OpenCode parent: spiffe://lab.local/agent/parent/opencode (already registered)
+  = experiments root parent: spiffe://lab.local/agent/parent/exp-root (already registered)
+  = policy probe (verify only): spiffe://lab.local/svc/policy-probe (already registered)
+
+Found 12 entries
+Entry ID                : e62343ce-5328-4b83-a089-d88f1b4b4996
+SPIFFE ID               : spiffe://lab.local/agent/parent/demo
+Parent ID               : spiffe://lab.local/node/nhi-lab
+Revision                : 0
+X509-SVID TTL           : default
+JWT-SVID TTL            : default
+Selector                : k8s:ns:agents
+Selector                : k8s:sa:nhi-demo-parent
+
+Entry ID                : fd0fbf46-4348-4b4f-8c89-fb05ab3b5618
+SPIFFE ID               : spiffe://lab.local/agent/parent/exp-root
+Parent ID               : spiffe://lab.local/node/nhi-lab
+Revision                : 0
+X509-SVID TTL           : default
+JWT-SVID TTL            : default
+Selector                : k8s:ns:agents
+Selector                : k8s:sa:nhi-exp-parent
+
+Entry ID                : f36c2657-458e-46e3-9edf-0a261e7fd772
+SPIFFE ID               : spiffe://lab.local/agent/parent/opencode
+Parent ID               : spiffe://lab.local/node/nhi-lab
+Revision                : 0
+X509-SVID TTL           : default
+JWT-SVID TTL            : default
+Selector                : k8s:ns:agents
+Selector                : k8s:sa:nhi-opencode-parent
+
+Entry ID                : 49b0baf7-041b-43f4-b624-aa651a64901b
+SPIFFE ID               : spiffe://lab.local/agent/parent/policy-verify/child/policy-verify-child
+Parent ID               : spiffe://lab.local/node/nhi-lab
+Revision                : 0
+X509-SVID TTL           : default
+JWT-SVID TTL            : default
+Selector                : k8s:ns:agents
+Selector                : k8s:sa:nhi-test-child
+
+Entry ID                : 79282261-c06b-4353-8fdb-bab8b22dc452
+SPIFFE ID               : spiffe://lab.local/agent/parent/vend-verify
+Parent ID               : spiffe://lab.local/node/nhi-lab
+Revision                : 0
+X509-SVID TTL           : default
+JWT-SVID TTL            : default
+Selector                : k8s:ns:agents
+Selector                : k8s:sa:nhi-test-vend-parent
+
+Entry ID                : 08ecd370-1fb5-4af6-ac37-9f556a6a31b9
+SPIFFE ID               : spiffe://lab.local/node/nhi-lab
+Parent ID               : spiffe://lab.local/spire/server
+Revision                : 0
+X509-SVID TTL           : default
+JWT-SVID TTL            : default
+Selector                : k8s_psat:cluster:nhi-lab
+
+Entry ID                : 2e1be817-cf12-4d5f-9342-65eec5adaeae
+SPIFFE ID               : spiffe://lab.local/svc/opa
+Parent ID               : spiffe://lab.local/node/nhi-lab
+Revision                : 0
+X509-SVID TTL           : default
+JWT-SVID TTL            : default
+Selector                : k8s:ns:opa
+Selector                : k8s:sa:opa
+DNS name                : opa.opa.svc.cluster.local
+DNS name                : opa.opa.svc
+DNS name                : opa
+
+Entry ID                : c9f8121e-4da2-4693-8159-7b6fb0ba8547
+SPIFFE ID               : spiffe://lab.local/svc/policy-engine
+Parent ID               : spiffe://lab.local/node/nhi-lab
+Revision                : 0
+X509-SVID TTL           : default
+JWT-SVID TTL            : default
+Selector                : k8s:ns:nhi
+Selector                : k8s:sa:policy-engine
+DNS name                : policy-engine.nhi.svc.cluster.local
+DNS name                : policy-engine.nhi.svc
+DNS name                : policy-engine
+
+Entry ID                : 3c5a0652-aeb3-4c58-bd47-c7c5e2d5c6aa
+SPIFFE ID               : spiffe://lab.local/svc/policy-probe
+Parent ID               : spiffe://lab.local/node/nhi-lab
+Revision                : 0
+X509-SVID TTL           : default
+JWT-SVID TTL            : default
+Selector                : k8s:ns:nhi
+Selector                : k8s:sa:policy-probe
+
+Entry ID                : 1e718d62-e1f1-4493-9e1f-e7e72d065be0
+SPIFFE ID               : spiffe://lab.local/svc/resource
+Parent ID               : spiffe://lab.local/node/nhi-lab
+Revision                : 0
+X509-SVID TTL           : default
+JWT-SVID TTL            : default
+Selector                : k8s:ns:nhi
+Selector                : k8s:sa:resource
+
+Entry ID                : 800796c3-7551-4ada-a325-d57ac3556ae1
+SPIFFE ID               : spiffe://lab.local/svc/test-workload
+Parent ID               : spiffe://lab.local/node/nhi-lab
+Revision                : 0
+X509-SVID TTL           : default
+JWT-SVID TTL            : default
+Selector                : k8s:ns:agents
+Selector                : k8s:sa:nhi-test
+
+Entry ID                : 56f0027b-2eaa-47ad-936d-0fa583598074
+SPIFFE ID               : spiffe://lab.local/svc/vending-service
+Parent ID               : spiffe://lab.local/node/nhi-lab
+Revision                : 0
+X509-SVID TTL           : default
+JWT-SVID TTL            : default
+Selector                : k8s:ns:nhi
+Selector                : k8s:sa:vending-service
+
+>> deploying the policy engine
+serviceaccount/policy-engine unchanged
+service/policy-engine unchanged
+deployment.apps/policy-engine unchanged
+configmap/policy-engine-bootstrap unchanged
+deployment.apps/policy-engine restarted
+Waiting for deployment spec update to be observed...
+Waiting for deployment "policy-engine" rollout to finish: 0 out of 1 new replicas have been updated...
+Waiting for deployment "policy-engine" rollout to finish: 1 old replicas are pending termination...
+Waiting for deployment "policy-engine" rollout to finish: 1 old replicas are pending termination...
+deployment "policy-engine" successfully rolled out
+>> building nhi-lab/resource:dev
+DEPRECATED: The legacy builder is deprecated and will be removed in a future release.
+            Install the buildx component to build images with BuildKit:
+            https://docs.docker.com/go/buildx/
+
+>> loading nhi-lab/resource:dev into kind/nhi-t-vcore
+>> deploying the protected resource
+serviceaccount/resource unchanged
+service/resource unchanged
+deployment.apps/resource unchanged
+deployment.apps/resource restarted
+Waiting for deployment spec update to be observed...
+Waiting for deployment "resource" rollout to finish: 0 out of 1 new replicas have been updated...
+Waiting for deployment "resource" rollout to finish: 1 old replicas are pending termination...
+Waiting for deployment "resource" rollout to finish: 1 old replicas are pending termination...
+deployment "resource" successfully rolled out
+
+[1m[1] Deploying the resource, the test caller, the child identity and the mTLS probes[0m
+    | serviceaccount/resource unchanged
+    | service/resource unchanged
+    | deployment.apps/resource unchanged
+    | deployment.apps/resource-client created
+    | serviceaccount/nhi-test-child created
+    | deployment.apps/child-workload created
+    | serviceaccount/policy-probe created
+    | configmap/policy-probe-spiffe-helper created
+    | deployment.apps/policy-probe-unauthorized created
+    | deployment.apps/policy-probe-authorized created
+    [32mPASS[0m resource, policy engine, test caller, child identity and both probes all Ready
+    | caller(spend)=resource-client-66f6c8bbbc-9jlmg  caller(fetch,spiffe://lab.local/agent/parent/policy-verify/child/policy-verify-child)=child-workload-5c6c58fc-mnxmg  synth-probe(policy-probe)=policy-probe-unauthorized-5cd658447f-5sxjg  synth-probe(policy-engine)=policy-probe-authorized-577d9745fb-4t42d  resource=resource-7b565c9765-wmdxw
+
+[1m[2] Overriding CLIENT_SPIFFE_ID so a probe pod can exercise /synthesize directly[0m
+    | deployment.apps/policy-engine env updated
+    [32mPASS[0m policy engine now accepts spiffe://lab.local/svc/policy-probe on /synthesize (default remains svc/vending-service — see README)
+
+[1m[3] Clearing the grant namespace so this run starts from genuine default deny[0m
+    | no pre-existing grant modules
+    [32mPASS[0m grant namespace is empty
+
+[1m[4] Child identity obtains a JWT-SVID for the resource[0m
+    | subject: spiffe://lab.local/agent/parent/policy-verify/child/policy-verify-child
+    [32mPASS[0m caller holds a valid JWT-SVID for spiffe://lab.local/agent/parent/policy-verify/child/policy-verify-child (reused as the 'child' below)
+
+[1m[5] CHECK A — before synthesis, the resource denies (default deny)[0m
+    | GET /datasets/A -> 403|{"error":"Forbidden","reason":"policy denied"}  
+    [32mPASS[0m no grant yet: denied
+
+[1m[6] A caller using the WRONG probe identity is refused by the policy engine's mTLS listener[0m
+    | POST /synthesize as spiffe://lab.local/svc/policy-engine (accepted identity is spiffe://lab.local/svc/policy-probe) -> NHI_HTTP_CODE:000 NHI_EXIT:55
+    [32mPASS[0m wrong client identity refused before any HTTP response, with a TLS-shaped curl error
+
+[1m[7] An UNRELATED child_spiffe_id is rejected (400 + deny audit), closing the escalation[0m
+    | {"chain_id":"policy_verify_chain_escalation","parent_spiffe_id":"spiffe://lab.local/agent/parent/policy-verify","child_spiffe_id":"spiffe://lab.local/svc/test-workload",
+    |  "requested_scopes":["resource:read:datasetA"],
+    |  "task_context":"policy verify — sibling/unrelated child_spiffe_id escalation attempt","ttl_seconds":600}
+    | POST /synthesize (unrelated child) -> 400|{"error":"Bad Request","reason":"invalid child_spiffe_id: child_spiffe_id \"spiffe://lab.local/svc/test-workload\" is not a descendant of parent_spiffe_id \"spiffe://lab.local/agent/parent/policy-verify\" (expected path prefix \"/agent/parent/policy-verify/child/\")"}  
+    [32mPASS[0m unrelated child_spiffe_id (spiffe://lab.local/svc/test-workload) refused with HTTP 400 — not a descendant of spiffe://lab.local/agent/parent/policy-verify
+    | audit event: {"timestamp":"2026-11-09T02:13:45.665529675Z","stage":"vend","chain_id":"policy_verify_chain_escalation","actor_spiffe_id":"spiffe://lab.local/svc/policy-probe","outcome":"deny","detail":{"parent_spiffe_id":"spiffe://lab.local/agent/parent/policy-verify","child_spiffe_id":"spiffe://lab.local/svc/test-workload","reason":"invalid child_spiffe_id: child_spiffe_id \"spiffe://lab.local/svc/test-workload\" is not a descendant of parent_spiffe_id \"spiffe://lab.local/agent/parent/policy-verify\" (expected path prefix \"/agent/parent/policy-verify/child/\")"}}
+    [32mPASS[0m deny audit event recorded, citing the descendant check
+    [32mPASS[0m no grant module was written for the rejected escalation attempt
+
+[1m[8] Synthesizing a grant: requested exceeds Π(P) — an escalation attempt[0m
+    | {"chain_id":"policy_verify_chain","parent_spiffe_id":"spiffe://lab.local/agent/parent/policy-verify","child_spiffe_id":"spiffe://lab.local/agent/parent/policy-verify/child/policy-verify-child",
+    |  "requested_scopes":["resource:read:datasetA","resource:read:datasetB"],
+    |  "task_context":"policy verify — escalation attempt","ttl_seconds":600}
+    | (attempt 1: bare TCP connect timeout to a fresh pod IP, retrying) 
+curl: (28) Connection timed out after 20002 milliseconds
+NHI_HTTP_CODE:000command terminated with exit code 28
+    | POST /synthesize -> 200|{"child_scopes":["resource:read:datasetA"],"policy_id":"nhi_grants_policy_verify_chain","expires_at":1794191047}  
+    [32mPASS[0m synthesis accepted from the authorized probe identity (HTTP 200)
+    [32mPASS[0m child_scopes = [resource:read:datasetA] only — the datasetB escalation attempt was attenuated away
+    | audit event(s):
+    |   {"timestamp":"2026-11-09T02:14:07.882602802Z","stage":"vend","chain_id":"policy_verify_chain","actor_spiffe_id":"spiffe://lab.local/svc/policy-probe","outcome":"allow","detail":{"parent_spiffe_id":"spiffe://lab.local/agent/parent/policy-verify","child_spiffe_id":"spiffe://lab.local/agent/parent/policy-verify/child/policy-verify-child","requested_scopes":["resource:read:datasetA","resource:read:datasetB"],"child_scopes":["resource:read:datasetA"],"parent_scopes":["resource:read:datasetA"],"policy_id":"nhi_grants_policy_verify_chain","expires_at":1794191047,"task_context":"policy verify — escalation attempt"}}
+
+[1m[9] CHECK B — the SAME pod, SAME token, can now read dataset A[0m
+    | GET /datasets/A -> 200|{"dataset":"A","records":[{"id":1,"value":"alpha"},{"id":2,"value":"beta"}]}  
+    [32mPASS[0m the policy engine's generated Rego grants exactly the synthesized scope
+
+[1m[10] CHECK C — but dataset B stays denied (attenuation, not escalation)[0m
+    | GET /datasets/B -> 403|{"error":"Forbidden","reason":"policy denied"}  
+    [32mPASS[0m ungranted (and unheld-by-the-parent) scope denied
+
+[1m[11] Re-synthesizing the SAME chain_id is idempotent on the OPA side (same policy_id)[0m
+    | POST /synthesize (again) -> 200|{"child_scopes":["resource:read:datasetA"],"policy_id":"nhi_grants_policy_verify_chain","expires_at":1794191048}  
+    [32mPASS[0m policy_id is a pure function of chain_id : nhi_grants_policy_verify_chain both times
+
+[1m[12] CHECK D — disposal: DELETE /synthesize/{chain_id} removes the grant[0m
+    | DELETE /synthesize/policy_verify_chain -> 200|{"chain_id":"policy_verify_chain","policy_id":"nhi_grants_policy_verify_chain","removed":true}  
+    [32mPASS[0m disposal accepted
+    | audit event(s):
+    |   {"timestamp":"2026-11-09T02:14:08.146897812Z","stage":"dispose","chain_id":"policy_verify_chain","actor_spiffe_id":"spiffe://lab.local/svc/policy-probe","outcome":"allow","detail":{"policy_id":"nhi_grants_policy_verify_chain","reason":"grant module removed"}}
+
+[1m[13] After disposal, the SAME token is denied again — the credential alone confers nothing[0m
+    | GET /datasets/A -> 403|{"error":"Forbidden","reason":"policy denied"}  
+    [32mPASS[0m default deny restored
+
+[1m[14] Unknown parent (absent from OPA and the bootstrap table) attenuates to the empty set[0m
+    | POST /synthesize (unknown parent) -> 200|{"child_scopes":[],"policy_id":"nhi_grants_policy_verify_unknown","expires_at":1794190508}  
+    [32mPASS[0m unknown parent -> child_scopes = [] (fail closed, not an error)
+
+[1m[15] The CLIENT_SPIFFE_ID override is restored to the real default[0m
+    | CLIENT_SPIFFE_ID = spiffe://lab.local/svc/vending-service
+    [32mPASS[0m override restored; the probe identity is no longer authorized to /synthesize
+
+[32m================ POLICY VERIFY: PASS (15 checks) ================[0m
+One synthesized grant, driven end to end through the policy engine:
+  before synthesis        -> 403 on /datasets/A
+  requested A+B, Π(P)=A   -> child_scopes=[A] (escalation attenuated)
+  grant active            -> 200 on /datasets/A, 403 on /datasets/B
+  disposed                -> 403 on /datasets/A again

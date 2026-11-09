@@ -1,0 +1,10 @@
+# state after live-g1-mutated at 2026-11-09T02:14:36.542Z
+## SPIRE entries under spiffe://lab.local/agent/parent/exp-root/child/negtest-*
+      1 spiffe://lab.local/agent/parent/exp-root/child/negtest-forged-e23c32c873
+## delegation rows (GET /delegations/{chain_id} as exp-root) for every chain_id in this run's JSON
+### c_248111153be06964a0137279e644511a
+HTTP 404 {"error":"Not Found","reason":"no such delegation"}  command terminated with exit code 2 
+### c_6957c138765247559fd3d1642cfb9408
+HTTP 200 {"chain_id":"c_6957c138765247559fd3d1642cfb9408","parent_spiffe_id":"spiffe://lab.local/agent/parent/exp-root","child_spiffe_id":"spiffe://lab.local/agent/parent/exp-root/child/negtest-forged-e23c32c873","child_scopes":["resource:read:datasetA"],"entry_id":"318109b0-71f8-4f10-a501-0122f35ca054","policy_id":"nhi_grants_c_6957c138765247559fd3d1642cfb9408","issued_at":1794190436,"expires_at":1794190736}  
+### c_ed253275a2d54b58392a4349f20a91cc
+HTTP 200 {"chain_id":"c_ed253275a2d54b58392a4349f20a91cc","parent_spiffe_id":"spiffe://lab.local/agent/parent/exp-root","child_spiffe_id":"spiffe://lab.local/agent/parent/exp-root/child/negtest-orphan-6bb6cb78fb","child_scopes":["resource:read:datasetA"],"entry_id":"b09bcfc5-5a9d-4ed6-9748-17fafb07552d","policy_id":"nhi_grants_c_ed253275a2d54b58392a4349f20a91cc","issued_at":1794190468,"expires_at":1794190473,"revoked_at":1794190476,"revocation_reason":"ttl_expired"}  

@@ -1,0 +1,8 @@
+# state after live-g2-mutated at 2026-11-09T02:17:52.318Z
+## SPIRE entries under spiffe://lab.local/agent/parent/exp-root/child/negtest-*
+      1 spiffe://lab.local/agent/parent/exp-root/child/negtest-escalate-182320b3b4
+## delegation rows (GET /delegations/{chain_id} as exp-root) for every chain_id in this run's JSON
+### c_416e7ce0b70c3d45c689b54cf71e2704
+{"chain_id":"c_416e7ce0b70c3d45c689b54cf71e2704","parent_spiffe_id":"spiffe://lab.local/agent/parent/exp-root","child_spiffe_id":"spiffe://lab.local/agent/parent/exp-root/child/negtest-escalate-182320b3b4","child_scopes":[],"entry_id":"a4f8c7fb-deb6-4b3e-9009-f9089c383e9b","policy_id":"nhi_grants_c_416e7ce0b70c3d45c689b54cf71e2704","issued_at":1794190646,"expires_at":1794190946}  HTTP 200 
+### c_b31ff9d6fd88c1051b8dcb5c7a607207
+HTTP 200 {"chain_id":"c_b31ff9d6fd88c1051b8dcb5c7a607207","parent_spiffe_id":"spiffe://lab.local/agent/parent/exp-root","child_spiffe_id":"spiffe://lab.local/agent/parent/exp-root/child/negtest-orphan-f4345710cd","child_scopes":["resource:read:datasetA"],"entry_id":"18a81abb-5128-4510-9f4a-aeceb5e6db90","policy_id":"nhi_grants_c_b31ff9d6fd88c1051b8dcb5c7a607207","issued_at":1794190653,"expires_at":1794190658,"revoked_at":1794190671,"revocation_reason":"ttl_expired"}  

@@ -1,0 +1,284 @@
+>> building nhi-lab/agents:dev
+DEPRECATED: The legacy builder is deprecated and will be removed in a future release.
+            Install the buildx component to build images with BuildKit:
+            https://docs.docker.com/go/buildx/
+
+>> loading nhi-lab/agents:dev into kind/nhi-t-vpres
+namespace/spire unchanged
+namespace/opa unchanged
+namespace/nhi unchanged
+namespace/agents unchanged
+>> deploying SPIRE server 1.15.2
+serviceaccount/spire-server unchanged
+clusterrole.rbac.authorization.k8s.io/spire-server-node-attestor unchanged
+clusterrolebinding.rbac.authorization.k8s.io/spire-server-node-attestor unchanged
+role.rbac.authorization.k8s.io/spire-server-bundle-publisher unchanged
+rolebinding.rbac.authorization.k8s.io/spire-server-bundle-publisher unchanged
+configmap/spire-server unchanged
+configmap/spire-bundle unchanged
+service/spire-server unchanged
+statefulset.apps/spire-server configured
+>> waiting for spire-server to become Ready
+partitioned roll out complete: 1 new pods have been updated...
+>> waiting for the spire-bundle ConfigMap to be populated
+>> trust bundle published (809 bytes)
+>> deploying SPIRE agent 1.15.2
+serviceaccount/spire-agent unchanged
+clusterrole.rbac.authorization.k8s.io/spire-agent-workload-attestor unchanged
+clusterrolebinding.rbac.authorization.k8s.io/spire-agent-workload-attestor unchanged
+configmap/spire-agent unchanged
+daemonset.apps/spire-agent unchanged
+>> waiting for spire-agent DaemonSet to become Ready
+daemon set "spire-agent" successfully rolled out
+>> waiting for node attestation to complete
+>> 2 agents attested via k8s_psat
+Registering static SPIRE entries in trust domain lab.local
+  = node alias: spiffe://lab.local/node/nhi-lab (already registered)
+  = static test workload: spiffe://lab.local/svc/test-workload (already registered)
+  = properly-shaped child test identity (verify-policy only): spiffe://lab.local/agent/parent/policy-verify/child/policy-verify-child (already registered)
+  = OPA server: spiffe://lab.local/svc/opa (already registered)
+  = policy engine: spiffe://lab.local/svc/policy-engine (already registered)
+  = protected resource: spiffe://lab.local/svc/resource (already registered)
+  = vending service: spiffe://lab.local/svc/vending-service (already registered)
+  = vend-verify parent (verify-vending only): spiffe://lab.local/agent/parent/vend-verify (already registered)
+  = demo parent: spiffe://lab.local/agent/parent/demo (already registered)
+  = OpenCode parent: spiffe://lab.local/agent/parent/opencode (already registered)
+  = experiments root parent: spiffe://lab.local/agent/parent/exp-root (already registered)
+  = policy probe (verify only): spiffe://lab.local/svc/policy-probe (already registered)
+
+Found 12 entries
+Entry ID                : cac160d5-bb2f-4d20-b849-cc0eeb13230a
+SPIFFE ID               : spiffe://lab.local/agent/parent/demo
+Parent ID               : spiffe://lab.local/node/nhi-lab
+Revision                : 0
+X509-SVID TTL           : default
+JWT-SVID TTL            : default
+Selector                : k8s:ns:agents
+Selector                : k8s:sa:nhi-demo-parent
+
+Entry ID                : 59e1318e-2a80-4919-a80a-9a7126d6d0d6
+SPIFFE ID               : spiffe://lab.local/agent/parent/exp-root
+Parent ID               : spiffe://lab.local/node/nhi-lab
+Revision                : 0
+X509-SVID TTL           : default
+JWT-SVID TTL            : default
+Selector                : k8s:ns:agents
+Selector                : k8s:sa:nhi-exp-parent
+
+Entry ID                : 065f1fa7-28dc-47ed-95ad-7c7aa76f3a21
+SPIFFE ID               : spiffe://lab.local/agent/parent/opencode
+Parent ID               : spiffe://lab.local/node/nhi-lab
+Revision                : 0
+X509-SVID TTL           : default
+JWT-SVID TTL            : default
+Selector                : k8s:ns:agents
+Selector                : k8s:sa:nhi-opencode-parent
+
+Entry ID                : b880437c-90d7-4e2f-a762-ed222e5bbba3
+SPIFFE ID               : spiffe://lab.local/agent/parent/policy-verify/child/policy-verify-child
+Parent ID               : spiffe://lab.local/node/nhi-lab
+Revision                : 0
+X509-SVID TTL           : default
+JWT-SVID TTL            : default
+Selector                : k8s:ns:agents
+Selector                : k8s:sa:nhi-test-child
+
+Entry ID                : f9b6d6ce-489e-4135-a696-2f1cd4d7ade2
+SPIFFE ID               : spiffe://lab.local/agent/parent/vend-verify
+Parent ID               : spiffe://lab.local/node/nhi-lab
+Revision                : 0
+X509-SVID TTL           : default
+JWT-SVID TTL            : default
+Selector                : k8s:ns:agents
+Selector                : k8s:sa:nhi-test-vend-parent
+
+Entry ID                : eb712a0d-bb36-4ba6-981a-ea9b475e9a29
+SPIFFE ID               : spiffe://lab.local/node/nhi-lab
+Parent ID               : spiffe://lab.local/spire/server
+Revision                : 0
+X509-SVID TTL           : default
+JWT-SVID TTL            : default
+Selector                : k8s_psat:cluster:nhi-lab
+
+Entry ID                : f8e38b50-fed2-4477-bcdf-cca239710e2d
+SPIFFE ID               : spiffe://lab.local/svc/opa
+Parent ID               : spiffe://lab.local/node/nhi-lab
+Revision                : 0
+X509-SVID TTL           : default
+JWT-SVID TTL            : default
+Selector                : k8s:ns:opa
+Selector                : k8s:sa:opa
+DNS name                : opa.opa.svc.cluster.local
+DNS name                : opa.opa.svc
+DNS name                : opa
+
+Entry ID                : b5ad14ce-1644-4cde-9659-52fe6f054c4c
+SPIFFE ID               : spiffe://lab.local/svc/policy-engine
+Parent ID               : spiffe://lab.local/node/nhi-lab
+Revision                : 0
+X509-SVID TTL           : default
+JWT-SVID TTL            : default
+Selector                : k8s:ns:nhi
+Selector                : k8s:sa:policy-engine
+DNS name                : policy-engine.nhi.svc.cluster.local
+DNS name                : policy-engine.nhi.svc
+DNS name                : policy-engine
+
+Entry ID                : 40ade9a3-68a3-437a-8e28-52e51137491d
+SPIFFE ID               : spiffe://lab.local/svc/policy-probe
+Parent ID               : spiffe://lab.local/node/nhi-lab
+Revision                : 0
+X509-SVID TTL           : default
+JWT-SVID TTL            : default
+Selector                : k8s:ns:nhi
+Selector                : k8s:sa:policy-probe
+
+Entry ID                : 771b1ff6-fdfd-4895-85d1-d5331379a474
+SPIFFE ID               : spiffe://lab.local/svc/resource
+Parent ID               : spiffe://lab.local/node/nhi-lab
+Revision                : 0
+X509-SVID TTL           : default
+JWT-SVID TTL            : default
+Selector                : k8s:ns:nhi
+Selector                : k8s:sa:resource
+
+Entry ID                : 7678c4cd-4e79-4b28-9c5e-8583232068bc
+SPIFFE ID               : spiffe://lab.local/svc/test-workload
+Parent ID               : spiffe://lab.local/node/nhi-lab
+Revision                : 0
+X509-SVID TTL           : default
+JWT-SVID TTL            : default
+Selector                : k8s:ns:agents
+Selector                : k8s:sa:nhi-test
+
+Entry ID                : ba25f444-9396-47bf-a5c7-92ea6c9f97aa
+SPIFFE ID               : spiffe://lab.local/svc/vending-service
+Parent ID               : spiffe://lab.local/node/nhi-lab
+Revision                : 0
+X509-SVID TTL           : default
+JWT-SVID TTL            : default
+Selector                : k8s:ns:nhi
+Selector                : k8s:sa:vending-service
+
+>> building nhi-lab/policy-engine:dev
+DEPRECATED: The legacy builder is deprecated and will be removed in a future release.
+            Install the buildx component to build images with BuildKit:
+            https://docs.docker.com/go/buildx/
+
+>> loading nhi-lab/policy-engine:dev into kind/nhi-t-vpres
+>> deploying the policy engine
+serviceaccount/policy-engine unchanged
+service/policy-engine unchanged
+deployment.apps/policy-engine unchanged
+configmap/policy-engine-bootstrap unchanged
+deployment.apps/policy-engine restarted
+Waiting for deployment spec update to be observed...
+Waiting for deployment "policy-engine" rollout to finish: 0 out of 1 new replicas have been updated...
+Waiting for deployment "policy-engine" rollout to finish: 1 old replicas are pending termination...
+Waiting for deployment "policy-engine" rollout to finish: 1 old replicas are pending termination...
+deployment "policy-engine" successfully rolled out
+>> building nhi-lab/vending-service:dev
+DEPRECATED: The legacy builder is deprecated and will be removed in a future release.
+            Install the buildx component to build images with BuildKit:
+            https://docs.docker.com/go/buildx/
+
+>> loading nhi-lab/vending-service:dev into kind/nhi-t-vpres
+>> deploying the vending service
+persistentvolumeclaim/vending-data unchanged
+serviceaccount/vending-service unchanged
+service/vending-service unchanged
+deployment.apps/vending-service unchanged
+deployment.apps/vending-service restarted
+Waiting for deployment "vending-service" rollout to finish: 0 out of 1 new replicas have been updated...
+Waiting for deployment "vending-service" rollout to finish: 0 out of 1 new replicas have been updated...
+Waiting for deployment "vending-service" rollout to finish: 0 out of 1 new replicas have been updated...
+Waiting for deployment "vending-service" rollout to finish: 0 out of 1 new replicas have been updated...
+Waiting for deployment "vending-service" rollout to finish: 0 of 1 updated replicas are available...
+deployment "vending-service" successfully rolled out
+>> building nhi-lab/resource:dev
+DEPRECATED: The legacy builder is deprecated and will be removed in a future release.
+            Install the buildx component to build images with BuildKit:
+            https://docs.docker.com/go/buildx/
+
+>> loading nhi-lab/resource:dev into kind/nhi-t-vpres
+>> deploying the protected resource
+serviceaccount/resource unchanged
+service/resource unchanged
+deployment.apps/resource unchanged
+deployment.apps/resource restarted
+Waiting for deployment spec update to be observed...
+Waiting for deployment "resource" rollout to finish: 0 out of 1 new replicas have been updated...
+Waiting for deployment "resource" rollout to finish: 1 old replicas are pending termination...
+Waiting for deployment "resource" rollout to finish: 1 old replicas are pending termination...
+deployment "resource" successfully rolled out
+>> building nhi-lab/opencode-parent:dev
+DEPRECATED: The legacy builder is deprecated and will be removed in a future release.
+            Install the buildx component to build images with BuildKit:
+            https://docs.docker.com/go/buildx/
+
+>> loading nhi-lab/opencode-parent:dev into kind/nhi-t-vpres
+!! no ANTHROPIC_KEY_FILE given and no Secret opencode-llm: the agent will have no LLM
+!! until one is provided: make present-up ANTHROPIC_KEY_FILE=<file with ANTHROPIC_API_KEY=...>
+Waiting for deployment spec update to be observed...
+Waiting for deployment "policy-engine" rollout to finish: 0 out of 1 new replicas have been updated...
+Waiting for deployment "policy-engine" rollout to finish: 1 old replicas are pending termination...
+Waiting for deployment "policy-engine" rollout to finish: 1 old replicas are pending termination...
+deployment "policy-engine" successfully rolled out
+pod/nhi-opencode-parent created
+pod/nhi-opencode-parent condition met
+
+>> OpenCode parent is up. Next: make present-shell
+>> verify-exit-hooks window starts at 2026-11-09T02:16:06Z (UTC)
+
+[1m[1] Preflight: the OpenCode parent pod and the OPA read-through probe are Ready[0m
+    [32mPASS[0m nhi-opencode-parent Ready; OPA read-through probe policy-probe-authorized-577d9745fb-qbftf Ready
+    [32mPASS[0m both parents are registered with SPIRE
+    [32mPASS[0m nhi-opencode-parent has the stop-tools preStop hook and a 30 s grace period
+
+[1m[2] (a) Demo parent: delete the pod while its delegation is live[0m
+    | attempt 1/3
+    | chain_id=c_956443f3ff155c54728f44df796b38e0 child=spiffe://lab.local/agent/parent/demo/child/nhi-demo-child-b1ddc2c15a; child pod nhi-demo-child-b1ddc2c15a is Pending; deleting nhi-demo-parent (uid 6f982137-1c6f-454d-8b39-0985fc90fe0e) now
+    | pod "nhi-demo-parent" deleted from agents namespace
+    | (a) demo parent: GET /delegations/c_956443f3ff155c54728f44df796b38e0 -> 200 {"chain_id":"c_956443f3ff155c54728f44df796b38e0","parent_spiffe_id":"spiffe://lab.local/agent/parent/demo","child_spiffe_id":"spiffe://lab.local/agent/parent/demo/child/nhi-demo-child-b1ddc2c15a","child_scopes":["resource:read:datasetA"],"entry_id":"102867be-cb4a-490d-afce-25fa52409c46","policy_id":"nhi_grants_c_956443f3ff155c54728f44df796b38e0","issued_at":1794190573,"expires_at":1794190873,"revoked_at":1794190573,"revocation_reason":"revoked_on_demand"}
+    [32mPASS[0m (a) demo parent: the delegation is revoked (revoked_at is set, reason 'revoked_on_demand')
+    [32mPASS[0m (a) demo parent: vending service audit has a dispose (allow) event for c_956443f3ff155c54728f44df796b38e0, stamped at or after the delete
+    | {"timestamp":"2026-11-09T02:16:13.952567312Z","stage":"dispose","chain_id":"c_956443f3ff155c54728f44df796b38e0","actor_spiffe_id":"spiffe://lab.local/agent/parent/demo","outcome":"allow","detail":{"parent_spiffe_id":"spiffe://lab.local/agent/parent/demo","child_spiffe_id":"spiffe://lab.local/agent/parent/demo/child/nhi-demo-child-b1ddc2c15a","policy_id":"nhi_grants_c_956443f3ff155c54728f44df796b38e0","entry_id":"102867be-cb4a-490d-afce-25fa52409c46","reason":"revoked_on_demand"}}
+    [32mPASS[0m (a) demo parent: policy service audit has a dispose (allow) event for c_956443f3ff155c54728f44df796b38e0, stamped at or after the delete
+    | {"timestamp":"2026-11-09T02:16:13.943058556Z","stage":"dispose","chain_id":"c_956443f3ff155c54728f44df796b38e0","actor_spiffe_id":"spiffe://lab.local/svc/vending-service","outcome":"allow","detail":{"policy_id":"nhi_grants_c_956443f3ff155c54728f44df796b38e0","reason":"grant module removed"}}
+    [32mPASS[0m (a) demo parent: the dispose event names the parent (demo) as actor
+    | (a) demo parent: SPIRE entries for the child=0, OPA grant modules for the chain=0
+    [32mPASS[0m (a) demo parent: the child's SPIRE entry is gone
+    [32mPASS[0m (a) demo parent: the chain's OPA grant is gone
+    | (c) demo parent's child: child pod nhi-demo-child-b1ddc2c15a (phase when the parent was deleted: Pending) ownerReferences: [{"apiVersion":"v1","kind":"Pod","name":"nhi-demo-parent","uid":"6f982137-1c6f-454d-8b39-0985fc90fe0e"}]
+    [32mPASS[0m (c) demo parent's child: the child pod has exactly one ownerReference, to nhi-demo-parent (uid 6f982137-1c6f-454d-8b39-0985fc90fe0e), without blockOwnerDeletion
+    [32mPASS[0m (c) demo parent's child: child pod nhi-demo-child-b1ddc2c15a is NotFound 35s after the delete was issued
+    [32mPASS[0m (a) the recreated demo parent completes its normal cycle (pod phase Succeeded)
+
+[1m[3] (b) OpenCode parent: delete the pod while 'parent.py tool' runs under kubectl exec[0m
+    | attempt 1/3
+    | chain_id=c_7d670d1f10861f55c10cff044353fcee child=spiffe://lab.local/agent/parent/opencode/child/nhi-demo-child-50d1f7cf02; child pod nhi-demo-child-50d1f7cf02 is Pending; deleting nhi-opencode-parent (uid ea88a3aa-0c64-428d-8a3f-bf255379b428) now
+    | pod "nhi-opencode-parent" deleted from agents namespace
+    | the tool's stderr as it ended:
+    | [2026-11-09T02:17:00.707217+00:00] parent: disposing delegation c_7d670d1f10861f55c10cff044353fcee
+    | [2026-11-09T02:17:00.728392+00:00] parent: dispose responded 200: {"chain_id":"c_7d670d1f10861f55c10cff044353fcee","revoked":true}
+    | the tool printed no result line (its exec session ended with the pod)
+    | (b) OpenCode parent: GET /delegations/c_7d670d1f10861f55c10cff044353fcee -> 200 {"chain_id":"c_7d670d1f10861f55c10cff044353fcee","parent_spiffe_id":"spiffe://lab.local/agent/parent/opencode","child_spiffe_id":"spiffe://lab.local/agent/parent/opencode/child/nhi-demo-child-50d1f7cf02","child_scopes":["resource:read:datasetA"],"entry_id":"63ec68ee-67d2-40cb-bb8a-a79f49bfc6d5","policy_id":"nhi_grants_c_7d670d1f10861f55c10cff044353fcee","issued_at":1794190620,"expires_at":1794190920,"revoked_at":1794190620,"revocation_reason":"revoked_on_demand"}
+    [32mPASS[0m (b) OpenCode parent: the delegation is revoked (revoked_at is set, reason 'revoked_on_demand')
+    [32mPASS[0m (b) OpenCode parent: vending service audit has a dispose (allow) event for c_7d670d1f10861f55c10cff044353fcee, stamped at or after the delete
+    | {"timestamp":"2026-11-09T02:17:00.727980988Z","stage":"dispose","chain_id":"c_7d670d1f10861f55c10cff044353fcee","actor_spiffe_id":"spiffe://lab.local/agent/parent/opencode","outcome":"allow","detail":{"parent_spiffe_id":"spiffe://lab.local/agent/parent/opencode","child_spiffe_id":"spiffe://lab.local/agent/parent/opencode/child/nhi-demo-child-50d1f7cf02","policy_id":"nhi_grants_c_7d670d1f10861f55c10cff044353fcee","entry_id":"63ec68ee-67d2-40cb-bb8a-a79f49bfc6d5","reason":"revoked_on_demand"}}
+    [32mPASS[0m (b) OpenCode parent: policy service audit has a dispose (allow) event for c_7d670d1f10861f55c10cff044353fcee, stamped at or after the delete
+    | {"timestamp":"2026-11-09T02:17:00.71105262Z","stage":"dispose","chain_id":"c_7d670d1f10861f55c10cff044353fcee","actor_spiffe_id":"spiffe://lab.local/svc/vending-service","outcome":"allow","detail":{"policy_id":"nhi_grants_c_7d670d1f10861f55c10cff044353fcee","reason":"grant module removed"}}
+    [32mPASS[0m (b) OpenCode parent: the dispose event names the parent (opencode) as actor
+    | (b) OpenCode parent: SPIRE entries for the child=0, OPA grant modules for the chain=0
+    [32mPASS[0m (b) OpenCode parent: the child's SPIRE entry is gone
+    [32mPASS[0m (b) OpenCode parent: the chain's OPA grant is gone
+    | (c) OpenCode parent's child: child pod nhi-demo-child-50d1f7cf02 (phase when the parent was deleted: Pending) ownerReferences: [{"apiVersion":"v1","kind":"Pod","name":"nhi-opencode-parent","uid":"ea88a3aa-0c64-428d-8a3f-bf255379b428"}]
+    [32mPASS[0m (c) OpenCode parent's child: the child pod has exactly one ownerReference, to nhi-opencode-parent (uid ea88a3aa-0c64-428d-8a3f-bf255379b428), without blockOwnerDeletion
+    [32mPASS[0m (c) OpenCode parent's child: child pod nhi-demo-child-50d1f7cf02 is NotFound 62s after the delete was issued
+    [32mPASS[0m (b) nhi-opencode-parent was recreated and is Ready
+
+[32m================ VERIFY-EXIT-HOOKS: PASS (3 steps) ================[0m
+A parent deleted mid-cycle disposes its delegation before it goes:
+  demo parent (PID 1 SIGTERM handler): dispose event, revoked record, no entry, no grant
+  OpenCode parent (preStop -> stop-tools -> tool handler): same
+  each child pod carried an ownerReference to its parent pod and was garbage-collected

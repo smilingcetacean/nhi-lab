@@ -1,0 +1,20 @@
+{
+  "stream": "host-load",
+  "description": "Host load sampled every 10 s while the five test streams ran, so each stream's timings can be read against the load at the time",
+  "file": "host_load.csv",
+  "columns": {
+    "utc": "sample time, UTC",
+    "epoch_s": "sample time, Unix seconds",
+    "load1": "1-minute load average from /proc/loadavg",
+    "load5": "5-minute load average",
+    "load15": "15-minute load average",
+    "mem_available_mb": "MemAvailable from /proc/meminfo, MiB",
+    "mem_total_mb": "MemTotal from /proc/meminfo, MiB",
+    "kind_clusters": "number of kind clusters named nhi-t-* (the test streams' clusters)",
+    "running_containers": "docker ps count (kind nodes are containers)"
+  },
+  "first_sample_utc": "2026-11-09T02:06:40Z",
+  "last_sample_utc": "2026-11-09T02:31:36Z",
+  "samples": 150,
+  "host_cpus": 16
+}

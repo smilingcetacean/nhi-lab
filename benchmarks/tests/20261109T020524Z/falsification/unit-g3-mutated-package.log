@@ -1,0 +1,73 @@
+=== RUN   TestDisposeCascadesToLiveDescendantsBreadthFirst
+--- PASS: TestDisposeCascadesToLiveDescendantsBreadthFirst (0.00s)
+=== RUN   TestDisposeOfALeafDisposesOnlyThatChain
+--- PASS: TestDisposeOfALeafDisposesOnlyThatChain (0.00s)
+=== RUN   TestDisposeChainRemovesGrantBeforeEntryBeforeRow
+--- PASS: TestDisposeChainRemovesGrantBeforeEntryBeforeRow (0.00s)
+=== RUN   TestDisposeChainStopsWhenTheGrantCannotBeRemoved
+--- PASS: TestDisposeChainStopsWhenTheGrantCannotBeRemoved (0.00s)
+=== RUN   TestDisposeDoesNotCascadeWhenTheTargetFails
+--- PASS: TestDisposeDoesNotCascadeWhenTheTargetFails (0.00s)
+=== RUN   TestDisposeCascadePartialFailureNamesTheDescendant
+2026/11/08 21:10:15 vending-service: reaper: expired delegation c_g (child spiffe://lab.local/agent/parent/t1/child/c1/child/g1) reaped
+2026/11/08 21:10:15 vending-service: reaper: expired delegation c_sib (child spiffe://lab.local/agent/parent/t1/child/c2) reaped
+2026/11/08 21:10:15 vending-service: reaper: expired delegation c_sibg (child spiffe://lab.local/agent/parent/t1/child/c2/child/g1) reaped
+--- PASS: TestDisposeCascadePartialFailureNamesTheDescendant (0.00s)
+=== RUN   TestReaperDoesNotCascade
+2026/11/08 21:10:15 vending-service: reaper: expired delegation c_c (child spiffe://lab.local/agent/parent/t1/child/c1) reaped
+--- PASS: TestReaperDoesNotCascade (0.00s)
+=== RUN   TestVendUsesTheShortenedExpiryEverywhere
+--- PASS: TestVendUsesTheShortenedExpiryEverywhere (0.00s)
+=== RUN   TestVendWithoutShorteningHasNoTTLReason
+--- PASS: TestVendWithoutShorteningHasNoTTLReason (0.00s)
+=== RUN   TestVendX509TTLIsAtLeastOneSecond
+--- PASS: TestVendX509TTLIsAtLeastOneSecond (0.00s)
+=== RUN   TestVendRefusedAtDepthLimitLeavesNoState
+--- PASS: TestVendRefusedAtDepthLimitLeavesNoState (0.00s)
+=== RUN   TestVendAtTheDepthLimitIsAllowed
+--- PASS: TestVendAtTheDepthLimitIsAllowed (0.00s)
+=== RUN   TestVendRefusedAtChildCapAndFreedByDisposal
+--- PASS: TestVendRefusedAtChildCapAndFreedByDisposal (0.00s)
+=== RUN   TestConcurrentVendsByOneParentRespectTheCap
+--- PASS: TestConcurrentVendsByOneParentRespectTheCap (0.06s)
+=== RUN   TestParentLocksAreIndependentAndReleased
+--- PASS: TestParentLocksAreIndependentAndReleased (0.00s)
+=== RUN   TestEnvPositiveInt
+--- PASS: TestEnvPositiveInt (0.00s)
+=== RUN   TestHandleVendRejectsMissingAuth
+--- PASS: TestHandleVendRejectsMissingAuth (0.00s)
+=== RUN   TestHandleVendRejectsInvalidJWT
+--- PASS: TestHandleVendRejectsInvalidJWT (0.00s)
+=== RUN   TestHandleVendRejectsWrongAudience
+--- PASS: TestHandleVendRejectsWrongAudience (0.00s)
+=== RUN   TestHandleVendRejectsClaimedParentNotMatchingCaller
+--- PASS: TestHandleVendRejectsClaimedParentNotMatchingCaller (0.00s)
+=== RUN   TestHandleVendRelayedManifestDoesNotBurnTheRealParentsNonce
+--- PASS: TestHandleVendRelayedManifestDoesNotBurnTheRealParentsNonce (0.00s)
+=== RUN   TestHandleVendRejectsForgedSignature
+--- PASS: TestHandleVendRejectsForgedSignature (0.00s)
+=== RUN   TestHandleVendRejectsReplayedNonce
+    main_test.go:488: status = 500, want 409 (nonce replay refused); body={"error":"Internal Server Error","reason":"could not record nonce: nonce already used"}
+--- FAIL: TestHandleVendRejectsReplayedNonce (0.00s)
+=== RUN   TestHandleVendRejectsMalformedManifest
+--- PASS: TestHandleVendRejectsMalformedManifest (0.00s)
+=== RUN   TestHandleVendRejectsSelectorsOutsideCallersOwnNamespace
+--- PASS: TestHandleVendRejectsSelectorsOutsideCallersOwnNamespace (0.00s)
+=== RUN   TestHandleVendRejectsNamespaceOnlySelectors
+--- PASS: TestHandleVendRejectsNamespaceOnlySelectors (0.00s)
+=== RUN   TestHandleVendRejectsWhenCallerHasNoLookupableSelectors
+--- PASS: TestHandleVendRejectsWhenCallerHasNoLookupableSelectors (0.00s)
+=== RUN   TestHandleVendHappyPathPersistsAttenuatedDelegation
+--- PASS: TestHandleVendHappyPathPersistsAttenuatedDelegation (0.00s)
+=== RUN   TestHandleVendRejectsEmptyAttenuationResult
+--- PASS: TestHandleVendRejectsEmptyAttenuationResult (0.00s)
+=== RUN   TestHandleDisposeRejectsNonParentCaller
+--- PASS: TestHandleDisposeRejectsNonParentCaller (0.00s)
+=== RUN   TestHandleDisposeByParentRevokesAndDeletesEntry
+--- PASS: TestHandleDisposeByParentRevokesAndDeletesEntry (0.00s)
+=== RUN   TestReaperReapsExpiredDelegation
+2026/11/08 21:10:15 vending-service: reaper: expired delegation c_orphan (child spiffe://lab.local/agent/parent/dead-parent/child/c1) reaped
+--- PASS: TestReaperReapsExpiredDelegation (0.00s)
+FAIL
+FAIL	nhi-lab/vending-service/cmd/vending-service	0.088s
+FAIL

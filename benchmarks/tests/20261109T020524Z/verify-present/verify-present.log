@@ -1,0 +1,344 @@
+>> building nhi-lab/agents:dev
+DEPRECATED: The legacy builder is deprecated and will be removed in a future release.
+            Install the buildx component to build images with BuildKit:
+            https://docs.docker.com/go/buildx/
+
+>> loading nhi-lab/agents:dev into kind/nhi-t-vpres
+namespace/spire unchanged
+namespace/opa unchanged
+namespace/nhi unchanged
+namespace/agents unchanged
+>> deploying SPIRE server 1.15.2
+serviceaccount/spire-server unchanged
+clusterrole.rbac.authorization.k8s.io/spire-server-node-attestor unchanged
+clusterrolebinding.rbac.authorization.k8s.io/spire-server-node-attestor unchanged
+role.rbac.authorization.k8s.io/spire-server-bundle-publisher unchanged
+rolebinding.rbac.authorization.k8s.io/spire-server-bundle-publisher unchanged
+configmap/spire-server unchanged
+configmap/spire-bundle unchanged
+service/spire-server unchanged
+statefulset.apps/spire-server configured
+>> waiting for spire-server to become Ready
+partitioned roll out complete: 1 new pods have been updated...
+>> waiting for the spire-bundle ConfigMap to be populated
+>> trust bundle published (809 bytes)
+>> deploying SPIRE agent 1.15.2
+serviceaccount/spire-agent unchanged
+clusterrole.rbac.authorization.k8s.io/spire-agent-workload-attestor unchanged
+clusterrolebinding.rbac.authorization.k8s.io/spire-agent-workload-attestor unchanged
+configmap/spire-agent unchanged
+daemonset.apps/spire-agent unchanged
+>> waiting for spire-agent DaemonSet to become Ready
+daemon set "spire-agent" successfully rolled out
+>> waiting for node attestation to complete
+>> 2 agents attested via k8s_psat
+Registering static SPIRE entries in trust domain lab.local
+  = node alias: spiffe://lab.local/node/nhi-lab (already registered)
+  = static test workload: spiffe://lab.local/svc/test-workload (already registered)
+  = properly-shaped child test identity (verify-policy only): spiffe://lab.local/agent/parent/policy-verify/child/policy-verify-child (already registered)
+  = OPA server: spiffe://lab.local/svc/opa (already registered)
+  = policy engine: spiffe://lab.local/svc/policy-engine (already registered)
+  = protected resource: spiffe://lab.local/svc/resource (already registered)
+  = vending service: spiffe://lab.local/svc/vending-service (already registered)
+  = vend-verify parent (verify-vending only): spiffe://lab.local/agent/parent/vend-verify (already registered)
+  = demo parent: spiffe://lab.local/agent/parent/demo (already registered)
+  = OpenCode parent: spiffe://lab.local/agent/parent/opencode (already registered)
+  = experiments root parent: spiffe://lab.local/agent/parent/exp-root (already registered)
+  = policy probe (verify only): spiffe://lab.local/svc/policy-probe (already registered)
+
+Found 12 entries
+Entry ID                : cac160d5-bb2f-4d20-b849-cc0eeb13230a
+SPIFFE ID               : spiffe://lab.local/agent/parent/demo
+Parent ID               : spiffe://lab.local/node/nhi-lab
+Revision                : 0
+X509-SVID TTL           : default
+JWT-SVID TTL            : default
+Selector                : k8s:ns:agents
+Selector                : k8s:sa:nhi-demo-parent
+
+Entry ID                : 59e1318e-2a80-4919-a80a-9a7126d6d0d6
+SPIFFE ID               : spiffe://lab.local/agent/parent/exp-root
+Parent ID               : spiffe://lab.local/node/nhi-lab
+Revision                : 0
+X509-SVID TTL           : default
+JWT-SVID TTL            : default
+Selector                : k8s:ns:agents
+Selector                : k8s:sa:nhi-exp-parent
+
+Entry ID                : 065f1fa7-28dc-47ed-95ad-7c7aa76f3a21
+SPIFFE ID               : spiffe://lab.local/agent/parent/opencode
+Parent ID               : spiffe://lab.local/node/nhi-lab
+Revision                : 0
+X509-SVID TTL           : default
+JWT-SVID TTL            : default
+Selector                : k8s:ns:agents
+Selector                : k8s:sa:nhi-opencode-parent
+
+Entry ID                : b880437c-90d7-4e2f-a762-ed222e5bbba3
+SPIFFE ID               : spiffe://lab.local/agent/parent/policy-verify/child/policy-verify-child
+Parent ID               : spiffe://lab.local/node/nhi-lab
+Revision                : 0
+X509-SVID TTL           : default
+JWT-SVID TTL            : default
+Selector                : k8s:ns:agents
+Selector                : k8s:sa:nhi-test-child
+
+Entry ID                : f9b6d6ce-489e-4135-a696-2f1cd4d7ade2
+SPIFFE ID               : spiffe://lab.local/agent/parent/vend-verify
+Parent ID               : spiffe://lab.local/node/nhi-lab
+Revision                : 0
+X509-SVID TTL           : default
+JWT-SVID TTL            : default
+Selector                : k8s:ns:agents
+Selector                : k8s:sa:nhi-test-vend-parent
+
+Entry ID                : eb712a0d-bb36-4ba6-981a-ea9b475e9a29
+SPIFFE ID               : spiffe://lab.local/node/nhi-lab
+Parent ID               : spiffe://lab.local/spire/server
+Revision                : 0
+X509-SVID TTL           : default
+JWT-SVID TTL            : default
+Selector                : k8s_psat:cluster:nhi-lab
+
+Entry ID                : f8e38b50-fed2-4477-bcdf-cca239710e2d
+SPIFFE ID               : spiffe://lab.local/svc/opa
+Parent ID               : spiffe://lab.local/node/nhi-lab
+Revision                : 0
+X509-SVID TTL           : default
+JWT-SVID TTL            : default
+Selector                : k8s:ns:opa
+Selector                : k8s:sa:opa
+DNS name                : opa.opa.svc.cluster.local
+DNS name                : opa.opa.svc
+DNS name                : opa
+
+Entry ID                : b5ad14ce-1644-4cde-9659-52fe6f054c4c
+SPIFFE ID               : spiffe://lab.local/svc/policy-engine
+Parent ID               : spiffe://lab.local/node/nhi-lab
+Revision                : 0
+X509-SVID TTL           : default
+JWT-SVID TTL            : default
+Selector                : k8s:ns:nhi
+Selector                : k8s:sa:policy-engine
+DNS name                : policy-engine.nhi.svc.cluster.local
+DNS name                : policy-engine.nhi.svc
+DNS name                : policy-engine
+
+Entry ID                : 40ade9a3-68a3-437a-8e28-52e51137491d
+SPIFFE ID               : spiffe://lab.local/svc/policy-probe
+Parent ID               : spiffe://lab.local/node/nhi-lab
+Revision                : 0
+X509-SVID TTL           : default
+JWT-SVID TTL            : default
+Selector                : k8s:ns:nhi
+Selector                : k8s:sa:policy-probe
+
+Entry ID                : 771b1ff6-fdfd-4895-85d1-d5331379a474
+SPIFFE ID               : spiffe://lab.local/svc/resource
+Parent ID               : spiffe://lab.local/node/nhi-lab
+Revision                : 0
+X509-SVID TTL           : default
+JWT-SVID TTL            : default
+Selector                : k8s:ns:nhi
+Selector                : k8s:sa:resource
+
+Entry ID                : 7678c4cd-4e79-4b28-9c5e-8583232068bc
+SPIFFE ID               : spiffe://lab.local/svc/test-workload
+Parent ID               : spiffe://lab.local/node/nhi-lab
+Revision                : 0
+X509-SVID TTL           : default
+JWT-SVID TTL            : default
+Selector                : k8s:ns:agents
+Selector                : k8s:sa:nhi-test
+
+Entry ID                : ba25f444-9396-47bf-a5c7-92ea6c9f97aa
+SPIFFE ID               : spiffe://lab.local/svc/vending-service
+Parent ID               : spiffe://lab.local/node/nhi-lab
+Revision                : 0
+X509-SVID TTL           : default
+JWT-SVID TTL            : default
+Selector                : k8s:ns:nhi
+Selector                : k8s:sa:vending-service
+
+>> building nhi-lab/policy-engine:dev
+DEPRECATED: The legacy builder is deprecated and will be removed in a future release.
+            Install the buildx component to build images with BuildKit:
+            https://docs.docker.com/go/buildx/
+
+>> loading nhi-lab/policy-engine:dev into kind/nhi-t-vpres
+>> deploying the policy engine
+serviceaccount/policy-engine unchanged
+service/policy-engine unchanged
+deployment.apps/policy-engine unchanged
+configmap/policy-engine-bootstrap unchanged
+deployment.apps/policy-engine restarted
+Waiting for deployment spec update to be observed...
+Waiting for deployment "policy-engine" rollout to finish: 0 out of 1 new replicas have been updated...
+Waiting for deployment "policy-engine" rollout to finish: 1 old replicas are pending termination...
+Waiting for deployment "policy-engine" rollout to finish: 1 old replicas are pending termination...
+deployment "policy-engine" successfully rolled out
+>> building nhi-lab/vending-service:dev
+DEPRECATED: The legacy builder is deprecated and will be removed in a future release.
+            Install the buildx component to build images with BuildKit:
+            https://docs.docker.com/go/buildx/
+
+>> loading nhi-lab/vending-service:dev into kind/nhi-t-vpres
+>> deploying the vending service
+persistentvolumeclaim/vending-data unchanged
+serviceaccount/vending-service unchanged
+service/vending-service unchanged
+deployment.apps/vending-service unchanged
+deployment.apps/vending-service restarted
+Waiting for deployment "vending-service" rollout to finish: 0 out of 1 new replicas have been updated...
+Waiting for deployment "vending-service" rollout to finish: 0 out of 1 new replicas have been updated...
+Waiting for deployment "vending-service" rollout to finish: 0 out of 1 new replicas have been updated...
+Waiting for deployment "vending-service" rollout to finish: 0 out of 1 new replicas have been updated...
+Waiting for deployment "vending-service" rollout to finish: 0 of 1 updated replicas are available...
+deployment "vending-service" successfully rolled out
+>> building nhi-lab/resource:dev
+DEPRECATED: The legacy builder is deprecated and will be removed in a future release.
+            Install the buildx component to build images with BuildKit:
+            https://docs.docker.com/go/buildx/
+
+>> loading nhi-lab/resource:dev into kind/nhi-t-vpres
+>> deploying the protected resource
+serviceaccount/resource unchanged
+service/resource unchanged
+deployment.apps/resource unchanged
+deployment.apps/resource restarted
+Waiting for deployment spec update to be observed...
+Waiting for deployment "resource" rollout to finish: 0 out of 1 new replicas have been updated...
+Waiting for deployment "resource" rollout to finish: 1 old replicas are pending termination...
+Waiting for deployment "resource" rollout to finish: 1 old replicas are pending termination...
+deployment "resource" successfully rolled out
+>> building nhi-lab/opencode-parent:dev
+DEPRECATED: The legacy builder is deprecated and will be removed in a future release.
+            Install the buildx component to build images with BuildKit:
+            https://docs.docker.com/go/buildx/
+
+>> loading nhi-lab/opencode-parent:dev into kind/nhi-t-vpres
+!! no ANTHROPIC_KEY_FILE given and no Secret opencode-llm: the agent will have no LLM
+!! until one is provided: make present-up ANTHROPIC_KEY_FILE=<file with ANTHROPIC_API_KEY=...>
+Waiting for deployment spec update to be observed...
+Waiting for deployment "policy-engine" rollout to finish: 0 out of 1 new replicas have been updated...
+Waiting for deployment "policy-engine" rollout to finish: 1 old replicas are pending termination...
+Waiting for deployment "policy-engine" rollout to finish: 1 old replicas are pending termination...
+deployment "policy-engine" successfully rolled out
+pod/nhi-opencode-parent created
+pod/nhi-opencode-parent condition met
+
+>> OpenCode parent is up. Next: make present-shell
+>> verify-present window starts at 2026-11-09T02:14:14Z (UTC)
+
+[1m[1] Preflight: the OpenCode parent pod and the policy probe are Ready[0m
+    [32mPASS[0m parent pod Ready; OPA read-through probe policy-probe-authorized-577d9745fb-wkmsd Ready
+    | parent pod IP 10.244.1.28
+    [32mPASS[0m OPA can be listed through the probe (the grant checks below can see modules)
+
+[1m[2] Bring-up: OpenCode 1.19.3, and delegate_to_child is the only enabled tool[0m
+    | opencode --version: 1.19.3
+    [32mPASS[0m OpenCode is 1.19.3
+    | enabled tools: ["delegate_to_child"]
+    [32mPASS[0m the only tool offered to the model is delegate_to_child
+
+[1m[3] Dataset A through the real OpenCode tool: one full delegation cycle[0m
+    | running: opencode debug agent build --tool delegate_to_child (dataset A); takes ~10-15 s
+    | {
+    |   "ok": true,
+    |   "chain_id": "c_8aaf7c94ac1bbf34227e4e4c1e89d8c8",
+    |   "child_spiffe_id": "spiffe://lab.local/agent/parent/opencode/child/nhi-demo-child-c7646fb894",
+    |   "child_scopes": [
+    |     "resource:read:datasetA"
+    |   ],
+    |   "requested_scopes": [
+    |     "resource:read:datasetA"
+    |   ],
+    |   "status": 200,
+    |   "data": {
+    |     "dataset": "A",
+    |     "records": [
+    |       {
+    |         "id": 1,
+    |         "value": "alpha"
+    |       },
+    |       {
+    |         "id": 2,
+    |         "value": "beta"
+    |       }
+    |     ]
+    |   },
+    |   "returned_via": "mtls-callback",
+    |   "peer_spiffe_id": "spiffe://lab.local/agent/parent/opencode/child/nhi-demo-child-c7646fb894",
+    |   "child_pod_phase": "Succeeded",
+    |   "disposed": true,
+    |   "error": null
+    | }
+    [32mPASS[0m ok:true
+    [32mPASS[0m data carries dataset A's records (alpha, beta)
+    [32mPASS[0m returned_via mtls-callback
+    [32mPASS[0m the callback peer is the vended child (nhi-demo-child-c7646fb894)
+    [32mPASS[0m child scopes are exactly resource:read:datasetA
+    [32mPASS[0m disposed:true
+    | after dataset A: SPIRE entries for the child=0, OPA grant modules for the chain=0
+    [32mPASS[0m after dataset A: the child's SPIRE entry is gone
+    [32mPASS[0m after dataset A: the chain's OPA grant is gone
+
+[1m[4] An impostor holding a valid SVID that is not the vended child is refused[0m
+    [32mPASS[0m the impostor pod holds a valid SVID: spiffe://lab.local/agent/parent/demo, and is redialling 10.244.1.28:8443
+    | mid-cycle: SPIRE entries for the child=1, OPA grant modules for the chain=1
+    [32mPASS[0m mid-cycle the child's entry and grant exist, so their absence afterwards is meaningful
+    | {"ok":true,"chain_id":"c_b50f8a4cbcf16d749b4e290cf9da129e","child_spiffe_id":"spiffe://lab.local/agent/parent/opencode/child/nhi-demo-child-0063f9a7a3","child_scopes":["resource:read:datasetA"],"requested_scopes":["resource:read:datasetA"],"status":200,"data":{"dataset":"A","records":[{"id":1,"value":"alpha"},{"id":2,"value":"beta"}]},"returned_via":"mtls-callback","peer_spiffe_id":"spiffe://lab.local/agent/parent/opencode/child/nhi-demo-child-0063f9a7a3","child_pod_phase":"Succeeded","disposed":true,"error":null}
+    [32mPASS[0m the legitimate cycle still ended ok:true
+    [32mPASS[0m its result came from the vended child, not the impostor
+    | impostor identity: spiffe://lab.local/agent/parent/demo
+    | dial OK: reached the listener
+    | refused after the handshake: Error
+    [32mPASS[0m the impostor reached the listener (so the refusal below is the listener's decision)
+    | after the impostor cycle: SPIRE entries for the child=0, OPA grant modules for the chain=0
+    [32mPASS[0m after the impostor cycle: the child's SPIRE entry is gone
+    [32mPASS[0m after the impostor cycle: the chain's OPA grant is gone
+
+[1m[5] Attenuation: dataset B is refused at vend time, and nothing is minted[0m
+    | {"ok":false,"chain_id":null,"child_spiffe_id":null,"child_scopes":[],"requested_scopes":["resource:read:datasetB"],"status":null,"data":null,"returned_via":null,"peer_spiffe_id":null,"child_pod_phase":null,"disposed":false,"error":"vend refused: HTTP 403: policy engine granted no scopes (Π(requested) ∩ Π(parent) = ∅) — refusing to mint an identity with no authority"}
+    [32mPASS[0m ok:false
+    [32mPASS[0m error names the vend refusal (HTTP 403)
+    [32mPASS[0m chain_id is null (no chain is reported for a refusal)
+    [32mPASS[0m child_scopes is []
+    [32mPASS[0m nothing was disposed or returned
+    | child pods 2 -> 2; OPA grant modules 0 -> 0
+    [32mPASS[0m no new child pod
+    [32mPASS[0m no OPA grant exists for the refused request
+
+[1m[6] Collecting every component's audit events for this run[0m
+    | collected 24 audit event(s) -> <repo>/src/deploy/present-audit.jsonl
+    | parent=6 child=2 vending-service=8 policy-engine=6 resource=2
+    [32mPASS[0m every collected line is audit-schema JSON
+
+[1m[7] Attribution for the dataset A cycle (chain c_8aaf7c94ac1bbf34227e4e4c1e89d8c8): one chain_id from vend to dispose[0m
+    [32mPASS[0m vending service: vend (allow)
+    [32mPASS[0m policy engine: vend (allow)
+    [32mPASS[0m resource: operate by the child (allow)
+    [32mPASS[0m child pod: operate (allow)
+    [32mPASS[0m parent pod log: operate/result_returned from the vended child (allow)
+    [32mPASS[0m vending service: dispose (allow)
+    [32mPASS[0m policy engine: dispose (allow)
+    [32mPASS[0m every event on this chain is an allow
+    [32mPASS[0m the parent's spawn event for this child is present (chain_id "" by design)
+
+[1m[8] Attribution for the impostor cycle (chain c_b50f8a4cbcf16d749b4e290cf9da129e): the refusal is audited[0m
+    [32mPASS[0m parent pod log: operate/callback_refused (deny) naming the impostor as peer
+    [32mPASS[0m parent pod log: operate/result_returned from the vended child (allow)
+    [32mPASS[0m no result was ever accepted from the impostor
+    [32mPASS[0m vending service: dispose (allow)
+
+[1m[9] Attribution for the refused dataset B request: vend deny, and the parent's spawn decision[0m
+    [32mPASS[0m vending service: vend (deny) for the parent, naming the empty intersection
+    [32mPASS[0m the refused child (nhi-demo-child-e5cb197e03) has no SPIRE entry
+    [32mPASS[0m the parent's spawn event for dataset B is present
+
+[32m================ VERIFY-PRESENT: PASS (9 steps) ================[0m
+The OpenCode parent, driven through its one tool with no LLM:
+  dataset A: vended child, mTLS result callback, disposal, one chain_id end to end
+  impostor with a valid SVID: refused and audited, legitimate cycle unaffected
+  dataset B: refused at vend time, nothing minted
+  audit events: <repo>/src/deploy/present-audit.jsonl

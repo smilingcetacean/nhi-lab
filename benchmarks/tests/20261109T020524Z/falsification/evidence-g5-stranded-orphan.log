@@ -1,0 +1,6 @@
+2026-11-09T02:25:31Z
+{"chain_id":"c_f018e230324fe8869e383711f9c45cc1","parent_spiffe_id":"spiffe://lab.local/agent/parent/exp-root","child_spiffe_id":"spiffe://lab.local/agent/parent/exp-root/child/negtest-orphan-4cf7591993","child_scopes":["resource:read:datasetA"],"entry_id":"f7c3e123-5e6d-4826-99e3-ff7235cef86f","policy_id":"nhi_grants_c_f018e230324fe8869e383711f9c45cc1","issued_at":1794191048,"expires_at":1794191053,"revoked_at":1794191106,"revocation_reason":"ttl_expired"}
+
+HTTP 200
+
+Found 0 entries

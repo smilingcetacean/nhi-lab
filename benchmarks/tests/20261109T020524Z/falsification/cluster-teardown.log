@@ -1,0 +1,34 @@
+## docker rmi falsify-g1..g5
+Untagged: nhi-lab/vending-service:falsify-g1
+Deleted: sha256:f32be2e481a4abbb6d35054aa04167e681b2b90e3c69d8d73e2055afa01b024c
+Deleted: sha256:5c4822594236f1c18efa73b3cde9ef6af788e3d3d1c49e7325e5de4b468d2f7b
+Deleted: sha256:bca3e61d344d97b59e2d1181fc7b5cbeec851bd3c2b849d9ffa4650677abb7fe
+Deleted: sha256:83c9036ac77cb154fb4d16a4a79fcece4563f8329c303d82915a9c6e425cfe3b
+Untagged: nhi-lab/vending-service:falsify-g2
+Deleted: sha256:db8db2089803e7714bdc4c6a2e39ba430f3457078fffc4a2dd600b1b37343312
+Deleted: sha256:a4c04be853c8bfe9b2f00e7967999cf01eb140248708f261dc634c190ca882c5
+Deleted: sha256:4b4f8b447568fb27800e14ab513e3a58dffb8fdb99d560c68d7e5cd27c54376b
+Deleted: sha256:c186d47387a639b7ccd7334140adb44a072d4af163d9ee7ad3bdb58b894b7d35
+Untagged: nhi-lab/vending-service:falsify-g3
+Deleted: sha256:8a802bd1125353d4ab363db64a7bbccb88ae6793fd46a7fa6bdb11033fb7df59
+Deleted: sha256:51451288234682619c7f9efa506f67c25a22a3aa6081ea369884f0a6cfedb494
+Deleted: sha256:bd5040565c3c7bdfd96a66022adbeba22ed954a0dd5519d1fb3d0c89cc63a18a
+Deleted: sha256:979abe027e9c6a48cfa58255917e13df1062fbb492b5121e968f14b854613ffa
+Untagged: nhi-lab/vending-service:falsify-g4
+Deleted: sha256:eb78571916e5c694069e0ddbd17b3da923c86416ace61f57f4b7c87a541f443b
+Deleted: sha256:580c870c07bfe4d4aa62350439f51b24d851dff3e8211f0629f7cc643eff0514
+Deleted: sha256:e60a1eecd1dac9e0b97b9ab3e23140941d63ab40cafe7b727c84d7ce23dea37b
+Deleted: sha256:0edf346e465569e77a27665bc3ecf24efdd676537c139315a645b3b03a36354d
+Untagged: nhi-lab/vending-service:falsify-g5
+Deleted: sha256:569990befc2302217256762cdce36ea1c02593f2f694cf2890c476c4b2adcc7b
+Deleted: sha256:d8b6e85499ca8304fabd9130f85f58c2e03b24ab80b7ab76c1dad774dc715abd
+Deleted: sha256:d844d5b6c285a7b9ce5c52ea004abcab9c90fc21ec477baf94075056e59bd597
+Deleted: sha256:89b694d613ad37edc10b9db509116bc201365ffe2800050dca05a9dd1c0fbd90
+## remaining falsify tags (docker images nhi-lab/vending-service --filter reference=*:falsify-*)
+0
+## kind delete cluster --name nhi-t-falsify
+Deleting cluster "nhi-t-falsify" ...
+Deleted nodes: ["nhi-t-falsify-worker" "nhi-t-falsify-control-plane"]
+## kind get clusters (after deletion)
+No kind clusters found.
+## docker containers for nhi-t-falsify: 0

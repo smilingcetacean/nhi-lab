@@ -1,0 +1,20 @@
+2026-11-09T02:19:08Z
+## child pod x509-check before cleanup
+{"spiffe_id":"spiffe://lab.local/agent/parent/exp-root/child/negtest-escalate-182320b3b4","not_after":"2026-11-09T02:22:31Z"}
+## DELETE /delegations/c_416e7ce0b70c3d45c689b54cf71e2704 as exp-root (parentsim dispose)
+HTTP 200
+{"chain_id":"c_416e7ce0b70c3d45c689b54cf71e2704","revoked":true}
+
+
+## GET it back
+HTTP 200
+{"chain_id":"c_416e7ce0b70c3d45c689b54cf71e2704","parent_spiffe_id":"spiffe://lab.local/agent/parent/exp-root","child_spiffe_id":"spiffe://lab.local/agent/parent/exp-root/child/negtest-escalate-182320b3b4","child_scopes":[],"entry_id":"a4f8c7fb-deb6-4b3e-9009-f9089c383e9b","policy_id":"nhi_grants_c_416e7ce0b70c3d45c689b54cf71e2704","issued_at":1794190646,"expires_at":1794190946,"revoked_at":1794190748,"revocation_reason":"revoked_on_demand"}
+
+
+## SPIRE entries with selector k8s:sa:nhi-exp-child
+Found 0 entries
+2026-11-09T02:19:08Z {"spiffe_id":"spiffe://lab.local/agent/parent/exp-root/child/negtest-escalate-182320b3b4","not_after":"2026-11-09T02:22:31Z"}
+2026-11-09T02:19:11Z {"spiffe_id":"spiffe://lab.local/agent/parent/exp-root/child/negtest-escalate-182320b3b4","not_after":"2026-11-09T02:22:31Z"}
+2026-11-09T02:19:14Z HTTP N/A (workload API fetch failed, as expected once the entry is gone)
+{"error":"rpc error: code = PermissionDenied desc = no identity issued"}
+command terminated with exit code 2

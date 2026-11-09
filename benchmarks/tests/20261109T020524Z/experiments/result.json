@@ -1,0 +1,246 @@
+{
+  "stream": "exp",
+  "run_id": "20261109T021515Z",
+  "all_suites_pass": true,
+  "attempts": "each suite ran once; no reruns",
+  "suites": {
+    "negative_tests": {
+      "pass": true,
+      "exit_code": 0,
+      "elapsed_s": 21.9
+    },
+    "multi_hop": {
+      "pass": true,
+      "exit_code": 0,
+      "elapsed_s": 20.3
+    },
+    "functional_tests": {
+      "pass": true,
+      "exit_code": 0,
+      "elapsed_s": 105.6
+    }
+  },
+  "performance": "skipped (--skip-performance)",
+  "negative": {
+    "forged_parent_signature": {
+      "pass": true,
+      "http_status": {
+        "http_code": 401
+      },
+      "audit_stage": "attest",
+      "audit_outcome": "deny",
+      "audit_reason": "manifest signature verification failed: signature does not verify against the x5c leaf certificate's key: go-jose/go-jose: error in cryptographic primitive"
+    },
+    "scope_escalation_manifest": {
+      "pass": true,
+      "http_status": {
+        "http_code": 403
+      },
+      "audit_stage": "vend",
+      "audit_outcome": "deny",
+      "audit_reason": "policy engine granted no scopes (Π(requested) ∩ Π(parent) = ∅) — refusing to mint an identity with no authority"
+    },
+    "replay_captured_manifest": {
+      "pass": true,
+      "http_status": {
+        "first_http_code": 201,
+        "second_http_code": 409
+      },
+      "audit_stage": "attest",
+      "audit_outcome": "deny",
+      "audit_reason": "nonce has already been used for this parent (replay refused)"
+    },
+    "credential_use_after_revocation": {
+      "pass": true,
+      "http_status": {
+        "dispose_http_code": 200,
+        "replay_http_code_after_disposal": 403
+      },
+      "audit_stage": "operate",
+      "audit_outcome": "deny",
+      "audit_reason": "policy denied"
+    },
+    "orphaned_child_reaper": {
+      "pass": true,
+      "http_status": {},
+      "audit_stage": "dispose",
+      "audit_outcome": "allow",
+      "audit_reason": "ttl_expired"
+    }
+  },
+  "multi_hop": {
+    "overall_pass": true,
+    "pi_C": [
+      "resource:read:datasetA",
+      "resource:read:datasetB"
+    ],
+    "pi_G": [
+      "resource:read:datasetA",
+      "resource:read:datasetB"
+    ],
+    "pi_C_subset_of_pi_P": true,
+    "pi_G_subset_of_pi_C": true,
+    "grandchild_get_datasetA": 200,
+    "grandchild_post_jobs_denied": 403,
+    "grandchild_get_datasetA_after_cascade": 403
+  },
+  "functional": {
+    "scope_containment": {
+      "n": 30,
+      "passes": 30,
+      "all_pass": true
+    },
+    "credential_expiry": {
+      "n": 10,
+      "passes": 10,
+      "all_pass": true
+    },
+    "expiry_latency_s": {
+      "min": 4.262,
+      "median": 5.318,
+      "max": 5.377
+    }
+  },
+  "comparison_to_20261107T220445Z": {
+    "previous_run_id": "20261107T220445Z",
+    "current_run_id": "20261109T021515Z",
+    "suite_elapsed_s": {
+      "negative_tests": {
+        "previous": 19.7,
+        "current": 21.9
+      },
+      "multi_hop": {
+        "previous": 13.2,
+        "current": 20.3
+      },
+      "functional_tests": {
+        "previous": 111.2,
+        "current": 105.6
+      }
+    },
+    "negative_per_test_pass": {
+      "forged_parent_signature": {
+        "previous": true,
+        "current": true
+      },
+      "scope_escalation_manifest": {
+        "previous": true,
+        "current": true
+      },
+      "replay_captured_manifest": {
+        "previous": true,
+        "current": true
+      },
+      "credential_use_after_revocation": {
+        "previous": true,
+        "current": true
+      },
+      "orphaned_child_reaper": {
+        "previous": true,
+        "current": true
+      }
+    },
+    "negative_http_status": {
+      "forged_parent_signature": {
+        "previous": {
+          "http_code": 401
+        },
+        "current": {
+          "http_code": 401
+        }
+      },
+      "scope_escalation_manifest": {
+        "previous": {
+          "http_code": 403
+        },
+        "current": {
+          "http_code": 403
+        }
+      },
+      "replay_captured_manifest": {
+        "previous": {
+          "first_http_code": 201,
+          "second_http_code": 409
+        },
+        "current": {
+          "first_http_code": 201,
+          "second_http_code": 409
+        }
+      },
+      "credential_use_after_revocation": {
+        "previous": {
+          "dispose_http_code": 200,
+          "replay_http_code_after_disposal": 403
+        },
+        "current": {
+          "dispose_http_code": 200,
+          "replay_http_code_after_disposal": 403
+        }
+      },
+      "orphaned_child_reaper": {
+        "previous": {},
+        "current": {}
+      }
+    },
+    "negative_audit_reason_identical": {
+      "forged_parent_signature": true,
+      "scope_escalation_manifest": true,
+      "replay_captured_manifest": true,
+      "credential_use_after_revocation": true,
+      "orphaned_child_reaper": true
+    },
+    "multi_hop": {
+      "overall_pass": {
+        "previous": true,
+        "current": true
+      },
+      "pi_C_equal": true,
+      "pi_G_equal": true,
+      "previous_pi_C": [
+        "resource:read:datasetA",
+        "resource:read:datasetB"
+      ],
+      "previous_pi_G": [
+        "resource:read:datasetA",
+        "resource:read:datasetB"
+      ]
+    },
+    "functional": {
+      "previous": {
+        "scope_containment": {
+          "n": 30,
+          "passes": 30,
+          "all_pass": true
+        },
+        "credential_expiry": {
+          "n": 10,
+          "passes": 10,
+          "all_pass": true
+        },
+        "expiry_latency_s": {
+          "min": 4.254,
+          "median": 5.308,
+          "max": 5.328
+        }
+      },
+      "current": {
+        "scope_containment": {
+          "n": 30,
+          "passes": 30,
+          "all_pass": true
+        },
+        "credential_expiry": {
+          "n": 10,
+          "passes": 10,
+          "all_pass": true
+        },
+        "expiry_latency_s": {
+          "min": 4.262,
+          "median": 5.318,
+          "max": 5.377
+        }
+      }
+    },
+    "performance": "skipped in this rerun (--skip-performance); previous run elapsed 523.1s"
+  }
+}

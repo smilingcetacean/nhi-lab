@@ -1,0 +1,6 @@
+=== RUN   TestHandleVendRejectsReplayedNonce
+    main_test.go:488: status = 500, want 409 (nonce replay refused); body={"error":"Internal Server Error","reason":"could not record nonce: nonce already used"}
+--- FAIL: TestHandleVendRejectsReplayedNonce (0.00s)
+FAIL
+FAIL	nhi-lab/vending-service/cmd/vending-service	0.003s
+FAIL

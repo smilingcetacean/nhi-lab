@@ -1,0 +1,3 @@
+### 2026-11-09T02:12:51.040Z baseline
+vending-service-ddf4dbbfc-v6658 image=docker.io/nhi-lab/vending-service:dev imageID=docker.io/library/import-2026-11-09@sha256:a6a08922be05b53ff1bed001c0e109edcf32605d406b695ce228be39e7613273 phase=Running deleting=
+deployment image: nhi-lab/vending-service:dev

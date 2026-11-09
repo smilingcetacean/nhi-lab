@@ -1,0 +1,11 @@
+--- a/cmd/vending-service/main.go
++++ b/cmd/vending-service/main.go
+@@ -514,7 +514,7 @@
+ 		reason := "could not record nonce: " + err.Error()
+ 		status := http.StatusInternalServerError
+ 		outcome := audit.OutcomeError
+-		if errors.Is(err, store.ErrNonceReused) {
++		if false && errors.Is(err, store.ErrNonceReused) {
+ 			reason = "nonce has already been used for this parent (replay refused)"
+ 			status = http.StatusConflict
+ 			outcome = audit.OutcomeDeny

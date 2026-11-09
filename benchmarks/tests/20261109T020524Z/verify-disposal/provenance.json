@@ -1,0 +1,41 @@
+{
+  "stream": "verify-disposal",
+  "git_commit": "58a8c7d",
+  "worktree_branch": "test/rerun-verify-disposal",
+  "kind_cluster": "nhi-t-vdisp",
+  "commands": [
+    {
+      "command": "env -u ANTHROPIC_KEY_FILE KIND_CLUSTER=nhi-t-vdisp KUBECONFIG=<scratch>/kubeconfig ./install.sh --yes",
+      "cwd": "<repo>",
+      "start_utc": "2026-11-09T02:08:44Z",
+      "end_utc": "2026-11-09T02:12:33Z",
+      "exit_code": 0,
+      "log": "bringup.log"
+    },
+    {
+      "command": "make --no-print-directory verify-disposal KIND_CLUSTER=nhi-t-vdisp",
+      "cwd": "<repo>",
+      "env": "KUBECONFIG=<scratch>/kubeconfig",
+      "start_utc": "2026-11-09T02:12:57Z",
+      "end_utc": "2026-11-09T02:17:42Z",
+      "exit_code": 0,
+      "log": "verify-disposal.log"
+    }
+  ],
+  "tool_versions": {
+    "docker": "Docker version 29.9.3, build 5457199aa5",
+    "kind": "kind v0.33.0 go1.27.0-X:nodwarf5 linux/amd64",
+    "kubectl_client": "v1.37.2 (Kustomize v5.8.1)",
+    "go": "go1.26.5 linux/amd64",
+    "opa": "1.18.2",
+    "uv": "0.11.30",
+    "python": "3.14.9"
+  },
+  "host": {
+    "cpu_count": 16,
+    "mem_total_kb": 31877380,
+    "mem_total_gib": 30.4
+  },
+  "config_changes": "No lab code, manifest, Makefile, ConfigMap or environment variable was changed; REAPER_INTERVAL and SPIRE intervals are at their shipped defaults, and no audit-log toggles or kubectl set env were used by the runner. (verify-disposal.sh itself temporarily sets and restores MAX_DELEGATION_DEPTH / MAX_LIVE_CHILDREN on the vending service as part of the test.)",
+  "concurrency_note": "run concurrently with up to 4 other kind clusters on the same host; host load sampled every 10 s in ../host-load/host_load.csv"
+}

@@ -1,0 +1,59 @@
+{
+  "stream": "verify-core",
+  "git_commit": "58a8c7d",
+  "worktree_branch": "test/rerun-verify-core",
+  "kind_cluster": "nhi-t-vcore",
+  "commands": [
+    {
+      "command": "env -u ANTHROPIC_KEY_FILE KIND_CLUSTER=nhi-t-vcore KUBECONFIG=<scratch>/kubeconfig ./install.sh --yes",
+      "started_utc": "2026-11-09T02:08:46Z",
+      "ended_utc": "2026-11-09T02:12:35Z",
+      "exit_code": 0
+    },
+    {
+      "command": "make --no-print-directory verify KIND_CLUSTER=nhi-t-vcore (KUBECONFIG=<scratch>/kubeconfig)",
+      "started_utc": "2026-11-09T02:12:46Z",
+      "ended_utc": "2026-11-09T02:12:50Z",
+      "exit_code": 0
+    },
+    {
+      "command": "make --no-print-directory verify-resource KIND_CLUSTER=nhi-t-vcore (KUBECONFIG=<scratch>/kubeconfig)",
+      "started_utc": "2026-11-09T02:12:50Z",
+      "ended_utc": "2026-11-09T02:13:08Z",
+      "exit_code": 0
+    },
+    {
+      "command": "make --no-print-directory verify-policy KIND_CLUSTER=nhi-t-vcore (KUBECONFIG=<scratch>/kubeconfig)",
+      "started_utc": "2026-11-09T02:13:08Z",
+      "ended_utc": "2026-11-09T02:14:15Z",
+      "exit_code": 0
+    },
+    {
+      "command": "make --no-print-directory verify-vending KIND_CLUSTER=nhi-t-vcore (KUBECONFIG=<scratch>/kubeconfig)",
+      "started_utc": "2026-11-09T02:14:15Z",
+      "ended_utc": "2026-11-09T02:15:36Z",
+      "exit_code": 0
+    },
+    {
+      "command": "make --no-print-directory verify-persistence KIND_CLUSTER=nhi-t-vcore (KUBECONFIG=<scratch>/kubeconfig)",
+      "started_utc": "2026-11-09T02:15:36Z",
+      "ended_utc": "2026-11-09T02:17:04Z",
+      "exit_code": 0
+    }
+  ],
+  "tool_versions": {
+    "docker": "29.9.3 (client and server)",
+    "kind": "v0.33.0",
+    "kubectl_client": "v1.37.2",
+    "go": "1.26.5",
+    "opa": "1.18.2",
+    "uv": "0.11.30",
+    "python": "3.14.9"
+  },
+  "host": {
+    "cpu_count": 16,
+    "mem_total_kb": 31877380
+  },
+  "no_lab_config_changed": "No lab code, manifest, Makefile, ConfigMap or env var was modified; REAPER_INTERVAL and SPIRE intervals are at their defaults, no audit-log toggles, no kubectl set env. The worktree was clean (git status --short empty) before and after.",
+  "concurrency_note": "run concurrently with up to 4 other kind clusters on the same host; host load sampled every 10 s in ../host-load/host_load.csv"
+}

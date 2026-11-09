@@ -1,0 +1,34 @@
+docker image id nhi-lab/vending-service:falsify-g3: sha256:8a802bd1125353d4ab363db64a7bbccb88ae6793fd46a7fa6bdb11033fb7df59
+### 2026-11-09T02:20:02.724Z set image deployment/vending-service vending-service=nhi-lab/vending-service:falsify-g3 (ns nhi, context kind-nhi-t-falsify)
+## pods before
+vending-service-ddf4dbbfc-ht5c2 image=docker.io/nhi-lab/vending-service:dev imageID=docker.io/library/import-2026-11-09@sha256:a6a08922be05b53ff1bed001c0e109edcf32605d406b695ce228be39e7613273 phase=Running deleting=
+deployment.apps/vending-service image updated
+Waiting for deployment "vending-service" rollout to finish: 0 out of 1 new replicas have been updated...
+Waiting for deployment "vending-service" rollout to finish: 0 out of 1 new replicas have been updated...
+Waiting for deployment "vending-service" rollout to finish: 0 out of 1 new replicas have been updated...
+Waiting for deployment "vending-service" rollout to finish: 0 of 1 updated replicas are available...
+deployment "vending-service" successfully rolled out
+## pods after (2026-11-09T02:20:09.510Z)
+vending-service-8c6d64469-c5vfk image=docker.io/nhi-lab/vending-service:falsify-g3 imageID=docker.io/library/import-2026-11-09@sha256:7bb274ea7bed2b2244f0d21f61f7a495bae20d91028583434e725f159e60c2ee phase=Running deleting=
+running_imageID=docker.io/library/import-2026-11-09@sha256:7bb274ea7bed2b2244f0d21f61f7a495bae20d91028583434e725f159e60c2ee
+baseline_imageID=docker.io/library/import-2026-11-09@sha256:a6a08922be05b53ff1bed001c0e109edcf32605d406b695ce228be39e7613273
+CHECK imageID differs from baseline: OK
+deployment image: nhi-lab/vending-service:falsify-g3
+
+### 2026-11-09T02:20:35.709Z set image deployment/vending-service vending-service=nhi-lab/vending-service:dev (ns nhi, context kind-nhi-t-falsify)
+## pods before
+vending-service-8c6d64469-c5vfk image=docker.io/nhi-lab/vending-service:falsify-g3 imageID=docker.io/library/import-2026-11-09@sha256:7bb274ea7bed2b2244f0d21f61f7a495bae20d91028583434e725f159e60c2ee phase=Running deleting=
+deployment.apps/vending-service image updated
+Waiting for deployment "vending-service" rollout to finish: 0 out of 1 new replicas have been updated...
+Waiting for deployment "vending-service" rollout to finish: 0 out of 1 new replicas have been updated...
+Waiting for deployment "vending-service" rollout to finish: 0 out of 1 new replicas have been updated...
+Waiting for deployment "vending-service" rollout to finish: 0 out of 1 new replicas have been updated...
+Waiting for deployment "vending-service" rollout to finish: 0 of 1 updated replicas are available...
+deployment "vending-service" successfully rolled out
+## pods after (2026-11-09T02:20:42.566Z)
+vending-service-ddf4dbbfc-nvj6z image=docker.io/nhi-lab/vending-service:dev imageID=docker.io/library/import-2026-11-09@sha256:a6a08922be05b53ff1bed001c0e109edcf32605d406b695ce228be39e7613273 phase=Running deleting=
+running_imageID=docker.io/library/import-2026-11-09@sha256:a6a08922be05b53ff1bed001c0e109edcf32605d406b695ce228be39e7613273
+baseline_imageID=docker.io/library/import-2026-11-09@sha256:a6a08922be05b53ff1bed001c0e109edcf32605d406b695ce228be39e7613273
+CHECK imageID matches baseline: OK
+deployment image: nhi-lab/vending-service:dev
+

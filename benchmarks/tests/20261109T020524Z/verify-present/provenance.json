@@ -1,0 +1,43 @@
+{
+  "stream": "verify-present",
+  "git_commit": "58a8c7dd5e73a20edc6526bebff64cd2511a7812",
+  "git_commit_short": "58a8c7d",
+  "worktree_branch": "test/rerun-verify-present",
+  "kind_cluster": "nhi-t-vpres",
+  "commands": [
+    {
+      "command": "env -u ANTHROPIC_KEY_FILE KIND_CLUSTER=nhi-t-vpres KUBECONFIG=<scratch>/kubeconfig ./install.sh --yes",
+      "start": "2026-11-09T02:08:45Z",
+      "end": "2026-11-09T02:12:37Z",
+      "exit_code": 0
+    },
+    {
+      "command": "command make --no-print-directory verify-present KIND_CLUSTER=nhi-t-vpres",
+      "start": "2026-11-09T02:12:51Z",
+      "end": "2026-11-09T02:14:47Z",
+      "exit_code": 0
+    },
+    {
+      "command": "command make --no-print-directory verify-exit-hooks KIND_CLUSTER=nhi-t-vpres",
+      "start": "2026-11-09T02:14:47Z",
+      "end": "2026-11-09T02:18:02Z",
+      "exit_code": 0
+    }
+  ],
+  "tool_versions": {
+    "docker": "29.9.3",
+    "kind": "kind v0.33.0 go1.27.0-X:nodwarf5 linux/amd64",
+    "kubectl_client": "Client Version: v1.37.2",
+    "go": "go version go1.26.5 linux/amd64",
+    "opa": "Version: 1.18.2",
+    "uv": "uv 0.11.30 (x86_64-unknown-linux-gnu)",
+    "python": "Python 3.14.9"
+  },
+  "host": {
+    "cpu_count": 16,
+    "memory_total_kib": 31877380,
+    "memory_total_gib": 30.4
+  },
+  "statement": "No lab code, manifest, Makefile, ConfigMap or env var was changed; no LLM key was used (ANTHROPIC_KEY_FILE unset, no opencode-llm Secret).",
+  "note": "run concurrently with up to 4 other kind clusters on the same host; host load sampled every 10 s in ../host-load/host_load.csv"
+}

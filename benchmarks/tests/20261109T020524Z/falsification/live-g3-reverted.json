@@ -1,0 +1,113 @@
+{
+  "generated_at": "2026-11-09T02:21:08Z",
+  "results": [
+    {
+      "test": "forged_parent_signature",
+      "pass": true,
+      "http_code": 401,
+      "expected_http_code": 401,
+      "audit_event": {
+        "timestamp": "2026-11-09T02:20:42.817311001Z",
+        "stage": "attest",
+        "chain_id": "",
+        "actor_spiffe_id": "spiffe://lab.local/agent/parent/exp-root",
+        "outcome": "deny",
+        "detail": {
+          "parent_spiffe_id": "spiffe://lab.local/agent/parent/exp-root",
+          "reason": "manifest signature verification failed: signature does not verify against the x5c leaf certificate's key: go-jose/go-jose: error in cryptographic primitive"
+        }
+      },
+      "no_entry_created": true,
+      "response_body": "{\"error\":\"Unauthorized\",\"reason\":\"manifest signature verification failed: signature does not verify against the x5c leaf certificate's key: go-jose/go-jose: error in cryptographic primitive\"}  command terminated with exit code 2"
+    },
+    {
+      "test": "scope_escalation_manifest",
+      "pass": true,
+      "http_code": 403,
+      "expected_http_code": 403,
+      "audit_event": {
+        "timestamp": "2026-11-09T02:20:42.992562992Z",
+        "stage": "vend",
+        "chain_id": "c_afcf36d718839341ca3caf0cf11b54e8",
+        "actor_spiffe_id": "spiffe://lab.local/agent/parent/exp-root",
+        "outcome": "deny",
+        "detail": {
+          "parent_spiffe_id": "spiffe://lab.local/agent/parent/exp-root",
+          "child_spiffe_id": "spiffe://lab.local/agent/parent/exp-root/child/negtest-escalate-3f6b1a3abe",
+          "requested_scopes": [
+            "resource:admin:everything"
+          ],
+          "policy_id": "nhi_grants_c_afcf36d718839341ca3caf0cf11b54e8",
+          "reason": "policy engine granted no scopes (\u03a0(requested) \u2229 \u03a0(parent) = \u2205) \u2014 refusing to mint an identity with no authority"
+        }
+      },
+      "no_entry_created": true,
+      "response_body": "{\"error\":\"Forbidden\",\"reason\":\"policy engine granted no scopes (\u03a0(requested) \u2229 \u03a0(parent) = \u2205) \u2014 refusing to mint an identity with no authority\"}  command terminated with exit code 2"
+    },
+    {
+      "test": "replay_captured_manifest",
+      "pass": true,
+      "first_http_code": 201,
+      "second_http_code": 409,
+      "expected": "201 then 409",
+      "audit_event": {
+        "timestamp": "2026-11-09T02:20:43.213953048Z",
+        "stage": "attest",
+        "chain_id": "",
+        "actor_spiffe_id": "spiffe://lab.local/agent/parent/exp-root",
+        "outcome": "deny",
+        "detail": {
+          "parent_spiffe_id": "spiffe://lab.local/agent/parent/exp-root",
+          "reason": "nonce has already been used for this parent (replay refused)"
+        }
+      }
+    },
+    {
+      "test": "credential_use_after_revocation",
+      "pass": true,
+      "child_obtained_svid": true,
+      "captured_jwt_before_disposal": true,
+      "dispose_http_code": 200,
+      "replay_http_code_after_disposal": 403,
+      "expected": 403,
+      "audit_event": {
+        "timestamp": "2026-11-09T02:20:53.869220438Z",
+        "stage": "operate",
+        "chain_id": "",
+        "actor_spiffe_id": "spiffe://lab.local/agent/parent/exp-root/child/negtest-revoke-ab1573f29b",
+        "outcome": "deny",
+        "detail": {
+          "method": "GET",
+          "path": "/datasets/A",
+          "required_scopes": [
+            "resource:read:datasetA"
+          ],
+          "chain_id_source": "absent",
+          "reason": "policy denied",
+          "policy_decision": false,
+          "decision_latency_ms": 0.694615
+        }
+      }
+    },
+    {
+      "test": "orphaned_child_reaper",
+      "pass": true,
+      "entry_reaped": true,
+      "audit_event": {
+        "timestamp": "2026-11-09T02:21:07.104400225Z",
+        "stage": "dispose",
+        "chain_id": "c_4838e37ff7e6b188347012c64ca905e0",
+        "actor_spiffe_id": "spiffe://lab.local/svc/vending-service",
+        "outcome": "allow",
+        "detail": {
+          "parent_spiffe_id": "spiffe://lab.local/agent/parent/exp-root",
+          "child_spiffe_id": "spiffe://lab.local/agent/parent/exp-root/child/negtest-orphan-dfcb2baa5e",
+          "policy_id": "nhi_grants_c_4838e37ff7e6b188347012c64ca905e0",
+          "entry_id": "607ccf80-995a-4f70-914f-df8490ffa5f0",
+          "reason": "ttl_expired"
+        }
+      },
+      "chain_id": "c_4838e37ff7e6b188347012c64ca905e0"
+    }
+  ]
+}

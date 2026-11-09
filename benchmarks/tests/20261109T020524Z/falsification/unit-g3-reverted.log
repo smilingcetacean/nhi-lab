@@ -1,0 +1,4 @@
+=== RUN   TestHandleVendRejectsReplayedNonce
+--- PASS: TestHandleVendRejectsReplayedNonce (0.00s)
+PASS
+ok  	nhi-lab/vending-service/cmd/vending-service	0.003s

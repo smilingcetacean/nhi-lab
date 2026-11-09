@@ -1,0 +1,39 @@
+{
+  "stream": "exp",
+  "git_commit": "58a8c7d",
+  "git_commit_full": "58a8c7dd5e73a20edc6526bebff64cd2511a7812",
+  "worktree_branch": "test/rerun-exp",
+  "kind_cluster": "nhi-t-exp",
+  "commands": [
+    {
+      "command": "env -u ANTHROPIC_KEY_FILE KIND_CLUSTER=nhi-t-exp KUBECONFIG=<scratch>/kubeconfig ./install.sh --yes",
+      "cwd": "<repo>",
+      "start_utc": "2026-11-09T02:08:41Z",
+      "end_utc": "2026-11-09T02:12:31Z",
+      "exit_code": 0
+    },
+    {
+      "command": "env KUBECTX=kind-nhi-t-exp KUBECONFIG=<scratch>/kubeconfig uv run python3 run_all.py --skip-performance",
+      "cwd": "<repo>/src/experiments",
+      "start_utc": "2026-11-09T02:12:47Z",
+      "end_utc": "2026-11-09T02:15:15Z",
+      "exit_code": 0
+    }
+  ],
+  "tool_versions": {
+    "docker": "Docker version 29.9.3, build 5457199aa5",
+    "kind": "kind v0.33.0 go1.27.0-X:nodwarf5 linux/amd64",
+    "kubectl_client": "Client Version: v1.37.2",
+    "go": "go version go1.26.5 linux/amd64",
+    "opa": "Version: 1.18.2",
+    "uv": "uv 0.11.30 (x86_64-unknown-linux-gnu)",
+    "python": "Python 3.14.9"
+  },
+  "host": {
+    "cpu_count": 16,
+    "mem_total_kib": 31877380
+  },
+  "lab_config_changed": false,
+  "statement": "No lab code, manifest, Makefile, ConfigMap or env var was changed. REAPER_INTERVAL and SPIRE intervals stayed at their defaults; no kubectl set env was used; no Anthropic key was used.",
+  "concurrency_note": "run concurrently with up to 4 other kind clusters on the same host; host load sampled every 10 s in ../host-load/host_load.csv"
+}

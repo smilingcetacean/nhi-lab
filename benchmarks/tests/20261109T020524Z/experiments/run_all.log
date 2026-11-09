@@ -1,0 +1,143 @@
+== negative test suite ==
+parent=experiments-parent-fc985bd87-cftlz attacker=experiments-attacker-c7c7dcc66-g6t7q child=experiments-child-85c8bd56cc-dgqjk
+  [PASS] forged_parent_signature
+      http_code: 401
+      expected_http_code: 401
+      audit_event: {'timestamp': '2026-11-09T02:12:47.739593927Z', 'stage': 'attest', 'chain_id': '', 'actor_spiffe_id': 'spiffe://lab.local/agent/parent/exp-root', 'outcome': 'deny', 'detail': {'parent_spiffe_id': 'spiffe://lab.local/agent/parent/exp-root', 'reason': "manifest signature verification failed: signature does not verify against the x5c leaf certificate's key: go-jose/go-jose: error in cryptographic primitive"}}
+      no_entry_created: True
+      response_body: {"error":"Unauthorized","reason":"manifest signature verification failed: signature does not verify against the x5c leaf certificate's key: go-jose/go-jose: error in cryptographic primitive"}  command terminated with exit code 2
+  [PASS] scope_escalation_manifest
+      http_code: 403
+      expected_http_code: 403
+      audit_event: {'timestamp': '2026-11-09T02:12:47.935877842Z', 'stage': 'vend', 'chain_id': 'c_b70db59e85e9ad830eec89c0e900426e', 'actor_spiffe_id': 'spiffe://lab.local/agent/parent/exp-root', 'outcome': 'deny', 'detail': {'parent_spiffe_id': 'spiffe://lab.local/agent/parent/exp-root', 'child_spiffe_id': 'spiffe://lab.local/agent/parent/exp-root/child/negtest-escalate-e6cc8c865a', 'requested_scopes': ['resource:admin:everything'], 'policy_id': 'nhi_grants_c_b70db59e85e9ad830eec89c0e900426e', 'reason': 'policy engine granted no scopes (Π(requested) ∩ Π(parent) = ∅) — refusing to mint an identity with no authority'}}
+      no_entry_created: True
+      response_body: {"error":"Forbidden","reason":"policy engine granted no scopes (Π(requested) ∩ Π(parent) = ∅) — refusing to mint an identity with no authority"}  command terminated with exit code 2
+  [PASS] replay_captured_manifest
+      first_http_code: 201
+      second_http_code: 409
+      expected: 201 then 409
+      audit_event: {'timestamp': '2026-11-09T02:12:48.182594465Z', 'stage': 'attest', 'chain_id': '', 'actor_spiffe_id': 'spiffe://lab.local/agent/parent/exp-root', 'outcome': 'deny', 'detail': {'parent_spiffe_id': 'spiffe://lab.local/agent/parent/exp-root', 'reason': 'nonce has already been used for this parent (replay refused)'}}
+  [PASS] credential_use_after_revocation
+      child_obtained_svid: True
+      captured_jwt_before_disposal: True
+      dispose_http_code: 200
+      replay_http_code_after_disposal: 403
+      expected: 403
+      audit_event: {'timestamp': '2026-11-09T02:12:56.827658403Z', 'stage': 'operate', 'chain_id': '', 'actor_spiffe_id': 'spiffe://lab.local/agent/parent/exp-root/child/negtest-revoke-8cdf7f1c40', 'outcome': 'deny', 'detail': {'method': 'GET', 'path': '/datasets/A', 'required_scopes': ['resource:read:datasetA'], 'chain_id_source': 'absent', 'reason': 'policy denied', 'policy_decision': False, 'decision_latency_ms': 3.291747}}
+  [PASS] orphaned_child_reaper
+      entry_reaped: True
+      audit_event: {'timestamp': '2026-11-09T02:13:07.677317868Z', 'stage': 'dispose', 'chain_id': 'c_fcb0a6e3bf6a05ec7558165ed0a8ed6b', 'actor_spiffe_id': 'spiffe://lab.local/svc/vending-service', 'outcome': 'allow', 'detail': {'parent_spiffe_id': 'spiffe://lab.local/agent/parent/exp-root', 'child_spiffe_id': 'spiffe://lab.local/agent/parent/exp-root/child/negtest-orphan-264cfc2c45', 'policy_id': 'nhi_grants_c_fcb0a6e3bf6a05ec7558165ed0a8ed6b', 'entry_id': '3cc285bf-f8ee-4174-979e-7a036ecaef03', 'reason': 'ttl_expired'}}
+      chain_id: c_fcb0a6e3bf6a05ec7558165ed0a8ed6b
+
+wrote <repo>/src/experiments/results/latest/negative_tests.json
+
+all 5 negative tests PASSED (denial + audit event both confirmed)
+== multi-hop suite: P -> C -> G ==
+parent=experiments-parent-fc985bd87-cftlz child=experiments-child-85c8bd56cc-dgqjk grandchild=experiments-grandchild-7f645577d6-pq8zg
+  hop1: child_scopes=['resource:read:datasetA', 'resource:read:datasetB']  child_spiffe_id=spiffe://lab.local/agent/parent/exp-root/child/mh-c-6afbbf57
+  hop1: child pod obtained SVID: True
+  hop1: Pi(C) subset of Pi(P): True  Pi(C)=['resource:read:datasetA', 'resource:read:datasetB']  Pi(P)=['resource:read:datasetA', 'resource:read:datasetB', 'resource:write:jobs']
+  hop2: child_scopes=['resource:read:datasetA', 'resource:read:datasetB']  child_spiffe_id=spiffe://lab.local/agent/parent/exp-root/child/mh-c-6afbbf57/child/mh-g-6afbbf57
+  hop2: Pi(G) subset of Pi(C): True  Pi(G)=['resource:read:datasetA', 'resource:read:datasetB']
+  hop2: jobs escalation attenuated away (present in Pi(P) but not Pi(C)): True
+  hop2: grandchild pod obtained SVID: True
+  operate: GET /datasets/A -> 200 (want 200); POST /jobs -> 403 (want 403, jobs was attenuated away)
+  audit: hop1 actor=spiffe://lab.local/agent/parent/exp-root  hop2 actor=spiffe://lab.local/agent/parent/exp-root/child/mh-c-6afbbf57  lineage_ok=True
+  disposal: only C disposed, by P -> 200 (G is not disposed by hand)
+  cascade: G GET /datasets/A after C was revoked -> 403 (want 403), resource deny event=yes
+  cascade: G delegation revoked_at=1794190409 reason='ancestor_revoked: c_b1175462a9424550dcfaa68287385469' (want 'ancestor_revoked: c_b1175462a9424550dcfaa68287385469')
+  cascade: G dispose event actor=spiffe://lab.local/agent/parent/exp-root reason='ancestor_revoked: c_b1175462a9424550dcfaa68287385469'
+  cascade: G SPIRE entry gone: True
+wrote <repo>/src/experiments/results/latest/multi_hop.json
+
+PASS: multi-hop P -> C -> G
+parent=experiments-parent-fc985bd87-cftlz child=experiments-child-85c8bd56cc-dgqjk
+== functional: Pi(C) <= Pi(P) across 30 randomized scope sets ==
+  [PASS] run 0: requested=['resource:admin:everything'] expected=[] got_http=403 got=None
+  [PASS] run 1: requested=['resource:delete:everything', 'resource:read:datasetB', 'resource:write:jobs'] expected=['resource:read:datasetB', 'resource:write:jobs'] got_http=201 got=['resource:read:datasetB', 'resource:write:jobs']
+  [PASS] run 2: requested=['resource:admin:everything', 'resource:read:datasetA', 'resource:read:datasetB'] expected=['resource:read:datasetA', 'resource:read:datasetB'] got_http=201 got=['resource:read:datasetA', 'resource:read:datasetB']
+  [PASS] run 3: requested=['resource:delete:everything'] expected=[] got_http=403 got=None
+  [PASS] run 4: requested=['resource:admin:everything', 'resource:read:datasetA'] expected=['resource:read:datasetA'] got_http=201 got=['resource:read:datasetA']
+  [PASS] run 5: requested=['resource:admin:everything', 'resource:delete:everything', 'resource:read:datasetA', 'resource:read:datasetB', 'resource:write:jobs'] expected=['resource:read:datasetA', 'resource:read:datasetB', 'resource:write:jobs'] got_http=201 got=['resource:read:datasetA', 'resource:read:datasetB', 'resource:write:jobs']
+  [PASS] run 6: requested=['resource:read:datasetA', 'resource:read:datasetB'] expected=['resource:read:datasetA', 'resource:read:datasetB'] got_http=201 got=['resource:read:datasetA', 'resource:read:datasetB']
+  [PASS] run 7: requested=['resource:admin:everything', 'resource:delete:everything', 'resource:read:datasetA', 'resource:read:datasetB'] expected=['resource:read:datasetA', 'resource:read:datasetB'] got_http=201 got=['resource:read:datasetA', 'resource:read:datasetB']
+  [PASS] run 8: requested=['resource:admin:everything', 'resource:read:datasetB'] expected=['resource:read:datasetB'] got_http=201 got=['resource:read:datasetB']
+  [PASS] run 9: requested=['resource:read:datasetA'] expected=['resource:read:datasetA'] got_http=201 got=['resource:read:datasetA']
+  [PASS] run 10: requested=['resource:admin:everything', 'resource:delete:everything', 'resource:read:datasetA', 'resource:read:datasetB', 'resource:write:jobs'] expected=['resource:read:datasetA', 'resource:read:datasetB', 'resource:write:jobs'] got_http=201 got=['resource:read:datasetA', 'resource:read:datasetB', 'resource:write:jobs']
+  [PASS] run 11: requested=['resource:write:jobs'] expected=['resource:write:jobs'] got_http=201 got=['resource:write:jobs']
+  [PASS] run 12: requested=['resource:delete:everything', 'resource:read:datasetA', 'resource:write:jobs'] expected=['resource:read:datasetA', 'resource:write:jobs'] got_http=201 got=['resource:read:datasetA', 'resource:write:jobs']
+  [PASS] run 13: requested=['resource:admin:everything'] expected=[] got_http=403 got=None
+  [PASS] run 14: requested=['resource:read:datasetA'] expected=['resource:read:datasetA'] got_http=201 got=['resource:read:datasetA']
+  [PASS] run 15: requested=['resource:read:datasetB'] expected=['resource:read:datasetB'] got_http=201 got=['resource:read:datasetB']
+  [PASS] run 16: requested=['resource:admin:everything', 'resource:delete:everything', 'resource:read:datasetA', 'resource:read:datasetB', 'resource:write:jobs'] expected=['resource:read:datasetA', 'resource:read:datasetB', 'resource:write:jobs'] got_http=201 got=['resource:read:datasetA', 'resource:read:datasetB', 'resource:write:jobs']
+  [PASS] run 17: requested=['resource:admin:everything', 'resource:read:datasetA', 'resource:read:datasetB', 'resource:write:jobs'] expected=['resource:read:datasetA', 'resource:read:datasetB', 'resource:write:jobs'] got_http=201 got=['resource:read:datasetA', 'resource:read:datasetB', 'resource:write:jobs']
+  [PASS] run 18: requested=['resource:read:datasetA'] expected=['resource:read:datasetA'] got_http=201 got=['resource:read:datasetA']
+  [PASS] run 19: requested=['resource:admin:everything', 'resource:delete:everything', 'resource:read:datasetA', 'resource:read:datasetB', 'resource:write:jobs'] expected=['resource:read:datasetA', 'resource:read:datasetB', 'resource:write:jobs'] got_http=201 got=['resource:read:datasetA', 'resource:read:datasetB', 'resource:write:jobs']
+  [PASS] run 20: requested=['resource:admin:everything', 'resource:delete:everything', 'resource:read:datasetB', 'resource:write:jobs'] expected=['resource:read:datasetB', 'resource:write:jobs'] got_http=201 got=['resource:read:datasetB', 'resource:write:jobs']
+  [PASS] run 21: requested=['resource:admin:everything', 'resource:read:datasetA', 'resource:read:datasetB'] expected=['resource:read:datasetA', 'resource:read:datasetB'] got_http=201 got=['resource:read:datasetA', 'resource:read:datasetB']
+  [PASS] run 22: requested=['resource:admin:everything', 'resource:delete:everything', 'resource:read:datasetA', 'resource:read:datasetB', 'resource:write:jobs'] expected=['resource:read:datasetA', 'resource:read:datasetB', 'resource:write:jobs'] got_http=201 got=['resource:read:datasetA', 'resource:read:datasetB', 'resource:write:jobs']
+  [PASS] run 23: requested=['resource:delete:everything', 'resource:read:datasetB', 'resource:write:jobs'] expected=['resource:read:datasetB', 'resource:write:jobs'] got_http=201 got=['resource:read:datasetB', 'resource:write:jobs']
+  [PASS] run 24: requested=['resource:admin:everything', 'resource:delete:everything', 'resource:read:datasetA', 'resource:read:datasetB'] expected=['resource:read:datasetA', 'resource:read:datasetB'] got_http=201 got=['resource:read:datasetA', 'resource:read:datasetB']
+  [PASS] run 25: requested=['resource:admin:everything', 'resource:delete:everything', 'resource:read:datasetB', 'resource:write:jobs'] expected=['resource:read:datasetB', 'resource:write:jobs'] got_http=201 got=['resource:read:datasetB', 'resource:write:jobs']
+  [PASS] run 26: requested=['resource:admin:everything', 'resource:delete:everything', 'resource:read:datasetA', 'resource:read:datasetB', 'resource:write:jobs'] expected=['resource:read:datasetA', 'resource:read:datasetB', 'resource:write:jobs'] got_http=201 got=['resource:read:datasetA', 'resource:read:datasetB', 'resource:write:jobs']
+  [PASS] run 27: requested=['resource:write:jobs'] expected=['resource:write:jobs'] got_http=201 got=['resource:write:jobs']
+  [PASS] run 28: requested=['resource:write:jobs'] expected=['resource:write:jobs'] got_http=201 got=['resource:write:jobs']
+  [PASS] run 29: requested=['resource:delete:everything'] expected=[] got_http=403 got=None
+
+== functional: credential expiry on child termination (10 runs) ==
+  [PASS] run 0: attest=5.337s dispose_call=0.079s revoke_observed=5.318s
+  [PASS] run 1: attest=4.288s dispose_call=0.066s revoke_observed=5.328s
+  [PASS] run 2: attest=5.31s dispose_call=0.068s revoke_observed=5.318s
+  [PASS] run 3: attest=5.315s dispose_call=0.065s revoke_observed=4.264s
+  [PASS] run 4: attest=4.278s dispose_call=0.083s revoke_observed=5.319s
+  [PASS] run 5: attest=4.268s dispose_call=0.074s revoke_observed=4.262s
+  [PASS] run 6: attest=5.311s dispose_call=0.065s revoke_observed=5.377s
+  [PASS] run 7: attest=4.281s dispose_call=0.067s revoke_observed=5.316s
+  [PASS] run 8: attest=4.261s dispose_call=0.065s revoke_observed=5.318s
+  [PASS] run 9: attest=4.303s dispose_call=0.07s revoke_observed=5.314s
+
+wrote <repo>/src/experiments/results/latest/functional_scope_containment.csv, functional_credential_expiry.csv, functional_tests_summary.json
+
+PASS: functional suite (30 scope-containment runs, 10 expiry runs)
+
+======================================================================
+negative_tests
+======================================================================
+
+======================================================================
+multi_hop
+======================================================================
+
+======================================================================
+functional_tests
+======================================================================
+
+======================================================================
+SUMMARY
+======================================================================
+{
+  "suites": {
+    "negative_tests": {
+      "exit_code": 0,
+      "elapsed_s": 21.9,
+      "pass": true
+    },
+    "multi_hop": {
+      "exit_code": 0,
+      "elapsed_s": 20.3,
+      "pass": true
+    },
+    "functional_tests": {
+      "exit_code": 0,
+      "elapsed_s": 105.6,
+      "pass": true
+    },
+    "performance": {
+      "skipped": true,
+      "reason": "--skip-performance"
+    }
+  },
+  "run_id": "20261109T021515Z"
+}
+
+results: <repo>/src/experiments/results/20261109T021515Z  (and results/latest)

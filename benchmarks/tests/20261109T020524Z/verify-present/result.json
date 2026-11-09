@@ -1,0 +1,351 @@
+{
+  "stream": "verify-present",
+  "targets": {
+    "verify-present": {
+      "exit_code": 0,
+      "result": "pass",
+      "elapsed_seconds": 116.0,
+      "summary_line": "VERIFY-PRESENT: PASS (9 steps)",
+      "checks_pass": 43,
+      "checks_fail": 0,
+      "checks": [
+        {
+          "step": "[1] Preflight: the OpenCode parent pod and the policy probe are Ready",
+          "outcome": "PASS",
+          "check": "parent pod Ready; OPA read-through probe policy-probe-authorized-577d9745fb-wkmsd Ready"
+        },
+        {
+          "step": "[1] Preflight: the OpenCode parent pod and the policy probe are Ready",
+          "outcome": "PASS",
+          "check": "OPA can be listed through the probe (the grant checks below can see modules)"
+        },
+        {
+          "step": "[2] Bring-up: OpenCode 1.19.3, and delegate_to_child is the only enabled tool",
+          "outcome": "PASS",
+          "check": "OpenCode is 1.19.3"
+        },
+        {
+          "step": "[2] Bring-up: OpenCode 1.19.3, and delegate_to_child is the only enabled tool",
+          "outcome": "PASS",
+          "check": "the only tool offered to the model is delegate_to_child"
+        },
+        {
+          "step": "[3] Dataset A through the real OpenCode tool: one full delegation cycle",
+          "outcome": "PASS",
+          "check": "ok:true"
+        },
+        {
+          "step": "[3] Dataset A through the real OpenCode tool: one full delegation cycle",
+          "outcome": "PASS",
+          "check": "data carries dataset A's records (alpha, beta)"
+        },
+        {
+          "step": "[3] Dataset A through the real OpenCode tool: one full delegation cycle",
+          "outcome": "PASS",
+          "check": "returned_via mtls-callback"
+        },
+        {
+          "step": "[3] Dataset A through the real OpenCode tool: one full delegation cycle",
+          "outcome": "PASS",
+          "check": "the callback peer is the vended child (nhi-demo-child-c7646fb894)"
+        },
+        {
+          "step": "[3] Dataset A through the real OpenCode tool: one full delegation cycle",
+          "outcome": "PASS",
+          "check": "child scopes are exactly resource:read:datasetA"
+        },
+        {
+          "step": "[3] Dataset A through the real OpenCode tool: one full delegation cycle",
+          "outcome": "PASS",
+          "check": "disposed:true"
+        },
+        {
+          "step": "[3] Dataset A through the real OpenCode tool: one full delegation cycle",
+          "outcome": "PASS",
+          "check": "after dataset A: the child's SPIRE entry is gone"
+        },
+        {
+          "step": "[3] Dataset A through the real OpenCode tool: one full delegation cycle",
+          "outcome": "PASS",
+          "check": "after dataset A: the chain's OPA grant is gone"
+        },
+        {
+          "step": "[4] An impostor holding a valid SVID that is not the vended child is refused",
+          "outcome": "PASS",
+          "check": "the impostor pod holds a valid SVID: spiffe://lab.local/agent/parent/demo, and is redialling 10.244.1.28:8443"
+        },
+        {
+          "step": "[4] An impostor holding a valid SVID that is not the vended child is refused",
+          "outcome": "PASS",
+          "check": "mid-cycle the child's entry and grant exist, so their absence afterwards is meaningful"
+        },
+        {
+          "step": "[4] An impostor holding a valid SVID that is not the vended child is refused",
+          "outcome": "PASS",
+          "check": "the legitimate cycle still ended ok:true"
+        },
+        {
+          "step": "[4] An impostor holding a valid SVID that is not the vended child is refused",
+          "outcome": "PASS",
+          "check": "its result came from the vended child, not the impostor"
+        },
+        {
+          "step": "[4] An impostor holding a valid SVID that is not the vended child is refused",
+          "outcome": "PASS",
+          "check": "the impostor reached the listener (so the refusal below is the listener's decision)"
+        },
+        {
+          "step": "[4] An impostor holding a valid SVID that is not the vended child is refused",
+          "outcome": "PASS",
+          "check": "after the impostor cycle: the child's SPIRE entry is gone"
+        },
+        {
+          "step": "[4] An impostor holding a valid SVID that is not the vended child is refused",
+          "outcome": "PASS",
+          "check": "after the impostor cycle: the chain's OPA grant is gone"
+        },
+        {
+          "step": "[5] Attenuation: dataset B is refused at vend time, and nothing is minted",
+          "outcome": "PASS",
+          "check": "ok:false"
+        },
+        {
+          "step": "[5] Attenuation: dataset B is refused at vend time, and nothing is minted",
+          "outcome": "PASS",
+          "check": "error names the vend refusal (HTTP 403)"
+        },
+        {
+          "step": "[5] Attenuation: dataset B is refused at vend time, and nothing is minted",
+          "outcome": "PASS",
+          "check": "chain_id is null (no chain is reported for a refusal)"
+        },
+        {
+          "step": "[5] Attenuation: dataset B is refused at vend time, and nothing is minted",
+          "outcome": "PASS",
+          "check": "child_scopes is []"
+        },
+        {
+          "step": "[5] Attenuation: dataset B is refused at vend time, and nothing is minted",
+          "outcome": "PASS",
+          "check": "nothing was disposed or returned"
+        },
+        {
+          "step": "[5] Attenuation: dataset B is refused at vend time, and nothing is minted",
+          "outcome": "PASS",
+          "check": "no new child pod"
+        },
+        {
+          "step": "[5] Attenuation: dataset B is refused at vend time, and nothing is minted",
+          "outcome": "PASS",
+          "check": "no OPA grant exists for the refused request"
+        },
+        {
+          "step": "[6] Collecting every component's audit events for this run",
+          "outcome": "PASS",
+          "check": "every collected line is audit-schema JSON"
+        },
+        {
+          "step": "[7] Attribution for the dataset A cycle (chain c_8aaf7c94ac1bbf34227e4e4c1e89d8c8): one chain_id from vend to dispose",
+          "outcome": "PASS",
+          "check": "vending service: vend (allow)"
+        },
+        {
+          "step": "[7] Attribution for the dataset A cycle (chain c_8aaf7c94ac1bbf34227e4e4c1e89d8c8): one chain_id from vend to dispose",
+          "outcome": "PASS",
+          "check": "policy engine: vend (allow)"
+        },
+        {
+          "step": "[7] Attribution for the dataset A cycle (chain c_8aaf7c94ac1bbf34227e4e4c1e89d8c8): one chain_id from vend to dispose",
+          "outcome": "PASS",
+          "check": "resource: operate by the child (allow)"
+        },
+        {
+          "step": "[7] Attribution for the dataset A cycle (chain c_8aaf7c94ac1bbf34227e4e4c1e89d8c8): one chain_id from vend to dispose",
+          "outcome": "PASS",
+          "check": "child pod: operate (allow)"
+        },
+        {
+          "step": "[7] Attribution for the dataset A cycle (chain c_8aaf7c94ac1bbf34227e4e4c1e89d8c8): one chain_id from vend to dispose",
+          "outcome": "PASS",
+          "check": "parent pod log: operate/result_returned from the vended child (allow)"
+        },
+        {
+          "step": "[7] Attribution for the dataset A cycle (chain c_8aaf7c94ac1bbf34227e4e4c1e89d8c8): one chain_id from vend to dispose",
+          "outcome": "PASS",
+          "check": "vending service: dispose (allow)"
+        },
+        {
+          "step": "[7] Attribution for the dataset A cycle (chain c_8aaf7c94ac1bbf34227e4e4c1e89d8c8): one chain_id from vend to dispose",
+          "outcome": "PASS",
+          "check": "policy engine: dispose (allow)"
+        },
+        {
+          "step": "[7] Attribution for the dataset A cycle (chain c_8aaf7c94ac1bbf34227e4e4c1e89d8c8): one chain_id from vend to dispose",
+          "outcome": "PASS",
+          "check": "every event on this chain is an allow"
+        },
+        {
+          "step": "[7] Attribution for the dataset A cycle (chain c_8aaf7c94ac1bbf34227e4e4c1e89d8c8): one chain_id from vend to dispose",
+          "outcome": "PASS",
+          "check": "the parent's spawn event for this child is present (chain_id \"\" by design)"
+        },
+        {
+          "step": "[8] Attribution for the impostor cycle (chain c_b50f8a4cbcf16d749b4e290cf9da129e): the refusal is audited",
+          "outcome": "PASS",
+          "check": "parent pod log: operate/callback_refused (deny) naming the impostor as peer"
+        },
+        {
+          "step": "[8] Attribution for the impostor cycle (chain c_b50f8a4cbcf16d749b4e290cf9da129e): the refusal is audited",
+          "outcome": "PASS",
+          "check": "parent pod log: operate/result_returned from the vended child (allow)"
+        },
+        {
+          "step": "[8] Attribution for the impostor cycle (chain c_b50f8a4cbcf16d749b4e290cf9da129e): the refusal is audited",
+          "outcome": "PASS",
+          "check": "no result was ever accepted from the impostor"
+        },
+        {
+          "step": "[8] Attribution for the impostor cycle (chain c_b50f8a4cbcf16d749b4e290cf9da129e): the refusal is audited",
+          "outcome": "PASS",
+          "check": "vending service: dispose (allow)"
+        },
+        {
+          "step": "[9] Attribution for the refused dataset B request: vend deny, and the parent's spawn decision",
+          "outcome": "PASS",
+          "check": "vending service: vend (deny) for the parent, naming the empty intersection"
+        },
+        {
+          "step": "[9] Attribution for the refused dataset B request: vend deny, and the parent's spawn decision",
+          "outcome": "PASS",
+          "check": "the refused child (nhi-demo-child-e5cb197e03) has no SPIRE entry"
+        },
+        {
+          "step": "[9] Attribution for the refused dataset B request: vend deny, and the parent's spawn decision",
+          "outcome": "PASS",
+          "check": "the parent's spawn event for dataset B is present"
+        }
+      ]
+    },
+    "verify-exit-hooks": {
+      "exit_code": 0,
+      "result": "pass",
+      "elapsed_seconds": 195.0,
+      "summary_line": "VERIFY-EXIT-HOOKS: PASS (3 steps)",
+      "checks_pass": 21,
+      "checks_fail": 0,
+      "checks": [
+        {
+          "step": "[1] Preflight: the OpenCode parent pod and the OPA read-through probe are Ready",
+          "outcome": "PASS",
+          "check": "nhi-opencode-parent Ready; OPA read-through probe policy-probe-authorized-577d9745fb-qbftf Ready"
+        },
+        {
+          "step": "[1] Preflight: the OpenCode parent pod and the OPA read-through probe are Ready",
+          "outcome": "PASS",
+          "check": "both parents are registered with SPIRE"
+        },
+        {
+          "step": "[1] Preflight: the OpenCode parent pod and the OPA read-through probe are Ready",
+          "outcome": "PASS",
+          "check": "nhi-opencode-parent has the stop-tools preStop hook and a 30 s grace period"
+        },
+        {
+          "step": "[2] (a) Demo parent: delete the pod while its delegation is live",
+          "outcome": "PASS",
+          "check": "(a) demo parent: the delegation is revoked (revoked_at is set, reason 'revoked_on_demand')"
+        },
+        {
+          "step": "[2] (a) Demo parent: delete the pod while its delegation is live",
+          "outcome": "PASS",
+          "check": "(a) demo parent: vending service audit has a dispose (allow) event for c_956443f3ff155c54728f44df796b38e0, stamped at or after the delete"
+        },
+        {
+          "step": "[2] (a) Demo parent: delete the pod while its delegation is live",
+          "outcome": "PASS",
+          "check": "(a) demo parent: policy service audit has a dispose (allow) event for c_956443f3ff155c54728f44df796b38e0, stamped at or after the delete"
+        },
+        {
+          "step": "[2] (a) Demo parent: delete the pod while its delegation is live",
+          "outcome": "PASS",
+          "check": "(a) demo parent: the dispose event names the parent (demo) as actor"
+        },
+        {
+          "step": "[2] (a) Demo parent: delete the pod while its delegation is live",
+          "outcome": "PASS",
+          "check": "(a) demo parent: the child's SPIRE entry is gone"
+        },
+        {
+          "step": "[2] (a) Demo parent: delete the pod while its delegation is live",
+          "outcome": "PASS",
+          "check": "(a) demo parent: the chain's OPA grant is gone"
+        },
+        {
+          "step": "[2] (a) Demo parent: delete the pod while its delegation is live",
+          "outcome": "PASS",
+          "check": "(c) demo parent's child: the child pod has exactly one ownerReference, to nhi-demo-parent (uid 6f982137-1c6f-454d-8b39-0985fc90fe0e), without blockOwnerDeletion"
+        },
+        {
+          "step": "[2] (a) Demo parent: delete the pod while its delegation is live",
+          "outcome": "PASS",
+          "check": "(c) demo parent's child: child pod nhi-demo-child-b1ddc2c15a is NotFound 35s after the delete was issued"
+        },
+        {
+          "step": "[2] (a) Demo parent: delete the pod while its delegation is live",
+          "outcome": "PASS",
+          "check": "(a) the recreated demo parent completes its normal cycle (pod phase Succeeded)"
+        },
+        {
+          "step": "[3] (b) OpenCode parent: delete the pod while 'parent.py tool' runs under kubectl exec",
+          "outcome": "PASS",
+          "check": "(b) OpenCode parent: the delegation is revoked (revoked_at is set, reason 'revoked_on_demand')"
+        },
+        {
+          "step": "[3] (b) OpenCode parent: delete the pod while 'parent.py tool' runs under kubectl exec",
+          "outcome": "PASS",
+          "check": "(b) OpenCode parent: vending service audit has a dispose (allow) event for c_7d670d1f10861f55c10cff044353fcee, stamped at or after the delete"
+        },
+        {
+          "step": "[3] (b) OpenCode parent: delete the pod while 'parent.py tool' runs under kubectl exec",
+          "outcome": "PASS",
+          "check": "(b) OpenCode parent: policy service audit has a dispose (allow) event for c_7d670d1f10861f55c10cff044353fcee, stamped at or after the delete"
+        },
+        {
+          "step": "[3] (b) OpenCode parent: delete the pod while 'parent.py tool' runs under kubectl exec",
+          "outcome": "PASS",
+          "check": "(b) OpenCode parent: the dispose event names the parent (opencode) as actor"
+        },
+        {
+          "step": "[3] (b) OpenCode parent: delete the pod while 'parent.py tool' runs under kubectl exec",
+          "outcome": "PASS",
+          "check": "(b) OpenCode parent: the child's SPIRE entry is gone"
+        },
+        {
+          "step": "[3] (b) OpenCode parent: delete the pod while 'parent.py tool' runs under kubectl exec",
+          "outcome": "PASS",
+          "check": "(b) OpenCode parent: the chain's OPA grant is gone"
+        },
+        {
+          "step": "[3] (b) OpenCode parent: delete the pod while 'parent.py tool' runs under kubectl exec",
+          "outcome": "PASS",
+          "check": "(c) OpenCode parent's child: the child pod has exactly one ownerReference, to nhi-opencode-parent (uid ea88a3aa-0c64-428d-8a3f-bf255379b428), without blockOwnerDeletion"
+        },
+        {
+          "step": "[3] (b) OpenCode parent: delete the pod while 'parent.py tool' runs under kubectl exec",
+          "outcome": "PASS",
+          "check": "(c) OpenCode parent's child: child pod nhi-demo-child-50d1f7cf02 is NotFound 62s after the delete was issued"
+        },
+        {
+          "step": "[3] (b) OpenCode parent: delete the pod while 'parent.py tool' runs under kubectl exec",
+          "outcome": "PASS",
+          "check": "(b) nhi-opencode-parent was recreated and is Ready"
+        }
+      ]
+    }
+  },
+  "totals": {
+    "targets": 2,
+    "targets_passed": 2,
+    "checks_pass": 64,
+    "checks_fail": 0
+  }
+}

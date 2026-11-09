@@ -1,0 +1,41 @@
+DEPRECATED: The legacy builder is deprecated and will be removed in a future release.
+            Install the buildx component to build images with BuildKit:
+            https://docs.docker.com/go/buildx/
+
+Sending build context to Docker daemon    343kB
+
+Step 1/11 : FROM golang:1.26 AS build
+ ---> 3aff6657219a
+Step 2/11 : WORKDIR /src
+ ---> Using cache
+ ---> 2f27e3113110
+Step 3/11 : COPY go.mod go.sum ./
+ ---> Using cache
+ ---> 8610c5e931c7
+Step 4/11 : RUN go mod download
+ ---> Using cache
+ ---> 926af7f262b5
+Step 5/11 : COPY . .
+ ---> d92b17a4b369
+Step 6/11 : RUN CGO_ENABLED=0 go build -trimpath -ldflags='-s -w' -o /out/vending-service ./cmd/vending-service
+ ---> Running in d7cd5459a793
+ ---> Removed intermediate container d7cd5459a793
+ ---> f9c16d7aaad1
+Step 7/11 : FROM gcr.io/distroless/static-debian12:nonroot
+ ---> f5b485ea962d
+Step 8/11 : COPY --from=build /out/vending-service /vending-service
+ ---> 979abe027e9c
+Step 9/11 : USER 65532:65532
+ ---> Running in 86a24561fc6b
+ ---> Removed intermediate container 86a24561fc6b
+ ---> bd5040565c3c
+Step 10/11 : EXPOSE 8090
+ ---> Running in 387ca6b7c46d
+ ---> Removed intermediate container 387ca6b7c46d
+ ---> 514512882346
+Step 11/11 : ENTRYPOINT ["/vending-service"]
+ ---> Running in 2fec2c2bdd03
+ ---> Removed intermediate container 2fec2c2bdd03
+ ---> 8a802bd11253
+Successfully built 8a802bd11253
+Successfully tagged nhi-lab/vending-service:falsify-g3

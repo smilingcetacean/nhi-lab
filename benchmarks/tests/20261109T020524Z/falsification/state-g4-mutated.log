@@ -1,0 +1,7 @@
+# state after live-g4-mutated at 2026-11-09T02:22:40.637Z
+## SPIRE entries under spiffe://lab.local/agent/parent/exp-root/child/negtest-*
+## delegation rows (GET /delegations/{chain_id} as exp-root) for every chain_id in this run's JSON
+### c_b39aa80117cc5883f9cfa5dde7e99478
+{"chain_id":"c_b39aa80117cc5883f9cfa5dde7e99478","parent_spiffe_id":"spiffe://lab.local/agent/parent/exp-root","child_spiffe_id":"spiffe://lab.local/agent/parent/exp-root/child/negtest-orphan-190ec2ad03","child_scopes":["resource:read:datasetA"],"entry_id":"f00328d0-30bc-42cd-b3ff-e0db10201cd7","policy_id":"nhi_grants_c_b39aa80117cc5883f9cfa5dde7e99478","issued_at":1794190941,"expires_at":1794190946,"revoked_at":1794190959,"revocation_reason":"ttl_expired"}  HTTP 200 
+### c_e86d45c5130c0e68f51bedda2ba75de3
+HTTP 404 {"error":"Not Found","reason":"no such delegation"}  command terminated with exit code 2 

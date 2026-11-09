@@ -1,0 +1,6 @@
+=== RUN   TestHandleDisposeByParentRevokesAndDeletesEntry
+    main_test.go:941: policy engine dispose was not called with the right chain_id: got ""
+--- FAIL: TestHandleDisposeByParentRevokesAndDeletesEntry (0.00s)
+FAIL
+FAIL	nhi-lab/vending-service/cmd/vending-service	0.003s
+FAIL

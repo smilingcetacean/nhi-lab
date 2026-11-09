@@ -1,0 +1,6 @@
+=== RUN   TestHandleVendRejectsForgedSignature
+    main_test.go:445: status = 502, want 401; body={"error":"Bad Gateway","reason":"policy engine synthesis failed: test stub not configured for this call"}
+--- FAIL: TestHandleVendRejectsForgedSignature (0.00s)
+FAIL
+FAIL	nhi-lab/vending-service/cmd/vending-service	0.003s
+FAIL

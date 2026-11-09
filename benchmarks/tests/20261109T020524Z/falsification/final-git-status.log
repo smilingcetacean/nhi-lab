@@ -1,0 +1,7 @@
+## git -C <worktree> status --short (whole worktree)
+[printed 0 lines]
+## git -C <worktree> status --short src/vending-service
+[printed 0 lines]
+## HEAD
+58a8c7d Document --install-tools, the Docker 28 minimum and unsupported Debian
+test/rerun-falsify

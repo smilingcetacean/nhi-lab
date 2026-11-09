@@ -1,0 +1,868 @@
+{
+  "stream": "falsify",
+  "git_commit": "58a8c7dd5e73a20edc6526bebff64cd2511a7812",
+  "git_commit_short": "58a8c7d",
+  "worktree": "<repo>",
+  "worktree_branch": "test/rerun-falsify",
+  "kind_cluster": "nhi-t-falsify",
+  "kube_context": "kind-nhi-t-falsify",
+  "kubeconfig": "<scratch>/kubeconfig (exported for every kubectl, kind and make call)",
+  "spire_cluster_name": "nhi-lab (CLUSTER_NAME never set)",
+  "tool_versions": {
+    "docker_client": "29.9.3",
+    "docker_server": "29.9.3",
+    "kind": "kind v0.33.0 go1.27.0-X:nodwarf5 linux/amd64",
+    "kubectl_client": "v1.37.2",
+    "go": "go version go1.26.5 linux/amd64",
+    "opa": "Version: 1.18.2",
+    "uv": "uv 0.11.30 (x86_64-unknown-linux-gnu)",
+    "python": "Python 3.14.9",
+    "jq": "jq-1.8.2",
+    "docker_builder": "legacy builder (buildx not installed), the same path the Makefile's docker build takes"
+  },
+  "host": {
+    "cpu_count": 16,
+    "memory_total_bytes": 32642437120,
+    "kernel": "Linux 7.3.1-1-cachyos"
+  },
+  "concurrency_note": "run concurrently with up to 4 other kind clusters on the same host; host load sampled every 10 s in ../host-load/host_load.csv",
+  "live_change_statement": "The only live change made to the lab was the vending-service Deployment's image (kubectl set image to nhi-lab/vending-service:falsify-gN, then back to nhi-lab/vending-service:dev, the clean image loaded at bring-up and never rebuilt). It was restored after every guard and the running imageID was confirmed equal to the baseline each time. No ConfigMap, env, Secret or manifest was changed; REAPER_INTERVAL stayed 15s and MAX_LIVE_CHILDREN 8 (final-live-state.log). Lab-API calls beyond the suite: two DELETE /delegations disposals via parentsim (cleanup of delegations a mutation had wrongly minted, as the procedure allows) and read-only GETs, x509-checks, SPIRE entry show, kubectl logs, and one read of audit.jsonl from the kind node's local-path volume.",
+  "isolation": {
+    "mutated_images": "only nhi-lab/vending-service:falsify-g1..g5, built from <scratch>/vs-gN, loaded only into nhi-t-falsify",
+    "dev_images": "never built, tagged or retagged by this stream outside install.sh's own clean build from the unmodified worktree",
+    "make": "only via install.sh (bash, no -j) against the clean worktree; no make target was run against a mutated tree"
+  },
+  "timings": {
+    "level_A_unit": {
+      "start_utc": "2026-11-09T02:09:46.593Z",
+      "end_utc": "2026-11-09T02:10:30.399Z",
+      "seconds": 43.8
+    },
+    "bringup_install_sh": {
+      "start_utc": "2026-11-09T02:09:02.870Z",
+      "end_utc": "2026-11-09T02:12:32.889Z",
+      "seconds": 210.0
+    },
+    "live_baseline_run": {
+      "start_utc": "2026-11-09T02:12:51.160Z",
+      "end_utc": "2026-11-09T02:13:11.169Z",
+      "seconds": 20.0
+    },
+    "live_g1_cycle_build_to_last_reverted_run": {
+      "start_utc": "2026-11-09T02:13:20.308Z",
+      "end_utc": "2026-11-09T02:16:53.750Z",
+      "seconds": 213.4
+    },
+    "live_g1_docker_build": {
+      "start_utc": "2026-11-09T02:13:20.308Z",
+      "end_utc": "2026-11-09T02:13:46.451Z",
+      "seconds": 26.1
+    },
+    "live_g1_mutated_suite_run": {
+      "start_utc": "2026-11-09T02:13:56.186Z",
+      "end_utc": "2026-11-09T02:14:36.539Z",
+      "seconds": 40.4
+    },
+    "live_g2_cycle_build_to_last_reverted_run": {
+      "start_utc": "2026-11-09T02:17:01.938Z",
+      "end_utc": "2026-11-09T02:19:40.987Z",
+      "seconds": 159.0
+    },
+    "live_g2_docker_build": {
+      "start_utc": "2026-11-09T02:17:01.938Z",
+      "end_utc": "2026-11-09T02:17:17.471Z",
+      "seconds": 15.5
+    },
+    "live_g2_mutated_suite_run": {
+      "start_utc": "2026-11-09T02:17:26.384Z",
+      "end_utc": "2026-11-09T02:17:52.315Z",
+      "seconds": 25.9
+    },
+    "live_g3_cycle_build_to_last_reverted_run": {
+      "start_utc": "2026-11-09T02:19:47.101Z",
+      "end_utc": "2026-11-09T02:21:08.516Z",
+      "seconds": 81.4
+    },
+    "live_g3_docker_build": {
+      "start_utc": "2026-11-09T02:19:47.101Z",
+      "end_utc": "2026-11-09T02:20:00.616Z",
+      "seconds": 13.5
+    },
+    "live_g3_mutated_suite_run": {
+      "start_utc": "2026-11-09T02:20:09.587Z",
+      "end_utc": "2026-11-09T02:20:35.506Z",
+      "seconds": 25.9
+    },
+    "live_g4_cycle_build_to_last_reverted_run": {
+      "start_utc": "2026-11-09T02:21:52.916Z",
+      "end_utc": "2026-11-09T02:23:13.671Z",
+      "seconds": 80.8
+    },
+    "live_g4_docker_build": {
+      "start_utc": "2026-11-09T02:21:52.916Z",
+      "end_utc": "2026-11-09T02:22:06.440Z",
+      "seconds": 13.5
+    },
+    "live_g4_mutated_suite_run": {
+      "start_utc": "2026-11-09T02:22:14.738Z",
+      "end_utc": "2026-11-09T02:22:40.634Z",
+      "seconds": 25.9
+    },
+    "live_g5_cycle_build_to_last_reverted_run": {
+      "start_utc": "2026-11-09T02:23:38.772Z",
+      "end_utc": "2026-11-09T02:25:21.848Z",
+      "seconds": 103.1
+    },
+    "live_g5_docker_build": {
+      "start_utc": "2026-11-09T02:23:38.772Z",
+      "end_utc": "2026-11-09T02:23:52.392Z",
+      "seconds": 13.6
+    },
+    "live_g5_mutated_suite_run": {
+      "start_utc": "2026-11-09T02:24:00.869Z",
+      "end_utc": "2026-11-09T02:24:49.438Z",
+      "seconds": 48.6
+    },
+    "level_B_live_total_baseline_to_last_reverted_run": {
+      "start_utc": "2026-11-09T02:12:51.160Z",
+      "end_utc": "2026-11-09T02:25:21.848Z",
+      "seconds": 750.7
+    },
+    "stream_total_first_to_last_command": {
+      "start_utc": "2026-11-09T02:09:02.870Z",
+      "end_utc": "2026-11-09T02:30:23.592Z",
+      "seconds": 1280.7,
+      "last_command": "sanitize-grep-final"
+    }
+  },
+  "commands": [
+    {
+      "label": "bringup-1",
+      "command": "cd <repo> && env -u ANTHROPIC_KEY_FILE KIND_CLUSTER=nhi-t-falsify KUBECONFIG=<scratch>/kubeconfig ./install.sh --yes",
+      "start_utc": "2026-11-09T02:09:02.870Z",
+      "end_utc": "2026-11-09T02:12:32.889Z",
+      "exit_code": 0,
+      "log": "<scratch>/bringup.log"
+    },
+    {
+      "label": "unit-copy-clean",
+      "command": "cp -a <repo>/src/vending-service <scratch>/vs-clean && diff -r <repo>/src/vending-service <scratch>/vs-clean && echo identical",
+      "start_utc": "2026-11-09T02:09:46.593Z",
+      "end_utc": "2026-11-09T02:09:46.598Z",
+      "exit_code": 0,
+      "log": "-"
+    },
+    {
+      "label": "unit-baseline-full",
+      "command": "cd <scratch>/vs-clean && go test -count=1 ./...",
+      "start_utc": "2026-11-09T02:09:46.602Z",
+      "end_utc": "2026-11-09T02:09:47.759Z",
+      "exit_code": 0,
+      "log": "<scratch>/unit-baseline-full.log"
+    },
+    {
+      "label": "unit-g1-copy",
+      "command": "cp -a <scratch>/vs-clean <scratch>/vs-g1 && python3 -I <scratch>/bin/mutate.py <scratch>/vs-g1 1",
+      "start_utc": "2026-11-09T02:10:00.966Z",
+      "end_utc": "2026-11-09T02:10:00.992Z",
+      "exit_code": 0,
+      "log": "-"
+    },
+    {
+      "label": "unit-g1-diff",
+      "command": "cd <scratch> && diff -u --label a/cmd/vending-service/main.go --label b/cmd/vending-service/main.go vs-clean/cmd/vending-service/main.go vs-g1/cmd/vending-service/main.go > <scratch>/g1.diff; test $? -eq 1",
+      "start_utc": "2026-11-09T02:10:00.995Z",
+      "end_utc": "2026-11-09T02:10:00.996Z",
+      "exit_code": 0,
+      "log": "-"
+    },
+    {
+      "label": "unit-g2-copy",
+      "command": "cp -a <scratch>/vs-clean <scratch>/vs-g2 && python3 -I <scratch>/bin/mutate.py <scratch>/vs-g2 2",
+      "start_utc": "2026-11-09T02:10:00.999Z",
+      "end_utc": "2026-11-09T02:10:01.013Z",
+      "exit_code": 0,
+      "log": "-"
+    },
+    {
+      "label": "unit-g2-diff",
+      "command": "cd <scratch> && diff -u --label a/cmd/vending-service/main.go --label b/cmd/vending-service/main.go vs-clean/cmd/vending-service/main.go vs-g2/cmd/vending-service/main.go > <scratch>/g2.diff; test $? -eq 1",
+      "start_utc": "2026-11-09T02:10:01.015Z",
+      "end_utc": "2026-11-09T02:10:01.016Z",
+      "exit_code": 0,
+      "log": "-"
+    },
+    {
+      "label": "unit-g3-copy",
+      "command": "cp -a <scratch>/vs-clean <scratch>/vs-g3 && python3 -I <scratch>/bin/mutate.py <scratch>/vs-g3 3",
+      "start_utc": "2026-11-09T02:10:01.019Z",
+      "end_utc": "2026-11-09T02:10:01.032Z",
+      "exit_code": 0,
+      "log": "-"
+    },
+    {
+      "label": "unit-g3-diff",
+      "command": "cd <scratch> && diff -u --label a/cmd/vending-service/main.go --label b/cmd/vending-service/main.go vs-clean/cmd/vending-service/main.go vs-g3/cmd/vending-service/main.go > <scratch>/g3.diff; test $? -eq 1",
+      "start_utc": "2026-11-09T02:10:01.034Z",
+      "end_utc": "2026-11-09T02:10:01.035Z",
+      "exit_code": 0,
+      "log": "-"
+    },
+    {
+      "label": "unit-g4-copy",
+      "command": "cp -a <scratch>/vs-clean <scratch>/vs-g4 && python3 -I <scratch>/bin/mutate.py <scratch>/vs-g4 4",
+      "start_utc": "2026-11-09T02:10:01.038Z",
+      "end_utc": "2026-11-09T02:10:01.051Z",
+      "exit_code": 0,
+      "log": "-"
+    },
+    {
+      "label": "unit-g4-diff",
+      "command": "cd <scratch> && diff -u --label a/cmd/vending-service/main.go --label b/cmd/vending-service/main.go vs-clean/cmd/vending-service/main.go vs-g4/cmd/vending-service/main.go > <scratch>/g4.diff; test $? -eq 1",
+      "start_utc": "2026-11-09T02:10:01.054Z",
+      "end_utc": "2026-11-09T02:10:01.055Z",
+      "exit_code": 0,
+      "log": "-"
+    },
+    {
+      "label": "unit-g5-copy",
+      "command": "cp -a <scratch>/vs-clean <scratch>/vs-g5 && python3 -I <scratch>/bin/mutate.py <scratch>/vs-g5 5",
+      "start_utc": "2026-11-09T02:10:01.058Z",
+      "end_utc": "2026-11-09T02:10:01.071Z",
+      "exit_code": 0,
+      "log": "-"
+    },
+    {
+      "label": "unit-g5-diff",
+      "command": "cd <scratch> && diff -u --label a/cmd/vending-service/reaper.go --label b/cmd/vending-service/reaper.go vs-clean/cmd/vending-service/reaper.go vs-g5/cmd/vending-service/reaper.go > <scratch>/g5.diff; test $? -eq 1",
+      "start_utc": "2026-11-09T02:10:01.073Z",
+      "end_utc": "2026-11-09T02:10:01.074Z",
+      "exit_code": 0,
+      "log": "-"
+    },
+    {
+      "label": "unit-g1-mutated-test",
+      "command": "cd <scratch>/vs-g1 && go test -count=1 -v -run '^TestHandleVendRejectsForgedSignature$' ./cmd/vending-service/",
+      "start_utc": "2026-11-09T02:10:12.593Z",
+      "end_utc": "2026-11-09T02:10:13.094Z",
+      "exit_code": 1,
+      "log": "<scratch>/unit-g1-mutated-test.log"
+    },
+    {
+      "label": "unit-g1-mutated-package",
+      "command": "cd <scratch>/vs-g1 && go test -count=1 -v ./cmd/vending-service/",
+      "start_utc": "2026-11-09T02:10:13.098Z",
+      "end_utc": "2026-11-09T02:10:13.440Z",
+      "exit_code": 1,
+      "log": "<scratch>/unit-g1-mutated-package.log"
+    },
+    {
+      "label": "unit-g1-reverted",
+      "command": "cd <scratch>/vs-clean && go test -count=1 -v -run '^TestHandleVendRejectsForgedSignature$' ./cmd/vending-service/",
+      "start_utc": "2026-11-09T02:10:13.442Z",
+      "end_utc": "2026-11-09T02:10:13.689Z",
+      "exit_code": 0,
+      "log": "<scratch>/unit-g1-reverted.log"
+    },
+    {
+      "label": "unit-g2-mutated-test",
+      "command": "cd <scratch>/vs-g2 && go test -count=1 -v -run '^TestHandleVendRejectsEmptyAttenuationResult$' ./cmd/vending-service/",
+      "start_utc": "2026-11-09T02:10:13.692Z",
+      "end_utc": "2026-11-09T02:10:14.059Z",
+      "exit_code": 1,
+      "log": "<scratch>/unit-g2-mutated-test.log"
+    },
+    {
+      "label": "unit-g2-mutated-package",
+      "command": "cd <scratch>/vs-g2 && go test -count=1 -v ./cmd/vending-service/",
+      "start_utc": "2026-11-09T02:10:14.061Z",
+      "end_utc": "2026-11-09T02:10:14.394Z",
+      "exit_code": 1,
+      "log": "<scratch>/unit-g2-mutated-package.log"
+    },
+    {
+      "label": "unit-g2-reverted",
+      "command": "cd <scratch>/vs-clean && go test -count=1 -v -run '^TestHandleVendRejectsEmptyAttenuationResult$' ./cmd/vending-service/",
+      "start_utc": "2026-11-09T02:10:14.397Z",
+      "end_utc": "2026-11-09T02:10:14.652Z",
+      "exit_code": 0,
+      "log": "<scratch>/unit-g2-reverted.log"
+    },
+    {
+      "label": "unit-g3-mutated-test",
+      "command": "cd <scratch>/vs-g3 && go test -count=1 -v -run '^TestHandleVendRejectsReplayedNonce$' ./cmd/vending-service/",
+      "start_utc": "2026-11-09T02:10:14.655Z",
+      "end_utc": "2026-11-09T02:10:15.039Z",
+      "exit_code": 1,
+      "log": "<scratch>/unit-g3-mutated-test.log"
+    },
+    {
+      "label": "unit-g3-mutated-package",
+      "command": "cd <scratch>/vs-g3 && go test -count=1 -v ./cmd/vending-service/",
+      "start_utc": "2026-11-09T02:10:15.042Z",
+      "end_utc": "2026-11-09T02:10:15.361Z",
+      "exit_code": 1,
+      "log": "<scratch>/unit-g3-mutated-package.log"
+    },
+    {
+      "label": "unit-g3-reverted",
+      "command": "cd <scratch>/vs-clean && go test -count=1 -v -run '^TestHandleVendRejectsReplayedNonce$' ./cmd/vending-service/",
+      "start_utc": "2026-11-09T02:10:15.363Z",
+      "end_utc": "2026-11-09T02:10:15.605Z",
+      "exit_code": 0,
+      "log": "<scratch>/unit-g3-reverted.log"
+    },
+    {
+      "label": "unit-g4-mutated-test",
+      "command": "cd <scratch>/vs-g4 && go test -count=1 -v -run '^TestHandleDisposeByParentRevokesAndDeletesEntry$' ./cmd/vending-service/",
+      "start_utc": "2026-11-09T02:10:15.608Z",
+      "end_utc": "2026-11-09T02:10:15.974Z",
+      "exit_code": 1,
+      "log": "<scratch>/unit-g4-mutated-test.log"
+    },
+    {
+      "label": "unit-g4-mutated-package",
+      "command": "cd <scratch>/vs-g4 && go test -count=1 -v ./cmd/vending-service/",
+      "start_utc": "2026-11-09T02:10:15.976Z",
+      "end_utc": "2026-11-09T02:10:16.318Z",
+      "exit_code": 1,
+      "log": "<scratch>/unit-g4-mutated-package.log"
+    },
+    {
+      "label": "unit-g4-reverted",
+      "command": "cd <scratch>/vs-clean && go test -count=1 -v -run '^TestHandleDisposeByParentRevokesAndDeletesEntry$' ./cmd/vending-service/",
+      "start_utc": "2026-11-09T02:10:16.320Z",
+      "end_utc": "2026-11-09T02:10:16.570Z",
+      "exit_code": 0,
+      "log": "<scratch>/unit-g4-reverted.log"
+    },
+    {
+      "label": "unit-g5-mutated-test",
+      "command": "cd <scratch>/vs-g5 && go test -count=1 -v -run '^TestReaperReapsExpiredDelegation$' ./cmd/vending-service/",
+      "start_utc": "2026-11-09T02:10:16.573Z",
+      "end_utc": "2026-11-09T02:10:16.919Z",
+      "exit_code": 1,
+      "log": "<scratch>/unit-g5-mutated-test.log"
+    },
+    {
+      "label": "unit-g5-mutated-package",
+      "command": "cd <scratch>/vs-g5 && go test -count=1 -v ./cmd/vending-service/",
+      "start_utc": "2026-11-09T02:10:16.922Z",
+      "end_utc": "2026-11-09T02:10:17.235Z",
+      "exit_code": 1,
+      "log": "<scratch>/unit-g5-mutated-package.log"
+    },
+    {
+      "label": "unit-g5-reverted",
+      "command": "cd <scratch>/vs-clean && go test -count=1 -v -run '^TestReaperReapsExpiredDelegation$' ./cmd/vending-service/",
+      "start_utc": "2026-11-09T02:10:17.237Z",
+      "end_utc": "2026-11-09T02:10:17.469Z",
+      "exit_code": 0,
+      "log": "<scratch>/unit-g5-reverted.log"
+    },
+    {
+      "label": "unit-final-full",
+      "command": "cd <scratch>/vs-clean && diff -r <repo>/src/vending-service <scratch>/vs-clean && echo 'vs-clean identical to worktree source' && go test -count=1 ./...",
+      "start_utc": "2026-11-09T02:10:29.494Z",
+      "end_utc": "2026-11-09T02:10:30.392Z",
+      "exit_code": 0,
+      "log": "<scratch>/unit-final-full.log"
+    },
+    {
+      "label": "unit-clean-proof",
+      "command": "git -C <repo> status --short src/vending-service; echo \"[git status --short src/vending-service printed $(git -C <repo> status --short src/vending-service | wc -l) lines]\"",
+      "start_utc": "2026-11-09T02:10:30.395Z",
+      "end_utc": "2026-11-09T02:10:30.399Z",
+      "exit_code": 0,
+      "log": "<scratch>/unit-clean-proof.log"
+    },
+    {
+      "label": "live-baseline",
+      "command": "cd <repo>/src/experiments && env KUBECTX=kind-nhi-t-falsify KUBECONFIG=<scratch>/kubeconfig uv run python3 negative_tests.py",
+      "start_utc": "2026-11-09T02:12:51.160Z",
+      "end_utc": "2026-11-09T02:13:11.169Z",
+      "exit_code": 0,
+      "log": "<scratch>/live-baseline.log"
+    },
+    {
+      "label": "build-g1",
+      "command": "docker build -t nhi-lab/vending-service:falsify-g1 -f <scratch>/vs-g1/Dockerfile <scratch>/vs-g1",
+      "start_utc": "2026-11-09T02:13:20.308Z",
+      "end_utc": "2026-11-09T02:13:46.451Z",
+      "exit_code": 0,
+      "log": "<scratch>/build-g1.log"
+    },
+    {
+      "label": "load-g1",
+      "command": "tmp=$(mktemp -d -p <scratch>); trap 'rm -rf \"$tmp\"' EXIT; docker save --platform 'linux/amd64' 'nhi-lab/vending-service:falsify-g1' -o \"$tmp/img.tar\" && kind load image-archive --name 'nhi-t-falsify' \"$tmp/img.tar\"",
+      "start_utc": "2026-11-09T02:13:46.468Z",
+      "end_utc": "2026-11-09T02:13:49.642Z",
+      "exit_code": 0,
+      "log": "<scratch>/load-g1.log"
+    },
+    {
+      "label": "set-image-rollout-g1-differ",
+      "command": "kubectl --context kind-nhi-t-falsify -n nhi set image deployment/vending-service vending-service=nhi-lab/vending-service:falsify-g1 >> <scratch>/rollout-g1.log 2>&1",
+      "start_utc": "2026-11-09T02:13:49.684Z",
+      "end_utc": "2026-11-09T02:13:49.751Z",
+      "exit_code": 0,
+      "log": "-"
+    },
+    {
+      "label": "rollout-status-rollout-g1-differ",
+      "command": "kubectl --context kind-nhi-t-falsify -n nhi rollout status deployment/vending-service --timeout=300s >> <scratch>/rollout-g1.log 2>&1",
+      "start_utc": "2026-11-09T02:13:49.754Z",
+      "end_utc": "2026-11-09T02:13:56.079Z",
+      "exit_code": 0,
+      "log": "-"
+    },
+    {
+      "label": "live-g1-mutated",
+      "command": "cd <repo>/src/experiments && env KUBECTX=kind-nhi-t-falsify KUBECONFIG=<scratch>/kubeconfig uv run python3 negative_tests.py",
+      "start_utc": "2026-11-09T02:13:56.186Z",
+      "end_utc": "2026-11-09T02:14:36.539Z",
+      "exit_code": 1,
+      "log": "<scratch>/live-g1-mutated.log"
+    },
+    {
+      "label": "set-image-rollout-g1-same",
+      "command": "kubectl --context kind-nhi-t-falsify -n nhi set image deployment/vending-service vending-service=nhi-lab/vending-service:dev >> <scratch>/rollout-g1.log 2>&1",
+      "start_utc": "2026-11-09T02:14:36.835Z",
+      "end_utc": "2026-11-09T02:14:36.880Z",
+      "exit_code": 0,
+      "log": "-"
+    },
+    {
+      "label": "rollout-status-rollout-g1-same",
+      "command": "kubectl --context kind-nhi-t-falsify -n nhi rollout status deployment/vending-service --timeout=300s >> <scratch>/rollout-g1.log 2>&1",
+      "start_utc": "2026-11-09T02:14:36.883Z",
+      "end_utc": "2026-11-09T02:14:43.133Z",
+      "exit_code": 0,
+      "log": "-"
+    },
+    {
+      "label": "live-g1-reverted-attempt1",
+      "command": "cd <repo>/src/experiments && env KUBECTX=kind-nhi-t-falsify KUBECONFIG=<scratch>/kubeconfig uv run python3 negative_tests.py",
+      "start_utc": "2026-11-09T02:14:43.258Z",
+      "end_utc": "2026-11-09T02:15:23.632Z",
+      "exit_code": 1,
+      "log": "<scratch>/live-g1-reverted-attempt1.log",
+      "note": "attempt 1; its log and JSON were renamed to live-g1-reverted-attempt1.log/.json after it failed"
+    },
+    {
+      "label": "diag-g1-x509-check",
+      "command": "kubectl --context kind-nhi-t-falsify -n agents exec  -c parentsim -- /parentsim x509-check",
+      "start_utc": "2026-11-09T02:15:42.691Z",
+      "end_utc": "2026-11-09T02:15:42.721Z",
+      "exit_code": 1,
+      "log": "<scratch>/diag-g1-child-x509-check.log",
+      "note": "failed: the pod name came back empty because the calling zsh did not word-split a kubectl-prefix variable; re-run immediately as the next diag-g1-x509-check entry"
+    },
+    {
+      "label": "diag-g1-x509-check",
+      "command": "date -u +%FT%TZ; kubectl --context kind-nhi-t-falsify -n agents exec experiments-child-85c8bd56cc-llvql -c parentsim -- /parentsim x509-check; echo '## SPIRE entries with selector k8s:sa:nhi-exp-child'; kubectl --context kind-nhi-t-falsify exec -n spire spire-server-0 -c spire-server -- /opt/spire/bin/spire-server entry show -selector k8s:sa:nhi-exp-child",
+      "start_utc": "2026-11-09T02:15:49.566Z",
+      "end_utc": "2026-11-09T02:15:49.687Z",
+      "exit_code": 0,
+      "log": "<scratch>/diag-g1-child-x509-check.log"
+    },
+    {
+      "label": "cleanup-g1-dispose-forged",
+      "command": "date -u +%FT%TZ; echo '## DELETE /delegations/c_6957c138765247559fd3d1642cfb9408 as exp-root (parentsim dispose)'; kubectl --context kind-nhi-t-falsify -n agents exec experiments-parent-fc985bd87-mxspw -c parentsim -- /parentsim dispose -chain-id=c_6957c138765247559fd3d1642cfb9408; echo; echo '## GET it back'; kubectl --context kind-nhi-t-falsify -n agents exec experiments-parent-fc985bd87-mxspw -c parentsim -- /parentsim get -chain-id=c_6957c138765247559fd3d1642cfb9408; echo; echo '## SPIRE entries with selector k8s:sa:nhi-exp-child'; kubectl --context kind-nhi-t-falsify exec -n spire spire-server-0 -c spire-server -- /opt/spire/bin/spire-server entry show -selector k8s:sa:nhi-exp-child",
+      "start_utc": "2026-11-09T02:16:12.659Z",
+      "end_utc": "2026-11-09T02:16:12.842Z",
+      "exit_code": 0,
+      "log": "<scratch>/cleanup-g1.log"
+    },
+    {
+      "label": "cleanup-g1-child-x509-check",
+      "command": "date -u +%FT%TZ; kubectl --context kind-nhi-t-falsify -n agents exec experiments-child-85c8bd56cc-llvql -c parentsim -- /parentsim x509-check",
+      "start_utc": "2026-11-09T02:16:19.290Z",
+      "end_utc": "2026-11-09T02:16:19.342Z",
+      "exit_code": 0,
+      "log": "-"
+    },
+    {
+      "label": "live-g1-reverted-attempt2",
+      "command": "cd <repo>/src/experiments && env KUBECTX=kind-nhi-t-falsify KUBECONFIG=<scratch>/kubeconfig uv run python3 negative_tests.py",
+      "start_utc": "2026-11-09T02:16:34.023Z",
+      "end_utc": "2026-11-09T02:16:53.750Z",
+      "exit_code": 0,
+      "log": "<scratch>/live-g1-reverted-attempt2.log"
+    },
+    {
+      "label": "build-g2",
+      "command": "docker build -t nhi-lab/vending-service:falsify-g2 -f <scratch>/vs-g2/Dockerfile <scratch>/vs-g2",
+      "start_utc": "2026-11-09T02:17:01.938Z",
+      "end_utc": "2026-11-09T02:17:17.471Z",
+      "exit_code": 0,
+      "log": "<scratch>/build-g2.log"
+    },
+    {
+      "label": "load-g2",
+      "command": "tmp=$(mktemp -d -p <scratch>); trap 'rm -rf \"$tmp\"' EXIT; docker save --platform 'linux/amd64' 'nhi-lab/vending-service:falsify-g2' -o \"$tmp/img.tar\" && kind load image-archive --name 'nhi-t-falsify' \"$tmp/img.tar\"",
+      "start_utc": "2026-11-09T02:17:17.485Z",
+      "end_utc": "2026-11-09T02:17:19.541Z",
+      "exit_code": 0,
+      "log": "<scratch>/load-g2.log"
+    },
+    {
+      "label": "set-image-rollout-g2-differ",
+      "command": "kubectl --context kind-nhi-t-falsify -n nhi set image deployment/vending-service vending-service=nhi-lab/vending-service:falsify-g2 >> <scratch>/rollout-g2.log 2>&1",
+      "start_utc": "2026-11-09T02:17:19.581Z",
+      "end_utc": "2026-11-09T02:17:19.626Z",
+      "exit_code": 0,
+      "log": "-"
+    },
+    {
+      "label": "rollout-status-rollout-g2-differ",
+      "command": "kubectl --context kind-nhi-t-falsify -n nhi rollout status deployment/vending-service --timeout=300s >> <scratch>/rollout-g2.log 2>&1",
+      "start_utc": "2026-11-09T02:17:19.629Z",
+      "end_utc": "2026-11-09T02:17:26.278Z",
+      "exit_code": 0,
+      "log": "-"
+    },
+    {
+      "label": "live-g2-mutated",
+      "command": "cd <repo>/src/experiments && env KUBECTX=kind-nhi-t-falsify KUBECONFIG=<scratch>/kubeconfig uv run python3 negative_tests.py",
+      "start_utc": "2026-11-09T02:17:26.384Z",
+      "end_utc": "2026-11-09T02:17:52.315Z",
+      "exit_code": 1,
+      "log": "<scratch>/live-g2-mutated.log"
+    },
+    {
+      "label": "set-image-rollout-g2-same",
+      "command": "kubectl --context kind-nhi-t-falsify -n nhi set image deployment/vending-service vending-service=nhi-lab/vending-service:dev >> <scratch>/rollout-g2.log 2>&1",
+      "start_utc": "2026-11-09T02:17:52.557Z",
+      "end_utc": "2026-11-09T02:17:52.604Z",
+      "exit_code": 0,
+      "log": "-"
+    },
+    {
+      "label": "rollout-status-rollout-g2-same",
+      "command": "kubectl --context kind-nhi-t-falsify -n nhi rollout status deployment/vending-service --timeout=300s >> <scratch>/rollout-g2.log 2>&1",
+      "start_utc": "2026-11-09T02:17:52.607Z",
+      "end_utc": "2026-11-09T02:17:59.324Z",
+      "exit_code": 0,
+      "log": "-"
+    },
+    {
+      "label": "live-g2-reverted-attempt1",
+      "command": "cd <repo>/src/experiments && env KUBECTX=kind-nhi-t-falsify KUBECONFIG=<scratch>/kubeconfig uv run python3 negative_tests.py",
+      "start_utc": "2026-11-09T02:17:59.430Z",
+      "end_utc": "2026-11-09T02:18:39.643Z",
+      "exit_code": 1,
+      "log": "<scratch>/live-g2-reverted-attempt1.log",
+      "note": "attempt 1; its log and JSON were renamed to live-g2-reverted-attempt1.log/.json after it failed"
+    },
+    {
+      "label": "cleanup-g2-dispose-escalate",
+      "command": "date -u +%FT%TZ; echo '## child pod x509-check before cleanup'; kubectl --context kind-nhi-t-falsify -n agents exec experiments-child-85c8bd56cc-llvql -c parentsim -- /parentsim x509-check; echo '## DELETE /delegations/c_416e7ce0b70c3d45c689b54cf71e2704 as exp-root (parentsim dispose)'; kubectl --context kind-nhi-t-falsify -n agents exec experiments-parent-fc985bd87-mxspw -c parentsim -- /parentsim dispose -chain-id=c_416e7ce0b70c3d45c689b54cf71e2704; echo; echo '## GET it back'; kubectl --context kind-nhi-t-falsify -n agents exec experiments-parent-fc985bd87-mxspw -c parentsim -- /parentsim get -chain-id=c_416e7ce0b70c3d45c689b54cf71e2704; echo; echo '## SPIRE entries with selector k8s:sa:nhi-exp-child'; kubectl --context kind-nhi-t-falsify exec -n spire spire-server-0 -c spire-server -- /opt/spire/bin/spire-server entry show -selector k8s:sa:nhi-exp-child",
+      "start_utc": "2026-11-09T02:19:08.012Z",
+      "end_utc": "2026-11-09T02:19:08.323Z",
+      "exit_code": 0,
+      "log": "<scratch>/cleanup-g2.log"
+    },
+    {
+      "label": "live-g2-reverted-attempt2",
+      "command": "cd <repo>/src/experiments && env KUBECTX=kind-nhi-t-falsify KUBECONFIG=<scratch>/kubeconfig uv run python3 negative_tests.py",
+      "start_utc": "2026-11-09T02:19:19.225Z",
+      "end_utc": "2026-11-09T02:19:40.987Z",
+      "exit_code": 0,
+      "log": "<scratch>/live-g2-reverted-attempt2.log"
+    },
+    {
+      "label": "build-g3",
+      "command": "docker build -t nhi-lab/vending-service:falsify-g3 -f <scratch>/vs-g3/Dockerfile <scratch>/vs-g3",
+      "start_utc": "2026-11-09T02:19:47.101Z",
+      "end_utc": "2026-11-09T02:20:00.616Z",
+      "exit_code": 0,
+      "log": "<scratch>/build-g3.log"
+    },
+    {
+      "label": "load-g3",
+      "command": "tmp=$(mktemp -d -p <scratch>); trap 'rm -rf \"$tmp\"' EXIT; docker save --platform 'linux/amd64' 'nhi-lab/vending-service:falsify-g3' -o \"$tmp/img.tar\" && kind load image-archive --name 'nhi-t-falsify' \"$tmp/img.tar\"",
+      "start_utc": "2026-11-09T02:20:00.630Z",
+      "end_utc": "2026-11-09T02:20:02.722Z",
+      "exit_code": 0,
+      "log": "<scratch>/load-g3.log"
+    },
+    {
+      "label": "set-image-rollout-g3-differ",
+      "command": "kubectl --context kind-nhi-t-falsify -n nhi set image deployment/vending-service vending-service=nhi-lab/vending-service:falsify-g3 >> <scratch>/rollout-g3.log 2>&1",
+      "start_utc": "2026-11-09T02:20:02.762Z",
+      "end_utc": "2026-11-09T02:20:02.806Z",
+      "exit_code": 0,
+      "log": "-"
+    },
+    {
+      "label": "rollout-status-rollout-g3-differ",
+      "command": "kubectl --context kind-nhi-t-falsify -n nhi rollout status deployment/vending-service --timeout=300s >> <scratch>/rollout-g3.log 2>&1",
+      "start_utc": "2026-11-09T02:20:02.809Z",
+      "end_utc": "2026-11-09T02:20:09.472Z",
+      "exit_code": 0,
+      "log": "-"
+    },
+    {
+      "label": "live-g3-mutated",
+      "command": "cd <repo>/src/experiments && env KUBECTX=kind-nhi-t-falsify KUBECONFIG=<scratch>/kubeconfig uv run python3 negative_tests.py",
+      "start_utc": "2026-11-09T02:20:09.587Z",
+      "end_utc": "2026-11-09T02:20:35.506Z",
+      "exit_code": 1,
+      "log": "<scratch>/live-g3-mutated.log"
+    },
+    {
+      "label": "set-image-rollout-g3-same",
+      "command": "kubectl --context kind-nhi-t-falsify -n nhi set image deployment/vending-service vending-service=nhi-lab/vending-service:dev >> <scratch>/rollout-g3.log 2>&1",
+      "start_utc": "2026-11-09T02:20:35.744Z",
+      "end_utc": "2026-11-09T02:20:35.790Z",
+      "exit_code": 0,
+      "log": "-"
+    },
+    {
+      "label": "rollout-status-rollout-g3-same",
+      "command": "kubectl --context kind-nhi-t-falsify -n nhi rollout status deployment/vending-service --timeout=300s >> <scratch>/rollout-g3.log 2>&1",
+      "start_utc": "2026-11-09T02:20:35.793Z",
+      "end_utc": "2026-11-09T02:20:42.528Z",
+      "exit_code": 0,
+      "log": "-"
+    },
+    {
+      "label": "live-g3-reverted",
+      "command": "cd <repo>/src/experiments && env KUBECTX=kind-nhi-t-falsify KUBECONFIG=<scratch>/kubeconfig uv run python3 negative_tests.py",
+      "start_utc": "2026-11-09T02:20:42.634Z",
+      "end_utc": "2026-11-09T02:21:08.516Z",
+      "exit_code": 0,
+      "log": "<scratch>/live-g3-reverted.log"
+    },
+    {
+      "label": "build-g4",
+      "command": "docker build -t nhi-lab/vending-service:falsify-g4 -f <scratch>/vs-g4/Dockerfile <scratch>/vs-g4",
+      "start_utc": "2026-11-09T02:21:52.916Z",
+      "end_utc": "2026-11-09T02:22:06.440Z",
+      "exit_code": 0,
+      "log": "<scratch>/build-g4.log"
+    },
+    {
+      "label": "load-g4",
+      "command": "tmp=$(mktemp -d -p <scratch>); trap 'rm -rf \"$tmp\"' EXIT; docker save --platform 'linux/amd64' 'nhi-lab/vending-service:falsify-g4' -o \"$tmp/img.tar\" && kind load image-archive --name 'nhi-t-falsify' \"$tmp/img.tar\"",
+      "start_utc": "2026-11-09T02:22:06.453Z",
+      "end_utc": "2026-11-09T02:22:08.488Z",
+      "exit_code": 0,
+      "log": "<scratch>/load-g4.log"
+    },
+    {
+      "label": "set-image-rollout-g4-differ",
+      "command": "kubectl --context kind-nhi-t-falsify -n nhi set image deployment/vending-service vending-service=nhi-lab/vending-service:falsify-g4 >> <scratch>/rollout-g4.log 2>&1",
+      "start_utc": "2026-11-09T02:22:08.527Z",
+      "end_utc": "2026-11-09T02:22:08.572Z",
+      "exit_code": 0,
+      "log": "-"
+    },
+    {
+      "label": "rollout-status-rollout-g4-differ",
+      "command": "kubectl --context kind-nhi-t-falsify -n nhi rollout status deployment/vending-service --timeout=300s >> <scratch>/rollout-g4.log 2>&1",
+      "start_utc": "2026-11-09T02:22:08.574Z",
+      "end_utc": "2026-11-09T02:22:14.633Z",
+      "exit_code": 0,
+      "log": "-"
+    },
+    {
+      "label": "live-g4-mutated",
+      "command": "cd <repo>/src/experiments && env KUBECTX=kind-nhi-t-falsify KUBECONFIG=<scratch>/kubeconfig uv run python3 negative_tests.py",
+      "start_utc": "2026-11-09T02:22:14.738Z",
+      "end_utc": "2026-11-09T02:22:40.634Z",
+      "exit_code": 1,
+      "log": "<scratch>/live-g4-mutated.log"
+    },
+    {
+      "label": "set-image-rollout-g4-same",
+      "command": "kubectl --context kind-nhi-t-falsify -n nhi set image deployment/vending-service vending-service=nhi-lab/vending-service:dev >> <scratch>/rollout-g4.log 2>&1",
+      "start_utc": "2026-11-09T02:22:40.910Z",
+      "end_utc": "2026-11-09T02:22:40.955Z",
+      "exit_code": 0,
+      "log": "-"
+    },
+    {
+      "label": "rollout-status-rollout-g4-same",
+      "command": "kubectl --context kind-nhi-t-falsify -n nhi rollout status deployment/vending-service --timeout=300s >> <scratch>/rollout-g4.log 2>&1",
+      "start_utc": "2026-11-09T02:22:40.957Z",
+      "end_utc": "2026-11-09T02:22:47.684Z",
+      "exit_code": 0,
+      "log": "-"
+    },
+    {
+      "label": "live-g4-reverted",
+      "command": "cd <repo>/src/experiments && env KUBECTX=kind-nhi-t-falsify KUBECONFIG=<scratch>/kubeconfig uv run python3 negative_tests.py",
+      "start_utc": "2026-11-09T02:22:47.789Z",
+      "end_utc": "2026-11-09T02:23:13.671Z",
+      "exit_code": 0,
+      "log": "<scratch>/live-g4-reverted.log"
+    },
+    {
+      "label": "evidence-g4-resource-audit",
+      "command": "kubectl --context kind-nhi-t-falsify -n nhi logs -l app=resource -c resource --tail=-1 | grep -F 'negtest-revoke-00718f8056'",
+      "start_utc": "2026-11-09T02:23:21.812Z",
+      "end_utc": "2026-11-09T02:23:21.850Z",
+      "exit_code": 0,
+      "log": "<scratch>/evidence-g4-resource-audit.log"
+    },
+    {
+      "label": "build-g5",
+      "command": "docker build -t nhi-lab/vending-service:falsify-g5 -f <scratch>/vs-g5/Dockerfile <scratch>/vs-g5",
+      "start_utc": "2026-11-09T02:23:38.772Z",
+      "end_utc": "2026-11-09T02:23:52.392Z",
+      "exit_code": 0,
+      "log": "<scratch>/build-g5.log"
+    },
+    {
+      "label": "load-g5",
+      "command": "tmp=$(mktemp -d -p <scratch>); trap 'rm -rf \"$tmp\"' EXIT; docker save --platform 'linux/amd64' 'nhi-lab/vending-service:falsify-g5' -o \"$tmp/img.tar\" && kind load image-archive --name 'nhi-t-falsify' \"$tmp/img.tar\"",
+      "start_utc": "2026-11-09T02:23:52.405Z",
+      "end_utc": "2026-11-09T02:23:54.464Z",
+      "exit_code": 0,
+      "log": "<scratch>/load-g5.log"
+    },
+    {
+      "label": "set-image-rollout-g5-differ",
+      "command": "kubectl --context kind-nhi-t-falsify -n nhi set image deployment/vending-service vending-service=nhi-lab/vending-service:falsify-g5 >> <scratch>/rollout-g5.log 2>&1",
+      "start_utc": "2026-11-09T02:23:54.504Z",
+      "end_utc": "2026-11-09T02:23:54.547Z",
+      "exit_code": 0,
+      "log": "-"
+    },
+    {
+      "label": "rollout-status-rollout-g5-differ",
+      "command": "kubectl --context kind-nhi-t-falsify -n nhi rollout status deployment/vending-service --timeout=300s >> <scratch>/rollout-g5.log 2>&1",
+      "start_utc": "2026-11-09T02:23:54.549Z",
+      "end_utc": "2026-11-09T02:24:00.765Z",
+      "exit_code": 0,
+      "log": "-"
+    },
+    {
+      "label": "live-g5-mutated",
+      "command": "cd <repo>/src/experiments && env KUBECTX=kind-nhi-t-falsify KUBECONFIG=<scratch>/kubeconfig uv run python3 negative_tests.py",
+      "start_utc": "2026-11-09T02:24:00.869Z",
+      "end_utc": "2026-11-09T02:24:49.438Z",
+      "exit_code": 1,
+      "log": "<scratch>/live-g5-mutated.log"
+    },
+    {
+      "label": "set-image-rollout-g5-same",
+      "command": "kubectl --context kind-nhi-t-falsify -n nhi set image deployment/vending-service vending-service=nhi-lab/vending-service:dev >> <scratch>/rollout-g5.log 2>&1",
+      "start_utc": "2026-11-09T02:24:49.712Z",
+      "end_utc": "2026-11-09T02:24:49.754Z",
+      "exit_code": 0,
+      "log": "-"
+    },
+    {
+      "label": "rollout-status-rollout-g5-same",
+      "command": "kubectl --context kind-nhi-t-falsify -n nhi rollout status deployment/vending-service --timeout=300s >> <scratch>/rollout-g5.log 2>&1",
+      "start_utc": "2026-11-09T02:24:49.757Z",
+      "end_utc": "2026-11-09T02:24:55.840Z",
+      "exit_code": 0,
+      "log": "-"
+    },
+    {
+      "label": "live-g5-reverted",
+      "command": "cd <repo>/src/experiments && env KUBECTX=kind-nhi-t-falsify KUBECONFIG=<scratch>/kubeconfig uv run python3 negative_tests.py",
+      "start_utc": "2026-11-09T02:24:55.942Z",
+      "end_utc": "2026-11-09T02:25:21.848Z",
+      "exit_code": 0,
+      "log": "<scratch>/live-g5-reverted.log"
+    },
+    {
+      "label": "evidence-g5-stranded-orphan",
+      "command": "date -u +%FT%TZ; kubectl --context kind-nhi-t-falsify -n agents exec experiments-parent-fc985bd87-mxspw -c parentsim -- /parentsim get -chain-id=c_f018e230324fe8869e383711f9c45cc1; echo; kubectl --context kind-nhi-t-falsify exec -n spire spire-server-0 -c spire-server -- /opt/spire/bin/spire-server entry show -spiffeID spiffe://lab.local/agent/parent/exp-root/child/negtest-orphan-4cf7591993",
+      "start_utc": "2026-11-09T02:25:31.324Z",
+      "end_utc": "2026-11-09T02:25:31.438Z",
+      "exit_code": 0,
+      "log": "<scratch>/evidence-g5-stranded-orphan.log"
+    },
+    {
+      "label": "evidence-durable-audit-copy",
+      "command": "docker exec nhi-t-falsify-worker cat /var/local-path-provisioner/pvc-e7d7461d-23a3-4768-b0cc-000de3f77f97_nhi_vending-data/audit.jsonl > <scratch>/vending-audit-durable.jsonl",
+      "start_utc": "2026-11-09T02:25:50.554Z",
+      "end_utc": "2026-11-09T02:25:50.579Z",
+      "exit_code": 0,
+      "log": "-"
+    },
+    {
+      "label": "final-live-state",
+      "command": "date -u +%FT%TZ; echo '## deployment image'; kubectl --context kind-nhi-t-falsify -n nhi get deployment/vending-service -o jsonpath='{.spec.template.spec.containers[0].image}{\"\\n\"}'; echo '## running pod imageID'; kubectl --context kind-nhi-t-falsify -n nhi get pods -l app=vending-service -o jsonpath='{range .items[*]}{.metadata.name}{\" \"}{.status.containerStatuses[0].imageID}{\"\\n\"}{end}'; echo '## SPIRE entries under exp-root/child/'; kubectl --context kind-nhi-t-falsify exec -n spire spire-server-0 -c spire-server -- /opt/spire/bin/spire-server entry show | grep -c 'agent/parent/exp-root/child/' ; echo '## env of vending-service deployment (unchanged)'; kubectl --context kind-nhi-t-falsify -n nhi get deployment/vending-service -o jsonpath='{range .spec.template.spec.containers[0].env[*]}{.name}={.value}{\"\\n\"}{end}' | grep -e REAPER_INTERVAL -e MAX_; echo '## rollout history'; kubectl --context kind-nhi-t-falsify -n nhi rollout history deployment/vending-service",
+      "start_utc": "2026-11-09T02:26:15.006Z",
+      "end_utc": "2026-11-09T02:26:15.213Z",
+      "exit_code": 0,
+      "log": "<scratch>/final-live-state.log"
+    },
+    {
+      "label": "teardown-rmi-falsify-tags",
+      "command": "echo '## docker rmi falsify-g1..g5' >> <scratch>/cluster-teardown.log; docker rmi nhi-lab/vending-service:falsify-g1 nhi-lab/vending-service:falsify-g2 nhi-lab/vending-service:falsify-g3 nhi-lab/vending-service:falsify-g4 nhi-lab/vending-service:falsify-g5 >> <scratch>/cluster-teardown.log 2>&1",
+      "start_utc": "2026-11-09T02:29:32.887Z",
+      "end_utc": "2026-11-09T02:29:33.576Z",
+      "exit_code": 0,
+      "log": "-"
+    },
+    {
+      "label": "teardown-check-tags",
+      "command": "echo '## remaining falsify tags (docker images nhi-lab/vending-service --filter reference=*:falsify-*)' >> <scratch>/cluster-teardown.log; docker images --format '{{.Repository}}:{{.Tag}}' | grep -c ':falsify-' >> <scratch>/cluster-teardown.log; true",
+      "start_utc": "2026-11-09T02:29:33.579Z",
+      "end_utc": "2026-11-09T02:29:33.709Z",
+      "exit_code": 0,
+      "log": "-"
+    },
+    {
+      "label": "teardown-kind-delete",
+      "command": "echo '## kind delete cluster --name nhi-t-falsify' >> <scratch>/cluster-teardown.log; env KUBECONFIG=<scratch>/kubeconfig kind delete cluster --name nhi-t-falsify >> <scratch>/cluster-teardown.log 2>&1",
+      "start_utc": "2026-11-09T02:29:33.712Z",
+      "end_utc": "2026-11-09T02:29:35.037Z",
+      "exit_code": 0,
+      "log": "-"
+    },
+    {
+      "label": "teardown-kind-get-clusters",
+      "command": "echo '## kind get clusters (after deletion)' >> <scratch>/cluster-teardown.log; env KUBECONFIG=<scratch>/kubeconfig kind get clusters >> <scratch>/cluster-teardown.log 2>&1; echo '## docker containers for nhi-t-falsify:' $(docker ps -a --filter label=io.x-k8s.kind.cluster=nhi-t-falsify -q | wc -l) >> <scratch>/cluster-teardown.log",
+      "start_utc": "2026-11-09T02:29:35.039Z",
+      "end_utc": "2026-11-09T02:29:35.060Z",
+      "exit_code": 0,
+      "log": "-"
+    },
+    {
+      "label": "final-git-status",
+      "command": "echo '## git -C <worktree> status --short (whole worktree)'; git -C <repo> status --short; echo \"[printed $(git -C <repo> status --short | wc -l) lines]\"; echo '## git -C <worktree> status --short src/vending-service'; git -C <repo> status --short src/vending-service; echo \"[printed $(git -C <repo> status --short src/vending-service | wc -l) lines]\"; echo '## HEAD'; git -C <repo> log --oneline -1; git -C <repo> branch --show-current",
+      "start_utc": "2026-11-09T02:29:35.062Z",
+      "end_utc": "2026-11-09T02:29:35.069Z",
+      "exit_code": 0,
+      "log": "<scratch>/final-git-status.log"
+    },
+    {
+      "label": "sanitize-grep",
+      "command": "grep -rIl -e <PAT_USER> -e <PAT_HOME> -e <PAT_TMP> <results dir>; echo \"[grep printed $(grep -rIl -e <PAT_USER> -e <PAT_HOME> -e <PAT_TMP> <results dir> | wc -l) files]\"",
+      "start_utc": "2026-11-09T02:29:44.780Z",
+      "end_utc": "2026-11-09T02:29:44.782Z",
+      "exit_code": 0,
+      "log": "-",
+      "note": "run under bash (GNU grep). The patterns are placeholders here so that this record does not match the grep itself: PAT_USER is the local user name, PAT_HOME is slash-home-slash, and PAT_TMP is slash-tmp-slash-claude. Output: [grep printed 0 files]."
+    },
+    {
+      "label": "sanitize-grep-final",
+      "command": "grep -rIl -e <PAT_USER> -e <PAT_HOME> -e <PAT_TMP> <results dir>; echo \"[grep printed $(grep -rIl -e <PAT_USER> -e <PAT_HOME> -e <PAT_TMP> <results dir> | wc -l) files]\"",
+      "start_utc": "2026-11-09T02:30:23.590Z",
+      "end_utc": "2026-11-09T02:30:23.592Z",
+      "exit_code": 0,
+      "log": "-",
+      "note": "run under bash (GNU grep). The patterns are placeholders here so that this record does not match the grep itself: PAT_USER is the local user name, PAT_HOME is slash-home-slash, and PAT_TMP is slash-tmp-slash-claude. Output: 1 file, provenance.json, matching only an earlier version of this note, which spelled the patterns literally; the note was rewritten and the grep re-run with no matches (see the report)."
+    }
+  ],
+  "commands_not_individually_timed": [
+    "Inside <scratch>/bin/live.sh: pod_info/running_image_id (kubectl get pods), snapshot (spire-server entry show, parentsim get), and kubectl logs of the vending-service pod after each suite run, all read-only. They ran inside the windows of the live-*, set-image-* and rollout-status-* commands; their outputs are rollout-*.log, state-*.log and vs-podlog-*.log.",
+    "Child-pod x509-check polls after each cleanup (timestamped per line in cleanup-g1.log and cleanup-g2.log).",
+    "Read-only checks of the kind worker node (ls /var/log/pods, ls /var/local-path-provisioner) at about 02:21-02:26Z before evidence-durable-audit-copy.",
+    "Local jq/grep extraction over files already in <scratch>, versions.txt collection at about 02:09Z, and git status checks of the worktree."
+  ],
+  "deviations": [
+    "Reverted runs for g1 and g2 failed on the first attempt because of state the mutated run left behind; per procedure they were cleaned up through the vending service's DELETE and rerun once. Both attempts are kept, as live-gN-reverted-attempt1/-attempt2.",
+    "For g4 the mutation replaces the call with error(nil) inside the existing if header rather than deleting a statement; the behaviour is the same.",
+    "Evidence additions beyond the requested files: state-*.log snapshots, vs-podlog-*.log (g4 and g5 only; the capture was added after g3), build/load logs, and vending-audit-durable.log. That last file is audit.jsonl read with docker exec cat from this stream's own kind worker node, the only way to recover the g1-g3 mutated pods' audit events without starting the make vending-audit reader pod."
+  ]
+}

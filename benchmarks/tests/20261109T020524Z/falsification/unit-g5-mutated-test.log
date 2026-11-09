@@ -1,0 +1,6 @@
+=== RUN   TestReaperReapsExpiredDelegation
+    main_test.go:980: reaper did not dispose the orphaned child: deleted=false disposed=false
+--- FAIL: TestReaperReapsExpiredDelegation (0.00s)
+FAIL
+FAIL	nhi-lab/vending-service/cmd/vending-service	0.002s
+FAIL

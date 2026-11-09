@@ -1,0 +1,23 @@
+2026-11-09T02:26:15Z
+## deployment image
+nhi-lab/vending-service:dev
+## running pod imageID
+vending-service-ddf4dbbfc-hdcrj docker.io/library/import-2026-11-09@sha256:a6a08922be05b53ff1bed001c0e109edcf32605d406b695ce228be39e7613273
+## SPIRE entries under exp-root/child/
+0
+## env of vending-service deployment (unchanged)
+REAPER_INTERVAL=15s
+MAX_DELEGATION_DEPTH=2
+MAX_LIVE_CHILDREN=8
+## rollout history
+deployment.apps/vending-service 
+REVISION  CHANGE-CAUSE
+1         <none>
+2         <none>
+4         <none>
+6         <none>
+8         <none>
+10        <none>
+12        <none>
+13        <none>
+

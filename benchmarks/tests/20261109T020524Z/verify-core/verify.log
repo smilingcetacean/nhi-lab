@@ -1,0 +1,250 @@
+
+[1m[1] Cluster reachable and nodes Ready[0m
+    | nhi-t-vcore-control-plane   Ready   control-plane   3m45s   v1.36.1
+    | nhi-t-vcore-worker          Ready   <none>          3m38s   v1.36.1
+    [32mPASS[0m 2/2 nodes Ready (1 control-plane + 1 worker)
+
+[1m[2] SPIRE control plane pods Running[0m
+    | spire-agent-2pxfg   1/1   Running   0     2m56s   172.18.0.9   nhi-t-vcore-worker          <none>   <none>
+    | spire-agent-lcnkv   1/1   Running   0     2m56s   172.18.0.8   nhi-t-vcore-control-plane   <none>   <none>
+    | spire-server-0      1/1   Running   0     3m9s    10.244.1.3   nhi-t-vcore-worker          <none>   <none>
+    [32mPASS[0m spire-server-0 is Running and Ready
+    [32mPASS[0m 2/2 spire-agent DaemonSet pods Running and Ready
+
+[1m[3] Trust domain is lab.local[0m
+    | trust domain: lab.local
+    [32mPASS[0m server trust domain is lab.local
+
+[1m[4] Node attestation actually succeeded (k8s_psat)[0m
+    | Found 2 attested agents:
+    | 
+    | SPIFFE ID         : spiffe://lab.local/spire/agent/k8s_psat/nhi-lab/ea1ee65e-abe0-41ce-bf22-233845b3b10d
+    | Attestation type  : k8s_psat
+    | Expiration time   : 2026-11-09 03:09:50 +0000 UTC
+    | Serial number     : 244546226452989901571080855430491403810
+    | Can re-attest     : true
+    | Agent version     : 1.15.2
+    | 
+    | SPIFFE ID         : spiffe://lab.local/spire/agent/k8s_psat/nhi-lab/759fbef4-427e-48f7-90b4-e75a8e8f55ee
+    | Attestation type  : k8s_psat
+    | Expiration time   : 2026-11-09 03:09:50 +0000 UTC
+    | Serial number     : 42855899557414362017092309389458307144
+    | Can re-attest     : true
+    | Agent version     : 1.15.2
+    [32mPASS[0m 2 agents attested via k8s_psat, none banned
+
+[1m[5] Static registration entries present[0m
+    | Found 12 entries
+    | Entry ID                : e62343ce-5328-4b83-a089-d88f1b4b4996
+    | SPIFFE ID               : spiffe://lab.local/agent/parent/demo
+    | Parent ID               : spiffe://lab.local/node/nhi-lab
+    | Revision                : 0
+    | X509-SVID TTL           : default
+    | JWT-SVID TTL            : default
+    | Selector                : k8s:ns:agents
+    | Selector                : k8s:sa:nhi-demo-parent
+    | 
+    | Entry ID                : fd0fbf46-4348-4b4f-8c89-fb05ab3b5618
+    | SPIFFE ID               : spiffe://lab.local/agent/parent/exp-root
+    | Parent ID               : spiffe://lab.local/node/nhi-lab
+    | Revision                : 0
+    | X509-SVID TTL           : default
+    | JWT-SVID TTL            : default
+    | Selector                : k8s:ns:agents
+    | Selector                : k8s:sa:nhi-exp-parent
+    | 
+    | Entry ID                : f36c2657-458e-46e3-9edf-0a261e7fd772
+    | SPIFFE ID               : spiffe://lab.local/agent/parent/opencode
+    | Parent ID               : spiffe://lab.local/node/nhi-lab
+    | Revision                : 0
+    | X509-SVID TTL           : default
+    | JWT-SVID TTL            : default
+    | Selector                : k8s:ns:agents
+    | Selector                : k8s:sa:nhi-opencode-parent
+    | 
+    | Entry ID                : 49b0baf7-041b-43f4-b624-aa651a64901b
+    | SPIFFE ID               : spiffe://lab.local/agent/parent/policy-verify/child/policy-verify-child
+    | Parent ID               : spiffe://lab.local/node/nhi-lab
+    | Revision                : 0
+    | X509-SVID TTL           : default
+    | JWT-SVID TTL            : default
+    | Selector                : k8s:ns:agents
+    | Selector                : k8s:sa:nhi-test-child
+    | 
+    | Entry ID                : 79282261-c06b-4353-8fdb-bab8b22dc452
+    | SPIFFE ID               : spiffe://lab.local/agent/parent/vend-verify
+    | Parent ID               : spiffe://lab.local/node/nhi-lab
+    | Revision                : 0
+    | X509-SVID TTL           : default
+    | JWT-SVID TTL            : default
+    | Selector                : k8s:ns:agents
+    | Selector                : k8s:sa:nhi-test-vend-parent
+    | 
+    | Entry ID                : 08ecd370-1fb5-4af6-ac37-9f556a6a31b9
+    | SPIFFE ID               : spiffe://lab.local/node/nhi-lab
+    | Parent ID               : spiffe://lab.local/spire/server
+    | Revision                : 0
+    | X509-SVID TTL           : default
+    | JWT-SVID TTL            : default
+    | Selector                : k8s_psat:cluster:nhi-lab
+    | 
+    | Entry ID                : 2e1be817-cf12-4d5f-9342-65eec5adaeae
+    | SPIFFE ID               : spiffe://lab.local/svc/opa
+    | Parent ID               : spiffe://lab.local/node/nhi-lab
+    | Revision                : 0
+    | X509-SVID TTL           : default
+    | JWT-SVID TTL            : default
+    | Selector                : k8s:ns:opa
+    | Selector                : k8s:sa:opa
+    | DNS name                : opa.opa.svc.cluster.local
+    | DNS name                : opa.opa.svc
+    | DNS name                : opa
+    | 
+    | Entry ID                : c9f8121e-4da2-4693-8159-7b6fb0ba8547
+    | SPIFFE ID               : spiffe://lab.local/svc/policy-engine
+    | Parent ID               : spiffe://lab.local/node/nhi-lab
+    | Revision                : 0
+    | X509-SVID TTL           : default
+    | JWT-SVID TTL            : default
+    | Selector                : k8s:ns:nhi
+    | Selector                : k8s:sa:policy-engine
+    | DNS name                : policy-engine.nhi.svc.cluster.local
+    | DNS name                : policy-engine.nhi.svc
+    | DNS name                : policy-engine
+    | 
+    | Entry ID                : 3c5a0652-aeb3-4c58-bd47-c7c5e2d5c6aa
+    | SPIFFE ID               : spiffe://lab.local/svc/policy-probe
+    | Parent ID               : spiffe://lab.local/node/nhi-lab
+    | Revision                : 0
+    | X509-SVID TTL           : default
+    | JWT-SVID TTL            : default
+    | Selector                : k8s:ns:nhi
+    | Selector                : k8s:sa:policy-probe
+    | 
+    | Entry ID                : 1e718d62-e1f1-4493-9e1f-e7e72d065be0
+    | SPIFFE ID               : spiffe://lab.local/svc/resource
+    | Parent ID               : spiffe://lab.local/node/nhi-lab
+    | Revision                : 0
+    | X509-SVID TTL           : default
+    | JWT-SVID TTL            : default
+    | Selector                : k8s:ns:nhi
+    | Selector                : k8s:sa:resource
+    | 
+    | Entry ID                : 800796c3-7551-4ada-a325-d57ac3556ae1
+    | SPIFFE ID               : spiffe://lab.local/svc/test-workload
+    | Parent ID               : spiffe://lab.local/node/nhi-lab
+    | Revision                : 0
+    | X509-SVID TTL           : default
+    | JWT-SVID TTL            : default
+    | Selector                : k8s:ns:agents
+    | Selector                : k8s:sa:nhi-test
+    | 
+    | Entry ID                : 56f0027b-2eaa-47ad-936d-0fa583598074
+    | SPIFFE ID               : spiffe://lab.local/svc/vending-service
+    | Parent ID               : spiffe://lab.local/node/nhi-lab
+    | Revision                : 0
+    | X509-SVID TTL           : default
+    | JWT-SVID TTL            : default
+    | Selector                : k8s:ns:nhi
+    | Selector                : k8s:sa:vending-service
+    [32mPASS[0m entry exists: spiffe://lab.local/node/nhi-lab
+    [32mPASS[0m entry exists: spiffe://lab.local/svc/test-workload
+    [32mPASS[0m spiffe://lab.local/svc/test-workload is parented to the node alias spiffe://lab.local/node/nhi-lab
+    [32mPASS[0m selector bound: k8s:ns:agents
+    [32mPASS[0m selector bound: k8s:sa:nhi-test
+
+[1m[6] Test workload pod Running in namespace agents[0m
+    | experiments-attacker-c7c7dcc66-gtg8t      1/1   Running   0     17s     10.244.1.19   nhi-t-vcore-worker   <none>   <none>
+    | experiments-child-85c8bd56cc-kht6f        1/1   Running   0     17s     10.244.1.20   nhi-t-vcore-worker   <none>   <none>
+    | experiments-grandchild-7f645577d6-254v8   1/1   Running   0     17s     10.244.1.21   nhi-t-vcore-worker   <none>   <none>
+    | experiments-parent-fc985bd87-9j57x        1/1   Running   0     17s     10.244.1.18   nhi-t-vcore-worker   <none>   <none>
+    | nhi-opencode-parent                       1/1   Running   0     34s     10.244.1.16   nhi-t-vcore-worker   <none>   <none>
+    | nhi-test-workload-5965cbf6f8-6nk5n        1/1   Running   0     2m39s   10.244.1.6    nhi-t-vcore-worker   <none>   <none>
+    | pod=nhi-test-workload-5965cbf6f8-6nk5n namespace=agents serviceAccount=nhi-test
+    [32mPASS[0m pod nhi-test-workload-5965cbf6f8-6nk5n runs under the known service account 'nhi-test'
+
+[1m[7] CHECK A — pod obtains an X.509-SVID via the Workload API[0m
+    | Received 1 svid after 2.63411ms
+    | 
+    | SPIFFE ID:		spiffe://lab.local/svc/test-workload
+    | SVID Valid After:	2026-11-09 02:09:50 +0000 UTC
+    | SVID Valid Until:	2026-11-09 03:10:00 +0000 UTC
+    | CA #1 Valid After:	2026-11-09 02:09:34 +0000 UTC
+    | CA #1 Valid Until:	2026-11-10 02:09:44 +0000 UTC
+    [32mPASS[0m X.509-SVID issued for spiffe://lab.local/svc/test-workload
+    [32mPASS[0m Workload API returned exactly one X.509-SVID
+
+[1m[8] CHECK B — pod obtains a JWT-SVID via the Workload API[0m
+    | spiffe_id : spiffe://lab.local/svc/test-workload
+    | jwt-svid  : eyJhbGciOiJFUzI1NiIsImtpZCI6InVBN0lkZDZQSlpKY0JI...7Rq11fuOSXKhzTYA (319 chars)
+    | claims    : {"aud":["nhi-lab-verify"],"exp":1794190652,"iat":1794190352,"sub":"spiffe://lab.local/svc/test-workload"}
+    [32mPASS[0m JWT-SVID issued for spiffe://lab.local/svc/test-workload with audience 'nhi-lab-verify'
+    | SVID is valid.
+    | SPIFFE ID : spiffe://lab.local/svc/test-workload
+    | Claims    : {"aud":["nhi-lab-verify"],"exp":1794190652,"iat":1794190352,"sub":"spiffe://lab.local/svc/test-workload"}
+    [32mPASS[0m JWT-SVID validated against the SPIRE trust bundle
+
+[1m[9] Continuous X.509-SVID delivery (pod's own 'api watch' stream)[0m
+    | Received 1 svid after 503.546742ms
+    | 
+    | SPIFFE ID:		spiffe://lab.local/svc/test-workload
+    | SVID Valid After:	2026-11-09 02:09:50 +0000 UTC
+    | SVID Valid Until:	2026-11-09 03:10:00 +0000 UTC
+    | CA #1 Valid After:	2026-11-09 02:09:34 +0000 UTC
+    | CA #1 Valid Until:	2026-11-10 02:09:44 +0000 UTC
+    [32mPASS[0m workload's own Workload API stream shows spiffe://lab.local/svc/test-workload
+
+[1m[10] OPA reachable and serving from an X509-SVID[0m
+    | opa-5c54cb55fb-ndfxm   2/2   Running   0     2m49s
+    | Version: 1.18.2
+    | Build Commit: e695c9ef8edb0f8b9f13d014d7bc8a7fbcc57297-dirty
+    [32mPASS[0m OPA Deployment Available (listener accepting connections)
+    | spiffe-helper sidecar: ready=true restarts=0
+    [32mPASS[0m spiffe-helper sidecar running (SVID delivery and rotation active)
+    | Found 1 entry
+    | Entry ID                : 2e1be817-cf12-4d5f-9342-65eec5adaeae
+    | SPIFFE ID               : spiffe://lab.local/svc/opa
+    | Parent ID               : spiffe://lab.local/node/nhi-lab
+    | Revision                : 0
+    | X509-SVID TTL           : default
+    | JWT-SVID TTL            : default
+    | Selector                : k8s:ns:opa
+    | Selector                : k8s:sa:opa
+    | DNS name                : opa.opa.svc.cluster.local
+    | DNS name                : opa.opa.svc
+    | DNS name                : opa
+    [32mPASS[0m svc/opa entry carries the service DNS SAN (generic TLS clients can verify it)
+
+[1m[11] Policy plane — deploying ephemeral mTLS probes[0m
+    | serviceaccount/policy-probe created
+    | configmap/policy-probe-spiffe-helper created
+    | deployment.apps/policy-probe-unauthorized created
+    | deployment.apps/policy-probe-authorized created
+    [32mPASS[0m both probe pods Ready (each holds an X509-SVID via spiffe-helper)
+
+[1m[12] Policy plane — anonymous write to OPA is refused[0m
+    | result: 000|curl: (56) OpenSSL SSL_read: OpenSSL/3.5.4: error:0A00045C:SSL routines::tlsv13 alert certificate required, errno 0  
+    [32mPASS[0m anonymous PUT /v1/policies refused at the TLS handshake (no HTTP status reached)
+
+[1m[13] Policy plane — write from a non-policy-engine identity is refused[0m
+    | result: 401|{   "code": "unauthorized",   "message": "request rejected by administrative policy" }  
+    [32mPASS[0m PUT /v1/policies as svc/policy-probe refused by system.authz (HTTP 401) after a successful mTLS handshake
+
+[1m[14] Policy plane positive control — svc/policy-engine MAY write policy[0m
+    | result: 200|{}  
+    [32mPASS[0m PUT /v1/policies as svc/policy-engine accepted (HTTP 200) — authz is selective, not uniformly closed
+
+[1m[15] Policy plane — the decision endpoint the resource uses answers over mTLS[0m
+    | result: 200|{"result":true}  
+    [32mPASS[0m POST /v1/data returned an evaluated decision over mTLS (HTTP 200, result=true)
+
+[1m[16] Policy plane — svc/policy-engine may also DELETE policy (disposal path)[0m
+    | result: 200|{}  
+    [32mPASS[0m DELETE /v1/policies as svc/policy-engine accepted (HTTP 200); control module removed
+
+[1m[17] Policy plane — tearing down the ephemeral probes[0m
+    [32mPASS[0m probe pods deleted (no lingering holder of the policy-write identity)
+
+[32m================ VERIFY: PASS (17 checks) ================[0m
+A pod in namespace agents (serviceAccount nhi-test) obtained both an
+X.509-SVID and a JWT-SVID for spiffe://lab.local/svc/test-workload.

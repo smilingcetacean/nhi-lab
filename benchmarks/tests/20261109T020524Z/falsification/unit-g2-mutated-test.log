@@ -1,0 +1,6 @@
+=== RUN   TestHandleVendRejectsEmptyAttenuationResult
+    main_test.go:844: status = 201, want 403; body={"chain_id":"c_6d27e87bfe31c992047c67fea37acdfb","parent_spiffe_id":"spiffe://lab.local/agent/parent/t1","child_spiffe_id":"spiffe://lab.local/agent/parent/t1/child/c1","child_scopes":null,"entry_id":"entry-should-not-happen","policy_id":"nhi_grants_c_6d27e87bfe31c992047c67fea37acdfb","issued_at":1800000000,"expires_at":1800000300}
+--- FAIL: TestHandleVendRejectsEmptyAttenuationResult (0.00s)
+FAIL
+FAIL	nhi-lab/vending-service/cmd/vending-service	0.003s
+FAIL

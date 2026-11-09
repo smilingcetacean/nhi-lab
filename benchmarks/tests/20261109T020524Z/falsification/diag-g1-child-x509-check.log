@@ -1,0 +1,14 @@
+2026-11-09T02:15:49Z
+{"spiffe_id":"spiffe://lab.local/agent/parent/exp-root/child/negtest-forged-e23c32c873","not_after":"2026-11-09T02:19:00Z"}
+## SPIRE entries with selector k8s:sa:nhi-exp-child
+Found 1 entry
+Entry ID                : 318109b0-71f8-4f10-a501-0122f35ca054
+SPIFFE ID               : spiffe://lab.local/agent/parent/exp-root/child/negtest-forged-e23c32c873
+Parent ID               : spiffe://lab.local/node/nhi-lab
+Revision                : 0
+X509-SVID TTL           : 300
+JWT-SVID TTL            : default
+Expiration time         : 2026-11-09 02:18:56 +0000 UTC
+Selector                : k8s:ns:agents
+Selector                : k8s:sa:nhi-exp-child
+

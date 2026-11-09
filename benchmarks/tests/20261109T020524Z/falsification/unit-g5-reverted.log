@@ -1,0 +1,5 @@
+=== RUN   TestReaperReapsExpiredDelegation
+2026/11/08 21:10:17 vending-service: reaper: expired delegation c_orphan (child spiffe://lab.local/agent/parent/dead-parent/child/c1) reaped
+--- PASS: TestReaperReapsExpiredDelegation (0.00s)
+PASS
+ok  	nhi-lab/vending-service/cmd/vending-service	0.003s

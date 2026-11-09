@@ -1,0 +1,431 @@
+/tmp/tmp.GD4BPHkfjt/resource_test.rego:107:
+data.nhi.resource_test.test_root_has_no_ancestors: PASS (715.128µs)
+/tmp/tmp.GD4BPHkfjt/resource_test.rego:97:
+data.nhi.resource_test.test_no_grants_denies: PASS (968.951µs)
+/tmp/tmp.GD4BPHkfjt/resource_test.rego:111:
+data.nhi.resource_test.test_ancestors_of_g_are_c_only: PASS (1.079222ms)
+/tmp/tmp.GD4BPHkfjt/resource_test.rego:47:
+data.nhi.resource_test.test_g_denied_when_c_grant_removed: PASS (1.131843ms)
+/tmp/tmp.GD4BPHkfjt/resource_test.rego:62:
+data.nhi.resource_test.test_c_denied_when_its_own_grant_expired: PASS (1.107832ms)
+/tmp/tmp.GD4BPHkfjt/resource_test.rego:52:
+data.nhi.resource_test.test_c_allowed_with_only_the_root_above_it: PASS (1.360615ms)
+/tmp/tmp.GD4BPHkfjt/resource_test.rego:101:
+data.nhi.resource_test.test_scope_not_granted_denies: PASS (1.218794ms)
+/tmp/tmp.GD4BPHkfjt/resource_test.rego:57:
+data.nhi.resource_test.test_g_denied_when_c_grant_expired: PASS (1.475816ms)
+/tmp/tmp.GD4BPHkfjt/resource_test.rego:69:
+data.nhi.resource_test.test_a_grant_for_a_different_child_is_not_an_ancestor_grant: PASS (1.524867ms)
+/tmp/tmp.GD4BPHkfjt/resource_test.rego:41:
+data.nhi.resource_test.test_g_allowed_when_c_and_g_grants_live: PASS (1.533997ms)
+/tmp/tmp.GD4BPHkfjt/resource_test.rego:75:
+data.nhi.resource_test.test_two_grants_for_the_ancestor_one_expired_still_live: PASS (1.558958ms)
+/tmp/tmp.GD4BPHkfjt/resource_test.rego:85:
+data.nhi.resource_test.test_depth_three_needs_the_whole_chain: PASS (2.601719ms)
+--------------------------------------------------------------------------------
+PASS: 12/12
+ok  	nhi-lab/vending-service/cmd/parentsim	0.634s
+ok  	nhi-lab/vending-service/cmd/vending-service	0.088s
+ok  	nhi-lab/vending-service/internal/audit	0.002s
+ok  	nhi-lab/vending-service/internal/manifest	0.001s
+?   	nhi-lab/vending-service/internal/policyclient	[no test files]
+ok  	nhi-lab/vending-service/internal/signature	0.003s
+?   	nhi-lab/vending-service/internal/spireentry	[no test files]
+ok  	nhi-lab/vending-service/internal/store	0.005s
+ok  	nhi-lab/policy-engine	0.012s
+>> building nhi-lab/policy-engine:dev
+DEPRECATED: The legacy builder is deprecated and will be removed in a future release.
+            Install the buildx component to build images with BuildKit:
+            https://docs.docker.com/go/buildx/
+
+>> loading nhi-lab/policy-engine:dev into kind/nhi-t-vdisp
+namespace/spire unchanged
+namespace/opa unchanged
+namespace/nhi unchanged
+namespace/agents unchanged
+>> deploying SPIRE server 1.15.2
+serviceaccount/spire-server unchanged
+clusterrole.rbac.authorization.k8s.io/spire-server-node-attestor unchanged
+clusterrolebinding.rbac.authorization.k8s.io/spire-server-node-attestor unchanged
+role.rbac.authorization.k8s.io/spire-server-bundle-publisher unchanged
+rolebinding.rbac.authorization.k8s.io/spire-server-bundle-publisher unchanged
+configmap/spire-server unchanged
+configmap/spire-bundle unchanged
+service/spire-server unchanged
+statefulset.apps/spire-server configured
+>> waiting for spire-server to become Ready
+partitioned roll out complete: 1 new pods have been updated...
+>> waiting for the spire-bundle ConfigMap to be populated
+>> trust bundle published (805 bytes)
+>> deploying SPIRE agent 1.15.2
+serviceaccount/spire-agent unchanged
+clusterrole.rbac.authorization.k8s.io/spire-agent-workload-attestor unchanged
+clusterrolebinding.rbac.authorization.k8s.io/spire-agent-workload-attestor unchanged
+configmap/spire-agent unchanged
+daemonset.apps/spire-agent unchanged
+>> waiting for spire-agent DaemonSet to become Ready
+daemon set "spire-agent" successfully rolled out
+>> waiting for node attestation to complete
+>> 2 agents attested via k8s_psat
+Registering static SPIRE entries in trust domain lab.local
+  = node alias: spiffe://lab.local/node/nhi-lab (already registered)
+  = static test workload: spiffe://lab.local/svc/test-workload (already registered)
+  = properly-shaped child test identity (verify-policy only): spiffe://lab.local/agent/parent/policy-verify/child/policy-verify-child (already registered)
+  = OPA server: spiffe://lab.local/svc/opa (already registered)
+  = policy engine: spiffe://lab.local/svc/policy-engine (already registered)
+  = protected resource: spiffe://lab.local/svc/resource (already registered)
+  = vending service: spiffe://lab.local/svc/vending-service (already registered)
+  = vend-verify parent (verify-vending only): spiffe://lab.local/agent/parent/vend-verify (already registered)
+  = demo parent: spiffe://lab.local/agent/parent/demo (already registered)
+  = OpenCode parent: spiffe://lab.local/agent/parent/opencode (already registered)
+  = experiments root parent: spiffe://lab.local/agent/parent/exp-root (already registered)
+  = policy probe (verify only): spiffe://lab.local/svc/policy-probe (already registered)
+
+Found 12 entries
+Entry ID                : ad9b47ed-2e97-40de-a966-c0ef0a33087b
+SPIFFE ID               : spiffe://lab.local/agent/parent/demo
+Parent ID               : spiffe://lab.local/node/nhi-lab
+Revision                : 0
+X509-SVID TTL           : default
+JWT-SVID TTL            : default
+Selector                : k8s:ns:agents
+Selector                : k8s:sa:nhi-demo-parent
+
+Entry ID                : 882dc811-2cbe-48e2-aba8-5e28d6afeecc
+SPIFFE ID               : spiffe://lab.local/agent/parent/exp-root
+Parent ID               : spiffe://lab.local/node/nhi-lab
+Revision                : 0
+X509-SVID TTL           : default
+JWT-SVID TTL            : default
+Selector                : k8s:ns:agents
+Selector                : k8s:sa:nhi-exp-parent
+
+Entry ID                : 666dc947-e10f-4762-9bcc-3ab2a34797f9
+SPIFFE ID               : spiffe://lab.local/agent/parent/opencode
+Parent ID               : spiffe://lab.local/node/nhi-lab
+Revision                : 0
+X509-SVID TTL           : default
+JWT-SVID TTL            : default
+Selector                : k8s:ns:agents
+Selector                : k8s:sa:nhi-opencode-parent
+
+Entry ID                : 8977382f-f715-48bb-87db-d722bd5f9669
+SPIFFE ID               : spiffe://lab.local/agent/parent/policy-verify/child/policy-verify-child
+Parent ID               : spiffe://lab.local/node/nhi-lab
+Revision                : 0
+X509-SVID TTL           : default
+JWT-SVID TTL            : default
+Selector                : k8s:ns:agents
+Selector                : k8s:sa:nhi-test-child
+
+Entry ID                : 1afc333a-f4f4-42f8-9a88-6259b588e070
+SPIFFE ID               : spiffe://lab.local/agent/parent/vend-verify
+Parent ID               : spiffe://lab.local/node/nhi-lab
+Revision                : 0
+X509-SVID TTL           : default
+JWT-SVID TTL            : default
+Selector                : k8s:ns:agents
+Selector                : k8s:sa:nhi-test-vend-parent
+
+Entry ID                : 9f928974-a94d-49ca-944f-6da380c85d60
+SPIFFE ID               : spiffe://lab.local/node/nhi-lab
+Parent ID               : spiffe://lab.local/spire/server
+Revision                : 0
+X509-SVID TTL           : default
+JWT-SVID TTL            : default
+Selector                : k8s_psat:cluster:nhi-lab
+
+Entry ID                : bee8df59-3767-4b3f-b1be-ad83cd54968f
+SPIFFE ID               : spiffe://lab.local/svc/opa
+Parent ID               : spiffe://lab.local/node/nhi-lab
+Revision                : 0
+X509-SVID TTL           : default
+JWT-SVID TTL            : default
+Selector                : k8s:ns:opa
+Selector                : k8s:sa:opa
+DNS name                : opa.opa.svc.cluster.local
+DNS name                : opa.opa.svc
+DNS name                : opa
+
+Entry ID                : fa33d02b-9d57-431f-8b0d-c61eef612ddb
+SPIFFE ID               : spiffe://lab.local/svc/policy-engine
+Parent ID               : spiffe://lab.local/node/nhi-lab
+Revision                : 0
+X509-SVID TTL           : default
+JWT-SVID TTL            : default
+Selector                : k8s:ns:nhi
+Selector                : k8s:sa:policy-engine
+DNS name                : policy-engine.nhi.svc.cluster.local
+DNS name                : policy-engine.nhi.svc
+DNS name                : policy-engine
+
+Entry ID                : 75f4ab89-cba9-43d7-a6da-a4a7723c5bc2
+SPIFFE ID               : spiffe://lab.local/svc/policy-probe
+Parent ID               : spiffe://lab.local/node/nhi-lab
+Revision                : 0
+X509-SVID TTL           : default
+JWT-SVID TTL            : default
+Selector                : k8s:ns:nhi
+Selector                : k8s:sa:policy-probe
+
+Entry ID                : 27b47fd9-b28b-4b2f-9c27-692ae367a55d
+SPIFFE ID               : spiffe://lab.local/svc/resource
+Parent ID               : spiffe://lab.local/node/nhi-lab
+Revision                : 0
+X509-SVID TTL           : default
+JWT-SVID TTL            : default
+Selector                : k8s:ns:nhi
+Selector                : k8s:sa:resource
+
+Entry ID                : a6433162-dc98-43d4-84f4-297bd1b69b36
+SPIFFE ID               : spiffe://lab.local/svc/test-workload
+Parent ID               : spiffe://lab.local/node/nhi-lab
+Revision                : 0
+X509-SVID TTL           : default
+JWT-SVID TTL            : default
+Selector                : k8s:ns:agents
+Selector                : k8s:sa:nhi-test
+
+Entry ID                : 579081c0-84fc-43ae-8c3a-1b2c24450017
+SPIFFE ID               : spiffe://lab.local/svc/vending-service
+Parent ID               : spiffe://lab.local/node/nhi-lab
+Revision                : 0
+X509-SVID TTL           : default
+JWT-SVID TTL            : default
+Selector                : k8s:ns:nhi
+Selector                : k8s:sa:vending-service
+
+>> deploying the policy engine
+serviceaccount/policy-engine unchanged
+service/policy-engine unchanged
+deployment.apps/policy-engine unchanged
+configmap/policy-engine-bootstrap unchanged
+deployment.apps/policy-engine restarted
+Waiting for deployment spec update to be observed...
+Waiting for deployment "policy-engine" rollout to finish: 0 out of 1 new replicas have been updated...
+Waiting for deployment "policy-engine" rollout to finish: 1 old replicas are pending termination...
+Waiting for deployment "policy-engine" rollout to finish: 1 old replicas are pending termination...
+deployment "policy-engine" successfully rolled out
+>> building nhi-lab/vending-service:dev
+DEPRECATED: The legacy builder is deprecated and will be removed in a future release.
+            Install the buildx component to build images with BuildKit:
+            https://docs.docker.com/go/buildx/
+
+>> loading nhi-lab/vending-service:dev into kind/nhi-t-vdisp
+>> deploying the vending service
+persistentvolumeclaim/vending-data unchanged
+serviceaccount/vending-service unchanged
+service/vending-service unchanged
+deployment.apps/vending-service unchanged
+deployment.apps/vending-service restarted
+Waiting for deployment "vending-service" rollout to finish: 0 out of 1 new replicas have been updated...
+Waiting for deployment "vending-service" rollout to finish: 0 out of 1 new replicas have been updated...
+Waiting for deployment "vending-service" rollout to finish: 0 out of 1 new replicas have been updated...
+Waiting for deployment "vending-service" rollout to finish: 0 out of 1 new replicas have been updated...
+Waiting for deployment "vending-service" rollout to finish: 0 of 1 updated replicas are available...
+deployment "vending-service" successfully rolled out
+>> building nhi-lab/parentsim:dev
+DEPRECATED: The legacy builder is deprecated and will be removed in a future release.
+            Install the buildx component to build images with BuildKit:
+            https://docs.docker.com/go/buildx/
+
+>> loading nhi-lab/parentsim:dev into kind/nhi-t-vdisp
+>> building nhi-lab/resource:dev
+DEPRECATED: The legacy builder is deprecated and will be removed in a future release.
+            Install the buildx component to build images with BuildKit:
+            https://docs.docker.com/go/buildx/
+
+>> loading nhi-lab/resource:dev into kind/nhi-t-vdisp
+>> deploying the protected resource
+serviceaccount/resource unchanged
+service/resource unchanged
+deployment.apps/resource unchanged
+deployment.apps/resource restarted
+Waiting for deployment spec update to be observed...
+Waiting for deployment "resource" rollout to finish: 0 out of 1 new replicas have been updated...
+Waiting for deployment "resource" rollout to finish: 1 old replicas are pending termination...
+Waiting for deployment "resource" rollout to finish: 1 old replicas are pending termination...
+deployment "resource" successfully rolled out
+>> deploying experiment fixtures
+serviceaccount/nhi-exp-parent unchanged
+deployment.apps/experiments-parent unchanged
+deployment.apps/experiments-attacker unchanged
+serviceaccount/nhi-exp-child unchanged
+deployment.apps/experiments-child unchanged
+serviceaccount/nhi-exp-grandchild unchanged
+deployment.apps/experiments-grandchild unchanged
+deployment "experiments-parent" successfully rolled out
+deployment "experiments-child" successfully rolled out
+deployment "experiments-grandchild" successfully rolled out
+deployment "experiments-attacker" successfully rolled out
+
+[1m[1] Preconditions — fixtures, shipped limits and the lineage rule in the opa-authz ConfigMap[0m
+    | P=experiments-parent-fc985bd87-bhbbn  C=experiments-child-85c8bd56cc-xzmjr  G=experiments-grandchild-7f645577d6-nxxld  vending-service=vending-service-84b947dd8-tt7lz  run id 20261109021339
+    [32mPASS[0m the vending service runs the shipped limits (MAX_DELEGATION_DEPTH=2 MAX_LIVE_CHILDREN=8)
+    [32mPASS[0m the opa-authz ConfigMap carries the lineage-aware grant rule
+
+[1m[2] Deploying the policy probes (the policy-engine probe writes to OPA directly; the other is an L3-admitted client)[0m
+    | serviceaccount/policy-probe created
+    | configmap/policy-probe-spiffe-helper created
+    | deployment.apps/policy-probe-unauthorized created
+    | deployment.apps/policy-probe-authorized created
+    [32mPASS[0m probes Ready (policy-probe-authorized-577d9745fb-qz56t, policy-probe-unauthorized-5cd658447f-fnd5x)
+
+[1m[3] CASCADE 1/3 — P revokes C; G is denied, and its entry, grant and row are gone when the DELETE returns[0m
+    | C=spiffe://lab.local/agent/parent/exp-root/child/dsp-c-20261109021339-k1 (c_f563d7bff48855877ab28e5f5f44486f)
+    | G=spiffe://lab.local/agent/parent/exp-root/child/dsp-c-20261109021339-k1/child/dsp-g-20261109021339-k1 (c_41c2572b0e37be1a59c975181382ff7d)
+    [32mPASS[0m before the revoke, G reads datasetA: 200
+    [32mPASS[0m captured G's JWT-SVID (replayed after the revoke, so the denial cannot be 'G could not get a token')
+    [32mPASS[0m P: DELETE /delegations/c_f563d7bff48855877ab28e5f5f44486f -> 200
+    [32mPASS[0m C's SPIRE entry is gone
+    [32mPASS[0m G's SPIRE entry is gone
+    | G's row: {"chain_id":"c_41c2572b0e37be1a59c975181382ff7d","parent_spiffe_id":"spiffe://lab.local/agent/parent/exp-root/child/dsp-c-20261109021339-k1","child_spiffe_id":"spiffe://lab.local/agent/parent/exp-root/child/dsp-c-20261109021339-k1/child/dsp-g-20261109021339-k1","child_scopes":["resource:read:datasetA"],"entry_id":"981a950b-e99c-41c7-9571-8284483d68ea","policy_id":"nhi_grants_c_41c2572b0e37be1a59c975181382ff7d","issued_at":1794190430,"expires_at":1794191023,"revoked_at":1794190435,"revocation_reason":"ancestor_revoked: c_f563d7bff48855877ab28e5f5f44486f"}
+    [32mPASS[0m G's row is revoked, reason 'ancestor_revoked: c_f563d7bff48855877ab28e5f5f44486f'
+    [32mPASS[0m the policy engine removed G's grant module (dispose/allow for c_41c2572b0e37be1a59c975181382ff7d)
+    [32mPASS[0m OPA no longer holds G's grant module (GET -> 404)
+    [32mPASS[0m G's next request is denied: 403 (its JWT-SVID has not expired)
+    | resource audit event: {"timestamp":"2026-11-09T02:13:55.973951355Z","stage":"operate","chain_id":"","actor_spiffe_id":"spiffe://lab.local/agent/parent/exp-root/child/dsp-c-20261109021339-k1/child/dsp-g-20261109021339-k1","outcome":"deny","detail":{"method":"GET","path":"/datasets/A","required_scopes":["resource:read:datasetA"],"chain_id_source":"absent","reason":"policy denied","policy_decision":false,"decision_latency_ms":0.675927}}
+    [32mPASS[0m the resource audited G's deny: 'policy denied', policy_decision=false (the token verified; OPA said no)
+    | vending audit event: {"timestamp":"2026-11-09T02:13:55.605735841Z","stage":"dispose","chain_id":"c_41c2572b0e37be1a59c975181382ff7d","actor_spiffe_id":"spiffe://lab.local/agent/parent/exp-root","outcome":"allow","detail":{"parent_spiffe_id":"spiffe://lab.local/agent/parent/exp-root/child/dsp-c-20261109021339-k1","child_spiffe_id":"spiffe://lab.local/agent/parent/exp-root/child/dsp-c-20261109021339-k1/child/dsp-g-20261109021339-k1","policy_id":"nhi_grants_c_41c2572b0e37be1a59c975181382ff7d","entry_id":"981a950b-e99c-41c7-9571-8284483d68ea","reason":"ancestor_revoked: c_f563d7bff48855877ab28e5f5f44486f"}}
+    [32mPASS[0m G's dispose event names C's chain_id and is attributed to P
+
+[1m[4] CASCADE 2/3 — P revokes C; G is denied, and its entry, grant and row are gone when the DELETE returns[0m
+    | C=spiffe://lab.local/agent/parent/exp-root/child/dsp-c-20261109021339-k2 (c_338be781469608166a22ee13e998659c)
+    | G=spiffe://lab.local/agent/parent/exp-root/child/dsp-c-20261109021339-k2/child/dsp-g-20261109021339-k2 (c_f1dcff499b42c1163c9256c470fa25e5)
+    [32mPASS[0m before the revoke, G reads datasetA: 200
+    [32mPASS[0m captured G's JWT-SVID (replayed after the revoke, so the denial cannot be 'G could not get a token')
+    [32mPASS[0m P: DELETE /delegations/c_338be781469608166a22ee13e998659c -> 200
+    [32mPASS[0m C's SPIRE entry is gone
+    [32mPASS[0m G's SPIRE entry is gone
+    | G's row: {"chain_id":"c_f1dcff499b42c1163c9256c470fa25e5","parent_spiffe_id":"spiffe://lab.local/agent/parent/exp-root/child/dsp-c-20261109021339-k2","child_spiffe_id":"spiffe://lab.local/agent/parent/exp-root/child/dsp-c-20261109021339-k2/child/dsp-g-20261109021339-k2","child_scopes":["resource:read:datasetA"],"entry_id":"6ad515b8-8135-4f61-bb96-a983937927af","policy_id":"nhi_grants_c_f1dcff499b42c1163c9256c470fa25e5","issued_at":1794190445,"expires_at":1794191040,"revoked_at":1794190451,"revocation_reason":"ancestor_revoked: c_338be781469608166a22ee13e998659c"}
+    [32mPASS[0m G's row is revoked, reason 'ancestor_revoked: c_338be781469608166a22ee13e998659c'
+    [32mPASS[0m the policy engine removed G's grant module (dispose/allow for c_f1dcff499b42c1163c9256c470fa25e5)
+    [32mPASS[0m OPA no longer holds G's grant module (GET -> 404)
+    [32mPASS[0m G's next request is denied: 403 (its JWT-SVID has not expired)
+    | resource audit event: {"timestamp":"2026-11-09T02:14:11.738068756Z","stage":"operate","chain_id":"","actor_spiffe_id":"spiffe://lab.local/agent/parent/exp-root/child/dsp-c-20261109021339-k2/child/dsp-g-20261109021339-k2","outcome":"deny","detail":{"method":"GET","path":"/datasets/A","required_scopes":["resource:read:datasetA"],"chain_id_source":"absent","reason":"policy denied","policy_decision":false,"decision_latency_ms":0.558936}}
+    [32mPASS[0m the resource audited G's deny: 'policy denied', policy_decision=false (the token verified; OPA said no)
+    | vending audit event: {"timestamp":"2026-11-09T02:14:11.397660563Z","stage":"dispose","chain_id":"c_f1dcff499b42c1163c9256c470fa25e5","actor_spiffe_id":"spiffe://lab.local/agent/parent/exp-root","outcome":"allow","detail":{"parent_spiffe_id":"spiffe://lab.local/agent/parent/exp-root/child/dsp-c-20261109021339-k2","child_spiffe_id":"spiffe://lab.local/agent/parent/exp-root/child/dsp-c-20261109021339-k2/child/dsp-g-20261109021339-k2","policy_id":"nhi_grants_c_f1dcff499b42c1163c9256c470fa25e5","entry_id":"6ad515b8-8135-4f61-bb96-a983937927af","reason":"ancestor_revoked: c_338be781469608166a22ee13e998659c"}}
+    [32mPASS[0m G's dispose event names C's chain_id and is attributed to P
+
+[1m[5] CASCADE 3/3 — P revokes C; G is denied, and its entry, grant and row are gone when the DELETE returns[0m
+    | C=spiffe://lab.local/agent/parent/exp-root/child/dsp-c-20261109021339-k3 (c_ffd5f2648d2edaf2ef114ea9f72b6d24)
+    | G=spiffe://lab.local/agent/parent/exp-root/child/dsp-c-20261109021339-k3/child/dsp-g-20261109021339-k3 (c_2067df10424c12bfa787d82a9364c148)
+    [32mPASS[0m before the revoke, G reads datasetA: 200
+    [32mPASS[0m captured G's JWT-SVID (replayed after the revoke, so the denial cannot be 'G could not get a token')
+    [32mPASS[0m P: DELETE /delegations/c_ffd5f2648d2edaf2ef114ea9f72b6d24 -> 200
+    [32mPASS[0m C's SPIRE entry is gone
+    [32mPASS[0m G's SPIRE entry is gone
+    | G's row: {"chain_id":"c_2067df10424c12bfa787d82a9364c148","parent_spiffe_id":"spiffe://lab.local/agent/parent/exp-root/child/dsp-c-20261109021339-k3","child_spiffe_id":"spiffe://lab.local/agent/parent/exp-root/child/dsp-c-20261109021339-k3/child/dsp-g-20261109021339-k3","child_scopes":["resource:read:datasetA"],"entry_id":"58dd4f1c-2b76-45ce-9803-515520c93385","policy_id":"nhi_grants_c_2067df10424c12bfa787d82a9364c148","issued_at":1794190460,"expires_at":1794191056,"revoked_at":1794190467,"revocation_reason":"ancestor_revoked: c_ffd5f2648d2edaf2ef114ea9f72b6d24"}
+    [32mPASS[0m G's row is revoked, reason 'ancestor_revoked: c_ffd5f2648d2edaf2ef114ea9f72b6d24'
+    [32mPASS[0m the policy engine removed G's grant module (dispose/allow for c_2067df10424c12bfa787d82a9364c148)
+    [32mPASS[0m OPA no longer holds G's grant module (GET -> 404)
+    [32mPASS[0m G's next request is denied: 403 (its JWT-SVID has not expired)
+    | resource audit event: {"timestamp":"2026-11-09T02:14:27.56792836Z","stage":"operate","chain_id":"","actor_spiffe_id":"spiffe://lab.local/agent/parent/exp-root/child/dsp-c-20261109021339-k3/child/dsp-g-20261109021339-k3","outcome":"deny","detail":{"method":"GET","path":"/datasets/A","required_scopes":["resource:read:datasetA"],"chain_id_source":"absent","reason":"policy denied","policy_decision":false,"decision_latency_ms":0.584076}}
+    [32mPASS[0m the resource audited G's deny: 'policy denied', policy_decision=false (the token verified; OPA said no)
+    | vending audit event: {"timestamp":"2026-11-09T02:14:27.227383055Z","stage":"dispose","chain_id":"c_2067df10424c12bfa787d82a9364c148","actor_spiffe_id":"spiffe://lab.local/agent/parent/exp-root","outcome":"allow","detail":{"parent_spiffe_id":"spiffe://lab.local/agent/parent/exp-root/child/dsp-c-20261109021339-k3","child_spiffe_id":"spiffe://lab.local/agent/parent/exp-root/child/dsp-c-20261109021339-k3/child/dsp-g-20261109021339-k3","policy_id":"nhi_grants_c_2067df10424c12bfa787d82a9364c148","entry_id":"58dd4f1c-2b76-45ce-9803-515520c93385","reason":"ancestor_revoked: c_ffd5f2648d2edaf2ef114ea9f72b6d24"}}
+    [32mPASS[0m G's dispose event names C's chain_id and is attributed to P
+
+[1m[6] LINEAGE RULE ON ITS OWN — only C's grant module is removed from OPA; G's is still there and G is denied[0m
+    [32mPASS[0m G reads datasetA while both grants are live: 200
+    [32mPASS[0m removed ONLY C's grant module straight from OPA (DELETE nhi_grants_c_d7abf6353ff43460339731852329b681 -> 200)
+    [32mPASS[0m G's grant module is still in OPA (GET -> 200)
+    [32mPASS[0m C's grant module is gone (GET -> 404)
+    [32mPASS[0m G is denied (403) although its own grant is live: the lineage is broken
+    [32mPASS[0m the resource audited the deny for G
+
+[1m[7] TTL ATTENUATION — G asks for 600 s from a C that has under 35 s left[0m
+    | C expires_at=1794190537  G expires_at=1794190537  G issued_at=1794190512
+    [32mPASS[0m G's vend (ttl_seconds=600) succeeded: 201
+    [32mPASS[0m G's expires_at equals C's (1794190537)
+    | G's SPIRE entry: expiry='2026-11-09 02:15:37 +0000 UTC' (1794190537) X509-SVID TTL='25'
+    [32mPASS[0m G's SPIRE entry expiry (1794190537) does not exceed C's (1794190537)
+    [32mPASS[0m G's X.509-SVID TTL (25 s) does not exceed expires_at - issued_at (25 s), far below the requested 600
+    | vend event: {"timestamp":"2026-11-09T02:15:12.14051423Z","stage":"vend","chain_id":"c_3019eb1ce6cf9b9a57dab27b2264fea1","actor_spiffe_id":"spiffe://lab.local/agent/parent/exp-root/child/dsp-c-20261109021339-ttl","outcome":"allow","detail":{"parent_spiffe_id":"spiffe://lab.local/agent/parent/exp-root/child/dsp-c-20261109021339-ttl","child_spiffe_id":"spiffe://lab.local/agent/parent/exp-root/child/dsp-c-20261109021339-ttl/child/dsp-g-20261109021339-ttl","requested_scopes":["resource:read:datasetA"],"child_scopes":["resource:read:datasetA"],"policy_id":"nhi_grants_c_3019eb1ce6cf9b9a57dab27b2264fea1","entry_id":"f65815cc-5915-4d6a-bc90-7058a8906073","expires_at":1794190537,"task_context":"disposal verify","reason":"ttl_seconds shortened: requested 600 s, granted 25 s (a child cannot outlive its parent's earliest live grant)"}}
+    [32mPASS[0m the vend event records the requested 600 s in detail.reason and the effective expires_at
+    [32mPASS[0m the policy engine's own vend event says the TTL was shortened
+    [32mPASS[0m G reads datasetA before C expires: 200
+    | no DELETE is sent; waiting 22s for C's expires_at to pass
+    [32mPASS[0m G is denied (403) once C's expiry has passed, with no DELETE
+    [32mPASS[0m the resource audited the post-expiry deny for G
+    [32mPASS[0m the reaper disposed C (ttl_expired, attributed to the vending service)
+    [32mPASS[0m the reaper disposed G (ttl_expired, attributed to the vending service)
+    [32mPASS[0m ttl_seconds=21601 is refused: 400
+    [32mPASS[0m the refusal is audited (attest/deny: ttl_seconds 21601 exceeds the maximum of 21600)
+
+[1m[8] DEPTH LIMIT (default 2) — G may not vend[0m
+    | HTTP 403
+    | {"error":"Forbidden","reason":"delegation depth limit: the child would be at depth 3, but MAX_DELEGATION_DEPTH is 2"}
+    | 
+    | command terminated with exit code 2
+    [32mPASS[0m G's vend is refused: 403
+    [32mPASS[0m audited vend/deny naming the limit: delegation depth limit: the child would be at depth 3, but MAX_DELEGATION_DEPTH is 2
+    [32mPASS[0m no SPIRE entry was created for the depth-3 child
+    [32mPASS[0m no vend/allow event, so no grant and no row exist for it
+
+[1m[9] DEPTH LIMIT variant — MAX_DELEGATION_DEPTH=3: the very same manifest (same nonce) now succeeds[0m
+    [32mPASS[0m vending service restarted with MAX_DELEGATION_DEPTH=3
+    | HTTP 201
+    | {"chain_id":"c_5e81ba4769b0a212e3a1d73437d62101","parent_spiffe_id":"spiffe://lab.local/agent/parent/exp-root/child/dsp-c-20261109021339-dep/child/dsp-g-20261109021339-dep","child_spiffe_id":"spiffe://lab.local/agent/parent/exp-root/child/dsp-c-20261109021339-dep/child/dsp-g-20261109021339-dep/child/dsp-x-20261109021339","child_scopes":["resource:read:datasetA"],"entry_id":"107f7d9d-e739-42db-b56c-33d9cb23699e","policy_id":"nhi_grants_c_5e81ba4769b0a212e3a1d73437d62101","issued_at":1794190573,"expires_at":1794190873}
+    [32mPASS[0m 201 with the nonce that the refused vend carried: it was never recorded
+    [32mPASS[0m a SPIRE entry now exists for the depth-3 child
+    [32mPASS[0m P revokes C
+    [32mPASS[0m the depth-3 child was revoked by the cascade, three levels below C's parent
+    [32mPASS[0m its SPIRE entry is gone
+
+[1m[10] CHILD CAP — MAX_LIVE_CHILDREN=2 (depth back to 2)[0m
+    [32mPASS[0m vending service restarted: MAX_DELEGATION_DEPTH=2 MAX_LIVE_CHILDREN=2
+    [32mPASS[0m child 1 vended: 201
+    [32mPASS[0m child 2 vended: 201
+    | HTTP 403
+    | {"error":"Forbidden","reason":"live children limit: the caller already has 2 live children and MAX_LIVE_CHILDREN is 2"}
+    | 
+    | command terminated with exit code 2
+    [32mPASS[0m P's third live child is refused: 403
+    [32mPASS[0m audited vend/deny naming the limit: live children limit: the caller already has 2 live children and MAX_LIVE_CHILDREN is 2
+    [32mPASS[0m no SPIRE entry exists for the refused child
+    [32mPASS[0m P disposes one child
+    [32mPASS[0m the refused manifest (same nonce) now succeeds: 201, so the refusal left no nonce behind
+
+[1m[11] CHILD CAP — ten concurrent vends by one parent yield exactly two children[0m
+    | 201: 2  403: 8  other: 0
+    [32mPASS[0m exactly 2 children created, 8 refused with 403
+    [32mPASS[0m exactly 2 SPIRE entries exist for the ten children
+
+[1m[12] Restoring the shipped limits[0m
+>> restoring MAX_DELEGATION_DEPTH=2 MAX_LIVE_CHILDREN=8
+    [32mPASS[0m limits are back to MAX_DELEGATION_DEPTH=2 MAX_LIVE_CHILDREN=8
+
+[1m[13] CRASHED PARENT — P is force-killed after vending, so no cleanup ever runs; its child is denied at expires_at and then reaped[0m
+    [32mPASS[0m P vends a 35 s child: c_91b68a20e6d0efacfaba8aa1c5f7f05a, expires_at=1794190631
+    | Warning: Immediate deletion does not wait for confirmation that the running resource has been terminated. The resource may continue to run on the cluster indefinitely.
+    | pod "experiments-parent-fc985bd87-bhbbn" force deleted from agents namespace
+    [32mPASS[0m P was force-deleted with no grace period, so no hook or handler ran (pod experiments-parent-fc985bd87-bhbbn); experiments-parent-fc985bd87-s6wbl replaced it
+    [32mPASS[0m with its parent dead, the child still works before expires_at: 200 (nothing was cleaned up)
+    [32mPASS[0m the child's row is still unrevoked
+    | waiting 29s for expires_at
+    [32mPASS[0m denied at expires_at: 403
+    [32mPASS[0m later reaped: dispose / ttl_expired, attributed to the vending service
+    [32mPASS[0m its SPIRE entry is gone
+    [32mPASS[0m its row is revoked
+
+[1m[14] OPA REACH — a pod labelled app=vending-service cannot open a TCP connection to OPA[0m
+    [32mPASS[0m probe pod disposal-vs-probe (app=vending-service) is Running
+    [32mPASS[0m app=vending-service -> OPA:8181: connection timed out (curl exit 28), the NetworkPolicy drops it
+    [32mPASS[0m control: app=policy-probe -> OPA:8181 connects (curl exit 56; the TLS handshake is what stops it), so the timeout above is the NetworkPolicy
+    [32mPASS[0m the '_ = childID' line is gone from manifest.go
+
+[1m[15] SVID VERIFICATION AT THE RESOURCE — a JWT-SVID for another audience is a 401, audited[0m
+    [32mPASS[0m a JWT-SVID minted for the vending service's audience: 401 at the resource
+    | resource audit event: {"timestamp":"2026-11-09T02:17:37.050784609Z","stage":"operate","chain_id":"","actor_spiffe_id":"","outcome":"deny","detail":{"method":"GET","path":"/datasets/A","chain_id_source":"absent","reason":"JWT-SVID validation failed: jwtsvid: expected audience in [\"spiffe://lab.local/svc/resource\"] (audience=[\"spiffe://lab.local/svc/vending-service\"])"}}
+    [32mPASS[0m audited deny with no policy decision (OPA was not consulted)
+    [32mPASS[0m revoked G, still holding a JWT-SVID that verifies: 403 from OPA, not 401
+
+[32m================ DISPOSAL VERIFY: PASS (15 steps) ================[0m
+  cascade        -> revoking C denied G, removed its entry and grant, revoked its row (3 runs)
+  lineage rule   -> removing only C's grant denied G with its own grant still in OPA
+  TTL            -> G got C's expiry; denied at it with no DELETE; reaped; 21601 -> 400
+  depth          -> G's vend refused (403, no state, nonce unspent); allowed with MAX_DELEGATION_DEPTH=3
+  child cap      -> 3rd child refused; slot freed by disposal; 10 concurrent vends -> exactly 2
+  crashed parent -> child denied at expires_at, then reaped
+  OPA reach      -> app=vending-service cannot connect to OPA
+  verification   -> wrong audience 401; revoked G with a valid token 403

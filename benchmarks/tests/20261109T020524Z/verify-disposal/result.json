@@ -1,0 +1,528 @@
+{
+  "stream": "verify-disposal",
+  "attempt": 1,
+  "command": "make --no-print-directory verify-disposal KIND_CLUSTER=nhi-t-vdisp",
+  "exit_code": 0,
+  "result": "pass",
+  "elapsed_seconds": 285,
+  "start_utc": "2026-11-09T02:12:57Z",
+  "end_utc": "2026-11-09T02:17:42Z",
+  "final_banner": "DISPOSAL VERIFY: PASS (15 steps)",
+  "steps": [
+    {
+      "step": 1,
+      "title": "Preconditions — fixtures, shipped limits and the lineage rule in the opa-authz ConfigMap",
+      "checks": [
+        {
+          "result": "pass",
+          "description": "the vending service runs the shipped limits (MAX_DELEGATION_DEPTH=2 MAX_LIVE_CHILDREN=8)"
+        },
+        {
+          "result": "pass",
+          "description": "the opa-authz ConfigMap carries the lineage-aware grant rule"
+        }
+      ],
+      "passed": 2,
+      "failed": 0,
+      "result": "pass"
+    },
+    {
+      "step": 2,
+      "title": "Deploying the policy probes (the policy-engine probe writes to OPA directly; the other is an L3-admitted client)",
+      "checks": [
+        {
+          "result": "pass",
+          "description": "probes Ready (policy-probe-authorized-577d9745fb-qz56t, policy-probe-unauthorized-5cd658447f-fnd5x)"
+        }
+      ],
+      "passed": 1,
+      "failed": 0,
+      "result": "pass"
+    },
+    {
+      "step": 3,
+      "title": "CASCADE 1/3 — P revokes C; G is denied, and its entry, grant and row are gone when the DELETE returns",
+      "checks": [
+        {
+          "result": "pass",
+          "description": "before the revoke, G reads datasetA: 200"
+        },
+        {
+          "result": "pass",
+          "description": "captured G's JWT-SVID (replayed after the revoke, so the denial cannot be 'G could not get a token')"
+        },
+        {
+          "result": "pass",
+          "description": "P: DELETE /delegations/c_f563d7bff48855877ab28e5f5f44486f -> 200"
+        },
+        {
+          "result": "pass",
+          "description": "C's SPIRE entry is gone"
+        },
+        {
+          "result": "pass",
+          "description": "G's SPIRE entry is gone"
+        },
+        {
+          "result": "pass",
+          "description": "G's row is revoked, reason 'ancestor_revoked: c_f563d7bff48855877ab28e5f5f44486f'"
+        },
+        {
+          "result": "pass",
+          "description": "the policy engine removed G's grant module (dispose/allow for c_41c2572b0e37be1a59c975181382ff7d)"
+        },
+        {
+          "result": "pass",
+          "description": "OPA no longer holds G's grant module (GET -> 404)"
+        },
+        {
+          "result": "pass",
+          "description": "G's next request is denied: 403 (its JWT-SVID has not expired)"
+        },
+        {
+          "result": "pass",
+          "description": "the resource audited G's deny: 'policy denied', policy_decision=false (the token verified; OPA said no)"
+        },
+        {
+          "result": "pass",
+          "description": "G's dispose event names C's chain_id and is attributed to P"
+        }
+      ],
+      "passed": 11,
+      "failed": 0,
+      "result": "pass"
+    },
+    {
+      "step": 4,
+      "title": "CASCADE 2/3 — P revokes C; G is denied, and its entry, grant and row are gone when the DELETE returns",
+      "checks": [
+        {
+          "result": "pass",
+          "description": "before the revoke, G reads datasetA: 200"
+        },
+        {
+          "result": "pass",
+          "description": "captured G's JWT-SVID (replayed after the revoke, so the denial cannot be 'G could not get a token')"
+        },
+        {
+          "result": "pass",
+          "description": "P: DELETE /delegations/c_338be781469608166a22ee13e998659c -> 200"
+        },
+        {
+          "result": "pass",
+          "description": "C's SPIRE entry is gone"
+        },
+        {
+          "result": "pass",
+          "description": "G's SPIRE entry is gone"
+        },
+        {
+          "result": "pass",
+          "description": "G's row is revoked, reason 'ancestor_revoked: c_338be781469608166a22ee13e998659c'"
+        },
+        {
+          "result": "pass",
+          "description": "the policy engine removed G's grant module (dispose/allow for c_f1dcff499b42c1163c9256c470fa25e5)"
+        },
+        {
+          "result": "pass",
+          "description": "OPA no longer holds G's grant module (GET -> 404)"
+        },
+        {
+          "result": "pass",
+          "description": "G's next request is denied: 403 (its JWT-SVID has not expired)"
+        },
+        {
+          "result": "pass",
+          "description": "the resource audited G's deny: 'policy denied', policy_decision=false (the token verified; OPA said no)"
+        },
+        {
+          "result": "pass",
+          "description": "G's dispose event names C's chain_id and is attributed to P"
+        }
+      ],
+      "passed": 11,
+      "failed": 0,
+      "result": "pass"
+    },
+    {
+      "step": 5,
+      "title": "CASCADE 3/3 — P revokes C; G is denied, and its entry, grant and row are gone when the DELETE returns",
+      "checks": [
+        {
+          "result": "pass",
+          "description": "before the revoke, G reads datasetA: 200"
+        },
+        {
+          "result": "pass",
+          "description": "captured G's JWT-SVID (replayed after the revoke, so the denial cannot be 'G could not get a token')"
+        },
+        {
+          "result": "pass",
+          "description": "P: DELETE /delegations/c_ffd5f2648d2edaf2ef114ea9f72b6d24 -> 200"
+        },
+        {
+          "result": "pass",
+          "description": "C's SPIRE entry is gone"
+        },
+        {
+          "result": "pass",
+          "description": "G's SPIRE entry is gone"
+        },
+        {
+          "result": "pass",
+          "description": "G's row is revoked, reason 'ancestor_revoked: c_ffd5f2648d2edaf2ef114ea9f72b6d24'"
+        },
+        {
+          "result": "pass",
+          "description": "the policy engine removed G's grant module (dispose/allow for c_2067df10424c12bfa787d82a9364c148)"
+        },
+        {
+          "result": "pass",
+          "description": "OPA no longer holds G's grant module (GET -> 404)"
+        },
+        {
+          "result": "pass",
+          "description": "G's next request is denied: 403 (its JWT-SVID has not expired)"
+        },
+        {
+          "result": "pass",
+          "description": "the resource audited G's deny: 'policy denied', policy_decision=false (the token verified; OPA said no)"
+        },
+        {
+          "result": "pass",
+          "description": "G's dispose event names C's chain_id and is attributed to P"
+        }
+      ],
+      "passed": 11,
+      "failed": 0,
+      "result": "pass"
+    },
+    {
+      "step": 6,
+      "title": "LINEAGE RULE ON ITS OWN — only C's grant module is removed from OPA; G's is still there and G is denied",
+      "checks": [
+        {
+          "result": "pass",
+          "description": "G reads datasetA while both grants are live: 200"
+        },
+        {
+          "result": "pass",
+          "description": "removed ONLY C's grant module straight from OPA (DELETE nhi_grants_c_d7abf6353ff43460339731852329b681 -> 200)"
+        },
+        {
+          "result": "pass",
+          "description": "G's grant module is still in OPA (GET -> 200)"
+        },
+        {
+          "result": "pass",
+          "description": "C's grant module is gone (GET -> 404)"
+        },
+        {
+          "result": "pass",
+          "description": "G is denied (403) although its own grant is live: the lineage is broken"
+        },
+        {
+          "result": "pass",
+          "description": "the resource audited the deny for G"
+        }
+      ],
+      "passed": 6,
+      "failed": 0,
+      "result": "pass"
+    },
+    {
+      "step": 7,
+      "title": "TTL ATTENUATION — G asks for 600 s from a C that has under 35 s left",
+      "checks": [
+        {
+          "result": "pass",
+          "description": "G's vend (ttl_seconds=600) succeeded: 201"
+        },
+        {
+          "result": "pass",
+          "description": "G's expires_at equals C's (1794190537)"
+        },
+        {
+          "result": "pass",
+          "description": "G's SPIRE entry expiry (1794190537) does not exceed C's (1794190537)"
+        },
+        {
+          "result": "pass",
+          "description": "G's X.509-SVID TTL (25 s) does not exceed expires_at - issued_at (25 s), far below the requested 600"
+        },
+        {
+          "result": "pass",
+          "description": "the vend event records the requested 600 s in detail.reason and the effective expires_at"
+        },
+        {
+          "result": "pass",
+          "description": "the policy engine's own vend event says the TTL was shortened"
+        },
+        {
+          "result": "pass",
+          "description": "G reads datasetA before C expires: 200"
+        },
+        {
+          "result": "pass",
+          "description": "G is denied (403) once C's expiry has passed, with no DELETE"
+        },
+        {
+          "result": "pass",
+          "description": "the resource audited the post-expiry deny for G"
+        },
+        {
+          "result": "pass",
+          "description": "the reaper disposed C (ttl_expired, attributed to the vending service)"
+        },
+        {
+          "result": "pass",
+          "description": "the reaper disposed G (ttl_expired, attributed to the vending service)"
+        },
+        {
+          "result": "pass",
+          "description": "ttl_seconds=21601 is refused: 400"
+        },
+        {
+          "result": "pass",
+          "description": "the refusal is audited (attest/deny: ttl_seconds 21601 exceeds the maximum of 21600)"
+        }
+      ],
+      "passed": 13,
+      "failed": 0,
+      "result": "pass"
+    },
+    {
+      "step": 8,
+      "title": "DEPTH LIMIT (default 2) — G may not vend",
+      "checks": [
+        {
+          "result": "pass",
+          "description": "G's vend is refused: 403"
+        },
+        {
+          "result": "pass",
+          "description": "audited vend/deny naming the limit: delegation depth limit: the child would be at depth 3, but MAX_DELEGATION_DEPTH is 2"
+        },
+        {
+          "result": "pass",
+          "description": "no SPIRE entry was created for the depth-3 child"
+        },
+        {
+          "result": "pass",
+          "description": "no vend/allow event, so no grant and no row exist for it"
+        }
+      ],
+      "passed": 4,
+      "failed": 0,
+      "result": "pass"
+    },
+    {
+      "step": 9,
+      "title": "DEPTH LIMIT variant — MAX_DELEGATION_DEPTH=3: the very same manifest (same nonce) now succeeds",
+      "checks": [
+        {
+          "result": "pass",
+          "description": "vending service restarted with MAX_DELEGATION_DEPTH=3"
+        },
+        {
+          "result": "pass",
+          "description": "201 with the nonce that the refused vend carried: it was never recorded"
+        },
+        {
+          "result": "pass",
+          "description": "a SPIRE entry now exists for the depth-3 child"
+        },
+        {
+          "result": "pass",
+          "description": "P revokes C"
+        },
+        {
+          "result": "pass",
+          "description": "the depth-3 child was revoked by the cascade, three levels below C's parent"
+        },
+        {
+          "result": "pass",
+          "description": "its SPIRE entry is gone"
+        }
+      ],
+      "passed": 6,
+      "failed": 0,
+      "result": "pass"
+    },
+    {
+      "step": 10,
+      "title": "CHILD CAP — MAX_LIVE_CHILDREN=2 (depth back to 2)",
+      "checks": [
+        {
+          "result": "pass",
+          "description": "vending service restarted: MAX_DELEGATION_DEPTH=2 MAX_LIVE_CHILDREN=2"
+        },
+        {
+          "result": "pass",
+          "description": "child 1 vended: 201"
+        },
+        {
+          "result": "pass",
+          "description": "child 2 vended: 201"
+        },
+        {
+          "result": "pass",
+          "description": "P's third live child is refused: 403"
+        },
+        {
+          "result": "pass",
+          "description": "audited vend/deny naming the limit: live children limit: the caller already has 2 live children and MAX_LIVE_CHILDREN is 2"
+        },
+        {
+          "result": "pass",
+          "description": "no SPIRE entry exists for the refused child"
+        },
+        {
+          "result": "pass",
+          "description": "P disposes one child"
+        },
+        {
+          "result": "pass",
+          "description": "the refused manifest (same nonce) now succeeds: 201, so the refusal left no nonce behind"
+        }
+      ],
+      "passed": 8,
+      "failed": 0,
+      "result": "pass"
+    },
+    {
+      "step": 11,
+      "title": "CHILD CAP — ten concurrent vends by one parent yield exactly two children",
+      "checks": [
+        {
+          "result": "pass",
+          "description": "exactly 2 children created, 8 refused with 403"
+        },
+        {
+          "result": "pass",
+          "description": "exactly 2 SPIRE entries exist for the ten children"
+        }
+      ],
+      "passed": 2,
+      "failed": 0,
+      "result": "pass"
+    },
+    {
+      "step": 12,
+      "title": "Restoring the shipped limits",
+      "checks": [
+        {
+          "result": "pass",
+          "description": "limits are back to MAX_DELEGATION_DEPTH=2 MAX_LIVE_CHILDREN=8"
+        }
+      ],
+      "passed": 1,
+      "failed": 0,
+      "result": "pass"
+    },
+    {
+      "step": 13,
+      "title": "CRASHED PARENT — P is force-killed after vending, so no cleanup ever runs; its child is denied at expires_at and then reaped",
+      "checks": [
+        {
+          "result": "pass",
+          "description": "P vends a 35 s child: c_91b68a20e6d0efacfaba8aa1c5f7f05a, expires_at=1794190631"
+        },
+        {
+          "result": "pass",
+          "description": "P was force-deleted with no grace period, so no hook or handler ran (pod experiments-parent-fc985bd87-bhbbn); experiments-parent-fc985bd87-s6wbl replaced it"
+        },
+        {
+          "result": "pass",
+          "description": "with its parent dead, the child still works before expires_at: 200 (nothing was cleaned up)"
+        },
+        {
+          "result": "pass",
+          "description": "the child's row is still unrevoked"
+        },
+        {
+          "result": "pass",
+          "description": "denied at expires_at: 403"
+        },
+        {
+          "result": "pass",
+          "description": "later reaped: dispose / ttl_expired, attributed to the vending service"
+        },
+        {
+          "result": "pass",
+          "description": "its SPIRE entry is gone"
+        },
+        {
+          "result": "pass",
+          "description": "its row is revoked"
+        }
+      ],
+      "passed": 8,
+      "failed": 0,
+      "result": "pass"
+    },
+    {
+      "step": 14,
+      "title": "OPA REACH — a pod labelled app=vending-service cannot open a TCP connection to OPA",
+      "checks": [
+        {
+          "result": "pass",
+          "description": "probe pod disposal-vs-probe (app=vending-service) is Running"
+        },
+        {
+          "result": "pass",
+          "description": "app=vending-service -> OPA:8181: connection timed out (curl exit 28), the NetworkPolicy drops it"
+        },
+        {
+          "result": "pass",
+          "description": "control: app=policy-probe -> OPA:8181 connects (curl exit 56; the TLS handshake is what stops it), so the timeout above is the NetworkPolicy"
+        },
+        {
+          "result": "pass",
+          "description": "the '_ = childID' line is gone from manifest.go"
+        }
+      ],
+      "passed": 4,
+      "failed": 0,
+      "result": "pass"
+    },
+    {
+      "step": 15,
+      "title": "SVID VERIFICATION AT THE RESOURCE — a JWT-SVID for another audience is a 401, audited",
+      "checks": [
+        {
+          "result": "pass",
+          "description": "a JWT-SVID minted for the vending service's audience: 401 at the resource"
+        },
+        {
+          "result": "pass",
+          "description": "audited deny with no policy decision (OPA was not consulted)"
+        },
+        {
+          "result": "pass",
+          "description": "revoked G, still holding a JWT-SVID that verifies: 403 from OPA, not 401"
+        }
+      ],
+      "passed": 3,
+      "failed": 0,
+      "result": "pass"
+    }
+  ],
+  "totals": {
+    "steps": 15,
+    "passed": 91,
+    "failed": 0
+  },
+  "prerequisite_summary_lines": [
+    "PASS: 12/12",
+    "ok  \tnhi-lab/vending-service/cmd/parentsim\t0.634s",
+    "ok  \tnhi-lab/vending-service/cmd/vending-service\t0.088s",
+    "ok  \tnhi-lab/vending-service/internal/audit\t0.002s",
+    "ok  \tnhi-lab/vending-service/internal/manifest\t0.001s",
+    "ok  \tnhi-lab/vending-service/internal/signature\t0.003s",
+    "ok  \tnhi-lab/vending-service/internal/store\t0.005s",
+    "ok  \tnhi-lab/policy-engine\t0.012s"
+  ],
+  "note": "Prerequisites rego-test, vending-service-test and policy-engine-test run inside the make invocation; packages without test files print \"?\" lines."
+}

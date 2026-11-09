@@ -1,0 +1,11 @@
+--- a/cmd/vending-service/main.go
++++ b/cmd/vending-service/main.go
+@@ -572,7 +572,7 @@
+ 	// otherwise still get a 201 and a real, if scopeless, child entry).
+ 	// requested_scopes is guaranteed non-empty by manifest.Validate(), so
+ 	// this is never triggered merely because the parent asked for nothing.
+-	if len(synth.ChildScopes) == 0 {
++	if false && len(synth.ChildScopes) == 0 {
+ 		s.deny(w, http.StatusForbidden, audit.Event{
+ 			Stage: audit.StageVend, ActorSpiffeID: actor.String(), ChainID: chainID, Outcome: audit.OutcomeDeny,
+ 			Detail: audit.Detail{

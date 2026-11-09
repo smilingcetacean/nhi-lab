@@ -1,0 +1,18 @@
+2026-11-09T02:16:12Z
+## DELETE /delegations/c_6957c138765247559fd3d1642cfb9408 as exp-root (parentsim dispose)
+HTTP 200
+{"chain_id":"c_6957c138765247559fd3d1642cfb9408","revoked":true}
+
+
+## GET it back
+HTTP 200
+{"chain_id":"c_6957c138765247559fd3d1642cfb9408","parent_spiffe_id":"spiffe://lab.local/agent/parent/exp-root","child_spiffe_id":"spiffe://lab.local/agent/parent/exp-root/child/negtest-forged-e23c32c873","child_scopes":["resource:read:datasetA"],"entry_id":"318109b0-71f8-4f10-a501-0122f35ca054","policy_id":"nhi_grants_c_6957c138765247559fd3d1642cfb9408","issued_at":1794190436,"expires_at":1794190736,"revoked_at":1794190572,"revocation_reason":"revoked_on_demand"}
+
+
+## SPIRE entries with selector k8s:sa:nhi-exp-child
+Found 0 entries
+2026-11-09T02:16:19Z
+{"spiffe_id":"spiffe://lab.local/agent/parent/exp-root/child/negtest-forged-e23c32c873","not_after":"2026-11-09T02:19:00Z"}
+2026-11-09T02:16:27Z HTTP N/A (workload API fetch failed, as expected once the entry is gone)
+{"error":"rpc error: code = PermissionDenied desc = no identity issued"}
+command terminated with exit code 2

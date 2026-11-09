@@ -1,0 +1,709 @@
+{
+  "stream": "falsify",
+  "generated_at": "2026-11-09T02:30:37Z",
+  "git_commit": "58a8c7dd5e73a20edc6526bebff64cd2511a7812",
+  "reference_record": "src/experiments/results/falsification.md (2026-10-04, unit level only)",
+  "verdict": {
+    "unit": "FALSIFIED 5/5: each named unit test PASSES on clean code, FAILS under its mutation with the same decisive line as 2026-10-04, and PASSES again on the unmodified copy; the full ./... baseline is green before and after.",
+    "live": "CAUGHT 5/5: under mutation N, live negative test N FAILED each time for the guard-specific reason (g1 401->201 with an entry minted; g2 403->201 with a scopeless entry; g3 409->500; g4 replay 403->200 after a 200 disposal; g5 orphan never reaped). Restoring :dev brought the suite back to 5/5 for every guard. g1 and g2 needed a second reverted attempt, after disposing the delegation the mutation had wrongly minted. Specificity: g2-g5 failed only their own test; g1 also failed credential_use_after_revocation in the same run, as a knock-on effect of the forged child it minted.",
+    "unit_all_falsified": true,
+    "live_all_caught": true,
+    "live_all_restored_to_5_of_5": true
+  },
+  "findings": [
+    "Cross-test coupling in the live suite: scope_escalation_manifest and forged_parent_signature vend with the experiments-child selectors (k8s:ns=agents, k8s:sa=nhi-exp-child). When a mutation lets one of them mint, the experiments-child pod holds two identities and credential_use_after_revocation reads whichever SVID the Workload API returns first. In all 4 observed cases the default SVID was the entry with the lexicographically smaller entry ID (g1-mutated: forged 318109b0 < revoke db07cd7e -> FAIL; g1-reverted-attempt1: 318109b0 < 4c171069 -> FAIL; g2-mutated: revoke a4eb5091 < escalate a4f8c7fb -> PASS; g2-reverted-attempt1: a4f8c7fb < d6d5270d -> FAIL). That ordering is an observed correlation, not verified in SPIRE source. The result is order-dependent knock-on failures, not a false pass of the targeted test.",
+    "The forged/escalation/replay assertions match the newest audit event by stage and outcome, not by chain_id or nonce. Under g3, the replay test matched the forged-signature test's earlier attest/deny event. It still failed correctly, on status 500 and on the reason check, but a reason-only match could in principle pick up a stale event.",
+    "Under g1, the static attest/allow audit reason ('JWT-SVID, manifest signature, nonce and child_selectors all verified') was emitted for a manifest whose signature had not verified. The audit trail asserts checks rather than recording their results.",
+    "Since the 2026-10-25 hardening, the unit suite catches g4 with 9 tests and g5 with 3 tests, not just the named one. g1, g2 and g3 are still caught by exactly one unit test each."
+  ],
+  "guards": [
+    {
+      "guard": 1,
+      "live_negative_test": "forged_parent_signature",
+      "guard_location": "src/vending-service/cmd/vending-service/main.go:390",
+      "guard_code": "if err := signature.Verify(m.Signature, payload, x509Bundle.X509Authorities(), parentID); err != nil {",
+      "mutation": "Condition changed to `false && err != nil`: signature.Verify still runs, its result is discarded and the 401 branch is unreachable (signature check short-circuited).",
+      "diff_file": "g1.diff",
+      "unit": {
+        "test": "TestHandleVendRejectsForgedSignature",
+        "baseline": {
+          "outcome": "PASS",
+          "log": "unit-baseline-full.log",
+          "decisive_line": "ok  \tnhi-lab/vending-service/cmd/vending-service\t0.086s",
+          "note": "full go test -count=1 ./... on the unmodified copy; every package ok"
+        },
+        "mutated": {
+          "outcome": "FAIL",
+          "log": "unit-g1-mutated-test.log",
+          "decisive_line": "main_test.go:445: status = 502, want 401; body={\"error\":\"Bad Gateway\",\"reason\":\"policy engine synthesis failed: test stub not configured for this call\"}"
+        },
+        "reverted": {
+          "outcome": "PASS",
+          "log": "unit-g1-reverted.log",
+          "decisive_line": "--- PASS: TestHandleVendRejectsForgedSignature (0.00s)"
+        },
+        "package_failures_under_mutation": [
+          {
+            "test": "TestHandleVendRejectsForgedSignature",
+            "file": "main_test.go",
+            "failure_lines": [
+              "main_test.go:445: status = 502, want 401; body={\"error\":\"Bad Gateway\",\"reason\":\"policy engine synthesis failed: test stub not configured for this call\"}"
+            ]
+          }
+        ],
+        "package_failure_count": 1,
+        "extra_tests_catching_mutation": [],
+        "package_log": "unit-g1-mutated-package.log"
+      },
+      "live": {
+        "image_tag": "nhi-lab/vending-service:falsify-g1",
+        "docker_image_id": "sha256:f32be2e481a4abbb6d35054aa04167e681b2b90e3c69d8d73e2055afa01b024c",
+        "cluster_image_id_mutated": "docker.io/library/import-2026-11-09@sha256:c3f2c875769a4931ea8d58a2c197c89af19471d6f9e2c0cde7bf70810ee6a629",
+        "cluster_image_id_after_revert": "docker.io/library/import-2026-11-09@sha256:a6a08922be05b53ff1bed001c0e109edcf32605d406b695ce228be39e7613273",
+        "cluster_image_id_baseline": "docker.io/library/import-2026-11-09@sha256:a6a08922be05b53ff1bed001c0e109edcf32605d406b695ce228be39e7613273",
+        "imageid_checks": [
+          "CHECK imageID differs from baseline: OK",
+          "CHECK imageID matches baseline: OK"
+        ],
+        "rollout_log": "rollout-g1.log",
+        "baseline": {
+          "forged_parent_signature": true,
+          "scope_escalation_manifest": true,
+          "replay_captured_manifest": true,
+          "credential_use_after_revocation": true,
+          "orphaned_child_reaper": true
+        },
+        "mutated": {
+          "run": {
+            "file": "live-g1-mutated.json",
+            "log": "live-g1-mutated.log",
+            "generated_at": "2026-11-09T02:14:36Z",
+            "passed": "3/5"
+          },
+          "per_test_pass": {
+            "forged_parent_signature": false,
+            "scope_escalation_manifest": true,
+            "replay_captured_manifest": true,
+            "credential_use_after_revocation": false,
+            "orphaned_child_reaper": true
+          },
+          "test_1_forged_parent_signature": {
+            "outcome": "FAIL",
+            "suite_evidence": {
+              "pass": false,
+              "http_code": 201,
+              "no_entry_created": false,
+              "matched_audit_event": null
+            },
+            "http_status": 201,
+            "expected_http_status": 401,
+            "suite_matched_audit_reason": null,
+            "audit_note": "No attest/deny event: the suite's matcher found none in the tail. The durable audit trail on the vending-data volume (vending-audit-durable.log, read from the kind node) shows the corrupted-signature manifest logged as attest/allow 'JWT-SVID, manifest signature, nonce and child_selectors all verified' at 02:13:56.418Z, then vend/allow chain c_6957c138765247559fd3d1642cfb9408 with child_scopes [resource:read:datasetA].",
+            "state_left": "A live delegation minted from a forged manifest: chain c_6957c138765247559fd3d1642cfb9408, child spiffe://lab.local/agent/parent/exp-root/child/negtest-forged-e23c32c873, SPIRE entry 318109b0-71f8-4f10-a501-0122f35ca054 (TTL 300 s, selectors k8s:ns:agents + k8s:sa:nhi-exp-child, the same as the experiments-child pod), an OPA grant for resource:read:datasetA, and an unrevoked delegation row. See state-g1-mutated.log."
+          },
+          "other_tests_still_passed": false,
+          "specificity": "NOT specific in the live run: credential_use_after_revocation also FAILED in the same mutated run (child_obtained_svid=false, replay after disposal = 200, no deny event). Cause is the state test 1 left, not guard 4: the forged child's entry shares the experiments-child selectors, so that pod held two SVIDs and its default (first) SVID was the forged child's (diag-g1-child-x509-check.log); the 'captured' JWT belonged to the forged child, whose grant was never disposed.",
+          "state_snapshot": "state-g1-mutated.log"
+        },
+        "reverted": {
+          "attempts": [
+            {
+              "label": "g1-reverted-attempt1",
+              "passed": "4/5",
+              "per_test_pass": {
+                "forged_parent_signature": true,
+                "scope_escalation_manifest": true,
+                "replay_captured_manifest": true,
+                "credential_use_after_revocation": false,
+                "orphaned_child_reaper": true
+              },
+              "file": "live-g1-reverted-attempt1.json",
+              "log": "live-g1-reverted-attempt1.log"
+            },
+            {
+              "label": "g1-reverted-attempt2",
+              "passed": "5/5",
+              "per_test_pass": {
+                "forged_parent_signature": true,
+                "scope_escalation_manifest": true,
+                "replay_captured_manifest": true,
+                "credential_use_after_revocation": true,
+                "orphaned_child_reaper": true
+              },
+              "file": "live-g1-reverted-attempt2.json",
+              "log": "live-g1-reverted-attempt2.log"
+            }
+          ],
+          "final_outcome": "5/5",
+          "note": "Attempt 1 FAILED credential_use_after_revocation for the same reason (the forged delegation was still live, 300 s TTL). Cleaned up through the lab's own path: DELETE /delegations/c_6957c138765247559fd3d1642cfb9408 as exp-root via parentsim dispose -> 200 revoked (cleanup-g1.log); the child pod's Workload API then returned 'no identity issued'. Attempt 2: 5/5."
+        }
+      },
+      "matches_2026_10_04_record": {
+        "value": true,
+        "note": "Unit level identical to 2026-10-04: the same decisive line (status 502, want 401; 'policy engine synthesis failed: test stub not configured for this call'), and only the named test fails in the package. The 2026-10-04 record had no live level; live adds the collateral test-4 failure above."
+      }
+    },
+    {
+      "guard": 2,
+      "live_negative_test": "scope_escalation_manifest",
+      "guard_location": "src/vending-service/cmd/vending-service/main.go:575",
+      "guard_code": "if len(synth.ChildScopes) == 0 {",
+      "mutation": "`if false && len(synth.ChildScopes) == 0 {` (same mutation as 2026-10-04).",
+      "diff_file": "g2.diff",
+      "unit": {
+        "test": "TestHandleVendRejectsEmptyAttenuationResult",
+        "baseline": {
+          "outcome": "PASS",
+          "log": "unit-baseline-full.log",
+          "decisive_line": "ok  \tnhi-lab/vending-service/cmd/vending-service\t0.086s",
+          "note": "full go test -count=1 ./... on the unmodified copy; every package ok"
+        },
+        "mutated": {
+          "outcome": "FAIL",
+          "log": "unit-g2-mutated-test.log",
+          "decisive_line": "main_test.go:844: status = 201, want 403; body={\"chain_id\":\"c_6d27e87bfe31c992047c67fea37acdfb\",\"parent_spiffe_id\":\"spiffe://lab.local/agent/parent/t1\",\"child_spiffe_id\":\"spiffe://lab.local/agent/parent/t1/child/c1\",\"child_scopes\":null,\"entry_id\":\"entry-should-not-happen\",\"policy_id\":\"nhi_grants_c_6d27e87bfe31c992047c67fea37acdfb\",\"issued_at\":1800000000,\"expires_at\":1800000300}"
+        },
+        "reverted": {
+          "outcome": "PASS",
+          "log": "unit-g2-reverted.log",
+          "decisive_line": "--- PASS: TestHandleVendRejectsEmptyAttenuationResult (0.00s)"
+        },
+        "package_failures_under_mutation": [
+          {
+            "test": "TestHandleVendRejectsEmptyAttenuationResult",
+            "file": "main_test.go",
+            "failure_lines": [
+              "main_test.go:844: status = 201, want 403; body={\"chain_id\":\"c_ac3f86b4e3d2a3cec8ee64199b2f0e05\",\"parent_spiffe_id\":\"spiffe://lab.local/agent/parent/t1\",\"child_spiffe_id\":\"spiffe://lab.local/agent/parent/t1/child/c1\",\"child_scopes\":null,\"entry_id\":\"entry-should-not-happen\",\"policy_id\":\"nhi_grants_c_ac3f86b4e3d2a3cec8ee64199b2f0e05\",\"issued_at\":1800000000,\"expires_at\":1800000300}"
+            ]
+          }
+        ],
+        "package_failure_count": 1,
+        "extra_tests_catching_mutation": [],
+        "package_log": "unit-g2-mutated-package.log"
+      },
+      "live": {
+        "image_tag": "nhi-lab/vending-service:falsify-g2",
+        "docker_image_id": "sha256:db8db2089803e7714bdc4c6a2e39ba430f3457078fffc4a2dd600b1b37343312",
+        "cluster_image_id_mutated": "docker.io/library/import-2026-11-09@sha256:fcd971cd3ef7449f1a2304aa4f9db3082942109070ed69fe783096576e7a7024",
+        "cluster_image_id_after_revert": "docker.io/library/import-2026-11-09@sha256:a6a08922be05b53ff1bed001c0e109edcf32605d406b695ce228be39e7613273",
+        "cluster_image_id_baseline": "docker.io/library/import-2026-11-09@sha256:a6a08922be05b53ff1bed001c0e109edcf32605d406b695ce228be39e7613273",
+        "imageid_checks": [
+          "CHECK imageID differs from baseline: OK",
+          "CHECK imageID matches baseline: OK"
+        ],
+        "rollout_log": "rollout-g2.log",
+        "baseline": {
+          "forged_parent_signature": true,
+          "scope_escalation_manifest": true,
+          "replay_captured_manifest": true,
+          "credential_use_after_revocation": true,
+          "orphaned_child_reaper": true
+        },
+        "mutated": {
+          "run": {
+            "file": "live-g2-mutated.json",
+            "log": "live-g2-mutated.log",
+            "generated_at": "2026-11-09T02:17:52Z",
+            "passed": "4/5"
+          },
+          "per_test_pass": {
+            "forged_parent_signature": true,
+            "scope_escalation_manifest": false,
+            "replay_captured_manifest": true,
+            "credential_use_after_revocation": true,
+            "orphaned_child_reaper": true
+          },
+          "test_2_scope_escalation_manifest": {
+            "outcome": "FAIL",
+            "suite_evidence": {
+              "pass": false,
+              "http_code": 201,
+              "no_entry_created": false,
+              "matched_audit_event": null
+            },
+            "http_status": 201,
+            "expected_http_status": 403,
+            "suite_matched_audit_reason": null,
+            "audit_note": "No vend/deny event. Durable audit trail: vend/allow chain c_416e7ce0b70c3d45c689b54cf71e2704 at 02:17:26.754Z with requested_scopes [resource:admin:everything] and child_scopes null.",
+            "state_left": "A live, scopeless delegation: chain c_416e7ce0b70c3d45c689b54cf71e2704, child .../exp-root/child/negtest-escalate-182320b3b4, SPIRE entry a4f8c7fb-deb6-4b3e-9009-f9089c383e9b (TTL 300 s, experiments-child selectors), GET returns child_scopes [] and no revoked_at. See state-g2-mutated.log."
+          },
+          "other_tests_still_passed": true,
+          "specificity": "Specific in the mutated run: only scope_escalation_manifest failed. credential_use_after_revocation passed here, but only because the revoke child's entry ID (a4eb5091...) sorted before the stranded escalate entry (a4f8c7fb...); see the ordering note in findings.",
+          "state_snapshot": "state-g2-mutated.log"
+        },
+        "reverted": {
+          "attempts": [
+            {
+              "label": "g2-reverted-attempt1",
+              "passed": "4/5",
+              "per_test_pass": {
+                "forged_parent_signature": true,
+                "scope_escalation_manifest": true,
+                "replay_captured_manifest": true,
+                "credential_use_after_revocation": false,
+                "orphaned_child_reaper": true
+              },
+              "file": "live-g2-reverted-attempt1.json",
+              "log": "live-g2-reverted-attempt1.log"
+            },
+            {
+              "label": "g2-reverted-attempt2",
+              "passed": "5/5",
+              "per_test_pass": {
+                "forged_parent_signature": true,
+                "scope_escalation_manifest": true,
+                "replay_captured_manifest": true,
+                "credential_use_after_revocation": true,
+                "orphaned_child_reaper": true
+              },
+              "file": "live-g2-reverted-attempt2.json",
+              "log": "live-g2-reverted-attempt2.log"
+            }
+          ],
+          "final_outcome": "5/5",
+          "note": "Attempt 1 FAILED credential_use_after_revocation (child_obtained_svid=false, replay 403 but attributed to the escalate child, so no matching deny event) because the scopeless delegation was still live. Cleaned up with DELETE /delegations/c_416e7ce0b70c3d45c689b54cf71e2704 as exp-root via parentsim dispose -> 200 revoked (cleanup-g2.log). Attempt 2: 5/5."
+        }
+      },
+      "matches_2026_10_04_record": {
+        "value": true,
+        "note": "Unit level identical to 2026-10-04: status 201, want 403, body shows child_scopes null and entry_id entry-should-not-happen; only the named test fails in the package."
+      }
+    },
+    {
+      "guard": 3,
+      "live_negative_test": "replay_captured_manifest",
+      "guard_location": "src/vending-service/cmd/vending-service/main.go:517",
+      "guard_code": "if errors.Is(err, store.ErrNonceReused) {",
+      "mutation": "`if false && errors.Is(err, store.ErrNonceReused) {` (same mutation as 2026-10-04).",
+      "diff_file": "g3.diff",
+      "unit": {
+        "test": "TestHandleVendRejectsReplayedNonce",
+        "baseline": {
+          "outcome": "PASS",
+          "log": "unit-baseline-full.log",
+          "decisive_line": "ok  \tnhi-lab/vending-service/cmd/vending-service\t0.086s",
+          "note": "full go test -count=1 ./... on the unmodified copy; every package ok"
+        },
+        "mutated": {
+          "outcome": "FAIL",
+          "log": "unit-g3-mutated-test.log",
+          "decisive_line": "main_test.go:488: status = 500, want 409 (nonce replay refused); body={\"error\":\"Internal Server Error\",\"reason\":\"could not record nonce: nonce already used\"}"
+        },
+        "reverted": {
+          "outcome": "PASS",
+          "log": "unit-g3-reverted.log",
+          "decisive_line": "--- PASS: TestHandleVendRejectsReplayedNonce (0.00s)"
+        },
+        "package_failures_under_mutation": [
+          {
+            "test": "TestHandleVendRejectsReplayedNonce",
+            "file": "main_test.go",
+            "failure_lines": [
+              "main_test.go:488: status = 500, want 409 (nonce replay refused); body={\"error\":\"Internal Server Error\",\"reason\":\"could not record nonce: nonce already used\"}"
+            ]
+          }
+        ],
+        "package_failure_count": 1,
+        "extra_tests_catching_mutation": [],
+        "package_log": "unit-g3-mutated-package.log"
+      },
+      "live": {
+        "image_tag": "nhi-lab/vending-service:falsify-g3",
+        "docker_image_id": "sha256:8a802bd1125353d4ab363db64a7bbccb88ae6793fd46a7fa6bdb11033fb7df59",
+        "cluster_image_id_mutated": "docker.io/library/import-2026-11-09@sha256:7bb274ea7bed2b2244f0d21f61f7a495bae20d91028583434e725f159e60c2ee",
+        "cluster_image_id_after_revert": "docker.io/library/import-2026-11-09@sha256:a6a08922be05b53ff1bed001c0e109edcf32605d406b695ce228be39e7613273",
+        "cluster_image_id_baseline": "docker.io/library/import-2026-11-09@sha256:a6a08922be05b53ff1bed001c0e109edcf32605d406b695ce228be39e7613273",
+        "imageid_checks": [
+          "CHECK imageID differs from baseline: OK",
+          "CHECK imageID matches baseline: OK"
+        ],
+        "rollout_log": "rollout-g3.log",
+        "baseline": {
+          "forged_parent_signature": true,
+          "scope_escalation_manifest": true,
+          "replay_captured_manifest": true,
+          "credential_use_after_revocation": true,
+          "orphaned_child_reaper": true
+        },
+        "mutated": {
+          "run": {
+            "file": "live-g3-mutated.json",
+            "log": "live-g3-mutated.log",
+            "generated_at": "2026-11-09T02:20:35Z",
+            "passed": "4/5"
+          },
+          "per_test_pass": {
+            "forged_parent_signature": true,
+            "scope_escalation_manifest": true,
+            "replay_captured_manifest": false,
+            "credential_use_after_revocation": true,
+            "orphaned_child_reaper": true
+          },
+          "test_3_replay_captured_manifest": {
+            "outcome": "FAIL",
+            "suite_evidence": {
+              "pass": false,
+              "first_http_code": 201,
+              "second_http_code": 500,
+              "matched_audit_event": {
+                "stage": "attest",
+                "outcome": "deny",
+                "actor_spiffe_id": "spiffe://lab.local/agent/parent/exp-root",
+                "reason": "manifest signature verification failed: signature does not verify against the x5c leaf certificate's key: go-jose/go-jose: error in cryptographic primitive"
+              }
+            },
+            "http_status": "first 201, second 500",
+            "expected_http_status": "201 then 409",
+            "suite_matched_audit_reason": "manifest signature verification failed: ... (an unrelated earlier attest/deny event from the forged-signature test; the matcher filters on stage and outcome only, so the reason check is what failed)",
+            "audit_note": "Durable audit trail: attest/error 'could not record nonce: nonce already used' at 02:20:10.180Z. The suite does not record the second response body, and this run's pod logs were not captured before the revert; the durable trail supplies the reason.",
+            "state_left": "None. The store's nonce uniqueness still blocked the second write, so no second delegation; the first delegation was disposed by the test's own cleanup. No negtest entries remained (state-g3-mutated.log)."
+          },
+          "other_tests_still_passed": true,
+          "specificity": "Specific: only replay_captured_manifest failed.",
+          "state_snapshot": "state-g3-mutated.log"
+        },
+        "reverted": {
+          "attempts": [
+            {
+              "label": "g3-reverted",
+              "passed": "5/5",
+              "per_test_pass": {
+                "forged_parent_signature": true,
+                "scope_escalation_manifest": true,
+                "replay_captured_manifest": true,
+                "credential_use_after_revocation": true,
+                "orphaned_child_reaper": true
+              },
+              "file": "live-g3-reverted.json",
+              "log": "live-g3-reverted.log"
+            }
+          ],
+          "final_outcome": "5/5",
+          "note": "Reverted attempt 1: 5/5."
+        }
+      },
+      "matches_2026_10_04_record": {
+        "value": true,
+        "note": "Unit level identical to 2026-10-04: status 500, want 409; body reason 'could not record nonce: nonce already used'. Live shows the same defence in depth: the persistence layer still refuses the replay, only the 409 classification and its audit reason disappear."
+      }
+    },
+    {
+      "guard": 4,
+      "live_negative_test": "credential_use_after_revocation",
+      "guard_location": "src/vending-service/cmd/vending-service/main.go:864",
+      "guard_code": "if err := s.policyEngine.Dispose(ctx, rec.ChainID); err != nil {",
+      "mutation": "Call replaced by a nil error: `if err := error(nil); err != nil {`. s.policyEngine.Dispose is never invoked and the error branch is unreachable; the rest of disposeChain (SPIRE entry deletion, MarkRevoked, dispose/allow audit event) still runs. Compile-clean equivalent of 2026-10-04's 'call removed entirely', needed because the call now sits in an if header.",
+      "diff_file": "g4.diff",
+      "unit": {
+        "test": "TestHandleDisposeByParentRevokesAndDeletesEntry",
+        "baseline": {
+          "outcome": "PASS",
+          "log": "unit-baseline-full.log",
+          "decisive_line": "ok  \tnhi-lab/vending-service/cmd/vending-service\t0.086s",
+          "note": "full go test -count=1 ./... on the unmodified copy; every package ok"
+        },
+        "mutated": {
+          "outcome": "FAIL",
+          "log": "unit-g4-mutated-test.log",
+          "decisive_line": "main_test.go:941: policy engine dispose was not called with the right chain_id: got \"\""
+        },
+        "reverted": {
+          "outcome": "PASS",
+          "log": "unit-g4-reverted.log",
+          "decisive_line": "--- PASS: TestHandleDisposeByParentRevokesAndDeletesEntry (0.00s)"
+        },
+        "package_failures_under_mutation": [
+          {
+            "test": "TestDisposeCascadesToLiveDescendantsBreadthFirst",
+            "file": "disposal_test.go",
+            "failure_lines": [
+              "disposal_test.go:162: disposal order = [entry:c_c entry:c_g entry:c_g2 entry:c_gg]"
+            ]
+          },
+          {
+            "test": "TestDisposeOfALeafDisposesOnlyThatChain",
+            "file": "disposal_test.go",
+            "failure_lines": [
+              "disposal_test.go:206: calls = [entry:c_gg]"
+            ]
+          },
+          {
+            "test": "TestDisposeChainRemovesGrantBeforeEntryBeforeRow",
+            "file": "disposal_test.go",
+            "failure_lines": [
+              "disposal_test.go:223: calls = [entry:c_c], want the grant removed first"
+            ]
+          },
+          {
+            "test": "TestDisposeChainStopsWhenTheGrantCannotBeRemoved",
+            "file": "disposal_test.go",
+            "failure_lines": [
+              "disposal_test.go:238: status = 200, want 502"
+            ]
+          },
+          {
+            "test": "TestDisposeDoesNotCascadeWhenTheTargetFails",
+            "file": "disposal_test.go",
+            "failure_lines": [
+              "disposal_test.go:255: status = 200"
+            ]
+          },
+          {
+            "test": "TestDisposeCascadePartialFailureNamesTheDescendant",
+            "file": "disposal_test.go",
+            "failure_lines": [
+              "disposal_test.go:275: status = 200, want 502; body={\"chain_id\":\"c_c\",\"revoked\":true}"
+            ]
+          },
+          {
+            "test": "TestReaperDoesNotCascade",
+            "file": "disposal_test.go",
+            "failure_lines": [
+              "disposal_test.go:336: calls = [entry:c_c]"
+            ]
+          },
+          {
+            "test": "TestHandleDisposeByParentRevokesAndDeletesEntry",
+            "file": "main_test.go",
+            "failure_lines": [
+              "main_test.go:941: policy engine dispose was not called with the right chain_id: got \"\""
+            ]
+          },
+          {
+            "test": "TestReaperReapsExpiredDelegation",
+            "file": "main_test.go",
+            "failure_lines": [
+              "main_test.go:980: reaper did not dispose the orphaned child: deleted=true disposed=false"
+            ]
+          }
+        ],
+        "package_failure_count": 9,
+        "extra_tests_catching_mutation": [
+          "TestDisposeCascadesToLiveDescendantsBreadthFirst",
+          "TestDisposeOfALeafDisposesOnlyThatChain",
+          "TestDisposeChainRemovesGrantBeforeEntryBeforeRow",
+          "TestDisposeChainStopsWhenTheGrantCannotBeRemoved",
+          "TestDisposeDoesNotCascadeWhenTheTargetFails",
+          "TestDisposeCascadePartialFailureNamesTheDescendant",
+          "TestReaperDoesNotCascade",
+          "TestReaperReapsExpiredDelegation"
+        ],
+        "package_log": "unit-g4-mutated-package.log"
+      },
+      "live": {
+        "image_tag": "nhi-lab/vending-service:falsify-g4",
+        "docker_image_id": "sha256:eb78571916e5c694069e0ddbd17b3da923c86416ace61f57f4b7c87a541f443b",
+        "cluster_image_id_mutated": "docker.io/library/import-2026-11-09@sha256:101ec1cf41ea2931a894d0de4f7ea6ad450aff5a449c1ff69411c3b6a6e9a1ef",
+        "cluster_image_id_after_revert": "docker.io/library/import-2026-11-09@sha256:a6a08922be05b53ff1bed001c0e109edcf32605d406b695ce228be39e7613273",
+        "cluster_image_id_baseline": "docker.io/library/import-2026-11-09@sha256:a6a08922be05b53ff1bed001c0e109edcf32605d406b695ce228be39e7613273",
+        "imageid_checks": [
+          "CHECK imageID differs from baseline: OK",
+          "CHECK imageID matches baseline: OK"
+        ],
+        "rollout_log": "rollout-g4.log",
+        "baseline": {
+          "forged_parent_signature": true,
+          "scope_escalation_manifest": true,
+          "replay_captured_manifest": true,
+          "credential_use_after_revocation": true,
+          "orphaned_child_reaper": true
+        },
+        "mutated": {
+          "run": {
+            "file": "live-g4-mutated.json",
+            "log": "live-g4-mutated.log",
+            "generated_at": "2026-11-09T02:22:40Z",
+            "passed": "4/5"
+          },
+          "per_test_pass": {
+            "forged_parent_signature": true,
+            "scope_escalation_manifest": true,
+            "replay_captured_manifest": true,
+            "credential_use_after_revocation": false,
+            "orphaned_child_reaper": true
+          },
+          "test_4_credential_use_after_revocation": {
+            "outcome": "FAIL",
+            "suite_evidence": {
+              "pass": false,
+              "dispose_http_code": 200,
+              "replay_http_code_after_disposal": 200,
+              "child_obtained_svid": true,
+              "captured_jwt_before_disposal": true,
+              "matched_audit_event": null
+            },
+            "http_status": "dispose 200, replay of the captured JWT-SVID after disposal 200",
+            "expected_http_status": "dispose 200, replay 403",
+            "suite_matched_audit_reason": null,
+            "audit_note": "No resource deny event for the child. The vending service audited dispose/allow 'revoked_on_demand' for chain c_e8bb6f8c2cc65365ea0714776a2a154a at 02:22:21.818Z, and the resource logged operate/allow, policy_decision true, for child .../negtest-revoke-00718f8056 on GET /datasets/A at 02:22:21.869Z, 51 ms later (evidence-g4-resource-audit.log).",
+            "state_left": "OPA grant modules that were never deleted for the three chains disposed under the mutation: c_1221f5d8c32b476bfc95a07ecc2dbc61 (replay cleanup), c_e8bb6f8c2cc65365ea0714776a2a154a (revoke) and c_b39aa80117cc5883f9cfa5dde7e99478 (orphan, reaped). Inferred from the code path and the resource's allow decision; not listed directly, because no OPA read path (policy probe) is deployed by install.sh and none was added. They become inert at their expires_at (300 s, 300 s, 5 s) through the base policy's expired() rule but stay loaded in OPA. SPIRE entries and rows were removed and revoked as usual."
+          },
+          "other_tests_still_passed": true,
+          "specificity": "Specific: only credential_use_after_revocation failed.",
+          "state_snapshot": "state-g4-mutated.log"
+        },
+        "reverted": {
+          "attempts": [
+            {
+              "label": "g4-reverted",
+              "passed": "5/5",
+              "per_test_pass": {
+                "forged_parent_signature": true,
+                "scope_escalation_manifest": true,
+                "replay_captured_manifest": true,
+                "credential_use_after_revocation": true,
+                "orphaned_child_reaper": true
+              },
+              "file": "live-g4-reverted.json",
+              "log": "live-g4-reverted.log"
+            }
+          ],
+          "final_outcome": "5/5",
+          "note": "Reverted attempt 1: 5/5. The stranded grants name unique chain IDs and did not interfere."
+        }
+      },
+      "matches_2026_10_04_record": {
+        "value": true,
+        "note": "Unit level matches 2026-10-04: the same decisive line ('policy engine dispose was not called with the right chain_id: got \"\"'). Difference: the call is now inside an if header, so the mutation is error(nil) rather than deleting a statement; the behaviour is the same. Since the 2026-10-25 hardening, 8 more tests also catch it (see unit.package_failures_under_mutation)."
+      }
+    },
+    {
+      "guard": 5,
+      "live_negative_test": "orphaned_child_reaper",
+      "guard_location": "src/vending-service/cmd/vending-service/reaper.go:38",
+      "guard_code": "expired, err := s.store.ListExpiredUnrevoked(ctx, now)",
+      "mutation": "Inserted `expired = nil` on the line after the read (same mutation as 2026-10-04).",
+      "diff_file": "g5.diff",
+      "unit": {
+        "test": "TestReaperReapsExpiredDelegation",
+        "baseline": {
+          "outcome": "PASS",
+          "log": "unit-baseline-full.log",
+          "decisive_line": "ok  \tnhi-lab/vending-service/cmd/vending-service\t0.086s",
+          "note": "full go test -count=1 ./... on the unmodified copy; every package ok"
+        },
+        "mutated": {
+          "outcome": "FAIL",
+          "log": "unit-g5-mutated-test.log",
+          "decisive_line": "main_test.go:980: reaper did not dispose the orphaned child: deleted=false disposed=false"
+        },
+        "reverted": {
+          "outcome": "PASS",
+          "log": "unit-g5-reverted.log",
+          "decisive_line": "--- PASS: TestReaperReapsExpiredDelegation (0.00s)"
+        },
+        "package_failures_under_mutation": [
+          {
+            "test": "TestDisposeCascadePartialFailureNamesTheDescendant",
+            "file": "disposal_test.go",
+            "failure_lines": [
+              "disposal_test.go:310: the reaper did not dispose the stranded descendant: {ChainID:c_g ParentSpiffeID:spiffe://lab.local/agent/parent/t1/child/c1 ChildSpiffeID:spiffe://lab.local/agent/parent/t1/child/c1/child/g1 GrantedScopes:[resource:read:datasetA] TaskContext: EntryID:entry_c_g PolicyID:nhi_grants_c_g IssuedAt:1800000000 TTL:600 ExpiresAt:1800000600 RevokedAt:<nil> RevocationReason:}",
+              "disposal_test.go:316: c_sib reason = \"\", want ttl_expired",
+              "disposal_test.go:316: c_sibg reason = \"\", want ttl_expired"
+            ]
+          },
+          {
+            "test": "TestReaperDoesNotCascade",
+            "file": "disposal_test.go",
+            "failure_lines": [
+              "disposal_test.go:336: calls = []"
+            ]
+          },
+          {
+            "test": "TestReaperReapsExpiredDelegation",
+            "file": "main_test.go",
+            "failure_lines": [
+              "main_test.go:980: reaper did not dispose the orphaned child: deleted=false disposed=false"
+            ]
+          }
+        ],
+        "package_failure_count": 3,
+        "extra_tests_catching_mutation": [
+          "TestDisposeCascadePartialFailureNamesTheDescendant",
+          "TestReaperDoesNotCascade"
+        ],
+        "package_log": "unit-g5-mutated-package.log"
+      },
+      "live": {
+        "image_tag": "nhi-lab/vending-service:falsify-g5",
+        "docker_image_id": "sha256:569990befc2302217256762cdce36ea1c02593f2f694cf2890c476c4b2adcc7b",
+        "cluster_image_id_mutated": "docker.io/library/import-2026-11-09@sha256:11b994d64d16367e02749b9f2beaa6dc235ca272a18fcd8c96731ab81e72bac8",
+        "cluster_image_id_after_revert": "docker.io/library/import-2026-11-09@sha256:a6a08922be05b53ff1bed001c0e109edcf32605d406b695ce228be39e7613273",
+        "cluster_image_id_baseline": "docker.io/library/import-2026-11-09@sha256:a6a08922be05b53ff1bed001c0e109edcf32605d406b695ce228be39e7613273",
+        "imageid_checks": [
+          "CHECK imageID differs from baseline: OK",
+          "CHECK imageID matches baseline: OK"
+        ],
+        "rollout_log": "rollout-g5.log",
+        "baseline": {
+          "forged_parent_signature": true,
+          "scope_escalation_manifest": true,
+          "replay_captured_manifest": true,
+          "credential_use_after_revocation": true,
+          "orphaned_child_reaper": true
+        },
+        "mutated": {
+          "run": {
+            "file": "live-g5-mutated.json",
+            "log": "live-g5-mutated.log",
+            "generated_at": "2026-11-09T02:24:49Z",
+            "passed": "4/5"
+          },
+          "per_test_pass": {
+            "forged_parent_signature": true,
+            "scope_escalation_manifest": true,
+            "replay_captured_manifest": true,
+            "credential_use_after_revocation": true,
+            "orphaned_child_reaper": false
+          },
+          "test_5_orphaned_child_reaper": {
+            "outcome": "FAIL",
+            "suite_evidence": {
+              "pass": false,
+              "entry_reaped": false,
+              "chain_id": "c_f018e230324fe8869e383711f9c45cc1",
+              "matched_audit_event": null
+            },
+            "http_status": "vend 201 (ttl=5); the entry was never reaped in 20 polls x 2 s",
+            "expected_http_status": "vend 201, entry reaped with reason ttl_expired",
+            "suite_matched_audit_reason": null,
+            "audit_note": "No dispose event for chain c_f018e230324fe8869e383711f9c45cc1. The mutated pod's whole log (vs-podlog-g5-mutated.log) holds only the two on-demand disposals (revoked_on_demand) and no reaper line.",
+            "state_left": "An expired, unrevoked delegation: chain c_f018e230324fe8869e383711f9c45cc1, child .../negtest-orphan-4cf7591993, SPIRE entry f7c3e123-5e6d-4826-99e3-ff7235cef86f still present 36 s after expires_at (state-g5-mutated.log). After the revert, the clean reaper reaped it on its first tick (02:25:06Z, dispose/allow ttl_expired by svc/vending-service; vs-podlog-g5-reverted.log, evidence-g5-stranded-orphan.log)."
+          },
+          "other_tests_still_passed": true,
+          "specificity": "Specific: only orphaned_child_reaper failed.",
+          "state_snapshot": "state-g5-mutated.log"
+        },
+        "reverted": {
+          "attempts": [
+            {
+              "label": "g5-reverted",
+              "passed": "5/5",
+              "per_test_pass": {
+                "forged_parent_signature": true,
+                "scope_escalation_manifest": true,
+                "replay_captured_manifest": true,
+                "credential_use_after_revocation": true,
+                "orphaned_child_reaper": true
+              },
+              "file": "live-g5-reverted.json",
+              "log": "live-g5-reverted.log"
+            }
+          ],
+          "final_outcome": "5/5",
+          "note": "Reverted attempt 1: 5/5; the clean reaper also reaped the stranded orphan."
+        }
+      },
+      "matches_2026_10_04_record": {
+        "value": true,
+        "note": "Unit level identical to 2026-10-04: 'reaper did not dispose the orphaned child: deleted=false disposed=false'. Since the hardening, 2 more tests also catch it."
+      }
+    }
+  ],
+  "clean_worktree_proof": {
+    "unit_level_after": "[git status --short src/vending-service printed 0 lines]",
+    "unit_final_full_log": "unit-final-full.log (begins with a diff -r of the worktree source against the clean copy: identical)",
+    "final_git_status_short": "## git -C <worktree> status --short (whole worktree)\n[printed 0 lines]\n## git -C <worktree> status --short src/vending-service\n[printed 0 lines]\n## HEAD\n58a8c7d Document --install-tools, the Docker 28 minimum and unsupported Debian\ntest/rerun-falsify",
+    "statement": "All mutations were applied only to <scratch>/vs-gN copies. git status --short src/vending-service printed nothing after level A, and git status --short of the whole worktree printed nothing at the end. Only the gitignored src/experiments/results/latest/ was written."
+  }
+}

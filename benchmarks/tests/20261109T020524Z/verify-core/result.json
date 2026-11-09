@@ -1,0 +1,370 @@
+{
+  "stream": "verify-core",
+  "git_commit": "58a8c7d",
+  "branch": "test/rerun-verify-core",
+  "kind_cluster": "nhi-t-vcore",
+  "results": {
+    "verify": {
+      "command": "make --no-print-directory verify KIND_CLUSTER=nhi-t-vcore",
+      "exit_code": 0,
+      "result": "pass",
+      "elapsed_seconds": 4,
+      "started_utc": "2026-11-09T02:12:46Z",
+      "ended_utc": "2026-11-09T02:12:50Z",
+      "checks_passed": 26,
+      "checks_failed": 0,
+      "steps": 17,
+      "script_summary_line": "VERIFY: PASS (17 checks)",
+      "unit_test_prerequisite_lines": [],
+      "negative_checks": [
+        {
+          "step": 12,
+          "step_title": "Policy plane — anonymous write to OPA is refused",
+          "outcome": "PASS",
+          "check": "anonymous PUT /v1/policies refused at the TLS handshake (no HTTP status reached)"
+        },
+        {
+          "step": 13,
+          "step_title": "Policy plane — write from a non-policy-engine identity is refused",
+          "outcome": "PASS",
+          "check": "PUT /v1/policies as svc/policy-probe refused by system.authz (HTTP 401) after a successful mTLS handshake"
+        }
+      ]
+    },
+    "verify-resource": {
+      "command": "make --no-print-directory verify-resource KIND_CLUSTER=nhi-t-vcore",
+      "exit_code": 0,
+      "result": "pass",
+      "elapsed_seconds": 18,
+      "started_utc": "2026-11-09T02:12:50Z",
+      "ended_utc": "2026-11-09T02:13:08Z",
+      "checks_passed": 11,
+      "checks_failed": 0,
+      "steps": 11,
+      "script_summary_line": "RESOURCE VERIFY: PASS (11 checks)",
+      "unit_test_prerequisite_lines": [
+        "ok nhi-lab/resource 0.004s"
+      ],
+      "negative_checks": [
+        {
+          "step": 3,
+          "step_title": "Clearing the grant namespace so 'no policy' genuinely means no policy",
+          "outcome": "PASS",
+          "check": "grant namespace is empty — the next check tests default deny, not stale state"
+        },
+        {
+          "step": 4,
+          "step_title": "CHECK A — valid SVID, no policy: request is DENIED (default deny)",
+          "outcome": "PASS",
+          "check": "authenticated caller with no grant is denied (HTTP 403)"
+        },
+        {
+          "step": 7,
+          "step_title": "CHECK C — but is still denied dataset B",
+          "outcome": "PASS",
+          "check": "ungranted scope is denied (HTTP 403) — the grant attenuates, it does not open"
+        },
+        {
+          "step": 8,
+          "step_title": "Write scope is independent of read scope (POST /jobs still denied)",
+          "outcome": "PASS",
+          "check": "resource:write:jobs is not implied by resource:read:datasetA"
+        },
+        {
+          "step": 9,
+          "step_title": "Unauthenticated request is refused before any policy is consulted",
+          "outcome": "PASS",
+          "check": "no credential is a 401, distinct from the 403 a valid credential without a grant gets"
+        },
+        {
+          "step": 10,
+          "step_title": "A JWT-SVID minted for a different audience is refused",
+          "outcome": "PASS",
+          "check": "audience binding holds: a token valid elsewhere in the trust domain is refused here"
+        },
+        {
+          "step": 11,
+          "step_title": "Removing the grant restores the default deny (the policy engine's disposal path)",
+          "outcome": "PASS",
+          "check": "access ends when the grant is removed — the credential alone confers nothing"
+        }
+      ]
+    },
+    "verify-policy": {
+      "command": "make --no-print-directory verify-policy KIND_CLUSTER=nhi-t-vcore",
+      "exit_code": 0,
+      "result": "pass",
+      "elapsed_seconds": 67,
+      "started_utc": "2026-11-09T02:13:08Z",
+      "ended_utc": "2026-11-09T02:14:15Z",
+      "checks_passed": 18,
+      "checks_failed": 0,
+      "steps": 15,
+      "script_summary_line": "POLICY VERIFY: PASS (15 checks)",
+      "unit_test_prerequisite_lines": [
+        "ok nhi-lab/policy-engine 0.012s"
+      ],
+      "negative_checks": [
+        {
+          "step": 3,
+          "step_title": "Clearing the grant namespace so this run starts from genuine default deny",
+          "outcome": "PASS",
+          "check": "grant namespace is empty"
+        },
+        {
+          "step": 5,
+          "step_title": "CHECK A — before synthesis, the resource denies (default deny)",
+          "outcome": "PASS",
+          "check": "no grant yet: denied"
+        },
+        {
+          "step": 6,
+          "step_title": "A caller using the WRONG probe identity is refused by the policy engine's mTLS listener",
+          "outcome": "PASS",
+          "check": "wrong client identity refused before any HTTP response, with a TLS-shaped curl error"
+        },
+        {
+          "step": 7,
+          "step_title": "An UNRELATED child_spiffe_id is rejected (400 + deny audit), closing the escalation",
+          "outcome": "PASS",
+          "check": "unrelated child_spiffe_id (spiffe://lab.local/svc/test-workload) refused with HTTP 400 — not a descendant of spiffe://lab.local/agent/parent/policy-verify"
+        },
+        {
+          "step": 7,
+          "step_title": "An UNRELATED child_spiffe_id is rejected (400 + deny audit), closing the escalation",
+          "outcome": "PASS",
+          "check": "deny audit event recorded, citing the descendant check"
+        },
+        {
+          "step": 7,
+          "step_title": "An UNRELATED child_spiffe_id is rejected (400 + deny audit), closing the escalation",
+          "outcome": "PASS",
+          "check": "no grant module was written for the rejected escalation attempt"
+        },
+        {
+          "step": 8,
+          "step_title": "Synthesizing a grant: requested exceeds Π(P) — an escalation attempt",
+          "outcome": "PASS",
+          "check": "child_scopes = [resource:read:datasetA] only — the datasetB escalation attempt was attenuated away"
+        },
+        {
+          "step": 10,
+          "step_title": "CHECK C — but dataset B stays denied (attenuation, not escalation)",
+          "outcome": "PASS",
+          "check": "ungranted (and unheld-by-the-parent) scope denied"
+        },
+        {
+          "step": 13,
+          "step_title": "After disposal, the SAME token is denied again — the credential alone confers nothing",
+          "outcome": "PASS",
+          "check": "default deny restored"
+        },
+        {
+          "step": 14,
+          "step_title": "Unknown parent (absent from OPA and the bootstrap table) attenuates to the empty set",
+          "outcome": "PASS",
+          "check": "unknown parent -> child_scopes = [] (fail closed, not an error)"
+        },
+        {
+          "step": 15,
+          "step_title": "The CLIENT_SPIFFE_ID override is restored to the real default",
+          "outcome": "PASS",
+          "check": "override restored; the probe identity is no longer authorized to /synthesize"
+        }
+      ]
+    },
+    "verify-vending": {
+      "command": "make --no-print-directory verify-vending KIND_CLUSTER=nhi-t-vcore",
+      "exit_code": 0,
+      "result": "pass",
+      "elapsed_seconds": 81,
+      "started_utc": "2026-11-09T02:14:15Z",
+      "ended_utc": "2026-11-09T02:15:36Z",
+      "checks_passed": 24,
+      "checks_failed": 0,
+      "steps": 13,
+      "script_summary_line": "VENDING VERIFY: PASS (13 checks)",
+      "unit_test_prerequisite_lines": [
+        "ok nhi-lab/vending-service/cmd/parentsim 0.635s",
+        "ok nhi-lab/vending-service/cmd/vending-service 0.088s",
+        "ok nhi-lab/vending-service/internal/audit 0.001s",
+        "ok nhi-lab/vending-service/internal/manifest 0.002s",
+        "? nhi-lab/vending-service/internal/policyclient [no test files]",
+        "ok nhi-lab/vending-service/internal/signature 0.003s",
+        "? nhi-lab/vending-service/internal/spireentry [no test files]",
+        "ok nhi-lab/vending-service/internal/store 0.005s"
+      ],
+      "negative_checks": [
+        {
+          "step": 3,
+          "step_title": "The child is UNREGISTERED before any manifest is submitted (x509-check fails)",
+          "outcome": "PASS",
+          "check": "no SPIRE registration entry matches the child's selectors yet"
+        },
+        {
+          "step": 4,
+          "step_title": "NEGATIVE — wrong caller identity: attacker relays a manifest genuinely signed by the real parent",
+          "outcome": "PASS",
+          "check": "wrong caller identity refused with HTTP 403"
+        },
+        {
+          "step": 4,
+          "step_title": "NEGATIVE — wrong caller identity: attacker relays a manifest genuinely signed by the real parent",
+          "outcome": "PASS",
+          "check": "deny audit event names the actual mismatch, not just a generic refusal"
+        },
+        {
+          "step": 5,
+          "step_title": "NEGATIVE — forged manifest: a structurally valid but tampered signature is refused",
+          "outcome": "PASS",
+          "check": "forged/corrupted signature refused with HTTP 401"
+        },
+        {
+          "step": 5,
+          "step_title": "NEGATIVE — forged manifest: a structurally valid but tampered signature is refused",
+          "outcome": "PASS",
+          "check": "deny audit event names signature verification specifically, not a generic 401"
+        },
+        {
+          "step": 5,
+          "step_title": "NEGATIVE — forged manifest: a structurally valid but tampered signature is refused",
+          "outcome": "PASS",
+          "check": "no SPIRE entry was created for the rejected forged manifest"
+        },
+        {
+          "step": 6,
+          "step_title": "CHECK A — a real spawn manifest is submitted (with a scope-escalation attempt)",
+          "outcome": "PASS",
+          "check": "child_scopes = [resource:read:datasetA] only — the datasetB escalation attempt was attenuated away"
+        },
+        {
+          "step": 7,
+          "step_title": "NEGATIVE — replay: resubmitting the SAME manifest (same nonce) is refused",
+          "outcome": "PASS",
+          "check": "replayed nonce refused with HTTP 409"
+        },
+        {
+          "step": 7,
+          "step_title": "NEGATIVE — replay: resubmitting the SAME manifest (same nonce) is refused",
+          "outcome": "PASS",
+          "check": "deny audit event names replay specifically"
+        },
+        {
+          "step": 9,
+          "step_title": "CHECK C — the child accesses EXACTLY its granted scope, nothing more",
+          "outcome": "PASS",
+          "check": "child is denied datasetB (requested by the parent, attenuated away, never granted): 403"
+        },
+        {
+          "step": 10,
+          "step_title": "CHECK D — disposal: DELETE /delegations/{chain_id}",
+          "outcome": "PASS",
+          "check": "the SPIRE registration entry for spiffe://lab.local/agent/parent/vend-verify/child/vend-verify-c1 no longer exists"
+        },
+        {
+          "step": 11,
+          "step_title": "CHECK E — after disposal, the child's SVID stops being renewable",
+          "outcome": "PASS",
+          "check": "child can no longer obtain/renew an SVID for spiffe://lab.local/agent/parent/vend-verify/child/vend-verify-c1 (gone)"
+        },
+        {
+          "step": 12,
+          "step_title": "CHECK F — resource access is denied after disposal, even replaying the pre-disposal token",
+          "outcome": "PASS",
+          "check": "the captured (still cryptographically valid) JWT-SVID is now denied — the OPA grant, not the token's own expiry, is what changed"
+        }
+      ]
+    },
+    "verify-persistence": {
+      "command": "make --no-print-directory verify-persistence KIND_CLUSTER=nhi-t-vcore",
+      "exit_code": 0,
+      "result": "pass",
+      "elapsed_seconds": 88,
+      "started_utc": "2026-11-09T02:15:36Z",
+      "ended_utc": "2026-11-09T02:17:04Z",
+      "checks_passed": 39,
+      "checks_failed": 0,
+      "steps": 10,
+      "script_summary_line": "PERSISTENCE VERIFY: PASS (10 steps)",
+      "unit_test_prerequisite_lines": [
+        "ok nhi-lab/vending-service/cmd/parentsim (cached)",
+        "ok nhi-lab/vending-service/cmd/vending-service (cached)",
+        "ok nhi-lab/vending-service/internal/audit (cached)",
+        "ok nhi-lab/vending-service/internal/manifest (cached)",
+        "? nhi-lab/vending-service/internal/policyclient [no test files]",
+        "ok nhi-lab/vending-service/internal/signature (cached)",
+        "? nhi-lab/vending-service/internal/spireentry [no test files]",
+        "ok nhi-lab/vending-service/internal/store (cached)"
+      ],
+      "negative_checks": [
+        {
+          "step": 5,
+          "step_title": "THE RESTART — kubectl delete pod -l app=vending-service, then wait for the new pod to be Ready",
+          "outcome": "PASS",
+          "check": "the old pod was gone before S expired (1794190613), so only the new pod's reaper can have reaped it"
+        },
+        {
+          "step": 5,
+          "step_title": "THE RESTART — kubectl delete pod -l app=vending-service, then wait for the new pod to be Ready",
+          "outcome": "PASS",
+          "check": "new pod vending-service-68cd6f8b5d-ks66s is Ready (the old pod vending-service-68cd6f8b5d-4ztkx is gone); 12s after S was vended"
+        },
+        {
+          "step": 5,
+          "step_title": "THE RESTART — kubectl delete pod -l app=vending-service, then wait for the new pod to be Ready",
+          "outcome": "PASS",
+          "check": "vending-service-68cd6f8b5d-4ztkx no longer exists, so everything below is answered by vending-service-68cd6f8b5d-ks66s"
+        },
+        {
+          "step": 7,
+          "step_title": "REPLAY PROTECTION SURVIVES — resubmitting C's pre-restart nonce is refused",
+          "outcome": "PASS",
+          "check": "replayed pre-restart nonce refused with HTTP 409"
+        },
+        {
+          "step": 7,
+          "step_title": "REPLAY PROTECTION SURVIVES — resubmitting C's pre-restart nonce is refused",
+          "outcome": "PASS",
+          "check": "response reason is: nonce has already been used for this parent (replay refused)"
+        },
+        {
+          "step": 7,
+          "step_title": "REPLAY PROTECTION SURVIVES — resubmitting C's pre-restart nonce is refused",
+          "outcome": "PASS",
+          "check": "deny audit event names the replay"
+        },
+        {
+          "step": 8,
+          "step_title": "DISPOSAL WORKS — C still has access, then its parent DELETEs it through the new pod",
+          "outcome": "PASS",
+          "check": "C's SPIRE registration entry is gone"
+        },
+        {
+          "step": 8,
+          "step_title": "DISPOSAL WORKS — C still has access, then its parent DELETEs it through the new pod",
+          "outcome": "PASS",
+          "check": "C's request to the resource is denied: 403"
+        },
+        {
+          "step": 8,
+          "step_title": "DISPOSAL WORKS — C still has access, then its parent DELETEs it through the new pod",
+          "outcome": "PASS",
+          "check": "the resource's deny audit event names C (policy denied on /datasets/A)"
+        },
+        {
+          "step": 9,
+          "step_title": "THE REAPER SURVIVES — the new pod reaps S (ttl 30s) once it expires, with S's original chain_id",
+          "outcome": "PASS",
+          "check": "S's SPIRE registration entry is gone"
+        }
+      ]
+    },
+    "_bringup": {
+      "command": "./install.sh --yes",
+      "exit_code": 0,
+      "started_utc": "2026-11-09T02:08:46Z",
+      "ended_utc": "2026-11-09T02:12:35Z",
+      "elapsed_seconds": 229
+    }
+  }
+}

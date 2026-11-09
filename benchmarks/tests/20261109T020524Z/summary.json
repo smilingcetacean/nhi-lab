@@ -1,0 +1,98 @@
+{
+  "session_id": "20261109T020524Z",
+  "purpose": "Rerun of the lab's negative, functional and falsification tests, five streams in parallel, one throwaway kind cluster per stream",
+  "git_commit": "58a8c7d",
+  "lab_config_changed": false,
+  "overall": "PASS",
+  "concurrency": {
+    "streams": 5,
+    "clusters_at_once_max": 5,
+    "five_cluster_window_utc": ["2026-11-09T02:09:11Z", "2026-11-09T02:15:53Z"],
+    "host_cpus": 16,
+    "host_load1_max": 7.09,
+    "host_load5_max": 3.7,
+    "host_mem_available_min_mb": 15287,
+    "host_mem_total_mb": 31130,
+    "host_load_samples": "host-load/host_load.csv (10 s interval, 2026-11-09T02:06:40Z to 02:31:36Z)"
+  },
+  "streams": {
+    "experiments": {
+      "dir": "experiments/",
+      "cluster": "nhi-t-exp",
+      "result": "PASS",
+      "suites": {
+        "negative_tests": {"pass": true, "tests": 5, "passed": 5, "elapsed_s": 21.9},
+        "multi_hop": {"pass": true, "elapsed_s": 20.3},
+        "functional_tests": {
+          "pass": true,
+          "elapsed_s": 105.6,
+          "scope_containment": {"n": 30, "passed": 30},
+          "credential_expiry": {"n": 10, "passed": 10, "latency_s_min_median_max": [4.262, 5.318, 5.377]}
+        },
+        "performance": {"skipped": true, "reason": "not requested"}
+      },
+      "compared_with": "src/experiments/results/20261107T220445Z",
+      "comparison": "same pass counts, HTTP statuses and audit reasons; expiry latency min/median/max 4.254/5.308/5.328 s in the previous run"
+    },
+    "verify-core": {
+      "dir": "verify-core/",
+      "cluster": "nhi-t-vcore",
+      "result": "PASS",
+      "targets": {
+        "verify": {"pass": true, "summary": "VERIFY: PASS (17 checks)", "elapsed_s": 4},
+        "verify-resource": {"pass": true, "summary": "RESOURCE VERIFY: PASS (11 checks)", "elapsed_s": 18},
+        "verify-policy": {"pass": true, "summary": "POLICY VERIFY: PASS (15 checks)", "elapsed_s": 67},
+        "verify-vending": {"pass": true, "summary": "VENDING VERIFY: PASS (13 checks)", "elapsed_s": 81},
+        "verify-persistence": {"pass": true, "summary": "PERSISTENCE VERIFY: PASS (10 steps)", "elapsed_s": 88}
+      },
+      "unit_test_prerequisites": "all ok (resource, policy-engine, vending-service packages)"
+    },
+    "verify-disposal": {
+      "dir": "verify-disposal/",
+      "cluster": "nhi-t-vdisp",
+      "result": "PASS",
+      "targets": {
+        "verify-disposal": {"pass": true, "summary": "DISPOSAL VERIFY: PASS (15 steps)", "checks_passed": 91, "checks_failed": 0, "elapsed_s": 285}
+      },
+      "prerequisites": {"rego-test": "PASS: 12/12", "vending-service-test": "ok", "policy-engine-test": "ok"}
+    },
+    "verify-present": {
+      "dir": "verify-present/",
+      "cluster": "nhi-t-vpres",
+      "result": "PASS",
+      "llm_key_used": false,
+      "targets": {
+        "verify-present": {"pass": true, "summary": "VERIFY-PRESENT: PASS (9 steps)", "checks_passed": 43, "checks_failed": 0, "elapsed_s": 116},
+        "verify-exit-hooks": {"pass": true, "summary": "VERIFY-EXIT-HOOKS: PASS (3 steps)", "checks_passed": 21, "checks_failed": 0, "elapsed_s": 195}
+      }
+    },
+    "falsification": {
+      "dir": "falsification/",
+      "cluster": "nhi-t-falsify",
+      "result": "PASS",
+      "method": "each guard mutated on a scratch copy of src/vending-service; unit level: named Go test baseline/mutated/reverted; live level: mutated image (tag nhi-lab/vending-service:falsify-gN) deployed on the stream's own cluster, negative_tests.py run, clean image restored and the suite rerun",
+      "compared_with": "src/experiments/results/falsification.md (2026-10-04)",
+      "guards": {
+        "g1_forged_signature": {"location": "cmd/vending-service/main.go:390", "unit": "PASS/FAIL/PASS", "live_mutated_failed": ["forged_parent_signature", "credential_use_after_revocation"], "live_mutated_status": 201, "live_reverted": "4/5 then 5/5 after disposing the delegation the mutation minted"},
+        "g2_empty_attenuation": {"location": "cmd/vending-service/main.go:575", "unit": "PASS/FAIL/PASS", "live_mutated_failed": ["scope_escalation_manifest"], "live_mutated_status": 201, "live_reverted": "4/5 then 5/5 after disposing the scopeless delegation the mutation minted"},
+        "g3_nonce_replay": {"location": "cmd/vending-service/main.go:517", "unit": "PASS/FAIL/PASS", "live_mutated_failed": ["replay_captured_manifest"], "live_mutated_status": 500, "live_reverted": "5/5"},
+        "g4_dispose_grant": {"location": "cmd/vending-service/main.go:864", "unit": "PASS/FAIL/PASS", "unit_extra_tests_failing": 8, "live_mutated_failed": ["credential_use_after_revocation"], "live_mutated_status": "200 on the captured JWT after disposal", "live_reverted": "5/5"},
+        "g5_reaper": {"location": "cmd/vending-service/reaper.go:38", "unit": "PASS/FAIL/PASS", "unit_extra_tests_failing": 2, "live_mutated_failed": ["orphaned_child_reaper"], "live_reverted": "5/5"}
+      },
+      "unit_level_matches_2026_10_04": true,
+      "findings": [
+        "negative_tests.py: the forged-signature and scope-escalation tests vend with the same child selectors the revocation test uses, so a guard that lets either of them mint leaves the child pod holding two SVIDs and also fails the revocation test (g1 mutated, g1 and g2 first reverted runs)",
+        "negative_tests.py: the replay test picks the newest attest/deny audit event without matching chain_id; under g3 it matched the forged-signature event, though the test still failed correctly on the status and reason",
+        "under g1 the vend audit event still states the signature was verified; the reason string is fixed text written after the check"
+      ]
+    }
+  },
+  "results_hygiene": {
+    "markdown_files": 0,
+    "paths_and_user_scrubbed": true,
+    "pii_scan": "no names, handles, emails, hostname, home or scratch paths",
+    "secret_scan": "no private keys or API keys; 'ANTHROPIC_API_KEY=...' matches are the lab's own help text; the one full JWS in verify-core/verify-vending.log is a manifest signature whose x5c holds a public certificate from the deleted throwaway CA",
+    "clusters_deleted": true,
+    "falsify_image_tags_removed": true
+  }
+}

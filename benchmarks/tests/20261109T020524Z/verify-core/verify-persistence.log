@@ -1,0 +1,320 @@
+ok  	nhi-lab/vending-service/cmd/parentsim	(cached)
+ok  	nhi-lab/vending-service/cmd/vending-service	(cached)
+ok  	nhi-lab/vending-service/internal/audit	(cached)
+ok  	nhi-lab/vending-service/internal/manifest	(cached)
+?   	nhi-lab/vending-service/internal/policyclient	[no test files]
+ok  	nhi-lab/vending-service/internal/signature	(cached)
+?   	nhi-lab/vending-service/internal/spireentry	[no test files]
+ok  	nhi-lab/vending-service/internal/store	(cached)
+>> building nhi-lab/policy-engine:dev
+DEPRECATED: The legacy builder is deprecated and will be removed in a future release.
+            Install the buildx component to build images with BuildKit:
+            https://docs.docker.com/go/buildx/
+
+>> loading nhi-lab/policy-engine:dev into kind/nhi-t-vcore
+namespace/spire unchanged
+namespace/opa unchanged
+namespace/nhi unchanged
+namespace/agents unchanged
+>> deploying SPIRE server 1.15.2
+serviceaccount/spire-server unchanged
+clusterrole.rbac.authorization.k8s.io/spire-server-node-attestor unchanged
+clusterrolebinding.rbac.authorization.k8s.io/spire-server-node-attestor unchanged
+role.rbac.authorization.k8s.io/spire-server-bundle-publisher unchanged
+rolebinding.rbac.authorization.k8s.io/spire-server-bundle-publisher unchanged
+configmap/spire-server unchanged
+configmap/spire-bundle unchanged
+service/spire-server unchanged
+statefulset.apps/spire-server configured
+>> waiting for spire-server to become Ready
+partitioned roll out complete: 1 new pods have been updated...
+>> waiting for the spire-bundle ConfigMap to be populated
+>> trust bundle published (809 bytes)
+>> deploying SPIRE agent 1.15.2
+serviceaccount/spire-agent unchanged
+clusterrole.rbac.authorization.k8s.io/spire-agent-workload-attestor unchanged
+clusterrolebinding.rbac.authorization.k8s.io/spire-agent-workload-attestor unchanged
+configmap/spire-agent unchanged
+daemonset.apps/spire-agent unchanged
+>> waiting for spire-agent DaemonSet to become Ready
+daemon set "spire-agent" successfully rolled out
+>> waiting for node attestation to complete
+>> 2 agents attested via k8s_psat
+Registering static SPIRE entries in trust domain lab.local
+  = node alias: spiffe://lab.local/node/nhi-lab (already registered)
+  = static test workload: spiffe://lab.local/svc/test-workload (already registered)
+  = properly-shaped child test identity (verify-policy only): spiffe://lab.local/agent/parent/policy-verify/child/policy-verify-child (already registered)
+  = OPA server: spiffe://lab.local/svc/opa (already registered)
+  = policy engine: spiffe://lab.local/svc/policy-engine (already registered)
+  = protected resource: spiffe://lab.local/svc/resource (already registered)
+  = vending service: spiffe://lab.local/svc/vending-service (already registered)
+  = vend-verify parent (verify-vending only): spiffe://lab.local/agent/parent/vend-verify (already registered)
+  = demo parent: spiffe://lab.local/agent/parent/demo (already registered)
+  = OpenCode parent: spiffe://lab.local/agent/parent/opencode (already registered)
+  = experiments root parent: spiffe://lab.local/agent/parent/exp-root (already registered)
+  = policy probe (verify only): spiffe://lab.local/svc/policy-probe (already registered)
+
+Found 12 entries
+Entry ID                : e62343ce-5328-4b83-a089-d88f1b4b4996
+SPIFFE ID               : spiffe://lab.local/agent/parent/demo
+Parent ID               : spiffe://lab.local/node/nhi-lab
+Revision                : 0
+X509-SVID TTL           : default
+JWT-SVID TTL            : default
+Selector                : k8s:ns:agents
+Selector                : k8s:sa:nhi-demo-parent
+
+Entry ID                : fd0fbf46-4348-4b4f-8c89-fb05ab3b5618
+SPIFFE ID               : spiffe://lab.local/agent/parent/exp-root
+Parent ID               : spiffe://lab.local/node/nhi-lab
+Revision                : 0
+X509-SVID TTL           : default
+JWT-SVID TTL            : default
+Selector                : k8s:ns:agents
+Selector                : k8s:sa:nhi-exp-parent
+
+Entry ID                : f36c2657-458e-46e3-9edf-0a261e7fd772
+SPIFFE ID               : spiffe://lab.local/agent/parent/opencode
+Parent ID               : spiffe://lab.local/node/nhi-lab
+Revision                : 0
+X509-SVID TTL           : default
+JWT-SVID TTL            : default
+Selector                : k8s:ns:agents
+Selector                : k8s:sa:nhi-opencode-parent
+
+Entry ID                : 49b0baf7-041b-43f4-b624-aa651a64901b
+SPIFFE ID               : spiffe://lab.local/agent/parent/policy-verify/child/policy-verify-child
+Parent ID               : spiffe://lab.local/node/nhi-lab
+Revision                : 0
+X509-SVID TTL           : default
+JWT-SVID TTL            : default
+Selector                : k8s:ns:agents
+Selector                : k8s:sa:nhi-test-child
+
+Entry ID                : 79282261-c06b-4353-8fdb-bab8b22dc452
+SPIFFE ID               : spiffe://lab.local/agent/parent/vend-verify
+Parent ID               : spiffe://lab.local/node/nhi-lab
+Revision                : 0
+X509-SVID TTL           : default
+JWT-SVID TTL            : default
+Selector                : k8s:ns:agents
+Selector                : k8s:sa:nhi-test-vend-parent
+
+Entry ID                : 08ecd370-1fb5-4af6-ac37-9f556a6a31b9
+SPIFFE ID               : spiffe://lab.local/node/nhi-lab
+Parent ID               : spiffe://lab.local/spire/server
+Revision                : 0
+X509-SVID TTL           : default
+JWT-SVID TTL            : default
+Selector                : k8s_psat:cluster:nhi-lab
+
+Entry ID                : 2e1be817-cf12-4d5f-9342-65eec5adaeae
+SPIFFE ID               : spiffe://lab.local/svc/opa
+Parent ID               : spiffe://lab.local/node/nhi-lab
+Revision                : 0
+X509-SVID TTL           : default
+JWT-SVID TTL            : default
+Selector                : k8s:ns:opa
+Selector                : k8s:sa:opa
+DNS name                : opa.opa.svc.cluster.local
+DNS name                : opa.opa.svc
+DNS name                : opa
+
+Entry ID                : c9f8121e-4da2-4693-8159-7b6fb0ba8547
+SPIFFE ID               : spiffe://lab.local/svc/policy-engine
+Parent ID               : spiffe://lab.local/node/nhi-lab
+Revision                : 0
+X509-SVID TTL           : default
+JWT-SVID TTL            : default
+Selector                : k8s:ns:nhi
+Selector                : k8s:sa:policy-engine
+DNS name                : policy-engine.nhi.svc.cluster.local
+DNS name                : policy-engine.nhi.svc
+DNS name                : policy-engine
+
+Entry ID                : 3c5a0652-aeb3-4c58-bd47-c7c5e2d5c6aa
+SPIFFE ID               : spiffe://lab.local/svc/policy-probe
+Parent ID               : spiffe://lab.local/node/nhi-lab
+Revision                : 0
+X509-SVID TTL           : default
+JWT-SVID TTL            : default
+Selector                : k8s:ns:nhi
+Selector                : k8s:sa:policy-probe
+
+Entry ID                : 1e718d62-e1f1-4493-9e1f-e7e72d065be0
+SPIFFE ID               : spiffe://lab.local/svc/resource
+Parent ID               : spiffe://lab.local/node/nhi-lab
+Revision                : 0
+X509-SVID TTL           : default
+JWT-SVID TTL            : default
+Selector                : k8s:ns:nhi
+Selector                : k8s:sa:resource
+
+Entry ID                : 800796c3-7551-4ada-a325-d57ac3556ae1
+SPIFFE ID               : spiffe://lab.local/svc/test-workload
+Parent ID               : spiffe://lab.local/node/nhi-lab
+Revision                : 0
+X509-SVID TTL           : default
+JWT-SVID TTL            : default
+Selector                : k8s:ns:agents
+Selector                : k8s:sa:nhi-test
+
+Entry ID                : 56f0027b-2eaa-47ad-936d-0fa583598074
+SPIFFE ID               : spiffe://lab.local/svc/vending-service
+Parent ID               : spiffe://lab.local/node/nhi-lab
+Revision                : 0
+X509-SVID TTL           : default
+JWT-SVID TTL            : default
+Selector                : k8s:ns:nhi
+Selector                : k8s:sa:vending-service
+
+>> deploying the policy engine
+serviceaccount/policy-engine unchanged
+service/policy-engine unchanged
+deployment.apps/policy-engine unchanged
+configmap/policy-engine-bootstrap unchanged
+deployment.apps/policy-engine restarted
+Waiting for deployment spec update to be observed...
+Waiting for deployment "policy-engine" rollout to finish: 0 out of 1 new replicas have been updated...
+Waiting for deployment "policy-engine" rollout to finish: 1 old replicas are pending termination...
+Waiting for deployment "policy-engine" rollout to finish: 1 old replicas are pending termination...
+deployment "policy-engine" successfully rolled out
+>> building nhi-lab/vending-service:dev
+DEPRECATED: The legacy builder is deprecated and will be removed in a future release.
+            Install the buildx component to build images with BuildKit:
+            https://docs.docker.com/go/buildx/
+
+>> loading nhi-lab/vending-service:dev into kind/nhi-t-vcore
+>> deploying the vending service
+persistentvolumeclaim/vending-data unchanged
+serviceaccount/vending-service unchanged
+service/vending-service unchanged
+deployment.apps/vending-service unchanged
+deployment.apps/vending-service restarted
+Waiting for deployment "vending-service" rollout to finish: 0 out of 1 new replicas have been updated...
+Waiting for deployment "vending-service" rollout to finish: 0 out of 1 new replicas have been updated...
+Waiting for deployment "vending-service" rollout to finish: 0 out of 1 new replicas have been updated...
+Waiting for deployment "vending-service" rollout to finish: 0 out of 1 new replicas have been updated...
+Waiting for deployment "vending-service" rollout to finish: 0 of 1 updated replicas are available...
+deployment "vending-service" successfully rolled out
+>> building nhi-lab/parentsim:dev
+DEPRECATED: The legacy builder is deprecated and will be removed in a future release.
+            Install the buildx component to build images with BuildKit:
+            https://docs.docker.com/go/buildx/
+
+>> loading nhi-lab/parentsim:dev into kind/nhi-t-vcore
+>> building nhi-lab/resource:dev
+DEPRECATED: The legacy builder is deprecated and will be removed in a future release.
+            Install the buildx component to build images with BuildKit:
+            https://docs.docker.com/go/buildx/
+
+>> loading nhi-lab/resource:dev into kind/nhi-t-vcore
+>> deploying the protected resource
+serviceaccount/resource unchanged
+service/resource unchanged
+deployment.apps/resource unchanged
+deployment.apps/resource restarted
+Waiting for deployment spec update to be observed...
+Waiting for deployment "resource" rollout to finish: 0 out of 1 new replicas have been updated...
+Waiting for deployment "resource" rollout to finish: 1 old replicas are pending termination...
+Waiting for deployment "resource" rollout to finish: 1 old replicas are pending termination...
+deployment "resource" successfully rolled out
+
+[1m[1] Deploying the test fixtures (parent, attacker, child)[0m
+    | serviceaccount/nhi-test-vend-parent created
+    | deployment.apps/vending-test-parent created
+    | deployment.apps/vending-test-attacker created
+    | serviceaccount/nhi-test-vend-child created
+    | deployment.apps/vending-test-child created
+    [32mPASS[0m vending service, test parent and test child Ready (run id 20261109021614)
+    | parent=vending-test-parent-5676679cf9-skh4q  child=vending-test-child-54ff846574-fpvl8  vending-service=vending-service-68cd6f8b5d-4ztkx
+
+[1m[2] Rolling the policy engine so it picks up the vend-verify bootstrap parent[0m
+    [32mPASS[0m policy engine restarted
+
+[1m[3] BEFORE THE RESTART — the parent vends a long-TTL child C (600s) and a short-TTL child S (30s)[0m
+    | HTTP 201
+    | {"chain_id":"c_34ea762d591aa9c161cc345b0334bd3c","parent_spiffe_id":"spiffe://lab.local/agent/parent/vend-verify","child_spiffe_id":"spiffe://lab.local/agent/parent/vend-verify/child/persist-long-20261109021614","child_scopes":["resource:read:datasetA"],"entry_id":"2c80e99a-3a17-4dc5-9de5-1fbb6c957ad2","policy_id":"nhi_grants_c_34ea762d591aa9c161cc345b0334bd3c","issued_at":1794190583,"expires_at":1794191183}
+    [32mPASS[0m C vended: chain_id=c_34ea762d591aa9c161cc345b0334bd3c child=spiffe://lab.local/agent/parent/vend-verify/child/persist-long-20261109021614 (HTTP 201)
+    | HTTP 201
+    | {"chain_id":"c_0247060b101b9ee4a9479144843afbe8","parent_spiffe_id":"spiffe://lab.local/agent/parent/vend-verify","child_spiffe_id":"spiffe://lab.local/agent/parent/vend-verify/child/persist-short-20261109021614","child_scopes":["resource:read:datasetA"],"entry_id":"649d9166-9c25-4b2a-b3b8-3236c4b01b13","policy_id":"nhi_grants_c_0247060b101b9ee4a9479144843afbe8","issued_at":1794190583,"expires_at":1794190613}
+    [32mPASS[0m S vended: chain_id=c_0247060b101b9ee4a9479144843afbe8 child=spiffe://lab.local/agent/parent/vend-verify/child/persist-short-20261109021614 (HTTP 201, expires in 30s)
+
+[1m[4] BEFORE THE RESTART — C is on record, has its SPIRE entry, and works[0m
+    | HTTP 200
+    | {"chain_id":"c_34ea762d591aa9c161cc345b0334bd3c","parent_spiffe_id":"spiffe://lab.local/agent/parent/vend-verify","child_spiffe_id":"spiffe://lab.local/agent/parent/vend-verify/child/persist-long-20261109021614","child_scopes":["resource:read:datasetA"],"entry_id":"2c80e99a-3a17-4dc5-9de5-1fbb6c957ad2","policy_id":"nhi_grants_c_34ea762d591aa9c161cc345b0334bd3c","issued_at":1794190583,"expires_at":1794191183}
+    [32mPASS[0m GET /delegations/c_34ea762d591aa9c161cc345b0334bd3c -> 200 on the original pod
+    [32mPASS[0m C has a SPIRE registration entry
+    [32mPASS[0m S has a SPIRE registration entry
+    [32mPASS[0m the child pod holds an X.509-SVID for C (spiffe://lab.local/agent/parent/vend-verify/child/persist-long-20261109021614)
+    [32mPASS[0m C reads datasetA before the restart: 200
+    [32mPASS[0m the original pod's stdout carries the vend events for C and S
+    | {"timestamp":"2026-11-09T02:16:23.466632717Z","stage":"vend","chain_id":"c_34ea762d591aa9c161cc345b0334bd3c","actor_spiffe_id":"spiffe://lab.local/agent/parent/vend-verify","outcome":"allow","detail":{"parent_spiffe_id":"spiffe://lab.local/agent/parent/vend-verify","child_spiffe_id":"spiffe://lab.local/agent/parent/vend-verify/child/persist-long-20261109021614","requested_scopes":["resource:read:datasetA"],"child_scopes":["resource:read:datasetA"],"policy_id":"nhi_grants_c_34ea762d591aa9c161cc345b0334bd3c","entry_id":"2c80e99a-3a17-4dc5-9de5-1fbb6c957ad2","expires_at":1794191183,"task_context":"persistence verify — long-TTL child C"}}
+    | {"timestamp":"2026-11-09T02:16:23.546988842Z","stage":"vend","chain_id":"c_0247060b101b9ee4a9479144843afbe8","actor_spiffe_id":"spiffe://lab.local/agent/parent/vend-verify","outcome":"allow","detail":{"parent_spiffe_id":"spiffe://lab.local/agent/parent/vend-verify","child_spiffe_id":"spiffe://lab.local/agent/parent/vend-verify/child/persist-short-20261109021614","requested_scopes":["resource:read:datasetA"],"child_scopes":["resource:read:datasetA"],"policy_id":"nhi_grants_c_0247060b101b9ee4a9479144843afbe8","entry_id":"649d9166-9c25-4b2a-b3b8-3236c4b01b13","expires_at":1794190613,"task_context":"persistence verify — short-TTL child S"}}
+
+[1m[5] THE RESTART — kubectl delete pod -l app=vending-service, then wait for the new pod to be Ready[0m
+    | deleting vending-service-68cd6f8b5d-4ztkx at 2026-11-09T02:16:27Z
+    | pod "vending-service-68cd6f8b5d-4ztkx" deleted from nhi namespace
+    [32mPASS[0m the old pod was gone before S expired (1794190613), so only the new pod's reaper can have reaped it
+    [32mPASS[0m new pod vending-service-68cd6f8b5d-ks66s is Ready (the old pod vending-service-68cd6f8b5d-4ztkx is gone); 12s after S was vended
+    [32mPASS[0m vending-service-68cd6f8b5d-4ztkx no longer exists, so everything below is answered by vending-service-68cd6f8b5d-ks66s
+
+[1m[6] DELEGATION SURVIVES — GET /delegations/{C} on the new pod returns the pre-restart record[0m
+    | HTTP 200
+    | {"chain_id":"c_34ea762d591aa9c161cc345b0334bd3c","parent_spiffe_id":"spiffe://lab.local/agent/parent/vend-verify","child_spiffe_id":"spiffe://lab.local/agent/parent/vend-verify/child/persist-long-20261109021614","child_scopes":["resource:read:datasetA"],"entry_id":"2c80e99a-3a17-4dc5-9de5-1fbb6c957ad2","policy_id":"nhi_grants_c_34ea762d591aa9c161cc345b0334bd3c","issued_at":1794190583,"expires_at":1794191183}
+    [32mPASS[0m GET -> 200 (before persistence this was 404 for every pre-restart delegation)
+    [32mPASS[0m the record is identical to the one read before the restart
+    | {"chain_id":"c_34ea762d591aa9c161cc345b0334bd3c","child_scopes":["resource:read:datasetA"],"child_spiffe_id":"spiffe://lab.local/agent/parent/vend-verify/child/persist-long-20261109021614","entry_id":"2c80e99a-3a17-4dc5-9de5-1fbb6c957ad2","expires_at":1794191183,"issued_at":1794190583,"parent_spiffe_id":"spiffe://lab.local/agent/parent/vend-verify","policy_id":"nhi_grants_c_34ea762d591aa9c161cc345b0334bd3c"}
+
+[1m[7] REPLAY PROTECTION SURVIVES — resubmitting C's pre-restart nonce is refused[0m
+    | {"error":"Conflict","reason":"nonce has already been used for this parent (replay refused)"}
+    | 
+    | HTTP 409
+    | command terminated with exit code 2
+    [32mPASS[0m replayed pre-restart nonce refused with HTTP 409
+    [32mPASS[0m response reason is: nonce has already been used for this parent (replay refused)
+    | audit event: {"timestamp":"2026-11-09T02:16:35.566049487Z","stage":"attest","chain_id":"","actor_spiffe_id":"spiffe://lab.local/agent/parent/vend-verify","outcome":"deny","detail":{"parent_spiffe_id":"spiffe://lab.local/agent/parent/vend-verify","reason":"nonce has already been used for this parent (replay refused)"}}
+    [32mPASS[0m deny audit event names the replay
+
+[1m[8] DISPOSAL WORKS — C still has access, then its parent DELETEs it through the new pod[0m
+    [32mPASS[0m C's SPIRE entry survived the restart
+    [32mPASS[0m C reads datasetA after the restart: 200 (its OPA grant survived too)
+    [32mPASS[0m captured a JWT-SVID for C, to be replayed after disposal
+    | HTTP 200
+    | {"chain_id":"c_34ea762d591aa9c161cc345b0334bd3c","revoked":true}
+    [32mPASS[0m DELETE /delegations/c_34ea762d591aa9c161cc345b0334bd3c by the parent -> 200
+    [32mPASS[0m C's SPIRE registration entry is gone
+    | policy engine audit event: {"timestamp":"2026-11-09T02:16:35.83095581Z","stage":"dispose","chain_id":"c_34ea762d591aa9c161cc345b0334bd3c","actor_spiffe_id":"spiffe://lab.local/svc/vending-service","outcome":"allow","detail":{"policy_id":"nhi_grants_c_34ea762d591aa9c161cc345b0334bd3c","reason":"grant module removed"}}
+    [32mPASS[0m the policy engine removed C's OPA grant module (dispose / allow for its chain_id)
+    | HTTP 403
+    | {"error":"Forbidden","reason":"policy denied"}
+    | 
+    | command terminated with exit code 2
+    [32mPASS[0m C's request to the resource is denied: 403
+    | resource audit event: {"timestamp":"2026-11-09T02:16:36.002238568Z","stage":"operate","chain_id":"","actor_spiffe_id":"spiffe://lab.local/agent/parent/vend-verify/child/persist-long-20261109021614","outcome":"deny","detail":{"method":"GET","path":"/datasets/A","required_scopes":["resource:read:datasetA"],"chain_id_source":"absent","reason":"policy denied","policy_decision":false,"decision_latency_ms":0.690276}}
+    [32mPASS[0m the resource's deny audit event names C (policy denied on /datasets/A)
+
+[1m[9] THE REAPER SURVIVES — the new pod reaps S (ttl 30s) once it expires, with S's original chain_id[0m
+    | vending-service-68cd6f8b5d-ks66s audit event: {"timestamp":"2026-11-09T02:16:59.425003522Z","stage":"dispose","chain_id":"c_0247060b101b9ee4a9479144843afbe8","actor_spiffe_id":"spiffe://lab.local/svc/vending-service","outcome":"allow","detail":{"parent_spiffe_id":"spiffe://lab.local/agent/parent/vend-verify","child_spiffe_id":"spiffe://lab.local/agent/parent/vend-verify/child/persist-short-20261109021614","policy_id":"nhi_grants_c_0247060b101b9ee4a9479144843afbe8","entry_id":"649d9166-9c25-4b2a-b3b8-3236c4b01b13","reason":"ttl_expired"}}
+    [32mPASS[0m the new pod emitted dispose / ttl_expired for S (c_0247060b101b9ee4a9479144843afbe8), attributed to the vending service itself
+    [32mPASS[0m S's SPIRE registration entry is gone
+
+[1m[10] THE AUDIT TRAIL SURVIVES — read audit.jsonl through the same reader as 'make vending-audit'[0m
+    [32mPASS[0m reader pod printed the audit file (18 lines), then was deleted
+    [32mPASS[0m no reader pod left behind
+    [32mPASS[0m all 18 lines parse as JSON with exactly the audit keys ["actor_spiffe_id","chain_id","detail","outcome","stage","timestamp"]
+    [32mPASS[0m C (c_34ea762d591aa9c161cc345b0334bd3c): vend event (line 13) precedes dispose / revoked_on_demand (line 17)
+    [32mPASS[0m C: the pre-restart vend event is in the file, byte-identical to what the original pod wrote to stdout
+    [32mPASS[0m C: the new pod's stdout has no vend event for it, so the file is the only surviving copy
+    [32mPASS[0m C: the post-restart dispose event is in the file, byte-identical to the new pod's stdout
+    [32mPASS[0m S (c_0247060b101b9ee4a9479144843afbe8): vend event (line 15) precedes dispose / ttl_expired (line 18)
+    [32mPASS[0m S: the pre-restart vend event is in the file, byte-identical to what the original pod wrote to stdout
+    [32mPASS[0m S: the new pod's stdout has no vend event for it, so the file is the only surviving copy
+    [32mPASS[0m S: the post-restart dispose event is in the file, byte-identical to the new pod's stdout
+
+[32m================ PERSISTENCE VERIFY: PASS (10 steps) ================[0m
+vending-service pod vending-service-68cd6f8b5d-4ztkx deleted and replaced by vending-service-68cd6f8b5d-ks66s:
+  delegation        -> GET returns the same record; parent DELETE removes entry + grant; C then gets 403
+  reaper            -> the new pod disposed S with ttl_expired and its original chain_id
+  audit trail       -> vend (before) and dispose (after) for both chain_ids, valid JSON, exact schema
+  replay protection -> a pre-restart nonce is still refused (409)

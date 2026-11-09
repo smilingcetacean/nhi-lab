@@ -1,0 +1,9 @@
+vs-clean identical to worktree source
+ok  	nhi-lab/vending-service/cmd/parentsim	0.636s
+ok  	nhi-lab/vending-service/cmd/vending-service	0.090s
+ok  	nhi-lab/vending-service/internal/audit	0.002s
+ok  	nhi-lab/vending-service/internal/manifest	0.001s
+?   	nhi-lab/vending-service/internal/policyclient	[no test files]
+ok  	nhi-lab/vending-service/internal/signature	0.003s
+?   	nhi-lab/vending-service/internal/spireentry	[no test files]
+ok  	nhi-lab/vending-service/internal/store	0.005s
