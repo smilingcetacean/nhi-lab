@@ -57,7 +57,7 @@ verify-vending`/`make demo`:
 | Pod | Identity | Role |
 |---|---|---|
 | `experiments-parent` | `spiffe://lab.local/agent/parent/exp-root` (registered; bootstrap Π(P) = **all three** resource scopes — see below) | root parent for functional/multi-hop/performance |
-| `experiments-child` | unregistered at apply time | recipient of P→C; also plays parent for C→G (multi-hop) |
+| `experiments-child` | unregistered at apply time | recipient of P→C (functional, multi-hop, and the negative suite's credential-after-revocation test); also plays parent for C→G (multi-hop) |
 | `experiments-grandchild` | unregistered at apply time | recipient of C→G only |
 | `experiments-attacker` | `spiffe://lab.local/svc/test-workload` (reused, already registered) | unrelated authenticated identity for the relayed-manifest scenario |
 
@@ -83,6 +83,30 @@ the vacuous-negative-test failure mode several times during development (one
 example: a tightened chain_id validator made an escalation-guard test pass
 for the wrong reason after the guard itself had been deleted).
 
+The matched event must also come from the test's own request, or a stale
+event from an earlier test or run could satisfy the check just as vacuously.
+The forged-signature and replay deny events carry no `chain_id` and no child
+ID, so those two tests snapshot the vending service's audit log immediately
+before the request under test and accept exactly one new event from
+`exp-root` with the expected stage and outcome. The scope-escalation test
+matches its own `detail.child_spiffe_id`, the orphaned-child test its own
+`chain_id`, and the revocation test the resource's deny with its own child as
+the actor. Each result records the event it matched and, for the two snapshot
+tests, how many candidates there were.
+
+Only the credential-after-revocation test needs an SVID delivered to a
+running pod, so only it vends for the `experiments-child` service account
+(`nhi-exp-child`). The other four vend for `nhi-exp-negtest-nopod`, a service
+account in `agents` that no pod runs as, and the suite refuses to start if
+one does. The vending service checks only that `k8s:ns` matches the caller's
+namespace, so it creates those entries as usual, but their SVIDs reach no
+workload. A broken guard that mints an identity therefore cannot hand
+`experiments-child` a second SVID and change which token the revocation test
+captures. The revocation test also checks that the captured JWT-SVID's `sub`
+is its own child's SPIFFE ID. A test that expects a refusal but receives a
+201 disposes the delegation it was given and still fails, so a broken guard
+leaves nothing behind for the next test or run.
+
 | Test | Mechanism | Denial | Audit reason (`detail.reason`, verbatim) |
 |---|---|---|---|
 | Forged parent signature | `parentsim vend -corrupt-signature` | HTTP 401 | `manifest signature verification failed: ...` |
@@ -91,13 +115,17 @@ for the wrong reason after the guard itself had been deleted).
 | Credential use after revocation | capture a JWT-SVID pre-disposal, dispose, replay it | HTTP 403 | `policy denied` (from the resource's own audit log, not the vending service's) |
 | Orphaned child (parent dies before disposal) | vend with `ttl=5`, never dispose | reaped within `REAPER_INTERVAL` (15s) | `ttl_expired` |
 
-**Falsification:** every guard above was mutated on a **scratch copy** of
-`src/vending-service` (never the working tree) and the existing Go unit test that exercises it was
-run before/after. See `results/falsification.md` for the full before/after
-transcript of all five (unit-test level, not a live cluster
-rebuild-and-redeploy five times over — the guards already have dedicated
-tests in `cmd/vending-service/main_test.go`, and mutating at that level
-exercises the exact code path this suite's live assertions depend on).
+**Falsification:** `results/falsification.md` records a mutation of each
+guard above, applied to a scratch copy of `src/vending-service` and never to
+the working tree, at two levels. At the unit level, the Go test in
+`cmd/vending-service/main_test.go` that exercises the guard runs before,
+during, and after the mutation. At the live level, a vending-service image
+built from the mutated copy replaces the clean one on an isolated throwaway
+cluster, this suite runs against it, and the clean image goes back before the
+suite runs again. Each mutation must fail its own test and no other. The
+record also describes the two defects the live level found in an earlier
+version of this suite, which the matching and service-account rules above
+correct.
 
 ### 2. `multi_hop.py` — P → C → G
 
