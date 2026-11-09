@@ -13,7 +13,7 @@ jq                         # CLI JSON processor: required for verify and demo sc
 # -----------------------------------------------------------------------------
 # Container & Kubernetes Orchestration
 # -----------------------------------------------------------------------------
-docker-engine>=25.0.0      # Tested: 29.6.2 (requires `docker save --platform` and containerd store)
+docker-engine>=28.0.0      # Tested: 29.6.2 (client and server; `docker save --platform` needs the client from 28)
 kind==0.32.0               # Kubernetes-in-Docker: local cluster provisioning
 kubectl==1.36.2            # Kubernetes CLI: cluster management and rollout tracking
 
