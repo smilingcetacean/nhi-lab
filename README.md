@@ -51,13 +51,22 @@ volume, which `make vending-audit` reads back.
 
 ## Prerequisites
 
-Linux on amd64 with Docker ≥ 25 (daemon reachable without sudo), kind v0.32.0,
-kubectl v1.36.2, Go 1.26.5, Python 3.14.6 with `uv`, the OPA CLI 1.18.2, `jq`,
-GNU make ≥ 4.0, and bash ≥ 5.0. `./install.sh --check-only` checks all of
+Linux on amd64 with Docker ≥ 28 (client and daemon; the daemon reachable
+without sudo), kind v0.32.0, kubectl v1.36.2, Go 1.26.5, Python 3.14.6 with
+`uv`, the OPA CLI 1.18.2, `jq`, GNU make ≥ 4.0, and bash ≥ 5.0. Docker 28 is
+the floor because image side-loading runs `docker save --platform`, which the
+docker client gained in version 28. `./install.sh --check-only` checks all of
 them: a missing tool stops the install, and a version other than the tested
-one only warns. Exact pinned versions, image digests, and dependency versions
-are in [`src/deploy/README.md`](src/deploy/README.md#pinned-versions);
+one only warns. `sudo ./install.sh --install-tools` installs the missing ones
+(see [Installing the host tools](#installing-the-host-tools)). Exact pinned
+versions, image digests, and dependency versions are in
+[`src/deploy/README.md`](src/deploy/README.md#pinned-versions);
 `requirements.txt` lists the same host tools.
+
+Debian is not supported as a host, because the packages apt supplies on Debian are too
+old for the lab: Debian 13's `docker.io` is 26.1.5, and the lab needs Docker 28
+or later. `--install-tools` refuses to run on Debian. Ubuntu, Fedora, and Arch
+are supported.
 
 Expect about 5 GB of images in Docker's store and about 4 GB more inside the
 two kind node containers.
@@ -67,8 +76,9 @@ two kind node containers.
 From a clone of this repository:
 
 ```bash
-./install.sh --check-only   # check the host tools; changes nothing
-./install.sh                # state what it installs, ask, bring everything up, run `make verify`
+./install.sh --check-only           # check the host tools; changes nothing
+sudo ./install.sh --install-tools   # only if tools are missing: install them, then stop
+./install.sh                        # without sudo: state what it installs, ask, bring everything up, run `make verify`
 ```
 
 `install.sh` drives the existing make targets in this order:
@@ -83,9 +93,10 @@ From a clone of this repository:
 5. `make experiments-fixtures-up` and `uv sync --locked` in `src/experiments`;
 6. `make verify`, the smoke test.
 
-It never uses sudo, installs nothing system-wide, and never downloads a Python
-interpreter; kind adds the kube context `kind-nhi-lab` to your kubeconfig and
-makes it current. Re-running it is safe: it reuses the cluster, rebuilds the lab
+This bring-up needs no root, installs nothing system-wide, and never downloads
+a Python interpreter; kind adds the kube context `kind-nhi-lab` to your
+kubeconfig and makes it current. The script never calls sudo itself. Re-running
+it is safe: it reuses the cluster, rebuilds the lab
 images from the working tree, restarts the components, and keeps the data
 volumes.
 
@@ -103,6 +114,48 @@ With `KIND_CLUSTER`, pass the same value to every later target, for example
 secret --from-env-file`, so the key never appears in an argument list or a log.
 Without a key file the OpenCode parent runs with no LLM, and `make
 verify-present` does not need one.
+
+### Installing the host tools
+
+`sudo ./install.sh --install-tools` (or the same command from a root shell)
+installs the host tools the check finds missing, then stops. A tool that is
+present at another version stays in use and keeps its warning, and an existing
+destination is never overwritten.
+
+- **From the distro's packages** (apt-get on Ubuntu, dnf on Fedora, pacman on
+  Arch): GNU make, jq, Docker Engine and its buildx plugin where the
+  distro ships one, plus curl, ca-certificates, tar, and gzip if they are
+  missing. On Arch this runs `pacman -Syu`, a full system upgrade, because
+  partial upgrades are unsupported there.
+- **Pinned downloads into `/usr/local`**, each checked against a SHA-256 pinned
+  in `install.sh`: kind, kubectl, Go (`/usr/local/go`), the OPA CLI, and uv.
+  uv then installs Python 3.14.6 under `/usr/local/share/uv`, checking it
+  against a checksum built into uv.
+- **Docker.** When the mode installs Docker, it starts the daemon if systemd is
+  running, and adds the user who ran sudo to the `docker` group, which takes
+  effect at the next login.
+
+Before changing anything it lists every package and download with its source
+and destination, and asks for confirmation unless `--yes` is given. It records
+what it installed in `/usr/local/share/nhi-lab/installed-tools.txt`, so you can
+remove it by hand. When it finishes, run `./install.sh` without sudo for the
+bring-up.
+
+If the distro's Docker package is older than 28, the mode stops before
+changing anything.
+
+Under sudo, the check runs with sudo's `PATH`, not yours. A tool you keep only
+in your own directories, such as `~/.local/bin`, therefore counts as missing
+and is installed again into `/usr/local/bin`. The list shown before
+confirmation names every tool it will install, so decline if you don't want a
+second copy.
+
+To run the lab from inside a container, start it with the host's Docker socket
+mounted and on the host's network (`-v /var/run/docker.sock:/var/run/docker.sock
+--network host`): kind creates its nodes on the host's Docker, and its
+kubeconfig points at `127.0.0.1`. Mount your clone read-only and copy it inside
+the container (`./install.sh --help` has an example on `ubuntu:24.04`), so that
+running as root there leaves no root-owned files in your clone.
 
 ### After the install
 
@@ -151,7 +204,7 @@ components it needs on top of this baseline.
 
 ```
 .
-├── install.sh                 # host check, full bring-up, and smoke test
+├── install.sh                 # host check, tool install (--install-tools), full bring-up, and smoke test
 ├── Makefile                   # forwards every target to src/deploy/Makefile
 ├── requirements.txt           # host tool prerequisites, listed for reference
 ├── LICENSE                    # Apache License 2.0

@@ -107,7 +107,10 @@ Verified on Linux/amd64.
 | `spire-server` / `spire-agent` CLI | 1.15.2 | matches the in-cluster SPIRE images |
 | jq | any | required by `scripts/verify.sh` |
 
-`make load-images` needs `docker save --platform`, i.e. Docker ≥ 25.
+`make load-images` and every image build need `docker save --platform`, which
+the docker client has from version 28, so the client and the daemon must both
+be Docker ≥ 28. Debian is not supported as a host, because its apt packages are too old
+(Debian 13's `docker.io` is 26.1.5); see Prerequisites in the root README.
 
 ### Cluster
 
@@ -388,5 +391,5 @@ one SVID" assertion). Only the **pod** presenting those selectors —
 | `make spire-up` fails at "waiting for node attestation" | PSAT audience mismatch or RBAC. `make logs-agent`; check `TokenReview` is allowed for SA `spire-server`. |
 | Agent `CrashLoopBackOff` with "no such file .../bundle.crt" | The DaemonSet was applied before the bundle was published. Re-run `make spire-up`; `wait-bundle` gates this. |
 | Workload gets no SVID, agent logs "no identity issued" | Selector mismatch. Compare `make entry-show` against the pod's actual namespace/service account. |
-| `kind load` fails with `content digest ...: not found` | Docker's containerd image store holds a multi-arch index whose other platforms are absent. The Makefile already works around this via `docker save --platform`; ensure Docker ≥ 25. |
+| `kind load` fails with `content digest ...: not found` | Docker's containerd image store holds a multi-arch index whose other platforms are absent. The Makefile already works around this via `docker save --platform`; ensure the docker client is ≥ 28 (`docker version --format '{{.Client.Version}}'`). |
 | `docker info` fails | An environment problem (e.g. your user is not in the `docker` group in this session), not something to work around in the Makefile. |
