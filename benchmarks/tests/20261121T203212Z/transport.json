@@ -1,0 +1,18 @@
+{
+  "credential_redactions": {},
+  "source_sha": "ea47be3c910bcd3d43a5b2fef09cdeca57343918",
+  "source_archive_sha256": "651b450c3d455dcc5db8b6edc024b7ca1b98a2c427eb40d895e9642004f2142d",
+  "archive_paths": [
+    "Makefile",
+    "install.sh",
+    "README.md",
+    "LICENSE",
+    "requirements.txt",
+    "src"
+  ],
+  "instance_id": "i-01d083bbb690a12c2",
+  "instance_type": "t3a.large",
+  "cpu_credits": "unlimited",
+  "market": "spot",
+  "availability_zone": "us-east-1f"
+}

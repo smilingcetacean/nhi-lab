@@ -1,0 +1,15 @@
+{
+  "archive_sha256": "fca27f5f6c414547381828bfbc22aeda9459c68c6046bcee4b67a3386bafb762",
+  "archive_size_bytes": 191332,
+  "guest_sha256_recorded_by_queue_at_creation": "fca27f5f6c414547381828bfbc22aeda9459c68c6046bcee4b67a3386bafb762",
+  "guest_sha256_recomputed_before_transfer": "fca27f5f6c414547381828bfbc22aeda9459c68c6046bcee4b67a3386bafb762",
+  "local_sha256_after_transfer": "fca27f5f6c414547381828bfbc22aeda9459c68c6046bcee4b67a3386bafb762",
+  "sha256_match": true,
+  "guest_archive_path": "/var/tmp/nhi-rerun/out-a69/20261121T215047Z-storage-growth-accumulate.tar.gz",
+  "source_instance_id": "i-01d083bbb690a12c2",
+  "source_archive_sha256_guest_and_local": "af895909039a6752e412c6889279b1f3cbde22d47d6ad77bdb6ba122cda3794f",
+  "source_archive_path_guest": "/var/tmp/nhi-rerun/nhi-lab-a69d56fc017cd890d2d5eacbd1f2ca05dec249b2.tar.gz",
+  "source_archive_size_bytes": 397515,
+  "source_archive_note": "git archive --format=tar.gz --prefix=nhi-lab/ a69d56fc017cd890d2d5eacbd1f2ca05dec249b2 Makefile install.sh README.md LICENSE requirements.txt src; the same command at ea47be3 reproduces the earlier archive sha256 651b450c...; extracted on the guest to the new directory /var/tmp/nhi-lab-a69d56f (strip-components=1), /var/tmp/nhi-lab-ea47be3 untouched",
+  "transport": "AWS Systems Manager Run Command (AWS-RunShellScript): source archive pushed as 60000-character base64 slices appended to a file and decoded on the guest; result tarball read on the guest as base64 in 18000-character slices (cut), reassembled and decoded locally; no port forwarding, no ingress"
+}

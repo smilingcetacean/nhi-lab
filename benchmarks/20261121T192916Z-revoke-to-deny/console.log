@@ -1,0 +1,61 @@
+
+[2026-11-21T19:31:51Z] uv run --locked --python 3.14.6 python3 -u revoke_to_deny.py --trials 50 --jitter-s 5 --seed 115506412 --run-id 20261121T192916Z-revoke-to-deny 
+== revoke to deny: 50 trials, C fetches a token and calls the resource every 20 ms, random 0-5 s wait before each DELETE (seed 115506412) ==
+P=experiments-parent-fc985bd87-4gkjw C=experiments-child-85c8bd56cc-z7m9f (node aws-revoke-to-deny-worker, agent spire-agent-f75vr)
+vending service vending-service-7d585db77b-rsshz; resource resource-7765c7f8c8-dkzvg; policy engine policy-engine-7d858f94cd-ppgxs; SPIRE server audit log OFF
+  trial  1/50: deny 28.9 ms, identity gone 3595.2 ms (wait 0.21 s)  [8.8s]
+  trial  2/50: deny 53.8 ms, identity gone 5105.9 ms (wait 3.57 s)  [13.7s]
+  trial  3/50: deny 31.0 ms, identity gone 5635.3 ms (wait 2.40 s)  [14.2s]
+  trial  4/50: deny 52.4 ms, identity gone 1506.4 ms (wait 2.54 s)  [8.9s]
+  trial  5/50: deny 45.7 ms, identity gone 6018.7 ms (wait 2.63 s)  [14.8s]
+  trial  6/50: deny 44.6 ms, identity gone 2793.5 ms (wait 1.27 s)  [8.9s]
+  trial  7/50: deny 33.9 ms, identity gone 1153.2 ms (wait 2.58 s)  [8.7s]
+  trial  8/50: deny 41.7 ms, identity gone 5784.9 ms (wait 3.50 s)  [15.4s]
+  trial  9/50: deny 27.2 ms, identity gone 4379.0 ms (wait 3.95 s)  [13.2s]
+  trial 10/50: deny 40.9 ms, identity gone 5604.2 ms (wait 2.89 s)  [14.6s]
+  trial 11/50: deny 30.0 ms, identity gone 4851.6 ms (wait 4.30 s)  [14.2s]
+  trial 12/50: deny 38.9 ms, identity gone 6559.6 ms (wait 2.67 s)  [14.3s]
+  trial 13/50: deny 39.2 ms, identity gone 4463.2 ms (wait 4.57 s)  [14.1s]
+  trial 14/50: deny 22.4 ms, identity gone 4147.1 ms (wait 0.35 s)  [9.5s]
+  trial 15/50: deny 34.0 ms, identity gone 4053.2 ms (wait 0.26 s)  [9.3s]
+  trial 16/50: deny 33.0 ms, identity gone 4090.8 ms (wait 4.99 s)  [14.0s]
+  trial 17/50: deny 47.8 ms, identity gone 5149.0 ms (wait 3.59 s)  [13.7s]
+  trial 18/50: deny 36.9 ms, identity gone 2188.5 ms (wait 1.38 s)  [9.7s]
+  trial 19/50: deny 32.3 ms, identity gone 6014.6 ms (wait 3.33 s)  [14.3s]
+  trial 20/50: deny 46.2 ms, identity gone 4813.4 ms (wait 4.54 s)  [14.3s]
+  trial 21/50: deny 50.2 ms, identity gone 6855.4 ms (wait 2.95 s)  [14.7s]
+  trial 22/50: deny 34.5 ms, identity gone 6772.8 ms (wait 1.45 s)  [14.5s]
+  trial 23/50: deny 56.8 ms, identity gone 7961.4 ms (wait 1.04 s)  [15.2s]
+  trial 24/50: deny 45.8 ms, identity gone 3805.2 ms (wait 4.16 s)  [18.8s]
+  trial 25/50: deny 33.5 ms, identity gone 5425.8 ms (wait 2.37 s)  [14.0s]
+  trial 26/50: deny 34.8 ms, identity gone 6768.3 ms (wait 2.07 s)  [15.0s]
+  trial 27/50: deny 42.1 ms, identity gone 6584.7 ms (wait 3.00 s)  [19.2s]
+  trial 28/50: deny 30.6 ms, identity gone 7662.3 ms (wait 1.83 s)  [19.2s]
+  trial 29/50: deny 35.1 ms, identity gone 5330.5 ms (wait 4.26 s)  [19.3s]
+  trial 30/50: deny 38.6 ms, identity gone 5122.9 ms (wait 4.73 s)  [19.5s]
+  trial 31/50: deny 24.4 ms, identity gone 4945.9 ms (wait 4.52 s)  [20.4s]
+  trial 32/50: deny 25.3 ms, identity gone 5236.9 ms (wait 2.93 s)  [14.2s]
+  trial 33/50: deny 36.1 ms, identity gone 5053.0 ms (wait 4.54 s)  [14.5s]
+  trial 34/50: deny 34.4 ms, identity gone 2556.0 ms (wait 1.48 s)  [9.0s]
+  trial 35/50: deny 38.6 ms, identity gone 2289.7 ms (wait 1.98 s)  [9.1s]
+  trial 36/50: deny 48.3 ms, identity gone 3249.3 ms (wait 0.60 s)  [10.0s]
+  trial 37/50: deny 25.7 ms, identity gone 4000.6 ms (wait 0.58 s)  [9.6s]
+  trial 38/50: deny 26.2 ms, identity gone 3439.8 ms (wait 0.28 s)  [9.8s]
+  trial 39/50: deny 34.1 ms, identity gone 7360.4 ms (wait 0.99 s)  [14.5s]
+  trial 40/50: deny 24.3 ms, identity gone 4835.8 ms (wait 3.30 s)  [14.3s]
+  trial 41/50: deny 42.1 ms, identity gone 7253.7 ms (wait 1.63 s)  [13.9s]
+  trial 42/50: deny 28.2 ms, identity gone 5710.3 ms (wait 3.06 s)  [13.7s]
+  trial 43/50: deny 31.4 ms, identity gone 4549.0 ms (wait 3.49 s)  [14.2s]
+  trial 44/50: deny 35.3 ms, identity gone 5161.9 ms (wait 3.26 s)  [13.4s]
+  trial 45/50: deny 32.5 ms, identity gone 3704.3 ms (wait 0.81 s)  [9.5s]
+  trial 46/50: deny 54.6 ms, identity gone 4060.2 ms (wait 5.00 s)  [14.0s]
+  trial 47/50: deny 40.0 ms, identity gone 5497.1 ms (wait 3.77 s)  [14.2s]
+  trial 48/50: deny 40.7 ms, identity gone 3348.9 ms (wait 0.93 s)  [9.2s]
+  trial 49/50: deny 47.6 ms, identity gone 3611.9 ms (wait 4.71 s)  [14.4s]
+  trial 50/50: deny 34.3 ms, identity gone 4060.5 ms (wait 0.47 s)  [9.5s]
+
+  trials completed 50/50, failed 0
+  revoke_to_deny_ms: p50 35.101  p95 53.751  min 22.379  max 56.841  mean 37.338  stdev 8.58
+  revoke_to_identity_gone_ms: p50 4851.578  p95 7360.387  min 1153.217  max 7961.371  mean 4802.436  stdev 1554.106
+  checks: {'trials_ok': 50, 'trials_delete_200': 50, 'trials_first_denial_403': 50, 'trials_with_resource_deny_event': 50, 'trials_resource_deny_inside_403_request': 50, 'trials_with_policy_dispose_event': 50, 'trials_with_vending_dispose_event': 50, 'trials_with_server_delete_entry': 0, 'trials_with_agent_sync_before_delete': 0, 'trials_with_agent_sync_before_gone': 0, 'trials_with_agent_log_line': 0, 'trials_c_entry_gone': 50, 'trials_order_ok': 50, 'trials_with_transport_errors': 0, 'trials_with_other_statuses': 0}
+results: /var/tmp/nhi-lab-c1e4dbe/source/src/experiments/results/20261121T192916Z-revoke-to-deny

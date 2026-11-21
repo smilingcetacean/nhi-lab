@@ -1,0 +1,7 @@
+make: Entering directory '/var/tmp/nhi-lab-c1e4dbe/source'
+>> deleting kind cluster 'aws-revoke-to-deny'
+Deleting cluster "aws-revoke-to-deny" ...
+Deleted nodes: ["aws-revoke-to-deny-worker" "aws-revoke-to-deny-control-plane"]
+>> clean
+make: Leaving directory '/var/tmp/nhi-lab-c1e4dbe/source'
+No kind clusters found.

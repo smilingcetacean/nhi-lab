@@ -1,0 +1,2 @@
+2026-11-21T21:56:21.815967389Z {"timestamp":"2026-11-21T21:56:21.815874868Z","stage":"dispose","chain_id":"c_ddd7c7a75b1e990212588c984730046c","actor_spiffe_id":"spiffe://lab.local/svc/vending-service","outcome":"allow","detail":{"policy_id":"nhi_grants_c_ddd7c7a75b1e990212588c984730046c","reason":"grant module removed"}}
+2026-11-21T21:56:23.408460285Z 2026/11/21 21:56:23 http: TLS handshake error from 10.244.1.1:49494: EOF

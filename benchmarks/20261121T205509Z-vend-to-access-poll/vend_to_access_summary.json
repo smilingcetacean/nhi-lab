@@ -1,0 +1,256 @@
+{
+  "run_id": "20261121T205509Z-vend-to-access-poll",
+  "started_at": "2026-11-21T20:57:55Z",
+  "finished_at": "2026-11-21T21:03:42Z",
+  "style": "poll",
+  "trials_requested": 50,
+  "trials_completed": 50,
+  "trials_failed": 0,
+  "poll_interval_target_ms": 20,
+  "child_py_retry": null,
+  "settle_s": 0.2,
+  "ttl_s": 300,
+  "jitter_s": 5.0,
+  "jitter_seed": 115506412,
+  "percentile_method": "nearest-rank",
+  "stdev_method": "sample (n-1)",
+  "unit": "ms",
+  "headline": "vend_to_access_ms: P sends POST /delegations (t0) -> C receives the resource's first 200 for GET /datasets/A with its own JWT-SVID",
+  "vend_to_access_ms": {
+    "n": 50,
+    "min": 180.063,
+    "p50": 1118.885,
+    "p90": 1628.368,
+    "p95": 1720.85,
+    "p99": 1860.699,
+    "max": 1860.699,
+    "mean": 1114.252,
+    "stdev": 444.424
+  },
+  "vend_to_access_ms_histogram": {
+    "bin_ms": 500,
+    "counts": {
+      "0-500": 5,
+      "500-1000": 12,
+      "1000-1500": 20,
+      "1500-2000": 13
+    }
+  },
+  "vend_round_trip_ms (t0 -> t1)": {
+    "n": 50,
+    "min": 39.205,
+    "p50": 52.564,
+    "p90": 66.033,
+    "p95": 77.773,
+    "p99": 102.226,
+    "max": 102.226,
+    "mean": 55.673,
+    "stdev": 12.133
+  },
+  "agent_log_after_send_ms (t0 -> t2, C's node agent logs the entry)": {
+    "n": 50,
+    "min": 144.903,
+    "p50": 1089.08,
+    "p90": 1586.413,
+    "p95": 1698.728,
+    "p99": 1849.042,
+    "max": 1849.042,
+    "mean": 1088.823,
+    "stdev": 445.021
+  },
+  "vend_to_x509_ms (t0 -> C holds its X.509-SVID; child-py only)": {
+    "n": 0
+  },
+  "vend_to_jwt_ms (t0 -> C holds its JWT-SVID)": {
+    "n": 50,
+    "min": 165.807,
+    "p50": 1108.598,
+    "p90": 1605.389,
+    "p95": 1712.39,
+    "p99": 1851.661,
+    "max": 1851.661,
+    "mean": 1103.145,
+    "stdev": 444.477
+  },
+  "jwt_to_access_ms (C holds the JWT -> first 200 received)": {
+    "n": 50,
+    "min": 7.757,
+    "p50": 9.761,
+    "p90": 15.359,
+    "p95": 17.339,
+    "p99": 22.979,
+    "max": 22.979,
+    "mean": 11.107,
+    "stdev": 3.315
+  },
+  "access_after_vend_response_ms (t1 -> first 200 received)": {
+    "n": 50,
+    "min": 133.318,
+    "p50": 1062.189,
+    "p90": 1572.984,
+    "p95": 1643.077,
+    "p99": 1809.078,
+    "max": 1809.078,
+    "mean": 1058.579,
+    "stdev": 441.3
+  },
+  "access_window_ms (first 200 - last miss sent)": {
+    "n": 50,
+    "min": 32.566,
+    "p50": 35.289,
+    "p90": 44.302,
+    "p95": 46.895,
+    "p99": 60.126,
+    "max": 60.126,
+    "mean": 37.831,
+    "stdev": 5.406
+  },
+  "child_start_after_vend_response_ms (child-py: t1 -> C's first attempt)": {
+    "n": 0
+  },
+  "resource_allow_after_send_ms (t0 -> the resource's allow audit event)": {
+    "n": 50,
+    "min": 179.135,
+    "p50": 1118.388,
+    "p90": 1627.487,
+    "p95": 1720.226,
+    "p99": 1860.094,
+    "max": 1860.094,
+    "mean": 1113.676,
+    "stdev": 444.418
+  },
+  "resource_decision_latency_ms (the resource's OPA decision time)": {
+    "n": 50,
+    "min": 1.783514,
+    "p50": 2.52043,
+    "p90": 3.623169,
+    "p95": 6.665694,
+    "p99": 11.578403,
+    "max": 11.578403,
+    "mean": 2.999,
+    "stdev": 1.611
+  },
+  "server_create_entry_after_send_ms (t0 -> server audit BatchCreateEntry)": {
+    "n": 0
+  },
+  "server_child_agent_svid_after_send_ms (t0 -> C's agent's BatchNewX509SVID)": {
+    "n": 0
+  },
+  "server_child_jwt_after_send_ms (t0 -> C's agent's NewJWTSVID)": {
+    "n": 0
+  },
+  "child_agent_finding_sync_after_send_ms (t0 -> C's agent's sync that brought the entry)": {
+    "n": 0
+  },
+  "child_agent_syncs_missed (C's agent's syncs after t1 that did not bring the entry)": {},
+  "attempts_by_step": {
+    "x509_attempts": {
+      "0": 50
+    },
+    "jwt_attempts": {
+      "30": 1,
+      "31": 1,
+      "33": 1,
+      "38": 1,
+      "43": 1,
+      "49": 1,
+      "53": 2,
+      "54": 2,
+      "55": 1,
+      "57": 1,
+      "62": 1,
+      "63": 2,
+      "64": 1,
+      "66": 1,
+      "70": 3,
+      "71": 3,
+      "75": 3,
+      "76": 1,
+      "77": 1,
+      "78": 1,
+      "79": 1,
+      "82": 1,
+      "85": 1,
+      "88": 2,
+      "90": 2,
+      "91": 1,
+      "95": 1,
+      "96": 3,
+      "97": 1,
+      "98": 3,
+      "100": 2,
+      "107": 1,
+      "110": 1,
+      "111": 1
+    },
+    "resource_attempts": {
+      "1": 50
+    }
+  },
+  "phase_since_child_agent_sync_ms (t0 - C's agent's last sync before it)": {
+    "n": 0
+  },
+  "achieved_child_gap_ms": {
+    "mean_of_trial_means": 20.705,
+    "max_of_trial_maxes": 64.755
+  },
+  "checks": {
+    "trials_with_agent_log_line": 50,
+    "trials_audit_vend_allow_inside_vend_request": 50,
+    "trials_resource_allow_inside_access_request": 50,
+    "trials_with_resource_denies_for_child": 0,
+    "trials_order_ok": 50,
+    "trials_disposed_200": 50,
+    "trials_vend_retried": 0
+  },
+  "logs": {
+    "dir": "logs/",
+    "files": "logs/{vending-service,spire-server,resource,parent}/trial-NN.log",
+    "window": "contiguous per trial: from the end of the previous trial's window (the first starts 1 s before trial 1) to the moment C held no identity again after the dispose",
+    "timestamp": "first field of each line: the container runtime's capture time (kubectl logs --timestamps); for parent/, the time this host received P's command output",
+    "spire_server_audit_log_enabled": false,
+    "lines": {
+      "vending_service": 150,
+      "spire_server": 0,
+      "resource": 50,
+      "parent": 200
+    }
+  },
+  "host": {
+    "cpu_model": "AMD EPYC 7571",
+    "cpu_cores": 2,
+    "memory_total_gib": 7.7,
+    "kernel": "7.0.0-1018-aws",
+    "os": "Linux",
+    "python": "3.14.6",
+    "docker_server": "29.1.3",
+    "kind": "kind v0.32.0 go1.26.3 linux/amd64",
+    "kubectl_client": "v1.36.2",
+    "kube_context": "kind-aws-vend-to-access-poll",
+    "nodes": "NAME                                    KUBELET   KERNEL\naws-vend-to-access-poll-control-plane   v1.36.1   7.0.0-1018-aws\naws-vend-to-access-poll-worker          v1.36.1   7.0.0-1018-aws",
+    "load_average_start": [
+      2.31,
+      2.34,
+      2.12
+    ],
+    "load_average_end": [
+      1.33,
+      1.35,
+      1.72
+    ],
+    "spire_images": [
+      "spire-agent-fprfk=ghcr.io/spiffe/spire-agent:1.15.2",
+      "spire-agent-gcd77=ghcr.io/spiffe/spire-agent:1.15.2",
+      "spire-server-0=ghcr.io/spiffe/spire-server:1.15.2"
+    ],
+    "child_node": "aws-vend-to-access-poll-worker",
+    "child_agent_pod": "spire-agent-gcd77",
+    "vending_service_pod": "vending-service-597d4c8676-7z7g9",
+    "resource_pod": "resource-677689db84-kdf5x",
+    "spire_server_audit_log_enabled": false,
+    "agent_ids_by_node": {
+      "aws-vend-to-access-poll-control-plane": "spiffe://lab.local/spire/agent/k8s_psat/nhi-lab/96ac00eb-38e9-4f1e-85d2-e3cdaf8af768",
+      "aws-vend-to-access-poll-worker": "spiffe://lab.local/spire/agent/k8s_psat/nhi-lab/740b9225-f63a-4ed1-8277-d5d696fe5c43"
+    }
+  }
+}

@@ -1,0 +1,28 @@
+
+[2026-11-21T18:31:26Z] make rego-test 
+/tmp/tmp.t5MnFlxRHD/resource_test.rego:111:
+data.nhi.resource_test.test_ancestors_of_g_are_c_only: PASS (1.643571ms)
+/tmp/tmp.t5MnFlxRHD/resource_test.rego:69:
+data.nhi.resource_test.test_a_grant_for_a_different_child_is_not_an_ancestor_grant: PASS (3.818649ms)
+/tmp/tmp.t5MnFlxRHD/resource_test.rego:75:
+data.nhi.resource_test.test_two_grants_for_the_ancestor_one_expired_still_live: PASS (6.657095ms)
+/tmp/tmp.t5MnFlxRHD/resource_test.rego:41:
+data.nhi.resource_test.test_g_allowed_when_c_and_g_grants_live: PASS (5.899095ms)
+/tmp/tmp.t5MnFlxRHD/resource_test.rego:97:
+data.nhi.resource_test.test_no_grants_denies: PASS (1.022623ms)
+/tmp/tmp.t5MnFlxRHD/resource_test.rego:101:
+data.nhi.resource_test.test_scope_not_granted_denies: PASS (2.266199ms)
+/tmp/tmp.t5MnFlxRHD/resource_test.rego:107:
+data.nhi.resource_test.test_root_has_no_ancestors: PASS (790.94µs)
+/tmp/tmp.t5MnFlxRHD/resource_test.rego:47:
+data.nhi.resource_test.test_g_denied_when_c_grant_removed: PASS (2.772165ms)
+/tmp/tmp.t5MnFlxRHD/resource_test.rego:52:
+data.nhi.resource_test.test_c_allowed_with_only_the_root_above_it: PASS (3.711657ms)
+/tmp/tmp.t5MnFlxRHD/resource_test.rego:85:
+data.nhi.resource_test.test_depth_three_needs_the_whole_chain: PASS (12.827673ms)
+/tmp/tmp.t5MnFlxRHD/resource_test.rego:62:
+data.nhi.resource_test.test_c_denied_when_its_own_grant_expired: PASS (2.37809ms)
+/tmp/tmp.t5MnFlxRHD/resource_test.rego:57:
+data.nhi.resource_test.test_g_denied_when_c_grant_expired: PASS (4.173823ms)
+--------------------------------------------------------------------------------
+PASS: 12/12

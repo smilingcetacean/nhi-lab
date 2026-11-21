@@ -1,0 +1,5 @@
+
+[2026-11-21T18:31:26Z] make vending-service-test 
+go: module cache not found: neither GOMODCACHE nor GOPATH is set
+make[1]: *** [Makefile:330: vending-service-test] Error 1
+make: *** [Makefile:70: vending-service-test] Error 2

@@ -1,0 +1,176 @@
+NAMESPACE            LAST SEEN   TYPE      REASON                    OBJECT                                                           MESSAGE
+default              18m         Normal    Starting                  node/aws-vend-to-access-child-py-control-plane                   Starting kubelet.
+default              18m         Normal    NodeAllocatableEnforced   node/aws-vend-to-access-child-py-control-plane                   Updated Node Allocatable limit across pods
+default              18m         Normal    NodeHasSufficientMemory   node/aws-vend-to-access-child-py-control-plane                   Node aws-vend-to-access-child-py-control-plane status is now: NodeHasSufficientMemory
+default              18m         Normal    NodeHasNoDiskPressure     node/aws-vend-to-access-child-py-control-plane                   Node aws-vend-to-access-child-py-control-plane status is now: NodeHasNoDiskPressure
+default              18m         Normal    NodeHasSufficientPID      node/aws-vend-to-access-child-py-control-plane                   Node aws-vend-to-access-child-py-control-plane status is now: NodeHasSufficientPID
+kube-system          18m         Normal    LeaderElection            lease/kube-controller-manager                                    aws-vend-to-access-child-py-control-plane_97cb8892-8f33-4e0d-b857-fcc17f8c57a7 became leader
+kube-system          18m         Normal    LeaderElection            lease/kube-scheduler                                             aws-vend-to-access-child-py-control-plane_af0218a9-52e5-4eef-a748-c82c201d4436 became leader
+default              17m         Normal    RegisteredNode            node/aws-vend-to-access-child-py-control-plane                   Node aws-vend-to-access-child-py-control-plane event: Registered Node aws-vend-to-access-child-py-control-plane in Controller
+local-path-storage   17m         Normal    ScalingReplicaSet         deployment/local-path-provisioner                                Scaled up replica set local-path-provisioner-855c7b7774 from 0 to 1
+kube-system          17m         Normal    SuccessfulCreate          replicaset/coredns-589f44dc88                                    Created pod: coredns-589f44dc88-8d4bv
+kube-system          17m         Warning   FailedScheduling          pod/coredns-589f44dc88-tgbk8                                     0/1 nodes are available: 1 node(s) had untolerated taint(s). no new claims to deallocate, preemption: 0/1 nodes are available: 1 Preemption is not helpful for scheduling.
+local-path-storage   17m         Normal    SuccessfulCreate          replicaset/local-path-provisioner-855c7b7774                     Created pod: local-path-provisioner-855c7b7774-zgrwj
+local-path-storage   17m         Warning   FailedScheduling          pod/local-path-provisioner-855c7b7774-zgrwj                      0/1 nodes are available: 1 node(s) had untolerated taint(s). no new claims to deallocate, preemption: 0/1 nodes are available: 1 Preemption is not helpful for scheduling.
+kube-system          17m         Normal    Scheduled                 pod/kube-proxy-4hnv7                                             Successfully assigned kube-system/kube-proxy-4hnv7 to aws-vend-to-access-child-py-control-plane
+kube-system          17m         Normal    SuccessfulCreate          replicaset/coredns-589f44dc88                                    Created pod: coredns-589f44dc88-tgbk8
+kube-system          17m         Warning   FailedScheduling          pod/coredns-589f44dc88-8d4bv                                     0/1 nodes are available: 1 node(s) had untolerated taint(s). no new claims to deallocate, preemption: 0/1 nodes are available: 1 Preemption is not helpful for scheduling.
+kube-system          17m         Normal    SuccessfulCreate          daemonset/kube-proxy                                             Created pod: kube-proxy-4hnv7
+kube-system          17m         Normal    ScalingReplicaSet         deployment/coredns                                               Scaled up replica set coredns-589f44dc88 from 0 to 2
+kube-system          17m         Normal    Scheduled                 pod/kindnet-cpcpr                                                Successfully assigned kube-system/kindnet-cpcpr to aws-vend-to-access-child-py-control-plane
+kube-system          17m         Normal    SuccessfulCreate          daemonset/kindnet                                                Created pod: kindnet-cpcpr
+kube-system          17m         Normal    Pulled                    pod/kube-proxy-4hnv7                                             Container image "registry.k8s.io/kube-proxy:v1.36.1" already present on machine and can be accessed by the pod
+kube-system          17m         Normal    Started                   pod/kube-proxy-4hnv7                                             Container started
+kube-system          17m         Normal    Created                   pod/kube-proxy-4hnv7                                             Container created
+kube-system          17m         Normal    Pulled                    pod/kindnet-cpcpr                                                Container image "docker.io/kindest/kindnetd:v20260528-9350166c" already present on machine and can be accessed by the pod
+kube-system          17m         Normal    SuccessfulCreate          daemonset/kube-proxy                                             Created pod: kube-proxy-jm9df
+default              17m         Normal    NodeHasSufficientMemory   node/aws-vend-to-access-child-py-worker                          Node aws-vend-to-access-child-py-worker status is now: NodeHasSufficientMemory
+default              17m         Normal    NodeHasNoDiskPressure     node/aws-vend-to-access-child-py-worker                          Node aws-vend-to-access-child-py-worker status is now: NodeHasNoDiskPressure
+default              17m         Normal    NodeHasSufficientPID      node/aws-vend-to-access-child-py-worker                          Node aws-vend-to-access-child-py-worker status is now: NodeHasSufficientPID
+default              17m         Normal    Starting                  node/aws-vend-to-access-child-py-control-plane                   
+default              17m         Normal    NodeAllocatableEnforced   node/aws-vend-to-access-child-py-worker                          Updated Node Allocatable limit across pods
+kube-system          17m         Normal    Scheduled                 pod/kindnet-xrq6v                                                Successfully assigned kube-system/kindnet-xrq6v to aws-vend-to-access-child-py-worker
+kube-system          17m         Normal    SuccessfulCreate          daemonset/kindnet                                                Created pod: kindnet-xrq6v
+kube-system          17m         Normal    Scheduled                 pod/kube-proxy-jm9df                                             Successfully assigned kube-system/kube-proxy-jm9df to aws-vend-to-access-child-py-worker
+kube-system          17m         Normal    Created                   pod/kindnet-cpcpr                                                Container created
+default              17m         Normal    RegisteredNode            node/aws-vend-to-access-child-py-worker                          Node aws-vend-to-access-child-py-worker event: Registered Node aws-vend-to-access-child-py-worker in Controller
+kube-system          17m         Normal    Pulled                    pod/kindnet-xrq6v                                                Container image "docker.io/kindest/kindnetd:v20260528-9350166c" already present on machine and can be accessed by the pod
+kube-system          17m         Normal    Started                   pod/kindnet-cpcpr                                                Container started
+kube-system          17m         Normal    Pulled                    pod/kube-proxy-jm9df                                             Container image "registry.k8s.io/kube-proxy:v1.36.1" already present on machine and can be accessed by the pod
+kube-system          17m         Normal    Created                   pod/kube-proxy-jm9df                                             Container created
+default              17m         Normal    Starting                  node/aws-vend-to-access-child-py-worker                          
+kube-system          17m         Normal    Started                   pod/kube-proxy-jm9df                                             Container started
+kube-system          17m         Normal    Created                   pod/kindnet-xrq6v                                                Container created
+kube-system          17m         Normal    Started                   pod/kindnet-xrq6v                                                Container started
+default              17m         Normal    NodeReady                 node/aws-vend-to-access-child-py-control-plane                   Node aws-vend-to-access-child-py-control-plane status is now: NodeReady
+local-path-storage   17m         Normal    Scheduled                 pod/local-path-provisioner-855c7b7774-zgrwj                      Successfully assigned local-path-storage/local-path-provisioner-855c7b7774-zgrwj to aws-vend-to-access-child-py-control-plane
+kube-system          17m         Normal    Scheduled                 pod/coredns-589f44dc88-tgbk8                                     Successfully assigned kube-system/coredns-589f44dc88-tgbk8 to aws-vend-to-access-child-py-control-plane
+kube-system          17m         Normal    Scheduled                 pod/coredns-589f44dc88-8d4bv                                     Successfully assigned kube-system/coredns-589f44dc88-8d4bv to aws-vend-to-access-child-py-control-plane
+kube-system          17m         Normal    Pulled                    pod/coredns-589f44dc88-tgbk8                                     Container image "registry.k8s.io/coredns/coredns:v1.14.2" already present on machine and can be accessed by the pod
+local-path-storage   17m         Normal    Pulled                    pod/local-path-provisioner-855c7b7774-zgrwj                      Container image "docker.io/kindest/local-path-provisioner:v20260521-9fb22683" already present on machine and can be accessed by the pod
+kube-system          17m         Normal    Pulled                    pod/coredns-589f44dc88-8d4bv                                     Container image "registry.k8s.io/coredns/coredns:v1.14.2" already present on machine and can be accessed by the pod
+default              17m         Normal    NodeReady                 node/aws-vend-to-access-child-py-worker                          Node aws-vend-to-access-child-py-worker status is now: NodeReady
+local-path-storage   17m         Normal    Created                   pod/local-path-provisioner-855c7b7774-zgrwj                      Container created
+kube-system          17m         Normal    Created                   pod/coredns-589f44dc88-tgbk8                                     Container created
+kube-system          17m         Normal    Started                   pod/coredns-589f44dc88-tgbk8                                     Container started
+kube-system          17m         Warning   Unhealthy                 pod/coredns-589f44dc88-tgbk8                                     Readiness probe failed: Get "http://10.244.0.2:8181/ready": dial tcp 10.244.0.2:8181: connect: connection refused
+local-path-storage   17m         Normal    Started                   pod/local-path-provisioner-855c7b7774-zgrwj                      Container started
+kube-system          17m         Normal    Created                   pod/coredns-589f44dc88-8d4bv                                     Container created
+kube-system          17m         Normal    Started                   pod/coredns-589f44dc88-8d4bv                                     Container started
+kube-system          17m         Warning   Unhealthy                 pod/coredns-589f44dc88-8d4bv                                     Readiness probe failed: Get "http://10.244.0.4:8181/ready": dial tcp 10.244.0.4:8181: connect: connection refused
+kube-system          17m         Warning   Unhealthy                 pod/coredns-589f44dc88-tgbk8                                     Readiness probe failed: HTTP probe failed with statuscode: 503
+spire                16m         Normal    WaitForFirstConsumer      persistentvolumeclaim/spire-data-spire-server-0                  waiting for first consumer to be created before binding
+spire                16m         Normal    SuccessfulCreate          statefulset/spire-server                                         Create Claim spire-data-spire-server-0 Pod spire-server-0 in StatefulSet spire-server success
+spire                16m         Normal    SuccessfulCreate          statefulset/spire-server                                         Create Pod spire-server-0 in StatefulSet spire-server successful
+spire                16m         Normal    Provisioning              persistentvolumeclaim/spire-data-spire-server-0                  External provisioner is provisioning volume for claim "spire/spire-data-spire-server-0"
+spire                16m         Normal    ExternalProvisioning      persistentvolumeclaim/spire-data-spire-server-0                  Waiting for a volume to be created either by the external provisioner 'rancher.io/local-path' or manually by the system administrator. If volume creation is delayed, please verify that the provisioner is running and correctly registered.
+local-path-storage   16m         Normal    Pulled                    pod/helper-pod-create-pvc-b687665b-a609-4146-ba9c-f085b7fadad4   Container image "docker.io/kindest/local-path-helper:v20260131-7181c60a" already present on machine and can be accessed by the pod
+local-path-storage   16m         Normal    Created                   pod/helper-pod-create-pvc-b687665b-a609-4146-ba9c-f085b7fadad4   Container created
+local-path-storage   16m         Normal    Started                   pod/helper-pod-create-pvc-b687665b-a609-4146-ba9c-f085b7fadad4   Container started
+spire                16m         Normal    ProvisioningSucceeded     persistentvolumeclaim/spire-data-spire-server-0                  Successfully provisioned volume pvc-b687665b-a609-4146-ba9c-f085b7fadad4
+spire                16m         Normal    Scheduled                 pod/spire-server-0                                               Successfully assigned spire/spire-server-0 to aws-vend-to-access-child-py-worker
+spire                16m         Normal    Started                   pod/spire-server-0                                               Container started
+spire                16m         Normal    Pulled                    pod/spire-server-0                                               Container image "ghcr.io/spiffe/spire-server:1.15.2" already present on machine and can be accessed by the pod
+spire                16m         Normal    Created                   pod/spire-server-0                                               Container created
+spire                16m         Normal    Scheduled                 pod/spire-agent-cd5mt                                            Successfully assigned spire/spire-agent-cd5mt to aws-vend-to-access-child-py-control-plane
+spire                16m         Normal    Scheduled                 pod/spire-agent-l5blx                                            Successfully assigned spire/spire-agent-l5blx to aws-vend-to-access-child-py-worker
+spire                16m         Normal    SuccessfulCreate          daemonset/spire-agent                                            Created pod: spire-agent-l5blx
+spire                16m         Normal    SuccessfulCreate          daemonset/spire-agent                                            Created pod: spire-agent-cd5mt
+spire                16m         Normal    Pulled                    pod/spire-agent-cd5mt                                            Container image "ghcr.io/spiffe/spire-agent:1.15.2" already present on machine and can be accessed by the pod
+spire                16m         Normal    Started                   pod/spire-agent-l5blx                                            Container started
+spire                16m         Normal    Created                   pod/spire-agent-l5blx                                            Container created
+spire                16m         Normal    Pulled                    pod/spire-agent-l5blx                                            Container image "ghcr.io/spiffe/spire-agent:1.15.2" already present on machine and can be accessed by the pod
+spire                16m         Normal    Created                   pod/spire-agent-cd5mt                                            Container created
+spire                16m         Normal    Started                   pod/spire-agent-cd5mt                                            Container started
+opa                  16m         Normal    ScalingReplicaSet         deployment/opa                                                   Scaled up replica set opa-5c54cb55fb from 0 to 1
+opa                  16m         Normal    SuccessfulCreate          replicaset/opa-5c54cb55fb                                        Created pod: opa-5c54cb55fb-qmmvd
+opa                  16m         Normal    Scheduled                 pod/opa-5c54cb55fb-qmmvd                                         Successfully assigned opa/opa-5c54cb55fb-qmmvd to aws-vend-to-access-child-py-worker
+opa                  15m         Normal    Started                   pod/opa-5c54cb55fb-qmmvd                                         Container started
+opa                  15m         Normal    Created                   pod/opa-5c54cb55fb-qmmvd                                         Container created
+opa                  15m         Normal    Pulled                    pod/opa-5c54cb55fb-qmmvd                                         Container image "ghcr.io/spiffe/spiffe-helper:0.11.0" already present on machine and can be accessed by the pod
+opa                  15m         Normal    Pulled                    pod/opa-5c54cb55fb-qmmvd                                         Container image "ghcr.io/spiffe/spiffe-helper:0.11.0" already present on machine and can be accessed by the pod
+opa                  15m         Normal    Started                   pod/opa-5c54cb55fb-qmmvd                                         Container started
+opa                  15m         Normal    Created                   pod/opa-5c54cb55fb-qmmvd                                         Container created
+opa                  15m         Normal    Created                   pod/opa-5c54cb55fb-qmmvd                                         Container created
+opa                  15m         Normal    Pulled                    pod/opa-5c54cb55fb-qmmvd                                         Container image "openpolicyagent/opa:1.18.2" already present on machine and can be accessed by the pod
+opa                  15m         Normal    Started                   pod/opa-5c54cb55fb-qmmvd                                         Container started
+nhi                  15m         Normal    SuccessfulCreate          replicaset/policy-engine-9f7dd98c4                               Created pod: policy-engine-9f7dd98c4-5qpvd
+nhi                  15m         Normal    ScalingReplicaSet         deployment/policy-engine                                         Scaled up replica set policy-engine-9f7dd98c4 from 0 to 1
+agents               15m         Normal    Scheduled                 pod/nhi-test-workload-5965cbf6f8-976gs                           Successfully assigned agents/nhi-test-workload-5965cbf6f8-976gs to aws-vend-to-access-child-py-worker
+nhi                  15m         Normal    Scheduled                 pod/policy-engine-9f7dd98c4-5qpvd                                Successfully assigned nhi/policy-engine-9f7dd98c4-5qpvd to aws-vend-to-access-child-py-worker
+nhi                  15m         Warning   ErrImageNeverPull         pod/policy-engine-9f7dd98c4-5qpvd                                Container image "nhi-lab/policy-engine:dev" is not present with pull policy of Never
+nhi                  15m         Warning   Failed                    pod/policy-engine-9f7dd98c4-5qpvd                                Error: ErrImageNeverPull
+agents               15m         Normal    ScalingReplicaSet         deployment/nhi-test-workload                                     Scaled up replica set nhi-test-workload-5965cbf6f8 from 0 to 1
+agents               15m         Normal    SuccessfulCreate          replicaset/nhi-test-workload-5965cbf6f8                          Created pod: nhi-test-workload-5965cbf6f8-976gs
+agents               15m         Normal    Pulled                    pod/nhi-test-workload-5965cbf6f8-976gs                           Container image "ghcr.io/spiffe/spire-agent:1.15.2" already present on machine and can be accessed by the pod
+agents               15m         Normal    Created                   pod/nhi-test-workload-5965cbf6f8-976gs                           Container created
+agents               15m         Normal    Started                   pod/nhi-test-workload-5965cbf6f8-976gs                           Container started
+nhi                  15m         Normal    Created                   pod/policy-engine-9f7dd98c4-5qpvd                                Container created
+nhi                  15m         Normal    Pulled                    pod/policy-engine-9f7dd98c4-5qpvd                                Container image "nhi-lab/policy-engine:dev" already present on machine and can be accessed by the pod
+nhi                  15m         Normal    Started                   pod/policy-engine-9f7dd98c4-5qpvd                                Container started
+nhi                  15m         Normal    SuccessfulCreate          replicaset/policy-engine-5c7c8bfc97                              Created pod: policy-engine-5c7c8bfc97-lgklr
+nhi                  15m         Normal    ScalingReplicaSet         deployment/policy-engine                                         Scaled up replica set policy-engine-5c7c8bfc97 from 0 to 1
+nhi                  15m         Normal    Scheduled                 pod/policy-engine-5c7c8bfc97-lgklr                               Successfully assigned nhi/policy-engine-5c7c8bfc97-lgklr to aws-vend-to-access-child-py-worker
+nhi                  15m         Normal    Created                   pod/policy-engine-5c7c8bfc97-lgklr                               Container created
+nhi                  15m         Normal    Pulled                    pod/policy-engine-5c7c8bfc97-lgklr                               Container image "nhi-lab/policy-engine:dev" already present on machine and can be accessed by the pod
+nhi                  15m         Normal    Started                   pod/policy-engine-5c7c8bfc97-lgklr                               Container started
+nhi                  15m         Normal    SuccessfulDelete          replicaset/policy-engine-9f7dd98c4                               Deleted pod: policy-engine-9f7dd98c4-5qpvd
+nhi                  15m         Normal    Killing                   pod/policy-engine-9f7dd98c4-5qpvd                                Stopping container policy-engine
+nhi                  15m         Normal    ScalingReplicaSet         deployment/policy-engine                                         Scaled down replica set policy-engine-9f7dd98c4 from 1 to 0
+nhi                  15m         Normal    WaitForFirstConsumer      persistentvolumeclaim/vending-data                               waiting for first consumer to be created before binding
+nhi                  15m         Normal    ScalingReplicaSet         deployment/vending-service                                       Scaled up replica set vending-service-598b4b5754 from 0 to 1
+nhi                  15m         Normal    SuccessfulCreate          replicaset/vending-service-598b4b5754                            Created pod: vending-service-598b4b5754-8sjjk
+nhi                  15m         Normal    ScalingReplicaSet         deployment/vending-service                                       Scaled down replica set vending-service-598b4b5754 from 1 to 0
+nhi                  15m         Normal    Provisioning              persistentvolumeclaim/vending-data                               External provisioner is provisioning volume for claim "nhi/vending-data"
+nhi                  15m         Normal    ExternalProvisioning      persistentvolumeclaim/vending-data                               Waiting for a volume to be created either by the external provisioner 'rancher.io/local-path' or manually by the system administrator. If volume creation is delayed, please verify that the provisioner is running and correctly registered.
+nhi                  15m         Normal    SuccessfulDelete          replicaset/vending-service-598b4b5754                            Deleted pod: vending-service-598b4b5754-8sjjk
+nhi                  15m         Normal    ScalingReplicaSet         deployment/vending-service                                       Scaled up replica set vending-service-685b4756b from 0 to 1
+nhi                  15m         Normal    SuccessfulCreate          replicaset/vending-service-685b4756b                             Created pod: vending-service-685b4756b-m44pn
+nhi                  15m         Warning   FailedScheduling          pod/vending-service-598b4b5754-8sjjk                             running PreBind plugin "VolumeBinding": binding volumes: pod does not exist any more: pod "vending-service-598b4b5754-8sjjk" not found
+local-path-storage   15m         Normal    Pulled                    pod/helper-pod-create-pvc-047d99de-a4fc-427f-b58d-ee6882119d2b   Container image "docker.io/kindest/local-path-helper:v20260131-7181c60a" already present on machine and can be accessed by the pod
+local-path-storage   15m         Normal    Created                   pod/helper-pod-create-pvc-047d99de-a4fc-427f-b58d-ee6882119d2b   Container created
+local-path-storage   15m         Normal    Started                   pod/helper-pod-create-pvc-047d99de-a4fc-427f-b58d-ee6882119d2b   Container started
+nhi                  15m         Normal    Scheduled                 pod/vending-service-685b4756b-m44pn                              Successfully assigned nhi/vending-service-685b4756b-m44pn to aws-vend-to-access-child-py-worker
+nhi                  15m         Normal    ProvisioningSucceeded     persistentvolumeclaim/vending-data                               Successfully provisioned volume pvc-047d99de-a4fc-427f-b58d-ee6882119d2b
+nhi                  15m         Normal    Created                   pod/vending-service-685b4756b-m44pn                              Container created
+nhi                  15m         Normal    Pulled                    pod/vending-service-685b4756b-m44pn                              Container image "nhi-lab/vending-service:dev" already present on machine and can be accessed by the pod
+nhi                  15m         Normal    Started                   pod/vending-service-685b4756b-m44pn                              Container started
+nhi                  14m         Normal    SuccessfulCreate          replicaset/resource-66f9fdcb44                                   Created pod: resource-66f9fdcb44-2qrx4
+nhi                  14m         Normal    ScalingReplicaSet         deployment/resource                                              Scaled up replica set resource-66f9fdcb44 from 0 to 1
+nhi                  14m         Normal    Scheduled                 pod/resource-66f9fdcb44-2qrx4                                    Successfully assigned nhi/resource-66f9fdcb44-2qrx4 to aws-vend-to-access-child-py-worker
+nhi                  14m         Normal    ScalingReplicaSet         deployment/resource                                              Scaled up replica set resource-69b9f47565 from 0 to 1
+nhi                  14m         Normal    Scheduled                 pod/resource-69b9f47565-7s6t9                                    Successfully assigned nhi/resource-69b9f47565-7s6t9 to aws-vend-to-access-child-py-worker
+nhi                  14m         Normal    SuccessfulCreate          replicaset/resource-69b9f47565                                   Created pod: resource-69b9f47565-7s6t9
+nhi                  14m         Normal    Pulled                    pod/resource-66f9fdcb44-2qrx4                                    Container image "nhi-lab/resource:dev" already present on machine and can be accessed by the pod
+nhi                  14m         Normal    Pulled                    pod/resource-69b9f47565-7s6t9                                    Container image "nhi-lab/resource:dev" already present on machine and can be accessed by the pod
+nhi                  14m         Normal    Created                   pod/resource-66f9fdcb44-2qrx4                                    Container created
+nhi                  14m         Normal    Created                   pod/resource-69b9f47565-7s6t9                                    Container created
+nhi                  14m         Normal    Started                   pod/resource-66f9fdcb44-2qrx4                                    Container started
+nhi                  14m         Normal    Started                   pod/resource-69b9f47565-7s6t9                                    Container started
+nhi                  14m         Normal    SuccessfulDelete          replicaset/resource-66f9fdcb44                                   Deleted pod: resource-66f9fdcb44-2qrx4
+nhi                  14m         Normal    Killing                   pod/resource-66f9fdcb44-2qrx4                                    Stopping container resource
+nhi                  14m         Normal    ScalingReplicaSet         deployment/resource                                              Scaled down replica set resource-66f9fdcb44 from 1 to 0
+agents               14m         Normal    Scheduled                 pod/experiments-parent-fc985bd87-kxfg9                           Successfully assigned agents/experiments-parent-fc985bd87-kxfg9 to aws-vend-to-access-child-py-worker
+agents               14m         Normal    ScalingReplicaSet         deployment/experiments-parent                                    Scaled up replica set experiments-parent-fc985bd87 from 0 to 1
+agents               14m         Normal    SuccessfulCreate          replicaset/experiments-parent-fc985bd87                          Created pod: experiments-parent-fc985bd87-kxfg9
+agents               14m         Normal    SuccessfulCreate          replicaset/experiments-attacker-c7c7dcc66                        Created pod: experiments-attacker-c7c7dcc66-gp4ns
+agents               14m         Normal    ScalingReplicaSet         deployment/experiments-attacker                                  Scaled up replica set experiments-attacker-c7c7dcc66 from 0 to 1
+agents               14m         Normal    Scheduled                 pod/experiments-child-85c8bd56cc-vdxxw                           Successfully assigned agents/experiments-child-85c8bd56cc-vdxxw to aws-vend-to-access-child-py-worker
+agents               14m         Normal    Scheduled                 pod/experiments-attacker-c7c7dcc66-gp4ns                         Successfully assigned agents/experiments-attacker-c7c7dcc66-gp4ns to aws-vend-to-access-child-py-worker
+agents               14m         Normal    SuccessfulCreate          replicaset/experiments-child-85c8bd56cc                          Created pod: experiments-child-85c8bd56cc-vdxxw
+agents               14m         Normal    ScalingReplicaSet         deployment/experiments-child                                     Scaled up replica set experiments-child-85c8bd56cc from 0 to 1
+agents               14m         Normal    ScalingReplicaSet         deployment/experiments-grandchild                                Scaled up replica set experiments-grandchild-7f645577d6 from 0 to 1
+agents               14m         Normal    Scheduled                 pod/experiments-grandchild-7f645577d6-c84d6                      Successfully assigned agents/experiments-grandchild-7f645577d6-c84d6 to aws-vend-to-access-child-py-worker
+agents               14m         Normal    SuccessfulCreate          replicaset/experiments-grandchild-7f645577d6                     Created pod: experiments-grandchild-7f645577d6-c84d6
+agents               14m         Normal    Created                   pod/experiments-parent-fc985bd87-kxfg9                           Container created
+agents               14m         Normal    Pulled                    pod/experiments-parent-fc985bd87-kxfg9                           Container image "nhi-lab/parentsim:dev" already present on machine and can be accessed by the pod
+agents               14m         Normal    Created                   pod/experiments-attacker-c7c7dcc66-gp4ns                         Container created
+agents               14m         Normal    Pulled                    pod/experiments-attacker-c7c7dcc66-gp4ns                         Container image "nhi-lab/parentsim:dev" already present on machine and can be accessed by the pod
+agents               14m         Normal    Started                   pod/experiments-parent-fc985bd87-kxfg9                           Container started
+agents               14m         Normal    Pulled                    pod/experiments-child-85c8bd56cc-vdxxw                           Container image "nhi-lab/parentsim:dev" already present on machine and can be accessed by the pod
+agents               14m         Normal    Created                   pod/experiments-child-85c8bd56cc-vdxxw                           Container created
+agents               14m         Normal    Created                   pod/experiments-grandchild-7f645577d6-c84d6                      Container created
+agents               14m         Normal    Started                   pod/experiments-child-85c8bd56cc-vdxxw                           Container started
+agents               14m         Normal    Started                   pod/experiments-attacker-c7c7dcc66-gp4ns                         Container started
+agents               14m         Normal    Pulled                    pod/experiments-grandchild-7f645577d6-c84d6                      Container image "nhi-lab/parentsim:dev" already present on machine and can be accessed by the pod
+agents               14m         Normal    Started                   pod/experiments-grandchild-7f645577d6-c84d6                      Container started

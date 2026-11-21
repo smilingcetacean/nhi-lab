@@ -1,0 +1,11 @@
+2026-11-21T19:39:16.426927125Z time="2026-11-21T19:39:16Z" level=error msg="No identity issued" method=FetchX509SVID pid=10865 registered=false service=WorkloadAPI subsystem_name=endpoints
+2026-11-21T19:39:17.607055775Z time="2026-11-21T19:39:17Z" level=error msg="No identity issued" method=FetchX509SVID pid=10888 registered=false service=WorkloadAPI subsystem_name=endpoints
+2026-11-21T19:39:18.793980641Z time="2026-11-21T19:39:18Z" level=error msg="No identity issued" method=FetchX509SVID pid=10918 registered=false service=WorkloadAPI subsystem_name=endpoints
+2026-11-21T19:39:19.971107073Z time="2026-11-21T19:39:19Z" level=error msg="No identity issued" method=FetchX509SVID pid=10941 registered=false service=WorkloadAPI subsystem_name=endpoints
+2026-11-21T19:39:21.184777141Z time="2026-11-21T19:39:21Z" level=error msg="No identity issued" method=FetchX509SVID pid=10964 registered=false service=WorkloadAPI subsystem_name=endpoints
+2026-11-21T19:39:22.376936164Z time="2026-11-21T19:39:22Z" level=error msg="No identity issued" method=FetchX509SVID pid=10987 registered=false service=WorkloadAPI subsystem_name=endpoints
+2026-11-21T19:39:23.555066879Z time="2026-11-21T19:39:23Z" level=error msg="No identity issued" method=FetchX509SVID pid=11009 registered=false service=WorkloadAPI subsystem_name=endpoints
+2026-11-21T19:39:24.740607177Z time="2026-11-21T19:39:24Z" level=error msg="No identity issued" method=FetchX509SVID pid=11030 registered=false service=WorkloadAPI subsystem_name=endpoints
+2026-11-21T19:39:25.513070528Z time="2026-11-21T19:39:25Z" level=info msg="Creating X509-SVID" entry_id=ecf213f2-04f7-45d9-a498-3f1d696b4ef3 spiffe_id="spiffe://lab.local/agent/parent/exp-root/child/r2d-a42558-31" subsystem_name=manager
+2026-11-21T19:39:36.107765801Z time="2026-11-21T19:39:36Z" level=error msg="No identity issued" method=FetchJWTSVID pid=11075 registered=false service=WorkloadAPI subsystem_name=endpoints
+2026-11-21T19:39:36.515841816Z time="2026-11-21T19:39:36Z" level=error msg="No identity issued" method=FetchX509SVID pid=11143 registered=false service=WorkloadAPI subsystem_name=endpoints

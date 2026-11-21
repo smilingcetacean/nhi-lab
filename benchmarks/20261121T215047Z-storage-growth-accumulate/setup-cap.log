@@ -1,0 +1,26 @@
+[2026-11-21T21:54:06Z] documented setup step: manifest default MAX_LIVE_CHILDREN=8; storage_growth.py --phase accumulate --n 200 needs >= 200
+[2026-11-21T21:54:06Z] before: running pod env
+NAME                             READY   STATUS    RESTARTS   AGE   IP           NODE                                   NOMINATED NODE   READINESS GATES
+vending-service-5dbcdb57-rjxrs   1/1     Running   0          51s   10.244.1.9   aws-storage-growth-accumulate-worker   <none>           <none>
+[{"name":"LISTEN_ADDR","value":":8090"},{"name":"VENDING_AUDIENCE","value":"spiffe://lab.local/svc/vending-service"},{"name":"TRUST_DOMAIN","value":"lab.local"},{"name":"POLICY_ENGINE_URL","value":"https://policy-engine.nhi.svc.cluster.local:8443"},{"name":"POLICY_ENGINE_SPIFFE_ID","value":"spiffe://lab.local/svc/policy-engine"},{"name":"SPIRE_SERVER_ADDR","value":"spire-server.spire.svc.cluster.local:8081"},{"name":"SPIRE_SERVER_SPIFFE_ID","value":"spiffe://lab.local/spire/server"},{"name":"NODE_ALIAS_SPIFFE_ID","value":"spiffe://lab.local/node/nhi-lab"},{"name":"DB_PATH","value":"/var/lib/vending-service/vending.db"},{"name":"AUDIT_LOG_PATH","value":"/var/lib/vending-service/audit.jsonl"},{"name":"SPIFFE_ENDPOINT_SOCKET","value":"unix:///run/spire/sockets/agent.sock"},{"name":"REAPER_INTERVAL","value":"15s"},{"name":"MAX_DELEGATION_DEPTH","value":"2"},{"name":"MAX_LIVE_CHILDREN","value":"8"}]
+[2026-11-21T21:54:07Z] kubectl -n nhi set env deployment/vending-service MAX_LIVE_CHILDREN=200   (with --context kind-aws-storage-growth-accumulate)
+deployment.apps/vending-service env updated
+rc=0
+[2026-11-21T21:54:07Z] kubectl rollout status
+Waiting for deployment "vending-service" rollout to finish: 0 out of 1 new replicas have been updated...
+Waiting for deployment "vending-service" rollout to finish: 0 out of 1 new replicas have been updated...
+Waiting for deployment "vending-service" rollout to finish: 0 out of 1 new replicas have been updated...
+Waiting for deployment "vending-service" rollout to finish: 0 of 1 updated replicas are available...
+deployment "vending-service" successfully rolled out
+rc=0
+[2026-11-21T21:54:10Z] pods after rollout
+NAME                               READY   STATUS    RESTARTS   AGE   IP            NODE                                   NOMINATED NODE   READINESS GATES
+policy-engine-6b86f64986-6r2q7     1/1     Running   0          14s   10.244.1.12   aws-storage-growth-accumulate-worker   <none>           <none>
+resource-577675b886-sdqx6          1/1     Running   0          34s   10.244.1.11   aws-storage-growth-accumulate-worker   <none>           <none>
+vending-service-75c7cf5d79-wz9hr   1/1     Running   0          3s    10.244.1.17   aws-storage-growth-accumulate-worker   <none>           <none>
+pod/vending-service-75c7cf5d79-wz9hr condition met
+wait rc=0
+running pod vending-service-75c7cf5d79-wz9hr phase: Running
+running pod vending-service-75c7cf5d79-wz9hr spec env: [{"name":"LISTEN_ADDR","value":":8090"},{"name":"VENDING_AUDIENCE","value":"spiffe://lab.local/svc/vending-service"},{"name":"TRUST_DOMAIN","value":"lab.local"},{"name":"POLICY_ENGINE_URL","value":"https://policy-engine.nhi.svc.cluster.local:8443"},{"name":"POLICY_ENGINE_SPIFFE_ID","value":"spiffe://lab.local/svc/policy-engine"},{"name":"SPIRE_SERVER_ADDR","value":"spire-server.spire.svc.cluster.local:8081"},{"name":"SPIRE_SERVER_SPIFFE_ID","value":"spiffe://lab.local/spire/server"},{"name":"NODE_ALIAS_SPIFFE_ID","value":"spiffe://lab.local/node/nhi-lab"},{"name":"DB_PATH","value":"/var/lib/vending-service/vending.db"},{"name":"AUDIT_LOG_PATH","value":"/var/lib/vending-service/audit.jsonl"},{"name":"SPIFFE_ENDPOINT_SOCKET","value":"unix:///run/spire/sockets/agent.sock"},{"name":"REAPER_INTERVAL","value":"15s"},{"name":"MAX_DELEGATION_DEPTH","value":"2"},{"name":"MAX_LIVE_CHILDREN","value":"200"}]
+running pod vending-service-75c7cf5d79-wz9hr exec printenv: error: Internal error occurred: Internal error occurred: error executing command in container: failed to exec in container: failed to start exec "09210b9cc88065854e470ccc3beb9af89d83733458df8f48ddd30eeb20ca1404": OCI runtime exec failed: exec failed: unable to start container process: exec: "printenv": executable file not found in $PATH
+[2026-11-21T21:54:11Z] confirmed MAX_LIVE_CHILDREN in running pod(s): 200

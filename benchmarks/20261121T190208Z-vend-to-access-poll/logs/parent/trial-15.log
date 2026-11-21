@@ -1,0 +1,4 @@
+2026-11-21T19:11:17.444652609Z parentsim vend-timed: {"status":201,"send_ns":1795288277164920210,"recv_ns":1795288277303767162,"round_trip_ns":138846952,"response":"{\"chain_id\":\"c_bf593fdbe2c9e1b274a0fe2ccd99283e\",\"parent_spiffe_id\":\"spiffe://lab.local/agent/parent/exp-root\",\"child_spiffe_id\":\"spiffe://lab.local/agent/parent/exp-root/child/v2a-4d963a-15\",\"child_scopes\":[\"resource:read:datasetA\"],\"entry_id\":\"dc019fed-25eb-45d3-b7e1-a5d7ebd4b950\",\"policy_id\":\"nhi_grants_c_bf593fdbe2c9e1b274a0fe2ccd99283e\",\"issued_at\":1795288277,\"expires_at\":1795288577}\n"}
+2026-11-21T19:11:17.444652609Z parentsim vend-timed: HTTP 201
+2026-11-21T19:11:25.789288981Z parentsim dispose: {"chain_id":"c_bf593fdbe2c9e1b274a0fe2ccd99283e","revoked":true}
+2026-11-21T19:11:25.789288981Z parentsim dispose: HTTP 200

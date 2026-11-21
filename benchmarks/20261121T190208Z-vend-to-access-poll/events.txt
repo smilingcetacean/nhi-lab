@@ -1,0 +1,197 @@
+NAMESPACE            LAST SEEN   TYPE      REASON                    OBJECT                                                              MESSAGE
+default              17m         Normal    NodeHasSufficientMemory   node/aws-vend-to-access-poll-control-plane                          Node aws-vend-to-access-poll-control-plane status is now: NodeHasSufficientMemory
+default              17m         Normal    NodeHasSufficientPID      node/aws-vend-to-access-poll-control-plane                          Node aws-vend-to-access-poll-control-plane status is now: NodeHasSufficientPID
+default              17m         Normal    NodeAllocatableEnforced   node/aws-vend-to-access-poll-control-plane                          Updated Node Allocatable limit across pods
+default              17m         Normal    NodeHasNoDiskPressure     node/aws-vend-to-access-poll-control-plane                          Node aws-vend-to-access-poll-control-plane status is now: NodeHasNoDiskPressure
+kube-system          17m         Normal    Started                   pod/kube-controller-manager-aws-vend-to-access-poll-control-plane   Container started
+kube-system          17m         Normal    Started                   pod/kube-apiserver-aws-vend-to-access-poll-control-plane            Container started
+kube-system          17m         Normal    Pulled                    pod/kube-controller-manager-aws-vend-to-access-poll-control-plane   Container image "registry.k8s.io/kube-controller-manager:v1.36.1" already present on machine and can be accessed by the pod
+kube-system          17m         Normal    Started                   pod/kube-scheduler-aws-vend-to-access-poll-control-plane            Container started
+kube-system          17m         Normal    Created                   pod/kube-scheduler-aws-vend-to-access-poll-control-plane            Container created
+kube-system          17m         Normal    Pulled                    pod/kube-scheduler-aws-vend-to-access-poll-control-plane            Container image "registry.k8s.io/kube-scheduler:v1.36.1" already present on machine and can be accessed by the pod
+kube-system          17m         Normal    Started                   pod/etcd-aws-vend-to-access-poll-control-plane                      Container started
+kube-system          16m         Warning   Unhealthy                 pod/kube-apiserver-aws-vend-to-access-poll-control-plane            Startup probe failed: HTTP probe failed with statuscode: 403
+kube-system          17m         Normal    Created                   pod/etcd-aws-vend-to-access-poll-control-plane                      Container created
+kube-system          17m         Normal    Pulled                    pod/etcd-aws-vend-to-access-poll-control-plane                      Container image "registry.k8s.io/etcd:3.6.8-0" already present on machine and can be accessed by the pod
+kube-system          17m         Normal    Created                   pod/kube-apiserver-aws-vend-to-access-poll-control-plane            Container created
+kube-system          17m         Normal    Created                   pod/kube-controller-manager-aws-vend-to-access-poll-control-plane   Container created
+kube-system          17m         Normal    Pulled                    pod/kube-apiserver-aws-vend-to-access-poll-control-plane            Container image "registry.k8s.io/kube-apiserver:v1.36.1" already present on machine and can be accessed by the pod
+kube-system          16m         Normal    LeaderElection            lease/kube-controller-manager                                       aws-vend-to-access-poll-control-plane_9ff95534-18bf-403f-bff0-f4bfc3ea4260 became leader
+kube-system          16m         Warning   Unhealthy                 pod/kube-scheduler-aws-vend-to-access-poll-control-plane            Readiness probe failed: HTTP probe failed with statuscode: 500
+default              16m         Normal    Starting                  node/aws-vend-to-access-poll-control-plane                          Starting kubelet.
+kube-system          16m         Normal    LeaderElection            lease/kube-scheduler                                                aws-vend-to-access-poll-control-plane_eb5e3b19-c01c-4d3e-81c7-70963aeb6e31 became leader
+default              16m         Normal    NodeAllocatableEnforced   node/aws-vend-to-access-poll-control-plane                          Updated Node Allocatable limit across pods
+default              16m         Normal    NodeHasSufficientMemory   node/aws-vend-to-access-poll-control-plane                          Node aws-vend-to-access-poll-control-plane status is now: NodeHasSufficientMemory
+default              16m         Normal    NodeHasNoDiskPressure     node/aws-vend-to-access-poll-control-plane                          Node aws-vend-to-access-poll-control-plane status is now: NodeHasNoDiskPressure
+default              16m         Normal    NodeHasSufficientPID      node/aws-vend-to-access-poll-control-plane                          Node aws-vend-to-access-poll-control-plane status is now: NodeHasSufficientPID
+kube-system          16m         Warning   NodeNotReady              pod/kube-controller-manager-aws-vend-to-access-poll-control-plane   Node is not ready
+default              16m         Normal    RegisteredNode            node/aws-vend-to-access-poll-control-plane                          Node aws-vend-to-access-poll-control-plane event: Registered Node aws-vend-to-access-poll-control-plane in Controller
+kube-system          16m         Warning   NodeNotReady              pod/kube-apiserver-aws-vend-to-access-poll-control-plane            Node is not ready
+kube-system          16m         Warning   NodeNotReady              pod/etcd-aws-vend-to-access-poll-control-plane                      Node is not ready
+kube-system          16m         Warning   NodeNotReady              pod/kube-scheduler-aws-vend-to-access-poll-control-plane            Node is not ready
+kube-system          16m         Normal    Scheduled                 pod/kube-proxy-prth5                                                Successfully assigned kube-system/kube-proxy-prth5 to aws-vend-to-access-poll-control-plane
+kube-system          16m         Normal    SuccessfulCreate          daemonset/kube-proxy                                                Created pod: kube-proxy-prth5
+kube-system          16m         Normal    ScalingReplicaSet         deployment/coredns                                                  Scaled up replica set coredns-589f44dc88 from 0 to 2
+kube-system          16m         Normal    SuccessfulCreate          replicaset/coredns-589f44dc88                                       Created pod: coredns-589f44dc88-nc2wp
+kube-system          16m         Normal    SuccessfulCreate          replicaset/coredns-589f44dc88                                       Created pod: coredns-589f44dc88-svrdn
+kube-system          16m         Warning   FailedScheduling          pod/coredns-589f44dc88-nc2wp                                        0/1 nodes are available: 1 node(s) had untolerated taint(s). no new claims to deallocate, preemption: 0/1 nodes are available: 1 Preemption is not helpful for scheduling.
+kube-system          16m         Warning   FailedScheduling          pod/coredns-589f44dc88-svrdn                                        0/1 nodes are available: 1 node(s) had untolerated taint(s). no new claims to deallocate, preemption: 0/1 nodes are available: 1 Preemption is not helpful for scheduling.
+kube-system          16m         Normal    SuccessfulCreate          daemonset/kindnet                                                   Created pod: kindnet-t76lx
+kube-system          16m         Normal    Scheduled                 pod/kindnet-t76lx                                                   Successfully assigned kube-system/kindnet-t76lx to aws-vend-to-access-poll-control-plane
+kube-system          16m         Normal    Pulled                    pod/kube-proxy-prth5                                                Container image "registry.k8s.io/kube-proxy:v1.36.1" already present on machine and can be accessed by the pod
+kube-system          16m         Normal    Pulled                    pod/kindnet-t76lx                                                   Container image "docker.io/kindest/kindnetd:v20260528-9350166c" already present on machine and can be accessed by the pod
+local-path-storage   16m         Normal    ScalingReplicaSet         deployment/local-path-provisioner                                   Scaled up replica set local-path-provisioner-855c7b7774 from 0 to 1
+local-path-storage   16m         Normal    SuccessfulCreate          replicaset/local-path-provisioner-855c7b7774                        Created pod: local-path-provisioner-855c7b7774-zxxz4
+local-path-storage   16m         Warning   FailedScheduling          pod/local-path-provisioner-855c7b7774-zxxz4                         0/1 nodes are available: 1 node(s) had untolerated taint(s). no new claims to deallocate, preemption: 0/1 nodes are available: 1 Preemption is not helpful for scheduling.
+kube-system          16m         Normal    Created                   pod/kube-proxy-prth5                                                Container created
+kube-system          16m         Normal    Started                   pod/kube-proxy-prth5                                                Container started
+default              16m         Normal    NodeAllocatableEnforced   node/aws-vend-to-access-poll-worker                                 Updated Node Allocatable limit across pods
+default              16m         Normal    NodeHasSufficientPID      node/aws-vend-to-access-poll-worker                                 Node aws-vend-to-access-poll-worker status is now: NodeHasSufficientPID
+kube-system          16m         Normal    SuccessfulCreate          daemonset/kube-proxy                                                Created pod: kube-proxy-zbvp9
+default              16m         Normal    RegisteredNode            node/aws-vend-to-access-poll-worker                                 Node aws-vend-to-access-poll-worker event: Registered Node aws-vend-to-access-poll-worker in Controller
+kube-system          16m         Normal    Scheduled                 pod/kube-proxy-zbvp9                                                Successfully assigned kube-system/kube-proxy-zbvp9 to aws-vend-to-access-poll-worker
+kube-system          16m         Normal    SuccessfulCreate          daemonset/kindnet                                                   Created pod: kindnet-d9kdl
+kube-system          16m         Normal    Scheduled                 pod/kindnet-d9kdl                                                   Successfully assigned kube-system/kindnet-d9kdl to aws-vend-to-access-poll-worker
+default              16m         Normal    NodeHasNoDiskPressure     node/aws-vend-to-access-poll-worker                                 Node aws-vend-to-access-poll-worker status is now: NodeHasNoDiskPressure
+default              16m         Normal    NodeHasSufficientMemory   node/aws-vend-to-access-poll-worker                                 Node aws-vend-to-access-poll-worker status is now: NodeHasSufficientMemory
+kube-system          16m         Normal    Pulled                    pod/kube-proxy-zbvp9                                                Container image "registry.k8s.io/kube-proxy:v1.36.1" already present on machine and can be accessed by the pod
+default              16m         Normal    Starting                  node/aws-vend-to-access-poll-control-plane                          
+kube-system          16m         Normal    Created                   pod/kindnet-t76lx                                                   Container created
+kube-system          16m         Normal    Pulled                    pod/kindnet-d9kdl                                                   Container image "docker.io/kindest/kindnetd:v20260528-9350166c" already present on machine and can be accessed by the pod
+kube-system          16m         Normal    Started                   pod/kindnet-t76lx                                                   Container started
+kube-system          16m         Normal    Created                   pod/kube-proxy-zbvp9                                                Container created
+kube-system          16m         Normal    Started                   pod/kube-proxy-zbvp9                                                Container started
+default              16m         Normal    Starting                  node/aws-vend-to-access-poll-worker                                 
+kube-system          16m         Normal    Created                   pod/kindnet-d9kdl                                                   Container created
+kube-system          16m         Normal    Started                   pod/kindnet-d9kdl                                                   Container started
+default              16m         Normal    NodeReady                 node/aws-vend-to-access-poll-control-plane                          Node aws-vend-to-access-poll-control-plane status is now: NodeReady
+kube-system          16m         Normal    Scheduled                 pod/coredns-589f44dc88-svrdn                                        Successfully assigned kube-system/coredns-589f44dc88-svrdn to aws-vend-to-access-poll-control-plane
+kube-system          16m         Normal    Scheduled                 pod/coredns-589f44dc88-nc2wp                                        Successfully assigned kube-system/coredns-589f44dc88-nc2wp to aws-vend-to-access-poll-control-plane
+local-path-storage   16m         Normal    Scheduled                 pod/local-path-provisioner-855c7b7774-zxxz4                         Successfully assigned local-path-storage/local-path-provisioner-855c7b7774-zxxz4 to aws-vend-to-access-poll-control-plane
+kube-system          16m         Normal    Pulled                    pod/coredns-589f44dc88-nc2wp                                        Container image "registry.k8s.io/coredns/coredns:v1.14.2" already present on machine and can be accessed by the pod
+kube-system          16m         Normal    Pulled                    pod/coredns-589f44dc88-svrdn                                        Container image "registry.k8s.io/coredns/coredns:v1.14.2" already present on machine and can be accessed by the pod
+local-path-storage   16m         Normal    Pulled                    pod/local-path-provisioner-855c7b7774-zxxz4                         Container image "docker.io/kindest/local-path-provisioner:v20260521-9fb22683" already present on machine and can be accessed by the pod
+default              15m         Normal    NodeReady                 node/aws-vend-to-access-poll-worker                                 Node aws-vend-to-access-poll-worker status is now: NodeReady
+local-path-storage   15m         Normal    Created                   pod/local-path-provisioner-855c7b7774-zxxz4                         Container created
+local-path-storage   15m         Normal    Started                   pod/local-path-provisioner-855c7b7774-zxxz4                         Container started
+kube-system          15m         Normal    Created                   pod/coredns-589f44dc88-nc2wp                                        Container created
+kube-system          15m         Normal    Created                   pod/coredns-589f44dc88-svrdn                                        Container created
+kube-system          15m         Warning   Unhealthy                 pod/coredns-589f44dc88-nc2wp                                        Readiness probe failed: Get "http://10.244.0.2:8181/ready": dial tcp 10.244.0.2:8181: connect: connection refused
+kube-system          15m         Normal    Started                   pod/coredns-589f44dc88-nc2wp                                        Container started
+kube-system          15m         Normal    Started                   pod/coredns-589f44dc88-svrdn                                        Container started
+kube-system          15m         Warning   Unhealthy                 pod/coredns-589f44dc88-svrdn                                        Readiness probe failed: Get "http://10.244.0.4:8181/ready": dial tcp 10.244.0.4:8181: connect: connection refused
+spire                14m         Normal    WaitForFirstConsumer      persistentvolumeclaim/spire-data-spire-server-0                     waiting for first consumer to be created before binding
+spire                14m         Normal    Provisioning              persistentvolumeclaim/spire-data-spire-server-0                     External provisioner is provisioning volume for claim "spire/spire-data-spire-server-0"
+spire                14m         Normal    SuccessfulCreate          statefulset/spire-server                                            Create Claim spire-data-spire-server-0 Pod spire-server-0 in StatefulSet spire-server success
+spire                14m         Normal    ExternalProvisioning      persistentvolumeclaim/spire-data-spire-server-0                     Waiting for a volume to be created either by the external provisioner 'rancher.io/local-path' or manually by the system administrator. If volume creation is delayed, please verify that the provisioner is running and correctly registered.
+spire                14m         Normal    SuccessfulCreate          statefulset/spire-server                                            Create Pod spire-server-0 in StatefulSet spire-server successful
+local-path-storage   14m         Normal    Pulled                    pod/helper-pod-create-pvc-218a37bf-82f2-454a-bc80-4acbce8f409f      Container image "docker.io/kindest/local-path-helper:v20260131-7181c60a" already present on machine and can be accessed by the pod
+local-path-storage   14m         Normal    Created                   pod/helper-pod-create-pvc-218a37bf-82f2-454a-bc80-4acbce8f409f      Container created
+local-path-storage   14m         Normal    Started                   pod/helper-pod-create-pvc-218a37bf-82f2-454a-bc80-4acbce8f409f      Container started
+spire                14m         Normal    Scheduled                 pod/spire-server-0                                                  Successfully assigned spire/spire-server-0 to aws-vend-to-access-poll-worker
+spire                14m         Normal    ProvisioningSucceeded     persistentvolumeclaim/spire-data-spire-server-0                     Successfully provisioned volume pvc-218a37bf-82f2-454a-bc80-4acbce8f409f
+spire                14m         Normal    Pulled                    pod/spire-server-0                                                  Container image "ghcr.io/spiffe/spire-server:1.15.2" already present on machine and can be accessed by the pod
+spire                14m         Normal    Created                   pod/spire-server-0                                                  Container created
+spire                14m         Normal    Started                   pod/spire-server-0                                                  Container started
+spire                14m         Normal    SuccessfulCreate          daemonset/spire-agent                                               Created pod: spire-agent-8cdck
+spire                14m         Normal    SuccessfulCreate          daemonset/spire-agent                                               Created pod: spire-agent-nrdqk
+spire                14m         Normal    Scheduled                 pod/spire-agent-nrdqk                                               Successfully assigned spire/spire-agent-nrdqk to aws-vend-to-access-poll-control-plane
+spire                14m         Normal    Pulled                    pod/spire-agent-nrdqk                                               Container image "ghcr.io/spiffe/spire-agent:1.15.2" already present on machine and can be accessed by the pod
+spire                14m         Normal    Started                   pod/spire-agent-8cdck                                               Container started
+spire                14m         Normal    Created                   pod/spire-agent-8cdck                                               Container created
+spire                14m         Normal    Pulled                    pod/spire-agent-8cdck                                               Container image "ghcr.io/spiffe/spire-agent:1.15.2" already present on machine and can be accessed by the pod
+spire                14m         Normal    Scheduled                 pod/spire-agent-8cdck                                               Successfully assigned spire/spire-agent-8cdck to aws-vend-to-access-poll-worker
+spire                14m         Normal    Created                   pod/spire-agent-nrdqk                                               Container created
+spire                14m         Normal    Started                   pod/spire-agent-nrdqk                                               Container started
+opa                  13m         Normal    SuccessfulCreate          replicaset/opa-5c54cb55fb                                           Created pod: opa-5c54cb55fb-6sdp2
+opa                  13m         Normal    ScalingReplicaSet         deployment/opa                                                      Scaled up replica set opa-5c54cb55fb from 0 to 1
+opa                  13m         Normal    Scheduled                 pod/opa-5c54cb55fb-6sdp2                                            Successfully assigned opa/opa-5c54cb55fb-6sdp2 to aws-vend-to-access-poll-worker
+opa                  13m         Normal    Created                   pod/opa-5c54cb55fb-6sdp2                                            Container created
+opa                  13m         Normal    Pulled                    pod/opa-5c54cb55fb-6sdp2                                            Container image "ghcr.io/spiffe/spiffe-helper:0.11.0" already present on machine and can be accessed by the pod
+opa                  13m         Normal    Started                   pod/opa-5c54cb55fb-6sdp2                                            Container started
+opa                  13m         Normal    Started                   pod/opa-5c54cb55fb-6sdp2                                            Container started
+opa                  13m         Normal    Created                   pod/opa-5c54cb55fb-6sdp2                                            Container created
+opa                  13m         Normal    Pulled                    pod/opa-5c54cb55fb-6sdp2                                            Container image "openpolicyagent/opa:1.18.2" already present on machine and can be accessed by the pod
+opa                  13m         Normal    Started                   pod/opa-5c54cb55fb-6sdp2                                            Container started
+opa                  13m         Normal    Created                   pod/opa-5c54cb55fb-6sdp2                                            Container created
+opa                  13m         Normal    Pulled                    pod/opa-5c54cb55fb-6sdp2                                            Container image "ghcr.io/spiffe/spiffe-helper:0.11.0" already present on machine and can be accessed by the pod
+nhi                  13m         Normal    SuccessfulCreate          replicaset/policy-engine-9f7dd98c4                                  Created pod: policy-engine-9f7dd98c4-7spf9
+nhi                  13m         Normal    ScalingReplicaSet         deployment/policy-engine                                            Scaled up replica set policy-engine-9f7dd98c4 from 0 to 1
+agents               13m         Normal    SuccessfulCreate          replicaset/nhi-test-workload-5965cbf6f8                             Created pod: nhi-test-workload-5965cbf6f8-7fsf8
+nhi                  13m         Normal    Scheduled                 pod/policy-engine-9f7dd98c4-7spf9                                   Successfully assigned nhi/policy-engine-9f7dd98c4-7spf9 to aws-vend-to-access-poll-worker
+nhi                  13m         Warning   ErrImageNeverPull         pod/policy-engine-9f7dd98c4-7spf9                                   Container image "nhi-lab/policy-engine:dev" is not present with pull policy of Never
+nhi                  13m         Warning   Failed                    pod/policy-engine-9f7dd98c4-7spf9                                   Error: ErrImageNeverPull
+agents               13m         Normal    ScalingReplicaSet         deployment/nhi-test-workload                                        Scaled up replica set nhi-test-workload-5965cbf6f8 from 0 to 1
+agents               13m         Normal    Scheduled                 pod/nhi-test-workload-5965cbf6f8-7fsf8                              Successfully assigned agents/nhi-test-workload-5965cbf6f8-7fsf8 to aws-vend-to-access-poll-worker
+agents               13m         Normal    Started                   pod/nhi-test-workload-5965cbf6f8-7fsf8                              Container started
+agents               13m         Normal    Created                   pod/nhi-test-workload-5965cbf6f8-7fsf8                              Container created
+agents               13m         Normal    Pulled                    pod/nhi-test-workload-5965cbf6f8-7fsf8                              Container image "ghcr.io/spiffe/spire-agent:1.15.2" already present on machine and can be accessed by the pod
+nhi                  13m         Normal    Pulled                    pod/policy-engine-9f7dd98c4-7spf9                                   Container image "nhi-lab/policy-engine:dev" already present on machine and can be accessed by the pod
+nhi                  13m         Normal    Created                   pod/policy-engine-9f7dd98c4-7spf9                                   Container created
+nhi                  13m         Normal    Started                   pod/policy-engine-9f7dd98c4-7spf9                                   Container started
+nhi                  13m         Normal    ScalingReplicaSet         deployment/policy-engine                                            Scaled up replica set policy-engine-9cb4455b from 0 to 1
+nhi                  13m         Normal    SuccessfulCreate          replicaset/policy-engine-9cb4455b                                   Created pod: policy-engine-9cb4455b-9bqlw
+nhi                  13m         Normal    Scheduled                 pod/policy-engine-9cb4455b-9bqlw                                    Successfully assigned nhi/policy-engine-9cb4455b-9bqlw to aws-vend-to-access-poll-worker
+nhi                  13m         Normal    Pulled                    pod/policy-engine-9cb4455b-9bqlw                                    Container image "nhi-lab/policy-engine:dev" already present on machine and can be accessed by the pod
+nhi                  13m         Normal    Created                   pod/policy-engine-9cb4455b-9bqlw                                    Container created
+nhi                  13m         Normal    Started                   pod/policy-engine-9cb4455b-9bqlw                                    Container started
+nhi                  13m         Normal    Killing                   pod/policy-engine-9f7dd98c4-7spf9                                   Stopping container policy-engine
+nhi                  13m         Normal    ScalingReplicaSet         deployment/policy-engine                                            Scaled down replica set policy-engine-9f7dd98c4 from 1 to 0
+nhi                  13m         Normal    SuccessfulDelete          replicaset/policy-engine-9f7dd98c4                                  Deleted pod: policy-engine-9f7dd98c4-7spf9
+nhi                  12m         Normal    SuccessfulCreate          replicaset/vending-service-598b4b5754                               Created pod: vending-service-598b4b5754-qbvmj
+nhi                  12m         Normal    WaitForFirstConsumer      persistentvolumeclaim/vending-data                                  waiting for first consumer to be created before binding
+nhi                  12m         Normal    ScalingReplicaSet         deployment/vending-service                                          Scaled up replica set vending-service-598b4b5754 from 0 to 1
+nhi                  12m         Normal    ExternalProvisioning      persistentvolumeclaim/vending-data                                  Waiting for a volume to be created either by the external provisioner 'rancher.io/local-path' or manually by the system administrator. If volume creation is delayed, please verify that the provisioner is running and correctly registered.
+nhi                  12m         Normal    ScalingReplicaSet         deployment/vending-service                                          Scaled down replica set vending-service-598b4b5754 from 1 to 0
+nhi                  12m         Normal    ScalingReplicaSet         deployment/vending-service                                          Scaled up replica set vending-service-65fcff65bd from 0 to 1
+nhi                  12m         Normal    SuccessfulDelete          replicaset/vending-service-598b4b5754                               Deleted pod: vending-service-598b4b5754-qbvmj
+nhi                  12m         Warning   FailedScheduling          pod/vending-service-598b4b5754-qbvmj                                running PreBind plugin "VolumeBinding": binding volumes: pod does not exist any more: pod "vending-service-598b4b5754-qbvmj" not found
+nhi                  12m         Normal    Provisioning              persistentvolumeclaim/vending-data                                  External provisioner is provisioning volume for claim "nhi/vending-data"
+nhi                  12m         Normal    SuccessfulCreate          replicaset/vending-service-65fcff65bd                               Created pod: vending-service-65fcff65bd-wm2mt
+local-path-storage   12m         Normal    Started                   pod/helper-pod-create-pvc-e98c5209-3c7e-4be5-8f87-0986b916d6c4      Container started
+local-path-storage   12m         Normal    Created                   pod/helper-pod-create-pvc-e98c5209-3c7e-4be5-8f87-0986b916d6c4      Container created
+local-path-storage   12m         Normal    Pulled                    pod/helper-pod-create-pvc-e98c5209-3c7e-4be5-8f87-0986b916d6c4      Container image "docker.io/kindest/local-path-helper:v20260131-7181c60a" already present on machine and can be accessed by the pod
+nhi                  12m         Normal    ProvisioningSucceeded     persistentvolumeclaim/vending-data                                  Successfully provisioned volume pvc-e98c5209-3c7e-4be5-8f87-0986b916d6c4
+nhi                  12m         Normal    Scheduled                 pod/vending-service-65fcff65bd-wm2mt                                Successfully assigned nhi/vending-service-65fcff65bd-wm2mt to aws-vend-to-access-poll-worker
+nhi                  12m         Normal    Pulled                    pod/vending-service-65fcff65bd-wm2mt                                Container image "nhi-lab/vending-service:dev" already present on machine and can be accessed by the pod
+nhi                  12m         Normal    Created                   pod/vending-service-65fcff65bd-wm2mt                                Container created
+nhi                  12m         Normal    Started                   pod/vending-service-65fcff65bd-wm2mt                                Container started
+nhi                  12m         Normal    ScalingReplicaSet         deployment/resource                                                 Scaled up replica set resource-66f9fdcb44 from 0 to 1
+nhi                  12m         Normal    SuccessfulCreate          replicaset/resource-66f9fdcb44                                      Created pod: resource-66f9fdcb44-nlkgn
+nhi                  12m         Normal    Scheduled                 pod/resource-66f9fdcb44-nlkgn                                       Successfully assigned nhi/resource-66f9fdcb44-nlkgn to aws-vend-to-access-poll-worker
+nhi                  12m         Normal    ScalingReplicaSet         deployment/resource                                                 Scaled up replica set resource-bfbc9b8c from 0 to 1
+nhi                  12m         Normal    SuccessfulCreate          replicaset/resource-bfbc9b8c                                        Created pod: resource-bfbc9b8c-sbjfx
+nhi                  12m         Normal    Scheduled                 pod/resource-bfbc9b8c-sbjfx                                         Successfully assigned nhi/resource-bfbc9b8c-sbjfx to aws-vend-to-access-poll-worker
+nhi                  12m         Normal    Pulled                    pod/resource-66f9fdcb44-nlkgn                                       Container image "nhi-lab/resource:dev" already present on machine and can be accessed by the pod
+nhi                  12m         Normal    Created                   pod/resource-66f9fdcb44-nlkgn                                       Container created
+nhi                  12m         Normal    Started                   pod/resource-66f9fdcb44-nlkgn                                       Container started
+nhi                  12m         Normal    Created                   pod/resource-bfbc9b8c-sbjfx                                         Container created
+nhi                  12m         Normal    Pulled                    pod/resource-bfbc9b8c-sbjfx                                         Container image "nhi-lab/resource:dev" already present on machine and can be accessed by the pod
+nhi                  12m         Normal    Started                   pod/resource-bfbc9b8c-sbjfx                                         Container started
+nhi                  12m         Normal    SuccessfulDelete          replicaset/resource-66f9fdcb44                                      Deleted pod: resource-66f9fdcb44-nlkgn
+nhi                  12m         Normal    Killing                   pod/resource-66f9fdcb44-nlkgn                                       Stopping container resource
+nhi                  12m         Normal    ScalingReplicaSet         deployment/resource                                                 Scaled down replica set resource-66f9fdcb44 from 1 to 0
+agents               12m         Normal    ScalingReplicaSet         deployment/experiments-parent                                       Scaled up replica set experiments-parent-fc985bd87 from 0 to 1
+agents               12m         Normal    Scheduled                 pod/experiments-attacker-c7c7dcc66-96zzs                            Successfully assigned agents/experiments-attacker-c7c7dcc66-96zzs to aws-vend-to-access-poll-worker
+agents               12m         Normal    SuccessfulCreate          replicaset/experiments-attacker-c7c7dcc66                           Created pod: experiments-attacker-c7c7dcc66-96zzs
+agents               12m         Normal    ScalingReplicaSet         deployment/experiments-attacker                                     Scaled up replica set experiments-attacker-c7c7dcc66 from 0 to 1
+agents               12m         Normal    SuccessfulCreate          replicaset/experiments-parent-fc985bd87                             Created pod: experiments-parent-fc985bd87-hj55f
+agents               12m         Normal    Scheduled                 pod/experiments-parent-fc985bd87-hj55f                              Successfully assigned agents/experiments-parent-fc985bd87-hj55f to aws-vend-to-access-poll-worker
+agents               12m         Normal    Scheduled                 pod/experiments-child-85c8bd56cc-48s6q                              Successfully assigned agents/experiments-child-85c8bd56cc-48s6q to aws-vend-to-access-poll-worker
+agents               12m         Normal    SuccessfulCreate          replicaset/experiments-child-85c8bd56cc                             Created pod: experiments-child-85c8bd56cc-48s6q
+agents               12m         Normal    ScalingReplicaSet         deployment/experiments-child                                        Scaled up replica set experiments-child-85c8bd56cc from 0 to 1
+agents               12m         Normal    SuccessfulCreate          replicaset/experiments-grandchild-7f645577d6                        Created pod: experiments-grandchild-7f645577d6-kdprm
+agents               12m         Normal    ScalingReplicaSet         deployment/experiments-grandchild                                   Scaled up replica set experiments-grandchild-7f645577d6 from 0 to 1
+agents               12m         Normal    Scheduled                 pod/experiments-grandchild-7f645577d6-kdprm                         Successfully assigned agents/experiments-grandchild-7f645577d6-kdprm to aws-vend-to-access-poll-worker
+agents               12m         Normal    Pulled                    pod/experiments-attacker-c7c7dcc66-96zzs                            Container image "nhi-lab/parentsim:dev" already present on machine and can be accessed by the pod
+agents               12m         Normal    Pulled                    pod/experiments-parent-fc985bd87-hj55f                              Container image "nhi-lab/parentsim:dev" already present on machine and can be accessed by the pod
+agents               12m         Normal    Created                   pod/experiments-parent-fc985bd87-hj55f                              Container created
+agents               12m         Normal    Created                   pod/experiments-attacker-c7c7dcc66-96zzs                            Container created
+agents               12m         Normal    Pulled                    pod/experiments-grandchild-7f645577d6-kdprm                         Container image "nhi-lab/parentsim:dev" already present on machine and can be accessed by the pod
+agents               12m         Normal    Created                   pod/experiments-grandchild-7f645577d6-kdprm                         Container created
+agents               12m         Normal    Pulled                    pod/experiments-child-85c8bd56cc-48s6q                              Container image "nhi-lab/parentsim:dev" already present on machine and can be accessed by the pod
+agents               12m         Normal    Created                   pod/experiments-child-85c8bd56cc-48s6q                              Container created
+agents               12m         Normal    Started                   pod/experiments-parent-fc985bd87-hj55f                              Container started
+agents               12m         Normal    Started                   pod/experiments-attacker-c7c7dcc66-96zzs                            Container started
+agents               12m         Normal    Started                   pod/experiments-grandchild-7f645577d6-kdprm                         Container started
+agents               12m         Normal    Started                   pod/experiments-child-85c8bd56cc-48s6q                              Container started

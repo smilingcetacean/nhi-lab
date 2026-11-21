@@ -1,0 +1,12 @@
+{
+  "archive_sha256": "61a4a86e603593d842bb27dc20cbbce34e5c67268d7e0119d70a10ede08682b0",
+  "archive_size_bytes": 91802,
+  "guest_sha256_recorded_by_queue_at_creation": "61a4a86e603593d842bb27dc20cbbce34e5c67268d7e0119d70a10ede08682b0",
+  "guest_sha256_recomputed_before_transfer": "61a4a86e603593d842bb27dc20cbbce34e5c67268d7e0119d70a10ede08682b0",
+  "local_sha256_after_transfer": "61a4a86e603593d842bb27dc20cbbce34e5c67268d7e0119d70a10ede08682b0",
+  "sha256_match": true,
+  "guest_archive_path": "/var/tmp/nhi-rerun/out/20261121T213006Z-storage-growth-churn.tar.gz",
+  "source_instance_id": "i-01d083bbb690a12c2",
+  "source_archive_sha256_guest_and_local": "651b450c3d455dcc5db8b6edc024b7ca1b98a2c427eb40d895e9642004f2142d",
+  "transport": "AWS Systems Manager Run Command (AWS-RunShellScript): tarball read on the guest as base64 in 18000-character slices (cut), reassembled and decoded locally; no port forwarding, no ingress"
+}

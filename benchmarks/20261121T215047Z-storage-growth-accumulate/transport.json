@@ -1,0 +1,19 @@
+{
+  "credential_redactions": {},
+  "source_sha": "a69d56fc017cd890d2d5eacbd1f2ca05dec249b2",
+  "source_archive_sha256": "af895909039a6752e412c6889279b1f3cbde22d47d6ad77bdb6ba122cda3794f",
+  "archive_paths": [
+    "Makefile",
+    "install.sh",
+    "README.md",
+    "LICENSE",
+    "requirements.txt",
+    "src"
+  ],
+  "instance_id": "i-01d083bbb690a12c2",
+  "instance_type": "t3a.large",
+  "cpu_credits": "unlimited",
+  "market": "spot",
+  "availability_zone": "us-east-1f",
+  "guest_source_dir": "/var/tmp/nhi-lab-a69d56f"
+}

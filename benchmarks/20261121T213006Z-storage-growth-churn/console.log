@@ -1,0 +1,19 @@
+[2026-11-21T21:32:44Z] uv run python3 storage_growth.py --phase churn --n 100 --step 25 --run-id 20261121T213006Z-storage-growth-churn
+== storage growth: churn, n = 100, checkpoints [0, 1, 2, 25, 50, 75, 100] ==
+  spire-server: pod spire-server-0 on aws-storage-growth-churn-worker, spire-data-spire-server-0 -> pvc-d2c5e4c9-21a6-4255-ae9a-c5b77a4283e3 at /var/local-path-provisioner/pvc-d2c5e4c9-21a6-4255-ae9a-c5b77a4283e3_spire_spire-data-spire-server-0
+  vending-service: pod vending-service-6f7787787c-thkzm on aws-storage-growth-churn-worker, vending-data -> pvc-39b4dd0e-c0da-4375-84a4-7ed41a652c62 at /var/local-path-provisioner/pvc-39b4dd0e-c0da-4375-84a4-7ed41a652c62_nhi_vending-data
+  policy-engine: pod policy-engine-6757ccd55d-n7n5g on aws-storage-growth-churn-worker
+  opa: pod opa-5c54cb55fb-t7t49 on aws-storage-growth-churn-worker
+  step  0 [churn live=0 vended=0 disposed=0] spire 902521 B/143360 B logical, vending 78096 B/28672 B logical, opa modules 0, entries 12  [1.11 s]
+  idle 30 s, no operations
+  step  1 [idle-start live=0 vended=0 disposed=0] spire 902521 B/143360 B logical, vending 78096 B/28672 B logical, opa modules 0, entries 12  [0.7 s]
+  step  2 [churn live=0 vended=1 disposed=1] spire 993161 B/143360 B logical, vending 116558 B/28672 B logical, opa modules 0, entries 12  [0.67 s]
+  step  3 [churn live=0 vended=2 disposed=2] spire 1083801 B/143360 B logical, vending 155020 B/28672 B logical, opa modules 0, entries 12  [0.69 s]
+  step  4 [churn live=0 vended=25 disposed=25] spire 3180881 B/151552 B logical, vending 1051996 B/36864 B logical, opa modules 0, entries 12  [0.68 s]
+  step  5 [churn live=0 vended=50 disposed=50] spire 4337713 B/159744 B logical, vending 2030018 B/45056 B logical, opa modules 0, entries 12  [0.74 s]
+  step  6 [churn live=0 vended=75 disposed=75] spire 4337713 B/163840 B logical, vending 3032762 B/69632 B logical, opa modules 0, entries 12  [0.72 s]
+  step  7 [churn live=0 vended=100 disposed=100] spire 4345905 B/172032 B logical, vending 4023147 B/86016 B logical, opa modules 0, entries 12  [0.77 s]
+  idle 30 s, no operations
+  step  8 [idle-end live=0 vended=100 disposed=100] spire 4345905 B/172032 B logical, vending 4023147 B/86016 B logical, opa modules 0, entries 12  [0.73 s]
+checks all_ok = True
+131.4 s; results in /var/tmp/nhi-lab-ea47be3/src/experiments/results/20261121T213006Z-storage-growth-churn

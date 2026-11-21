@@ -1,0 +1,25 @@
+{
+    "label": "CPUCreditBalance",
+    "datapoints": [
+        {
+            "Timestamp": "2026-11-21T13:45:00-05:00",
+            "Average": 0.0,
+            "Unit": "Count"
+        },
+        {
+            "Timestamp": "2026-11-21T13:50:00-05:00",
+            "Average": 0.0061402,
+            "Unit": "Count"
+        },
+        {
+            "Timestamp": "2026-11-21T13:55:00-05:00",
+            "Average": 0.017790016666666665,
+            "Unit": "Count"
+        },
+        {
+            "Timestamp": "2026-11-21T14:00:00-05:00",
+            "Average": 0.0061551,
+            "Unit": "Count"
+        }
+    ]
+}

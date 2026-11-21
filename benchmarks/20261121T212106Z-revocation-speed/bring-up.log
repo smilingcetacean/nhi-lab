@@ -1,0 +1,225 @@
+[2026-11-21T21:21:06Z] make clean KIND_CLUSTER=aws-revocation-speed
+>> kind cluster 'aws-revocation-speed' does not exist
+>> clean
+[2026-11-21T21:21:07Z] rc=0
+[2026-11-21T21:21:07Z] make cluster-up KIND_CLUSTER=aws-revocation-speed
+>> creating kind cluster 'aws-revocation-speed'
+Creating cluster "aws-revocation-speed" ...
+ • Ensuring node image (kindest/node:v1.36.1) 🖼  ...
+ ✓ Ensuring node image (kindest/node:v1.36.1) 🖼
+ • Preparing nodes 📦 📦   ...
+ ✓ Preparing nodes 📦 📦 
+ • Writing configuration 📜  ...
+ ✓ Writing configuration 📜
+ • Starting control-plane 🕹️  ...
+ ✓ Starting control-plane 🕹️
+ • Installing CNI 🔌  ...
+ ✓ Installing CNI 🔌
+ • Installing StorageClass 💾  ...
+ ✓ Installing StorageClass 💾
+ • Joining worker nodes 🚜  ...
+ ✓ Joining worker nodes 🚜
+ • Waiting ≤ 2m0s for control-plane = Ready ⏳  ...
+ ✓ Waiting ≤ 2m0s for control-plane = Ready ⏳
+ • Ready after 14s 💚
+Set kubectl context to "kind-aws-revocation-speed"
+You can now use your cluster with:
+
+kubectl cluster-info --context kind-aws-revocation-speed
+
+Have a question, bug, or feature request? Let us know! https://kind.sigs.k8s.io/#community 🙂
+>> loading ghcr.io/spiffe/spire-server:1.15.2 into kind/aws-revocation-speed
+>> loading ghcr.io/spiffe/spire-agent:1.15.2 into kind/aws-revocation-speed
+>> loading openpolicyagent/opa:1.18.2 into kind/aws-revocation-speed
+>> loading ghcr.io/spiffe/spiffe-helper:0.11.0 into kind/aws-revocation-speed
+>> loading curlimages/curl:8.18.0 into kind/aws-revocation-speed
+>> waiting for nodes to be Ready
+node/aws-revocation-speed-control-plane condition met
+node/aws-revocation-speed-worker condition met
+NAME                                 STATUS   ROLES           AGE   VERSION   INTERNAL-IP   EXTERNAL-IP   OS-IMAGE                       KERNEL-VERSION           CONTAINER-RUNTIME
+aws-revocation-speed-control-plane   Ready    control-plane   54s   v1.36.1   172.18.0.3    <none>        Debian GNU/Linux 13 (trixie)   7.0.0-1018-aws (amd64)   containerd://2.3.1
+aws-revocation-speed-worker          Ready    <none>          42s   v1.36.1   172.18.0.2    <none>        Debian GNU/Linux 13 (trixie)   7.0.0-1018-aws (amd64)   containerd://2.3.1
+[2026-11-21T21:22:20Z] rc=0
+[2026-11-21T21:22:20Z] make spire-up KIND_CLUSTER=aws-revocation-speed
+namespace/spire created
+namespace/opa created
+namespace/nhi created
+namespace/agents created
+>> deploying SPIRE server 1.15.2
+serviceaccount/spire-server created
+clusterrole.rbac.authorization.k8s.io/spire-server-node-attestor created
+clusterrolebinding.rbac.authorization.k8s.io/spire-server-node-attestor created
+role.rbac.authorization.k8s.io/spire-server-bundle-publisher created
+rolebinding.rbac.authorization.k8s.io/spire-server-bundle-publisher created
+configmap/spire-server created
+configmap/spire-bundle created
+service/spire-server created
+statefulset.apps/spire-server created
+>> waiting for spire-server to become Ready
+Waiting for 1 pods to be ready...
+partitioned roll out complete: 1 new pods have been updated...
+>> waiting for the spire-bundle ConfigMap to be populated
+>> trust bundle published (805 bytes)
+>> deploying SPIRE agent 1.15.2
+serviceaccount/spire-agent created
+clusterrole.rbac.authorization.k8s.io/spire-agent-workload-attestor created
+clusterrolebinding.rbac.authorization.k8s.io/spire-agent-workload-attestor created
+configmap/spire-agent created
+daemonset.apps/spire-agent created
+>> waiting for spire-agent DaemonSet to become Ready
+Waiting for daemon set "spire-agent" rollout to finish: 0 of 2 updated pods are available...
+Waiting for daemon set "spire-agent" rollout to finish: 1 of 2 updated pods are available...
+daemon set "spire-agent" successfully rolled out
+>> waiting for node attestation to complete
+>> 2 agents attested via k8s_psat
+Registering static SPIRE entries in trust domain lab.local
+  + node alias: spiffe://lab.local/node/nhi-lab
+  + static test workload: spiffe://lab.local/svc/test-workload
+  + properly-shaped child test identity (verify-policy only): spiffe://lab.local/agent/parent/policy-verify/child/policy-verify-child
+  + OPA server: spiffe://lab.local/svc/opa
+  + policy engine: spiffe://lab.local/svc/policy-engine
+  + protected resource: spiffe://lab.local/svc/resource
+  + vending service: spiffe://lab.local/svc/vending-service
+  + vend-verify parent (verify-vending only): spiffe://lab.local/agent/parent/vend-verify
+  + demo parent: spiffe://lab.local/agent/parent/demo
+  + OpenCode parent: spiffe://lab.local/agent/parent/opencode
+  + experiments root parent: spiffe://lab.local/agent/parent/exp-root
+  + policy probe (verify only): spiffe://lab.local/svc/policy-probe
+
+Found 12 entries
+Entry ID                : 92c86137-f633-47fd-87e3-cf25582ae38f
+SPIFFE ID               : spiffe://lab.local/agent/parent/demo
+Parent ID               : spiffe://lab.local/node/nhi-lab
+Revision                : 0
+X509-SVID TTL           : default
+JWT-SVID TTL            : default
+Selector                : k8s:ns:agents
+Selector                : k8s:sa:nhi-demo-parent
+
+Entry ID                : ae7a82f7-cccb-471e-93c7-c79ac6f0f638
+SPIFFE ID               : spiffe://lab.local/agent/parent/exp-root
+Parent ID               : spiffe://lab.local/node/nhi-lab
+Revision                : 0
+X509-SVID TTL           : default
+JWT-SVID TTL            : default
+Selector                : k8s:ns:agents
+Selector                : k8s:sa:nhi-exp-parent
+
+Entry ID                : c69f1ed2-9969-4a11-b2a2-dfd3a92a9815
+SPIFFE ID               : spiffe://lab.local/agent/parent/opencode
+Parent ID               : spiffe://lab.local/node/nhi-lab
+Revision                : 0
+X509-SVID TTL           : default
+JWT-SVID TTL            : default
+Selector                : k8s:ns:agents
+Selector                : k8s:sa:nhi-opencode-parent
+
+Entry ID                : 46c9f1e3-9937-4240-a138-af4244a2cf5a
+SPIFFE ID               : spiffe://lab.local/agent/parent/policy-verify/child/policy-verify-child
+Parent ID               : spiffe://lab.local/node/nhi-lab
+Revision                : 0
+X509-SVID TTL           : default
+JWT-SVID TTL            : default
+Selector                : k8s:ns:agents
+Selector                : k8s:sa:nhi-test-child
+
+Entry ID                : e7324f12-c4db-472a-932a-36c490fc267f
+SPIFFE ID               : spiffe://lab.local/agent/parent/vend-verify
+Parent ID               : spiffe://lab.local/node/nhi-lab
+Revision                : 0
+X509-SVID TTL           : default
+JWT-SVID TTL            : default
+Selector                : k8s:ns:agents
+Selector                : k8s:sa:nhi-test-vend-parent
+
+Entry ID                : 068c95c5-ed59-4e0e-9105-45ceec3cc127
+SPIFFE ID               : spiffe://lab.local/node/nhi-lab
+Parent ID               : spiffe://lab.local/spire/server
+Revision                : 0
+X509-SVID TTL           : default
+JWT-SVID TTL            : default
+Selector                : k8s_psat:cluster:nhi-lab
+
+Entry ID                : a37d90af-054b-4b17-bf08-07130f764ee1
+SPIFFE ID               : spiffe://lab.local/svc/opa
+Parent ID               : spiffe://lab.local/node/nhi-lab
+Revision                : 0
+X509-SVID TTL           : default
+JWT-SVID TTL            : default
+Selector                : k8s:ns:opa
+Selector                : k8s:sa:opa
+DNS name                : opa.opa.svc.cluster.local
+DNS name                : opa.opa.svc
+DNS name                : opa
+
+Entry ID                : 1a61f657-10ef-42ef-856c-1b5eeddb643f
+SPIFFE ID               : spiffe://lab.local/svc/policy-engine
+Parent ID               : spiffe://lab.local/node/nhi-lab
+Revision                : 0
+X509-SVID TTL           : default
+JWT-SVID TTL            : default
+Selector                : k8s:ns:nhi
+Selector                : k8s:sa:policy-engine
+DNS name                : policy-engine.nhi.svc.cluster.local
+DNS name                : policy-engine.nhi.svc
+DNS name                : policy-engine
+
+Entry ID                : e12dc756-6c59-467b-b93f-a30268a0c13a
+SPIFFE ID               : spiffe://lab.local/svc/policy-probe
+Parent ID               : spiffe://lab.local/node/nhi-lab
+Revision                : 0
+X509-SVID TTL           : default
+JWT-SVID TTL            : default
+Selector                : k8s:ns:nhi
+Selector                : k8s:sa:policy-probe
+
+Entry ID                : 90899079-1c72-4b3a-89e8-0b3838af5146
+SPIFFE ID               : spiffe://lab.local/svc/resource
+Parent ID               : spiffe://lab.local/node/nhi-lab
+Revision                : 0
+X509-SVID TTL           : default
+JWT-SVID TTL            : default
+Selector                : k8s:ns:nhi
+Selector                : k8s:sa:resource
+
+Entry ID                : cd5cae8c-5004-4bbb-b774-c29e9c543a07
+SPIFFE ID               : spiffe://lab.local/svc/test-workload
+Parent ID               : spiffe://lab.local/node/nhi-lab
+Revision                : 0
+X509-SVID TTL           : default
+JWT-SVID TTL            : default
+Selector                : k8s:ns:agents
+Selector                : k8s:sa:nhi-test
+
+Entry ID                : 1b568a15-9a0b-4f4b-9a99-d4c892fa8471
+SPIFFE ID               : spiffe://lab.local/svc/vending-service
+Parent ID               : spiffe://lab.local/node/nhi-lab
+Revision                : 0
+X509-SVID TTL           : default
+JWT-SVID TTL            : default
+Selector                : k8s:ns:nhi
+Selector                : k8s:sa:vending-service
+
+>> deploying OPA (authentication=tls, authorization=basic)
+configmap/opa-authz created
+configmap/opa-spiffe-helper created
+serviceaccount/opa created
+service/opa created
+deployment.apps/opa created
+networkpolicy.networking.k8s.io/opa-ingress created
+Waiting for deployment "opa" rollout to finish: 0 out of 1 new replicas have been updated...
+Waiting for deployment "opa" rollout to finish: 0 of 1 updated replicas are available...
+deployment "opa" successfully rolled out
+>> pre-declaring policy engine
+serviceaccount/policy-engine created
+service/policy-engine created
+deployment.apps/policy-engine created
+configmap/policy-engine-bootstrap created
+>> deploying static test workload
+serviceaccount/nhi-test created
+deployment.apps/nhi-test-workload created
+Waiting for deployment "nhi-test-workload" rollout to finish: 0 of 1 updated replicas are available...
+deployment "nhi-test-workload" successfully rolled out
+
+>> baseline up. Run 'make verify'.
+[2026-11-21T21:22:57Z] rc=0

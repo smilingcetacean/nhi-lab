@@ -1,0 +1,10 @@
+Written by the collecting agent, not by the queue.
+
+The queue ran:  uv run python3 storage_growth.py --phase accumulate --n 200 --step 25 --run-id 20261121T212719Z-storage-growth-accumulate
+It exited rc=2 after 3 s (21:30:00Z .. 21:30:03Z) with no measurements:
+  FATAL: MAX_LIVE_CHILDREN is 8 in the running vending-service pod; this run needs 200
+Cause: the queue did not raise the vending-service live-children cap before the accumulate phase. storage_growth.py
+(line ~907) records that the earlier accumulate run used
+  kubectl -n nhi set env deployment/vending-service MAX_LIVE_CHILDREN=200   (manifest default 8)
+as a manual setup step. The queue script had no such step.
+No retry was made; there are no result CSV/JSON files for this item. The cluster was cleaned up normally (see cleanup.log).

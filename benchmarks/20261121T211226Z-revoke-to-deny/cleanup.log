@@ -1,0 +1,9 @@
+[2026-11-21T21:21:03Z] make clean KIND_CLUSTER=aws-revoke-to-deny
+>> deleting kind cluster 'aws-revoke-to-deny'
+Deleting cluster "aws-revoke-to-deny" ...
+Deleted nodes: ["aws-revoke-to-deny-control-plane" "aws-revoke-to-deny-worker"]
+>> clean
+[2026-11-21T21:21:06Z] rc=0
+No kind clusters found.
+--- kind containers:
+--- all containers:

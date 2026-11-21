@@ -1,0 +1,18 @@
+NAMESPACE            NAME                                                     READY   STATUS    RESTARTS   AGE     IP           NODE                             NOMINATED NODE   READINESS GATES
+agents               nhi-test-workload-5965cbf6f8-8j2mb                       1/1     Running   0          3m42s   10.244.1.6   aws-vend-to-svid-worker          <none>           <none>
+kube-system          coredns-589f44dc88-vp65l                                 1/1     Running   0          5m11s   10.244.0.2   aws-vend-to-svid-control-plane   <none>           <none>
+kube-system          coredns-589f44dc88-vz7jg                                 1/1     Running   0          5m11s   10.244.0.4   aws-vend-to-svid-control-plane   <none>           <none>
+kube-system          etcd-aws-vend-to-svid-control-plane                      1/1     Running   0          5m17s   172.18.0.2   aws-vend-to-svid-control-plane   <none>           <none>
+kube-system          kindnet-727x4                                            1/1     Running   0          5m9s    172.18.0.3   aws-vend-to-svid-worker          <none>           <none>
+kube-system          kindnet-n9kh9                                            1/1     Running   0          5m11s   172.18.0.2   aws-vend-to-svid-control-plane   <none>           <none>
+kube-system          kube-apiserver-aws-vend-to-svid-control-plane            1/1     Running   0          5m19s   172.18.0.2   aws-vend-to-svid-control-plane   <none>           <none>
+kube-system          kube-controller-manager-aws-vend-to-svid-control-plane   1/1     Running   0          5m17s   172.18.0.2   aws-vend-to-svid-control-plane   <none>           <none>
+kube-system          kube-proxy-qkc88                                         1/1     Running   0          5m11s   172.18.0.2   aws-vend-to-svid-control-plane   <none>           <none>
+kube-system          kube-proxy-zzpxz                                         1/1     Running   0          5m9s    172.18.0.3   aws-vend-to-svid-worker          <none>           <none>
+kube-system          kube-scheduler-aws-vend-to-svid-control-plane            1/1     Running   0          5m20s   172.18.0.2   aws-vend-to-svid-control-plane   <none>           <none>
+local-path-storage   local-path-provisioner-855c7b7774-cqbtz                  1/1     Running   0          5m11s   10.244.0.3   aws-vend-to-svid-control-plane   <none>           <none>
+nhi                  policy-engine-597d5995c9-64fjx                           1/1     Running   0          2m3s    10.244.1.7   aws-vend-to-svid-worker          <none>           <none>
+opa                  opa-5c54cb55fb-74tnr                                     2/2     Running   0          3m50s   10.244.1.4   aws-vend-to-svid-worker          <none>           <none>
+spire                spire-agent-4nnbt                                        1/1     Running   0          4m5s    172.18.0.2   aws-vend-to-svid-control-plane   <none>           <none>
+spire                spire-agent-6995p                                        1/1     Running   0          4m5s    172.18.0.3   aws-vend-to-svid-worker          <none>           <none>
+spire                spire-server-0                                           1/1     Running   0          4m18s   10.244.1.3   aws-vend-to-svid-worker          <none>           <none>

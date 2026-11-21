@@ -1,0 +1,8 @@
+{
+  "archive_sha256": "1e467c1897d21e85a21d20becada67acb1c70fb88a10261e2c2767cdeee8a9fd",
+  "archive_size_bytes": 73898,
+  "source_instance_id": "i-0c432f8d182025e8d",
+  "transport": "AWS Systems Manager port forwarding to guest loopback",
+  "guest_queue_service": "nhi-lab-bench-queue.service",
+  "ssm_dispatch_command_id": "e4ee6eca-667e-49d9-b125-dfdabd1f50e0"
+}

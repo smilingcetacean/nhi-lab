@@ -1,0 +1,11 @@
+[2026-11-21T21:58:18Z] make clean KIND_CLUSTER=aws-storage-growth-accumulate
+>> deleting kind cluster 'aws-storage-growth-accumulate'
+Deleting cluster "aws-storage-growth-accumulate" ...
+Deleted nodes: ["aws-storage-growth-accumulate-worker" "aws-storage-growth-accumulate-control-plane"]
+>> clean
+[2026-11-21T21:58:21Z] rc=0
+--- kind get clusters:
+No kind clusters found.
+--- kind containers:
+--- all containers:
+--- end

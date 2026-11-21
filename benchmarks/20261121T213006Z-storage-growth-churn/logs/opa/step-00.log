@@ -1,0 +1,3 @@
+2026-11-21T21:32:46.519877000Z 2026/11/21 21:32:46 http: TLS handshake error from 10.244.1.1:58460: EOF
+2026-11-21T21:32:48.682187606Z 2026/11/21 21:32:48 http: TLS handshake error from 10.244.1.1:58468: EOF
+2026-11-21T21:32:49.405098818Z 2026/11/21 21:32:49 http: TLS handshake error from 127.0.0.1:40350: tls: client didn't provide a certificate

@@ -1,0 +1,329 @@
+[2026-11-21T21:30:06Z] make clean KIND_CLUSTER=aws-storage-growth-churn
+>> kind cluster 'aws-storage-growth-churn' does not exist
+>> clean
+[2026-11-21T21:30:06Z] rc=0
+[2026-11-21T21:30:06Z] make cluster-up KIND_CLUSTER=aws-storage-growth-churn
+>> creating kind cluster 'aws-storage-growth-churn'
+Creating cluster "aws-storage-growth-churn" ...
+ • Ensuring node image (kindest/node:v1.36.1) 🖼  ...
+ ✓ Ensuring node image (kindest/node:v1.36.1) 🖼
+ • Preparing nodes 📦 📦   ...
+ ✓ Preparing nodes 📦 📦 
+ • Writing configuration 📜  ...
+ ✓ Writing configuration 📜
+ • Starting control-plane 🕹️  ...
+ ✓ Starting control-plane 🕹️
+ • Installing CNI 🔌  ...
+ ✓ Installing CNI 🔌
+ • Installing StorageClass 💾  ...
+ ✓ Installing StorageClass 💾
+ • Joining worker nodes 🚜  ...
+ ✓ Joining worker nodes 🚜
+ • Waiting ≤ 2m0s for control-plane = Ready ⏳  ...
+ ✓ Waiting ≤ 2m0s for control-plane = Ready ⏳
+ • Ready after 10s 💚
+Set kubectl context to "kind-aws-storage-growth-churn"
+You can now use your cluster with:
+
+kubectl cluster-info --context kind-aws-storage-growth-churn
+
+Have a question, bug, or feature request? Let us know! https://kind.sigs.k8s.io/#community 🙂
+>> loading ghcr.io/spiffe/spire-server:1.15.2 into kind/aws-storage-growth-churn
+>> loading ghcr.io/spiffe/spire-agent:1.15.2 into kind/aws-storage-growth-churn
+>> loading openpolicyagent/opa:1.18.2 into kind/aws-storage-growth-churn
+>> loading ghcr.io/spiffe/spiffe-helper:0.11.0 into kind/aws-storage-growth-churn
+>> loading curlimages/curl:8.18.0 into kind/aws-storage-growth-churn
+>> waiting for nodes to be Ready
+node/aws-storage-growth-churn-control-plane condition met
+node/aws-storage-growth-churn-worker condition met
+NAME                                     STATUS   ROLES           AGE   VERSION   INTERNAL-IP   EXTERNAL-IP   OS-IMAGE                       KERNEL-VERSION           CONTAINER-RUNTIME
+aws-storage-growth-churn-control-plane   Ready    control-plane   50s   v1.36.1   172.18.0.2    <none>        Debian GNU/Linux 13 (trixie)   7.0.0-1018-aws (amd64)   containerd://2.3.1
+aws-storage-growth-churn-worker          Ready    <none>          38s   v1.36.1   172.18.0.3    <none>        Debian GNU/Linux 13 (trixie)   7.0.0-1018-aws (amd64)   containerd://2.3.1
+[2026-11-21T21:31:16Z] rc=0
+[2026-11-21T21:31:16Z] make spire-up KIND_CLUSTER=aws-storage-growth-churn
+namespace/spire created
+namespace/opa created
+namespace/nhi created
+namespace/agents created
+>> deploying SPIRE server 1.15.2
+serviceaccount/spire-server created
+clusterrole.rbac.authorization.k8s.io/spire-server-node-attestor created
+clusterrolebinding.rbac.authorization.k8s.io/spire-server-node-attestor created
+role.rbac.authorization.k8s.io/spire-server-bundle-publisher created
+rolebinding.rbac.authorization.k8s.io/spire-server-bundle-publisher created
+configmap/spire-server created
+configmap/spire-bundle created
+service/spire-server created
+statefulset.apps/spire-server created
+>> waiting for spire-server to become Ready
+Waiting for 1 pods to be ready...
+partitioned roll out complete: 1 new pods have been updated...
+>> waiting for the spire-bundle ConfigMap to be populated
+>> trust bundle published (809 bytes)
+>> deploying SPIRE agent 1.15.2
+serviceaccount/spire-agent created
+clusterrole.rbac.authorization.k8s.io/spire-agent-workload-attestor created
+clusterrolebinding.rbac.authorization.k8s.io/spire-agent-workload-attestor created
+configmap/spire-agent created
+daemonset.apps/spire-agent created
+>> waiting for spire-agent DaemonSet to become Ready
+Waiting for daemon set "spire-agent" rollout to finish: 0 of 2 updated pods are available...
+Waiting for daemon set "spire-agent" rollout to finish: 1 of 2 updated pods are available...
+daemon set "spire-agent" successfully rolled out
+>> waiting for node attestation to complete
+>> 2 agents attested via k8s_psat
+Registering static SPIRE entries in trust domain lab.local
+  + node alias: spiffe://lab.local/node/nhi-lab
+  + static test workload: spiffe://lab.local/svc/test-workload
+  + properly-shaped child test identity (verify-policy only): spiffe://lab.local/agent/parent/policy-verify/child/policy-verify-child
+  + OPA server: spiffe://lab.local/svc/opa
+  + policy engine: spiffe://lab.local/svc/policy-engine
+  + protected resource: spiffe://lab.local/svc/resource
+  + vending service: spiffe://lab.local/svc/vending-service
+  + vend-verify parent (verify-vending only): spiffe://lab.local/agent/parent/vend-verify
+  + demo parent: spiffe://lab.local/agent/parent/demo
+  + OpenCode parent: spiffe://lab.local/agent/parent/opencode
+  + experiments root parent: spiffe://lab.local/agent/parent/exp-root
+  + policy probe (verify only): spiffe://lab.local/svc/policy-probe
+
+Found 12 entries
+Entry ID                : 7b93b8bc-fc87-443a-bf02-43fd2d0f634c
+SPIFFE ID               : spiffe://lab.local/agent/parent/demo
+Parent ID               : spiffe://lab.local/node/nhi-lab
+Revision                : 0
+X509-SVID TTL           : default
+JWT-SVID TTL            : default
+Selector                : k8s:ns:agents
+Selector                : k8s:sa:nhi-demo-parent
+
+Entry ID                : 21e27f4f-0257-4d01-815c-ea4a4d6d1351
+SPIFFE ID               : spiffe://lab.local/agent/parent/exp-root
+Parent ID               : spiffe://lab.local/node/nhi-lab
+Revision                : 0
+X509-SVID TTL           : default
+JWT-SVID TTL            : default
+Selector                : k8s:ns:agents
+Selector                : k8s:sa:nhi-exp-parent
+
+Entry ID                : 119eea49-8202-49d8-8bf7-1f3185b0a064
+SPIFFE ID               : spiffe://lab.local/agent/parent/opencode
+Parent ID               : spiffe://lab.local/node/nhi-lab
+Revision                : 0
+X509-SVID TTL           : default
+JWT-SVID TTL            : default
+Selector                : k8s:ns:agents
+Selector                : k8s:sa:nhi-opencode-parent
+
+Entry ID                : 876f4594-6a29-4d2f-aafc-c30c3b7dfa29
+SPIFFE ID               : spiffe://lab.local/agent/parent/policy-verify/child/policy-verify-child
+Parent ID               : spiffe://lab.local/node/nhi-lab
+Revision                : 0
+X509-SVID TTL           : default
+JWT-SVID TTL            : default
+Selector                : k8s:ns:agents
+Selector                : k8s:sa:nhi-test-child
+
+Entry ID                : b63b88ff-8450-400f-94bf-1f119110de0b
+SPIFFE ID               : spiffe://lab.local/agent/parent/vend-verify
+Parent ID               : spiffe://lab.local/node/nhi-lab
+Revision                : 0
+X509-SVID TTL           : default
+JWT-SVID TTL            : default
+Selector                : k8s:ns:agents
+Selector                : k8s:sa:nhi-test-vend-parent
+
+Entry ID                : b8582740-e4f9-4e12-9e64-533fa4e0602f
+SPIFFE ID               : spiffe://lab.local/node/nhi-lab
+Parent ID               : spiffe://lab.local/spire/server
+Revision                : 0
+X509-SVID TTL           : default
+JWT-SVID TTL            : default
+Selector                : k8s_psat:cluster:nhi-lab
+
+Entry ID                : 53cfd331-c08e-426e-8f17-51d20fcfa06c
+SPIFFE ID               : spiffe://lab.local/svc/opa
+Parent ID               : spiffe://lab.local/node/nhi-lab
+Revision                : 0
+X509-SVID TTL           : default
+JWT-SVID TTL            : default
+Selector                : k8s:ns:opa
+Selector                : k8s:sa:opa
+DNS name                : opa.opa.svc.cluster.local
+DNS name                : opa.opa.svc
+DNS name                : opa
+
+Entry ID                : 8554e203-392c-4fbc-92cb-82439f94eb46
+SPIFFE ID               : spiffe://lab.local/svc/policy-engine
+Parent ID               : spiffe://lab.local/node/nhi-lab
+Revision                : 0
+X509-SVID TTL           : default
+JWT-SVID TTL            : default
+Selector                : k8s:ns:nhi
+Selector                : k8s:sa:policy-engine
+DNS name                : policy-engine.nhi.svc.cluster.local
+DNS name                : policy-engine.nhi.svc
+DNS name                : policy-engine
+
+Entry ID                : 56de93be-5273-498e-aace-8e37b525b36c
+SPIFFE ID               : spiffe://lab.local/svc/policy-probe
+Parent ID               : spiffe://lab.local/node/nhi-lab
+Revision                : 0
+X509-SVID TTL           : default
+JWT-SVID TTL            : default
+Selector                : k8s:ns:nhi
+Selector                : k8s:sa:policy-probe
+
+Entry ID                : 62ba4ae8-9613-4232-8458-d91e2b2ee097
+SPIFFE ID               : spiffe://lab.local/svc/resource
+Parent ID               : spiffe://lab.local/node/nhi-lab
+Revision                : 0
+X509-SVID TTL           : default
+JWT-SVID TTL            : default
+Selector                : k8s:ns:nhi
+Selector                : k8s:sa:resource
+
+Entry ID                : 502feb92-4c53-4616-99dd-c4cda77239eb
+SPIFFE ID               : spiffe://lab.local/svc/test-workload
+Parent ID               : spiffe://lab.local/node/nhi-lab
+Revision                : 0
+X509-SVID TTL           : default
+JWT-SVID TTL            : default
+Selector                : k8s:ns:agents
+Selector                : k8s:sa:nhi-test
+
+Entry ID                : 3774bb41-6fcd-416a-b780-68325d0c920d
+SPIFFE ID               : spiffe://lab.local/svc/vending-service
+Parent ID               : spiffe://lab.local/node/nhi-lab
+Revision                : 0
+X509-SVID TTL           : default
+JWT-SVID TTL            : default
+Selector                : k8s:ns:nhi
+Selector                : k8s:sa:vending-service
+
+>> deploying OPA (authentication=tls, authorization=basic)
+configmap/opa-authz created
+configmap/opa-spiffe-helper created
+serviceaccount/opa created
+service/opa created
+deployment.apps/opa created
+networkpolicy.networking.k8s.io/opa-ingress created
+Waiting for deployment "opa" rollout to finish: 0 of 1 updated replicas are available...
+deployment "opa" successfully rolled out
+>> pre-declaring policy engine
+serviceaccount/policy-engine created
+service/policy-engine created
+deployment.apps/policy-engine created
+configmap/policy-engine-bootstrap created
+>> deploying static test workload
+serviceaccount/nhi-test created
+deployment.apps/nhi-test-workload created
+Waiting for deployment "nhi-test-workload" rollout to finish: 0 of 1 updated replicas are available...
+deployment "nhi-test-workload" successfully rolled out
+
+>> baseline up. Run 'make verify'.
+[2026-11-21T21:31:55Z] rc=0
+[2026-11-21T21:31:55Z] make policy-engine-up vending-service-up resource-up experiments-fixtures-up KIND_CLUSTER=aws-storage-growth-churn
+>> building nhi-lab/policy-engine:dev
+>> loading nhi-lab/policy-engine:dev into kind/aws-storage-growth-churn
+namespace/spire unchanged
+namespace/opa unchanged
+namespace/nhi unchanged
+namespace/agents unchanged
+>> deploying SPIRE server 1.15.2
+serviceaccount/spire-server unchanged
+clusterrole.rbac.authorization.k8s.io/spire-server-node-attestor unchanged
+clusterrolebinding.rbac.authorization.k8s.io/spire-server-node-attestor unchanged
+role.rbac.authorization.k8s.io/spire-server-bundle-publisher unchanged
+rolebinding.rbac.authorization.k8s.io/spire-server-bundle-publisher unchanged
+configmap/spire-server unchanged
+configmap/spire-bundle unchanged
+service/spire-server unchanged
+statefulset.apps/spire-server configured
+>> waiting for spire-server to become Ready
+partitioned roll out complete: 1 new pods have been updated...
+>> waiting for the spire-bundle ConfigMap to be populated
+>> trust bundle published (809 bytes)
+>> deploying SPIRE agent 1.15.2
+serviceaccount/spire-agent unchanged
+clusterrole.rbac.authorization.k8s.io/spire-agent-workload-attestor unchanged
+clusterrolebinding.rbac.authorization.k8s.io/spire-agent-workload-attestor unchanged
+configmap/spire-agent unchanged
+daemonset.apps/spire-agent unchanged
+>> waiting for spire-agent DaemonSet to become Ready
+daemon set "spire-agent" successfully rolled out
+>> waiting for node attestation to complete
+>> 2 agents attested via k8s_psat
+Registering static SPIRE entries in trust domain lab.local
+  = node alias: spiffe://lab.local/node/nhi-lab (already registered)
+  + static test workload: spiffe://lab.local/svc/test-workload
+Failed to create the following entry (code: AlreadyExists, msg: "similar entry already exists"):
+Entry ID                : (none)
+SPIFFE ID               : spiffe://lab.local/svc/test-workload
+Parent ID               : spiffe://lab.local/node/nhi-lab
+Revision                : 0
+X509-SVID TTL           : default
+JWT-SVID TTL            : default
+Selector                : k8s:ns:agents
+Selector                : k8s:sa:nhi-test
+
+Error: failed to create one or more entries
+command terminated with exit code 1
+make[1]: *** [Makefile:188: entries] Error 1
+make: *** [Makefile:70: policy-engine-up] Error 2
+[2026-11-21T21:32:04Z] rc=2
+[2026-11-21T21:32:04Z] WORKAROUND: AlreadyExists seen; rerunning with -o entries
+[2026-11-21T21:32:04Z] make -C src/deploy -o entries policy-engine-up vending-service-up resource-up experiments-fixtures-up KIND_CLUSTER=aws-storage-growth-churn
+make: Entering directory '/var/tmp/nhi-lab-ea47be3/src/deploy'
+>> building nhi-lab/policy-engine:dev
+>> loading nhi-lab/policy-engine:dev into kind/aws-storage-growth-churn
+>> deploying the policy engine
+serviceaccount/policy-engine unchanged
+service/policy-engine unchanged
+deployment.apps/policy-engine unchanged
+configmap/policy-engine-bootstrap unchanged
+deployment.apps/policy-engine restarted
+Waiting for deployment "policy-engine" rollout to finish: 1 old replicas are pending termination...
+Waiting for deployment "policy-engine" rollout to finish: 1 old replicas are pending termination...
+Waiting for deployment "policy-engine" rollout to finish: 1 old replicas are pending termination...
+deployment "policy-engine" successfully rolled out
+>> building nhi-lab/vending-service:dev
+>> loading nhi-lab/vending-service:dev into kind/aws-storage-growth-churn
+>> deploying the vending service
+persistentvolumeclaim/vending-data created
+serviceaccount/vending-service created
+service/vending-service created
+deployment.apps/vending-service created
+deployment.apps/vending-service restarted
+Waiting for deployment "vending-service" rollout to finish: 0 out of 1 new replicas have been updated...
+Waiting for deployment "vending-service" rollout to finish: 0 out of 1 new replicas have been updated...
+Waiting for deployment "vending-service" rollout to finish: 0 out of 1 new replicas have been updated...
+Waiting for deployment "vending-service" rollout to finish: 0 of 1 updated replicas are available...
+deployment "vending-service" successfully rolled out
+>> building nhi-lab/resource:dev
+>> loading nhi-lab/resource:dev into kind/aws-storage-growth-churn
+>> deploying the protected resource
+serviceaccount/resource created
+service/resource created
+deployment.apps/resource created
+deployment.apps/resource restarted
+Waiting for deployment "resource" rollout to finish: 1 old replicas are pending termination...
+Waiting for deployment "resource" rollout to finish: 1 old replicas are pending termination...
+Waiting for deployment "resource" rollout to finish: 1 old replicas are pending termination...
+deployment "resource" successfully rolled out
+>> building nhi-lab/parentsim:dev
+>> loading nhi-lab/parentsim:dev into kind/aws-storage-growth-churn
+>> deploying experiment fixtures
+serviceaccount/nhi-exp-parent created
+deployment.apps/experiments-parent created
+deployment.apps/experiments-attacker created
+serviceaccount/nhi-exp-child created
+deployment.apps/experiments-child created
+serviceaccount/nhi-exp-grandchild created
+deployment.apps/experiments-grandchild created
+Waiting for deployment "experiments-parent" rollout to finish: 0 of 1 updated replicas are available...
+deployment "experiments-parent" successfully rolled out
+deployment "experiments-child" successfully rolled out
+deployment "experiments-grandchild" successfully rolled out
+deployment "experiments-attacker" successfully rolled out
+make: Leaving directory '/var/tmp/nhi-lab-ea47be3/src/deploy'
+[2026-11-21T21:32:43Z] rc=0

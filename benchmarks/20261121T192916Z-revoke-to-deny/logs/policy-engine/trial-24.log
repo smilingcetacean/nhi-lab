@@ -1,0 +1,8 @@
+2026-11-21T19:37:04.888154260Z 2026/11/21 19:37:04 http: TLS handshake error from 10.244.1.1:60762: EOF
+2026-11-21T19:37:05.447773752Z {"timestamp":"2026-11-21T19:37:05.44758248Z","stage":"vend","chain_id":"c_bcbc113efcf3916769aaf5ea83de2cd1","actor_spiffe_id":"spiffe://lab.local/svc/vending-service","outcome":"allow","detail":{"parent_spiffe_id":"spiffe://lab.local/agent/parent/exp-root","child_spiffe_id":"spiffe://lab.local/agent/parent/exp-root/child/r2d-a42558-24","requested_scopes":["resource:read:datasetA"],"child_scopes":["resource:read:datasetA"],"parent_scopes":["resource:read:datasetA","resource:read:datasetB","resource:write:jobs"],"policy_id":"nhi_grants_c_bcbc113efcf3916769aaf5ea83de2cd1","expires_at":1795290125,"task_context":"revocation speed"}}
+2026-11-21T19:37:09.887206023Z 2026/11/21 19:37:09 http: TLS handshake error from 10.244.1.1:60776: EOF
+2026-11-21T19:37:14.173287157Z 2026/11/21 19:37:14 http: TLS handshake error from 10.244.1.1:60790: EOF
+2026-11-21T19:37:14.886923843Z 2026/11/21 19:37:14 http: TLS handshake error from 10.244.1.1:44078: EOF
+2026-11-21T19:37:19.888967803Z 2026/11/21 19:37:19 http: TLS handshake error from 10.244.1.1:44080: EOF
+2026-11-21T19:37:20.015777317Z {"timestamp":"2026-11-21T19:37:20.015646015Z","stage":"dispose","chain_id":"c_bcbc113efcf3916769aaf5ea83de2cd1","actor_spiffe_id":"spiffe://lab.local/svc/vending-service","outcome":"allow","detail":{"policy_id":"nhi_grants_c_bcbc113efcf3916769aaf5ea83de2cd1","reason":"grant module removed"}}
+2026-11-21T19:37:24.174157716Z 2026/11/21 19:37:24 http: TLS handshake error from 10.244.1.1:44094: EOF

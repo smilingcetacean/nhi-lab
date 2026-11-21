@@ -1,0 +1,122 @@
+2026-11-21T19:43:48Z
+source_commit=c1e4dbe484c7b2e2de30685015b91bd80af9b5eb
+source_archive=abb1613dabb19615c86a64b2e518c2f073c3707ca0c1c512939451c40197c7cd
+instance_type=t3a.large Spot, us-east-1f, standard CPU credits
+Linux 7.0.0-1018-aws x86_64 GNU/Linux
+PRETTY_NAME="Ubuntu 24.04.5 LTS"
+Architecture:                            x86_64
+CPU op-mode(s):                          32-bit, 64-bit
+Address sizes:                           48 bits physical, 48 bits virtual
+Byte Order:                              Little Endian
+CPU(s):                                  2
+On-line CPU(s) list:                     0,1
+Vendor ID:                               AuthenticAMD
+BIOS Vendor ID:                          Advanced Micro Devices, Inc.
+Model name:                              AMD EPYC 7571
+BIOS Model name:                         AMD EPYC 7571  CPU @ 2.2GHz
+BIOS CPU family:                         107
+CPU family:                              23
+Model:                                   1
+Thread(s) per core:                      2
+Core(s) per socket:                      1
+Socket(s):                               1
+Stepping:                                2
+BogoMIPS:                                4399.98
+Flags:                                   fpu vme de pse tsc msr pae mce cx8 apic sep mtrr pge mca cmov pat pse36 clflush mmx fxsr sse sse2 ht syscall nx mmxext fxsr_opt pdpe1gb rdtscp lm constant_tsc rep_good nopl nonstop_tsc cpuid extd_apicid tsc_known_freq pni pclmulqdq ssse3 fma cx16 sse4_1 sse4_2 movbe popcnt aes xsave avx f16c rdrand hypervisor lahf_lm cmp_legacy cr8_legacy abm sse4a misalignsse 3dnowprefetch topoext vmmcall fsgsbase bmi1 avx2 smep bmi2 rdseed adx smap clflushopt sha_ni xsaveopt xsavec xgetbv1 clzero xsaveerptr arat npt nrip_save
+Hypervisor vendor:                       KVM
+Virtualization type:                     full
+L1d cache:                               32 KiB (1 instance)
+L1i cache:                               64 KiB (1 instance)
+L2 cache:                                512 KiB (1 instance)
+L3 cache:                                8 MiB (1 instance)
+NUMA node(s):                            1
+NUMA node0 CPU(s):                       0,1
+Vulnerability Gather data sampling:      Not affected
+Vulnerability Ghostwrite:                Not affected
+Vulnerability Indirect target selection: Not affected
+Vulnerability Itlb multihit:             Not affected
+Vulnerability L1tf:                      Not affected
+Vulnerability Mds:                       Not affected
+Vulnerability Meltdown:                  Not affected
+Vulnerability Mmio stale data:           Not affected
+Vulnerability Old microcode:             Not affected
+Vulnerability Reg file data sampling:    Not affected
+Vulnerability Retbleed:                  Mitigation; untrained return thunk; SMT vulnerable
+Vulnerability Spec rstack overflow:      Vulnerable: Safe RET, no microcode
+Vulnerability Spec store bypass:         Vulnerable
+Vulnerability Spectre v1:                Mitigation; usercopy/swapgs barriers and __user pointer sanitization
+Vulnerability Spectre v2:                Mitigation; Retpolines; STIBP disabled; RSB filling; PBRSB-eIBRS Not affected; BHI Not affected
+Vulnerability Srbds:                     Not affected
+Vulnerability Tsa:                       Not affected
+Vulnerability Tsx async abort:           Not affected
+Vulnerability Vmscape:                   Not affected
+               total        used        free      shared  buff/cache   available
+Mem:            7838         785        3765           2        3609        7053
+Swap:              0           0           0
+Filesystem      Size  Used Avail Use% Mounted on
+/dev/root        29G  8.3G   20G  30% /
+Client: Docker Engine - Community
+ Version:           29.6.2
+ API version:       1.55
+ Go version:        go1.26.5
+ Git commit:        dfc4efb
+ Built:             Thu Jul 16 16:12:18 2026
+ OS/Arch:           linux/amd64
+ Context:           default
+
+Server: Docker Engine - Community
+ Engine:
+  Version:          29.6.2
+  API version:      1.55 (minimum version 1.40)
+  Go version:       go1.26.5
+  Git commit:       3d80467
+  Built:            Thu Jul 16 16:12:18 2026
+  OS/Arch:          linux/amd64
+  Experimental:     false
+ containerd:
+  Version:          v2.4.2
+  GitCommit:        b7a25261e029d68978bbf290df0a62fc819b3c51
+ runc:
+  Version:          1.5.3
+  GitCommit:        v1.5.3-0-g46365c62
+ docker-init:
+  Version:          0.19.0
+  GitCommit:        de40ad0
+Storage driver: overlayfs [["driver-type","io.containerd.snapshotter.v1"]]
+kind v0.32.0 go1.26.3 linux/amd64
+Client Version: v1.36.2
+Kustomize Version: v5.8.1
+go version go1.26.5 linux/amd64
+Version: 1.18.2
+Build Commit: e695c9ef8edb0f8b9f13d014d7bc8a7fbcc57297-dirty
+Build Timestamp: 2026-07-02T13:14:00Z
+Build Hostname: 
+Go Version: go1.26.4
+Platform: linux/amd64
+Rego Version: v1
+WebAssembly: unavailable
+uv 0.13.7 (x86_64-unknown-linux-musl)
+Python 3.14.6
+NEXT                            LEFT LAST                              PASSED UNIT                           ACTIVATES
+Sat 2026-11-21 19:50:00 UTC     6min Sat 2026-11-21 19:40:08 UTC 3min 39s ago sysstat-collect.timer          sysstat-collect.service
+Sat 2026-11-21 20:30:08 UTC    46min Sat 2026-11-21 19:25:29 UTC    18min ago fwupd-refresh.timer            fwupd-refresh.service
+Sun 2026-11-22 00:00:00 UTC 4h 16min -                                      - dpkg-db-backup.timer           dpkg-db-backup.service
+Sun 2026-11-22 00:00:00 UTC 4h 16min -                                      - logrotate.timer                logrotate.service
+Sun 2026-11-22 00:07:00 UTC 4h 23min -                                      - sysstat-summary.timer          sysstat-summary.service
+Sun 2026-11-22 03:10:20 UTC       7h -                                      - e2scrub_all.timer              e2scrub_all.service
+Sun 2026-11-22 05:09:52 UTC       9h Sat 2026-11-21 18:23:26 UTC 1h 20min ago motd-news.timer                motd-news.service
+Sun 2026-11-22 06:31:39 UTC      10h -                                      - apt-daily-upgrade.timer        apt-daily-upgrade.service
+Sun 2026-11-22 06:58:49 UTC      11h -                                      - apt-daily.timer                apt-daily.service
+Sun 2026-11-22 07:09:24 UTC      11h -                                      - man-db.timer                   man-db.service
+Sun 2026-11-22 18:09:47 UTC      22h Sat 2026-11-21 18:09:47 UTC 1h 34min ago update-notifier-download.timer update-notifier-download.service
+Sun 2026-11-22 18:19:47 UTC      22h Sat 2026-11-21 18:19:47 UTC 1h 24min ago systemd-tmpfiles-clean.timer   systemd-tmpfiles-clean.service
+Mon 2026-11-23 01:02:58 UTC 1 day 5h -                                      - fstrim.timer                   fstrim.service
+Wed 2026-11-25 18:53:52 UTC   3 days -                                      - update-notifier-motd.timer     update-notifier-motd.service
+
+14 timers listed.
+Pass --all to see loaded but inactive timers, too.
+
+Pre-existing kind clusters:
+No kind clusters found.
+
+Pre-existing running containers:

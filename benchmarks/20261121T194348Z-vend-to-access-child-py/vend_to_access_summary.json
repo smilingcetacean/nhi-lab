@@ -1,0 +1,248 @@
+{
+  "run_id": "20261121T194348Z-vend-to-access-child-py",
+  "started_at": "2026-11-21T19:48:01Z",
+  "finished_at": "2026-11-21T20:02:12Z",
+  "style": "child-py",
+  "trials_requested": 50,
+  "trials_completed": 50,
+  "trials_failed": 0,
+  "poll_interval_target_ms": null,
+  "child_py_retry": {
+    "delay_s": 2,
+    "attempts": 30
+  },
+  "settle_s": 0.2,
+  "ttl_s": 300,
+  "jitter_s": 5.0,
+  "jitter_seed": 115506412,
+  "percentile_method": "nearest-rank",
+  "stdev_method": "sample (n-1)",
+  "unit": "ms",
+  "headline": "vend_to_access_ms: P sends POST /delegations (t0) -> C receives the resource's first 200 for GET /datasets/A with its own JWT-SVID",
+  "vend_to_access_ms": {
+    "n": 50,
+    "min": 2246.048,
+    "p50": 8257.665,
+    "p90": 10268.676,
+    "p95": 10294.498,
+    "p99": 10326.914,
+    "max": 10326.914,
+    "mean": 7188.502,
+    "stdev": 2004.396
+  },
+  "vend_to_access_ms_histogram": {
+    "bin_ms": 500,
+    "counts": {
+      "2000-2500": 2,
+      "4000-4500": 6,
+      "6000-6500": 16,
+      "8000-8500": 19,
+      "9000-9500": 1,
+      "10000-10500": 6
+    }
+  },
+  "vend_round_trip_ms (t0 -> t1)": {
+    "n": 50,
+    "min": 36.39,
+    "p50": 44.755,
+    "p90": 65.302,
+    "p95": 77.854,
+    "p99": 415.649,
+    "max": 415.649,
+    "mean": 55.279,
+    "stdev": 52.952
+  },
+  "agent_log_after_send_ms (t0 -> t2, C's node agent logs the entry)": {
+    "n": 50,
+    "min": 1419.855,
+    "p50": 6445.709,
+    "p90": 8379.227,
+    "p95": 8677.545,
+    "p99": 9279.403,
+    "max": 9279.403,
+    "mean": 6134.168,
+    "stdev": 1784.826
+  },
+  "vend_to_x509_ms (t0 -> C holds its X.509-SVID; child-py only)": {
+    "n": 50,
+    "min": 2231.198,
+    "p50": 8241.44,
+    "p90": 10255.204,
+    "p95": 10271.773,
+    "p99": 10310.157,
+    "max": 10310.157,
+    "mean": 7170.631,
+    "stdev": 2003.745
+  },
+  "vend_to_jwt_ms (t0 -> C holds its JWT-SVID)": {
+    "n": 50,
+    "min": 2235.973,
+    "p50": 8246.431,
+    "p90": 10259.551,
+    "p95": 10280.15,
+    "p99": 10314.646,
+    "max": 10314.646,
+    "mean": 7176.032,
+    "stdev": 2003.585
+  },
+  "jwt_to_access_ms (C holds the JWT -> first 200 received)": {
+    "n": 50,
+    "min": 8.162,
+    "p50": 10.85,
+    "p90": 17.335,
+    "p95": 20.247,
+    "p99": 51.466,
+    "max": 51.466,
+    "mean": 12.47,
+    "stdev": 6.289
+  },
+  "access_after_vend_response_ms (t1 -> first 200 received)": {
+    "n": 50,
+    "min": 2204.341,
+    "p50": 8221.275,
+    "p90": 10228.527,
+    "p95": 10243.455,
+    "p99": 10281.678,
+    "max": 10281.678,
+    "mean": 7133.223,
+    "stdev": 1996.719
+  },
+  "access_window_ms (first 200 - last miss sent)": {
+    "n": 50,
+    "min": 2025.636,
+    "p50": 2034.493,
+    "p90": 2048.685,
+    "p95": 2064.999,
+    "p99": 2091.131,
+    "max": 2091.131,
+    "mean": 2037.602,
+    "stdev": 11.813
+  },
+  "child_start_after_vend_response_ms (child-py: t1 -> C's first attempt)": {
+    "n": 50,
+    "min": 161.675,
+    "p50": 179.362,
+    "p90": 215.388,
+    "p95": 234.326,
+    "p99": 639.112,
+    "max": 639.112,
+    "mean": 194.362,
+    "stdev": 66.947
+  },
+  "resource_allow_after_send_ms (t0 -> the resource's allow audit event)": {
+    "n": 50,
+    "min": 2245.572,
+    "p50": 8256.853,
+    "p90": 10268.062,
+    "p95": 10294.033,
+    "p99": 10326.522,
+    "max": 10326.522,
+    "mean": 7187.857,
+    "stdev": 2004.359
+  },
+  "resource_decision_latency_ms (the resource's OPA decision time)": {
+    "n": 50,
+    "min": 2.039326,
+    "p50": 2.545702,
+    "p90": 4.348254,
+    "p95": 7.596227,
+    "p99": 31.875486,
+    "max": 31.875486,
+    "mean": 3.632,
+    "stdev": 4.4
+  },
+  "server_create_entry_after_send_ms (t0 -> server audit BatchCreateEntry)": {
+    "n": 0
+  },
+  "server_child_agent_svid_after_send_ms (t0 -> C's agent's BatchNewX509SVID)": {
+    "n": 0
+  },
+  "server_child_jwt_after_send_ms (t0 -> C's agent's NewJWTSVID)": {
+    "n": 0
+  },
+  "child_agent_finding_sync_after_send_ms (t0 -> C's agent's sync that brought the entry)": {
+    "n": 0
+  },
+  "child_agent_syncs_missed (C's agent's syncs after t1 that did not bring the entry)": {},
+  "attempts_by_step": {
+    "x509_attempts": {
+      "2": 2,
+      "3": 6,
+      "4": 16,
+      "5": 20,
+      "6": 6
+    },
+    "jwt_attempts": {
+      "1": 50
+    },
+    "resource_attempts": {
+      "1": 50
+    }
+  },
+  "phase_since_child_agent_sync_ms (t0 - C's agent's last sync before it)": {
+    "n": 0
+  },
+  "achieved_child_gap_ms": {
+    "mean_of_trial_means": 1243.939,
+    "max_of_trial_maxes": 2067.829
+  },
+  "checks": {
+    "trials_with_agent_log_line": 50,
+    "trials_audit_vend_allow_inside_vend_request": 50,
+    "trials_resource_allow_inside_access_request": 50,
+    "trials_with_resource_denies_for_child": 0,
+    "trials_order_ok": 50,
+    "trials_disposed_200": 50,
+    "trials_vend_retried": 0
+  },
+  "logs": {
+    "dir": "logs/",
+    "files": "logs/{vending-service,spire-server,resource,parent}/trial-NN.log",
+    "window": "contiguous per trial: from the end of the previous trial's window (the first starts 1 s before trial 1) to the moment C held no identity again after the dispose",
+    "timestamp": "first field of each line: the container runtime's capture time (kubectl logs --timestamps); for parent/, the time this host received P's command output",
+    "spire_server_audit_log_enabled": false,
+    "lines": {
+      "vending_service": 150,
+      "spire_server": 0,
+      "resource": 50,
+      "parent": 200
+    }
+  },
+  "host": {
+    "cpu_model": "AMD EPYC 7571",
+    "cpu_cores": 2,
+    "memory_total_gib": 7.7,
+    "kernel": "7.0.0-1018-aws",
+    "os": "Linux",
+    "python": "3.14.6",
+    "docker_server": "29.6.2",
+    "kind": "kind v0.32.0 go1.26.3 linux/amd64",
+    "kubectl_client": "v1.36.2",
+    "kube_context": "kind-aws-vend-to-access-child-py",
+    "nodes": "NAME                                        KUBELET   KERNEL\naws-vend-to-access-child-py-control-plane   v1.36.1   7.0.0-1018-aws\naws-vend-to-access-child-py-worker          v1.36.1   7.0.0-1018-aws",
+    "load_average_start": [
+      6.9,
+      5.29,
+      3.83
+    ],
+    "load_average_end": [
+      0.86,
+      1.2,
+      2.34
+    ],
+    "spire_images": [
+      "spire-agent-cd5mt=ghcr.io/spiffe/spire-agent:1.15.2",
+      "spire-agent-l5blx=ghcr.io/spiffe/spire-agent:1.15.2",
+      "spire-server-0=ghcr.io/spiffe/spire-server:1.15.2"
+    ],
+    "child_node": "aws-vend-to-access-child-py-worker",
+    "child_agent_pod": "spire-agent-l5blx",
+    "vending_service_pod": "vending-service-685b4756b-m44pn",
+    "resource_pod": "resource-69b9f47565-7s6t9",
+    "spire_server_audit_log_enabled": false,
+    "agent_ids_by_node": {
+      "aws-vend-to-access-child-py-control-plane": "spiffe://lab.local/spire/agent/k8s_psat/nhi-lab/28f6bccc-5daa-44b5-9988-65c0c0b2d589",
+      "aws-vend-to-access-child-py-worker": "spiffe://lab.local/spire/agent/k8s_psat/nhi-lab/66c844f7-bce2-4540-b9e5-6426fdf5058d"
+    }
+  }
+}

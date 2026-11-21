@@ -1,0 +1,114 @@
+{
+  "instance_id": "i-01d083bbb690a12c2",
+  "namespace": "AWS/EC2",
+  "period_s": 300,
+  "note": "Basic (5-minute) monitoring: each datapoint is a 5-minute bucket labelled by its start time (UTC). Buckets that overlap the benchmark window are listed; short items share buckets with their neighbours. Statistics requested: Average, Minimum, Maximum. CloudWatch queried at 2026-11-21T21:37Z.",
+  "benchmark_window": {
+    "start": "2026-11-21T20:57:53Z",
+    "end": "2026-11-21T21:03:42Z"
+  },
+  "item_completed_at": "2026-11-21T21:03:46Z",
+  "metrics": [
+    {
+      "label": "CPUUtilization",
+      "datapoints": [
+        {
+          "Timestamp": "2026-11-21T20:55:00Z",
+          "Average": 50.33624755800382,
+          "Minimum": 33.69305956332461,
+          "Maximum": 67.28557618587287,
+          "Unit": "Percent"
+        },
+        {
+          "Timestamp": "2026-11-21T21:00:00Z",
+          "Average": 44.94726990394241,
+          "Minimum": 33.16364725258272,
+          "Maximum": 79.77124728669227,
+          "Unit": "Percent"
+        }
+      ]
+    },
+    {
+      "label": "CPUCreditBalance",
+      "datapoints": [
+        {
+          "Timestamp": "2026-11-21T20:55:00Z",
+          "Average": 0.0,
+          "Minimum": 0.0,
+          "Maximum": 0.0,
+          "Unit": "Count"
+        },
+        {
+          "Timestamp": "2026-11-21T21:00:00Z",
+          "Average": 0.0,
+          "Minimum": 0.0,
+          "Maximum": 0.0,
+          "Unit": "Count"
+        }
+      ]
+    },
+    {
+      "label": "CPUSurplusCreditBalance",
+      "datapoints": [
+        {
+          "Timestamp": "2026-11-21T20:55:00Z",
+          "Average": 13.3712143,
+          "Minimum": 13.3712143,
+          "Maximum": 13.3712143,
+          "Unit": "Count"
+        },
+        {
+          "Timestamp": "2026-11-21T21:00:00Z",
+          "Average": 15.401431233333334,
+          "Minimum": 15.401431233333334,
+          "Maximum": 15.401431233333334,
+          "Unit": "Count"
+        }
+      ]
+    },
+    {
+      "label": "CPUCreditUsage",
+      "datapoints": [
+        {
+          "Timestamp": "2026-11-21T20:55:00Z",
+          "Average": 3.451578,
+          "Minimum": 3.451578,
+          "Maximum": 3.451578,
+          "Unit": "Count"
+        },
+        {
+          "Timestamp": "2026-11-21T21:00:00Z",
+          "Average": 5.030456933333333,
+          "Minimum": 5.030456933333333,
+          "Maximum": 5.030456933333333,
+          "Unit": "Count"
+        }
+      ]
+    },
+    {
+      "label": "CPUSurplusCreditsCharged",
+      "datapoints": [
+        {
+          "Timestamp": "2026-11-21T20:55:00Z",
+          "Average": 0.0,
+          "Minimum": 0.0,
+          "Maximum": 0.0,
+          "Unit": "Count"
+        },
+        {
+          "Timestamp": "2026-11-21T21:00:00Z",
+          "Average": 0.0,
+          "Minimum": 0.0,
+          "Maximum": 0.0,
+          "Unit": "Count"
+        }
+      ]
+    }
+  ],
+  "summary": {
+    "min_CPUCreditBalance": 0.0,
+    "max_CPUUtilization_percent": 79.77124728669227,
+    "max_CPUSurplusCreditBalance": 15.401431233333334,
+    "buckets_considered": 2
+  }
+}

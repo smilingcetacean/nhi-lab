@@ -1,0 +1,108 @@
+{
+  "generated_at": "2026-11-21T20:46:55Z",
+  "n_runs": 100,
+  "n_ok": 100,
+  "n_failures": 0,
+  "note": "single-machine kind cluster; figures are RELATIVE, not absolute",
+  "storage": {
+    "delegation_store_bytes_before": 1668416,
+    "delegation_store_bytes_after": 4263464,
+    "delta_bytes": 2595048,
+    "delta_bytes_per_delegation": 25950.5,
+    "method": "sum of vending.db + vending.db-wal + vending.db-shm (WAL mode -- most recent writes live in the -wal file until a checkpoint), read via an ephemeral busybox debug container sharing the vending-service pod's PID namespace (/proc/1/root), since the production image is distroless with no shell (it holds the lab's highest-privilege credential).",
+    "caveat": "SQLite WAL-mode file size is NOT linear in row count between checkpoints -- the -wal file grows in fixed page increments and is periodically truncated on checkpoint, so 'bytes per delegation' from one run's before/after delta is a noisy upper-bound estimate of true marginal row cost, not a precise per-row figure. Reported as measured, not smoothed."
+  },
+  "network_load_proxy": {
+    "note": "NOT a packet capture. Response body byte counts per stage, as a lower-bound proxy for payload size only -- excludes TLS/HTTP/TCP/IP framing overhead, mTLS handshakes to OPA, the SPIRE Workload API's own gRPC traffic, and kubectl's own transport. Single-node kind uses the loopback/bridge network, not a real multi-host network, so absolute bandwidth numbers would be meaningless anyway.",
+    "vend_response_bytes": {
+      "stage": "vend_response_bytes",
+      "n": 100,
+      "mean_s": 393,
+      "stdev_s": 0.0,
+      "min_s": 393,
+      "p50_s": 393.0,
+      "p95_s": 393.0,
+      "p99_s": 393.0,
+      "max_s": 393
+    },
+    "operate_response_bytes": {
+      "stage": "operate_response_bytes",
+      "n": 100,
+      "mean_s": 76,
+      "stdev_s": 0.0,
+      "min_s": 76,
+      "p50_s": 76.0,
+      "p95_s": 76.0,
+      "p99_s": 76.0,
+      "max_s": 76
+    },
+    "dispose_response_bytes": {
+      "stage": "dispose_response_bytes",
+      "n": 100,
+      "mean_s": 64,
+      "stdev_s": 0.0,
+      "min_s": 64,
+      "p50_s": 64.0,
+      "p95_s": 64.0,
+      "p99_s": 64.0,
+      "max_s": 64
+    }
+  },
+  "stage_latency": {
+    "vend_call_wall_s (harness-measured, includes kubectl-exec overhead)": {
+      "stage": "vend_call_wall_s",
+      "n": 100,
+      "mean_s": 0.2434,
+      "stdev_s": 0.0219,
+      "min_s": 0.2117,
+      "p50_s": 0.2366,
+      "p95_s": 0.2891,
+      "p99_s": 0.3027,
+      "max_s": 0.3084
+    },
+    "attest_to_vend_audit_delta_s (server-measured, attest allow -> vend allow)": {
+      "stage": "attest_to_vend_audit_delta_s",
+      "n": 81,
+      "mean_s": 0.0304,
+      "stdev_s": 0.0089,
+      "min_s": 0.0231,
+      "p50_s": 0.028,
+      "p95_s": 0.0453,
+      "p99_s": 0.0637,
+      "max_s": 0.0813
+    },
+    "spire_attestation_wall_s (harness-measured, SPIRE agent sync-interval bound)": {
+      "stage": "spire_attestation_wall_s",
+      "n": 100,
+      "mean_s": 1.0373,
+      "stdev_s": 0.4966,
+      "min_s": 0.177,
+      "p50_s": 0.9047,
+      "p95_s": 1.6179,
+      "p99_s": 1.6386,
+      "max_s": 2.297
+    },
+    "operate_call_wall_s (harness-measured)": {
+      "stage": "operate_call_wall_s",
+      "n": 100,
+      "mean_s": 0.205,
+      "stdev_s": 0.017,
+      "min_s": 0.1791,
+      "p50_s": 0.2006,
+      "p95_s": 0.2357,
+      "p99_s": 0.2434,
+      "max_s": 0.248
+    },
+    "dispose_call_wall_s (harness-measured)": {
+      "stage": "dispose_call_wall_s",
+      "n": 100,
+      "mean_s": 0.2292,
+      "stdev_s": 0.0207,
+      "min_s": 0.2011,
+      "p50_s": 0.2241,
+      "p95_s": 0.2619,
+      "p99_s": 0.2842,
+      "max_s": 0.323
+    }
+  }
+}

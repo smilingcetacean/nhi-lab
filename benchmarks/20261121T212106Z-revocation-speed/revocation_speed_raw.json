@@ -1,0 +1,1742 @@
+[
+  {
+    "trial": 1,
+    "delete": {
+      "status": 200,
+      "send_ns": 1795296230583872225,
+      "recv_ns": 1795296230645025115,
+      "round_trip_ns": 61152890,
+      "response": "{\"chain_id\":\"c_d1a828d30f15fa2e56ea35aa6ef814a9\",\"revoked\":true}\n"
+    },
+    "poll_ready": {
+      "event": "ready",
+      "status": 200,
+      "send_ns": 1795296229848178016,
+      "recv_ns": 1795296229859545807
+    },
+    "poll_final": {
+      "event": "denied",
+      "status": 403,
+      "send_ns": 1795296230614275349,
+      "recv_ns": 1795296230620794261,
+      "last_allowed_send_ns": 1795296230594061557,
+      "last_allowed_recv_ns": 1795296230599992484,
+      "polls": 38,
+      "gap_mean_ns": 20705333,
+      "gap_max_ns": 23687639,
+      "latency_mean_ns": 5616019,
+      "latency_max_ns": 23635509
+    },
+    "resource_first_deny": {
+      "timestamp": "2026-11-21T21:23:50.620384228Z",
+      "stage": "operate",
+      "chain_id": "",
+      "actor_spiffe_id": "spiffe://lab.local/agent/parent/exp-root/child/rs-c-93cd6f-01/child/rs-g-93cd6f-01",
+      "outcome": "deny",
+      "detail": {
+        "method": "GET",
+        "path": "/datasets/A",
+        "required_scopes": [
+          "resource:read:datasetA"
+        ],
+        "chain_id_source": "absent",
+        "reason": "policy denied",
+        "policy_decision": false,
+        "decision_latency_ms": 1.785744
+      }
+    },
+    "policy_dispose_c": {
+      "timestamp": "2026-11-21T21:23:50.606766859Z",
+      "stage": "dispose",
+      "chain_id": "c_d1a828d30f15fa2e56ea35aa6ef814a9",
+      "actor_spiffe_id": "spiffe://lab.local/svc/vending-service",
+      "outcome": "allow",
+      "detail": {
+        "policy_id": "nhi_grants_c_d1a828d30f15fa2e56ea35aa6ef814a9",
+        "reason": "grant module removed"
+      }
+    }
+  },
+  {
+    "trial": 2,
+    "delete": {
+      "status": 200,
+      "send_ns": 1795296236589028292,
+      "recv_ns": 1795296236648933012,
+      "round_trip_ns": 59904720,
+      "response": "{\"chain_id\":\"c_d4a614b22c777a22dc96e15c539c3524\",\"revoked\":true}\n"
+    },
+    "poll_ready": {
+      "event": "ready",
+      "status": 200,
+      "send_ns": 1795296235866658507,
+      "recv_ns": 1795296235874913763
+    },
+    "poll_final": {
+      "event": "denied",
+      "status": 403,
+      "send_ns": 1795296236606699483,
+      "recv_ns": 1795296236615136701,
+      "last_allowed_send_ns": 1795296236585838856,
+      "last_allowed_recv_ns": 1795296236594196213,
+      "polls": 37,
+      "gap_mean_ns": 20556695,
+      "gap_max_ns": 21084159,
+      "latency_mean_ns": 4924792,
+      "latency_max_ns": 8437158
+    },
+    "resource_first_deny": {
+      "timestamp": "2026-11-21T21:23:56.614671077Z",
+      "stage": "operate",
+      "chain_id": "",
+      "actor_spiffe_id": "spiffe://lab.local/agent/parent/exp-root/child/rs-c-93cd6f-02/child/rs-g-93cd6f-02",
+      "outcome": "deny",
+      "detail": {
+        "method": "GET",
+        "path": "/datasets/A",
+        "required_scopes": [
+          "resource:read:datasetA"
+        ],
+        "chain_id_source": "absent",
+        "reason": "policy denied",
+        "policy_decision": false,
+        "decision_latency_ms": 6.821135
+      }
+    },
+    "policy_dispose_c": {
+      "timestamp": "2026-11-21T21:23:56.614270334Z",
+      "stage": "dispose",
+      "chain_id": "c_d4a614b22c777a22dc96e15c539c3524",
+      "actor_spiffe_id": "spiffe://lab.local/svc/vending-service",
+      "outcome": "allow",
+      "detail": {
+        "policy_id": "nhi_grants_c_d4a614b22c777a22dc96e15c539c3524",
+        "reason": "grant module removed"
+      }
+    }
+  },
+  {
+    "trial": 3,
+    "delete": {
+      "status": 200,
+      "send_ns": 1795296242668900844,
+      "recv_ns": 1795296242729287737,
+      "round_trip_ns": 60386893,
+      "response": "{\"chain_id\":\"c_37efee31a5aecb3d968a4f246c8349f9\",\"revoked\":true}\n"
+    },
+    "poll_ready": {
+      "event": "ready",
+      "status": 200,
+      "send_ns": 1795296241953470894,
+      "recv_ns": 1795296241966621820
+    },
+    "poll_final": {
+      "event": "denied",
+      "status": 403,
+      "send_ns": 1795296242697195971,
+      "recv_ns": 1795296242705653768,
+      "last_allowed_send_ns": 1795296242676426234,
+      "last_allowed_recv_ns": 1795296242680891180,
+      "polls": 37,
+      "gap_mean_ns": 20659029,
+      "gap_max_ns": 21296481,
+      "latency_mean_ns": 4663306,
+      "latency_max_ns": 13150966
+    },
+    "resource_first_deny": {
+      "timestamp": "2026-11-21T21:24:02.705458177Z",
+      "stage": "operate",
+      "chain_id": "",
+      "actor_spiffe_id": "spiffe://lab.local/agent/parent/exp-root/child/rs-c-93cd6f-03/child/rs-g-93cd6f-03",
+      "outcome": "deny",
+      "detail": {
+        "method": "GET",
+        "path": "/datasets/A",
+        "required_scopes": [
+          "resource:read:datasetA"
+        ],
+        "chain_id_source": "absent",
+        "reason": "policy denied",
+        "policy_decision": false,
+        "decision_latency_ms": 7.607271
+      }
+    },
+    "policy_dispose_c": {
+      "timestamp": "2026-11-21T21:24:02.686294113Z",
+      "stage": "dispose",
+      "chain_id": "c_37efee31a5aecb3d968a4f246c8349f9",
+      "actor_spiffe_id": "spiffe://lab.local/svc/vending-service",
+      "outcome": "allow",
+      "detail": {
+        "policy_id": "nhi_grants_c_37efee31a5aecb3d968a4f246c8349f9",
+        "reason": "grant module removed"
+      }
+    }
+  },
+  {
+    "trial": 4,
+    "delete": {
+      "status": 200,
+      "send_ns": 1795296248706371376,
+      "recv_ns": 1795296248770114677,
+      "round_trip_ns": 63743301,
+      "response": "{\"chain_id\":\"c_09ef11212f8e5df615b900c782c29f0c\",\"revoked\":true}\n"
+    },
+    "poll_ready": {
+      "event": "ready",
+      "status": 200,
+      "send_ns": 1795296247975120330,
+      "recv_ns": 1795296247982649020
+    },
+    "poll_final": {
+      "event": "denied",
+      "status": 403,
+      "send_ns": 1795296248734236789,
+      "recv_ns": 1795296248743284792,
+      "last_allowed_send_ns": 1795296248713415513,
+      "last_allowed_recv_ns": 1795296248716754559,
+      "polls": 38,
+      "gap_mean_ns": 20516661,
+      "gap_max_ns": 21122460,
+      "latency_mean_ns": 5462255,
+      "latency_max_ns": 19257384
+    },
+    "resource_first_deny": {
+      "timestamp": "2026-11-21T21:24:08.74300491Z",
+      "stage": "operate",
+      "chain_id": "",
+      "actor_spiffe_id": "spiffe://lab.local/agent/parent/exp-root/child/rs-c-93cd6f-04/child/rs-g-93cd6f-04",
+      "outcome": "deny",
+      "detail": {
+        "method": "GET",
+        "path": "/datasets/A",
+        "required_scopes": [
+          "resource:read:datasetA"
+        ],
+        "chain_id_source": "absent",
+        "reason": "policy denied",
+        "policy_decision": false,
+        "decision_latency_ms": 6.913276
+      }
+    },
+    "policy_dispose_c": {
+      "timestamp": "2026-11-21T21:24:08.725277728Z",
+      "stage": "dispose",
+      "chain_id": "c_09ef11212f8e5df615b900c782c29f0c",
+      "actor_spiffe_id": "spiffe://lab.local/svc/vending-service",
+      "outcome": "allow",
+      "detail": {
+        "policy_id": "nhi_grants_c_09ef11212f8e5df615b900c782c29f0c",
+        "reason": "grant module removed"
+      }
+    }
+  },
+  {
+    "trial": 5,
+    "delete": {
+      "status": 200,
+      "send_ns": 1795296254832491668,
+      "recv_ns": 1795296254906710222,
+      "round_trip_ns": 74218554,
+      "response": "{\"chain_id\":\"c_dc5f5bf74f0f3b3b3c22e4d8b0458a9b\",\"revoked\":true}\n"
+    },
+    "poll_ready": {
+      "event": "ready",
+      "status": 200,
+      "send_ns": 1795296254081069353,
+      "recv_ns": 1795296254088949456
+    },
+    "poll_final": {
+      "event": "denied",
+      "status": 403,
+      "send_ns": 1795296254869208942,
+      "recv_ns": 1795296254874016740,
+      "last_allowed_send_ns": 1795296254848818868,
+      "last_allowed_recv_ns": 1795296254851908803,
+      "polls": 39,
+      "gap_mean_ns": 20740516,
+      "gap_max_ns": 28647400,
+      "latency_mean_ns": 5451030,
+      "latency_max_ns": 28550309
+    },
+    "resource_first_deny": {
+      "timestamp": "2026-11-21T21:24:14.873484516Z",
+      "stage": "operate",
+      "chain_id": "",
+      "actor_spiffe_id": "spiffe://lab.local/agent/parent/exp-root/child/rs-c-93cd6f-05/child/rs-g-93cd6f-05",
+      "outcome": "deny",
+      "detail": {
+        "method": "GET",
+        "path": "/datasets/A",
+        "required_scopes": [
+          "resource:read:datasetA"
+        ],
+        "chain_id_source": "absent",
+        "reason": "policy denied",
+        "policy_decision": false,
+        "decision_latency_ms": 3.595669
+      }
+    },
+    "policy_dispose_c": {
+      "timestamp": "2026-11-21T21:24:14.860516182Z",
+      "stage": "dispose",
+      "chain_id": "c_dc5f5bf74f0f3b3b3c22e4d8b0458a9b",
+      "actor_spiffe_id": "spiffe://lab.local/svc/vending-service",
+      "outcome": "allow",
+      "detail": {
+        "policy_id": "nhi_grants_c_dc5f5bf74f0f3b3b3c22e4d8b0458a9b",
+        "reason": "grant module removed"
+      }
+    }
+  },
+  {
+    "trial": 6,
+    "delete": {
+      "status": 200,
+      "send_ns": 1795296260865655813,
+      "recv_ns": 1795296260926786743,
+      "round_trip_ns": 61130930,
+      "response": "{\"chain_id\":\"c_9478640b66afdd07dfb3421bb18091c7\",\"revoked\":true}\n"
+    },
+    "poll_ready": {
+      "event": "ready",
+      "status": 200,
+      "send_ns": 1795296260113235020,
+      "recv_ns": 1795296260124517790
+    },
+    "poll_final": {
+      "event": "denied",
+      "status": 403,
+      "send_ns": 1795296260894445224,
+      "recv_ns": 1795296260899049140,
+      "last_allowed_send_ns": 1795296260873653397,
+      "last_allowed_recv_ns": 1795296260877219406,
+      "polls": 39,
+      "gap_mean_ns": 20558163,
+      "gap_max_ns": 21107699,
+      "latency_mean_ns": 4641007,
+      "latency_max_ns": 11282770
+    },
+    "resource_first_deny": {
+      "timestamp": "2026-11-21T21:24:20.898620707Z",
+      "stage": "operate",
+      "chain_id": "",
+      "actor_spiffe_id": "spiffe://lab.local/agent/parent/exp-root/child/rs-c-93cd6f-06/child/rs-g-93cd6f-06",
+      "outcome": "deny",
+      "detail": {
+        "method": "GET",
+        "path": "/datasets/A",
+        "required_scopes": [
+          "resource:read:datasetA"
+        ],
+        "chain_id_source": "absent",
+        "reason": "policy denied",
+        "policy_decision": false,
+        "decision_latency_ms": 3.590849
+      }
+    },
+    "policy_dispose_c": {
+      "timestamp": "2026-11-21T21:24:20.891226408Z",
+      "stage": "dispose",
+      "chain_id": "c_9478640b66afdd07dfb3421bb18091c7",
+      "actor_spiffe_id": "spiffe://lab.local/svc/vending-service",
+      "outcome": "allow",
+      "detail": {
+        "policy_id": "nhi_grants_c_9478640b66afdd07dfb3421bb18091c7",
+        "reason": "grant module removed"
+      }
+    }
+  },
+  {
+    "trial": 7,
+    "delete": {
+      "status": 200,
+      "send_ns": 1795296266883372045,
+      "recv_ns": 1795296266947021074,
+      "round_trip_ns": 63649029,
+      "response": "{\"chain_id\":\"c_96a0fb7cf21fe0201e50127b8e12f532\",\"revoked\":true}\n"
+    },
+    "poll_ready": {
+      "event": "ready",
+      "status": 200,
+      "send_ns": 1795296266124733432,
+      "recv_ns": 1795296266141298184
+    },
+    "poll_final": {
+      "event": "denied",
+      "status": 403,
+      "send_ns": 1795296266905553892,
+      "recv_ns": 1795296266912410837,
+      "last_allowed_send_ns": 1795296266884634165,
+      "last_allowed_recv_ns": 1795296266891828282,
+      "polls": 39,
+      "gap_mean_ns": 20547906,
+      "gap_max_ns": 21582102,
+      "latency_mean_ns": 5225689,
+      "latency_max_ns": 18179916
+    },
+    "resource_first_deny": {
+      "timestamp": "2026-11-21T21:24:26.912074334Z",
+      "stage": "operate",
+      "chain_id": "",
+      "actor_spiffe_id": "spiffe://lab.local/agent/parent/exp-root/child/rs-c-93cd6f-07/child/rs-g-93cd6f-07",
+      "outcome": "deny",
+      "detail": {
+        "method": "GET",
+        "path": "/datasets/A",
+        "required_scopes": [
+          "resource:read:datasetA"
+        ],
+        "chain_id_source": "absent",
+        "reason": "policy denied",
+        "policy_decision": false,
+        "decision_latency_ms": 5.811897
+      }
+    },
+    "policy_dispose_c": {
+      "timestamp": "2026-11-21T21:24:26.909830957Z",
+      "stage": "dispose",
+      "chain_id": "c_96a0fb7cf21fe0201e50127b8e12f532",
+      "actor_spiffe_id": "spiffe://lab.local/svc/vending-service",
+      "outcome": "allow",
+      "detail": {
+        "policy_id": "nhi_grants_c_96a0fb7cf21fe0201e50127b8e12f532",
+        "reason": "grant module removed"
+      }
+    }
+  },
+  {
+    "trial": 8,
+    "delete": {
+      "status": 200,
+      "send_ns": 1795296272970595347,
+      "recv_ns": 1795296273024210647,
+      "round_trip_ns": 53615300,
+      "response": "{\"chain_id\":\"c_7910f388e7f9eae4d34849e606ba8379\",\"revoked\":true}\n"
+    },
+    "poll_ready": {
+      "event": "ready",
+      "status": 200,
+      "send_ns": 1795296272199370704,
+      "recv_ns": 1795296272208203114
+    },
+    "poll_final": {
+      "event": "denied",
+      "status": 403,
+      "send_ns": 1795296272981709667,
+      "recv_ns": 1795296272991605666,
+      "last_allowed_send_ns": 1795296272961124062,
+      "last_allowed_recv_ns": 1795296272967458042,
+      "polls": 39,
+      "gap_mean_ns": 20587867,
+      "gap_max_ns": 22062007,
+      "latency_mean_ns": 5868361,
+      "latency_max_ns": 18969242
+    },
+    "resource_first_deny": {
+      "timestamp": "2026-11-21T21:24:32.991181282Z",
+      "stage": "operate",
+      "chain_id": "",
+      "actor_spiffe_id": "spiffe://lab.local/agent/parent/exp-root/child/rs-c-93cd6f-08/child/rs-g-93cd6f-08",
+      "outcome": "deny",
+      "detail": {
+        "method": "GET",
+        "path": "/datasets/A",
+        "required_scopes": [
+          "resource:read:datasetA"
+        ],
+        "chain_id_source": "absent",
+        "reason": "policy denied",
+        "policy_decision": false,
+        "decision_latency_ms": 8.397387
+      }
+    },
+    "policy_dispose_c": {
+      "timestamp": "2026-11-21T21:24:32.990710039Z",
+      "stage": "dispose",
+      "chain_id": "c_7910f388e7f9eae4d34849e606ba8379",
+      "actor_spiffe_id": "spiffe://lab.local/svc/vending-service",
+      "outcome": "allow",
+      "detail": {
+        "policy_id": "nhi_grants_c_7910f388e7f9eae4d34849e606ba8379",
+        "reason": "grant module removed"
+      }
+    }
+  },
+  {
+    "trial": 9,
+    "delete": {
+      "status": 200,
+      "send_ns": 1795296280170262576,
+      "recv_ns": 1795296280233125260,
+      "round_trip_ns": 62862684,
+      "response": "{\"chain_id\":\"c_825efe153fc318ee8765bf3e8e443966\",\"revoked\":true}\n"
+    },
+    "poll_ready": {
+      "event": "ready",
+      "status": 200,
+      "send_ns": 1795296279429054183,
+      "recv_ns": 1795296279439178804
+    },
+    "poll_final": {
+      "event": "denied",
+      "status": 403,
+      "send_ns": 1795296280190378157,
+      "recv_ns": 1795296280200966842,
+      "last_allowed_send_ns": 1795296280169867793,
+      "last_allowed_recv_ns": 1795296280174079887,
+      "polls": 38,
+      "gap_mean_ns": 20576323,
+      "gap_max_ns": 21388341,
+      "latency_mean_ns": 5045989,
+      "latency_max_ns": 16449762
+    },
+    "resource_first_deny": {
+      "timestamp": "2026-11-21T21:24:40.200597939Z",
+      "stage": "operate",
+      "chain_id": "",
+      "actor_spiffe_id": "spiffe://lab.local/agent/parent/exp-root/child/rs-c-93cd6f-09/child/rs-g-93cd6f-09",
+      "outcome": "deny",
+      "detail": {
+        "method": "GET",
+        "path": "/datasets/A",
+        "required_scopes": [
+          "resource:read:datasetA"
+        ],
+        "chain_id_source": "absent",
+        "reason": "policy denied",
+        "policy_decision": false,
+        "decision_latency_ms": 9.162584
+      }
+    },
+    "policy_dispose_c": {
+      "timestamp": "2026-11-21T21:24:40.198509802Z",
+      "stage": "dispose",
+      "chain_id": "c_825efe153fc318ee8765bf3e8e443966",
+      "actor_spiffe_id": "spiffe://lab.local/svc/vending-service",
+      "outcome": "allow",
+      "detail": {
+        "policy_id": "nhi_grants_c_825efe153fc318ee8765bf3e8e443966",
+        "reason": "grant module removed"
+      }
+    }
+  },
+  {
+    "trial": 10,
+    "delete": {
+      "status": 200,
+      "send_ns": 1795296286197808001,
+      "recv_ns": 1795296286261330401,
+      "round_trip_ns": 63522400,
+      "response": "{\"chain_id\":\"c_d8f47f0792b7f4308ce7a2fb5bb627f7\",\"revoked\":true}\n"
+    },
+    "poll_ready": {
+      "event": "ready",
+      "status": 200,
+      "send_ns": 1795296285468131134,
+      "recv_ns": 1795296285476284670
+    },
+    "poll_final": {
+      "event": "denied",
+      "status": 403,
+      "send_ns": 1795296286208414786,
+      "recv_ns": 1795296286221344320,
+      "last_allowed_send_ns": 1795296286188251774,
+      "last_allowed_recv_ns": 1795296286196173098,
+      "polls": 37,
+      "gap_mean_ns": 20563434,
+      "gap_max_ns": 21280601,
+      "latency_mean_ns": 5356492,
+      "latency_max_ns": 12929534
+    },
+    "resource_first_deny": {
+      "timestamp": "2026-11-21T21:24:46.220827346Z",
+      "stage": "operate",
+      "chain_id": "",
+      "actor_spiffe_id": "spiffe://lab.local/agent/parent/exp-root/child/rs-c-93cd6f-10/child/rs-g-93cd6f-10",
+      "outcome": "deny",
+      "detail": {
+        "method": "GET",
+        "path": "/datasets/A",
+        "required_scopes": [
+          "resource:read:datasetA"
+        ],
+        "chain_id_source": "absent",
+        "reason": "policy denied",
+        "policy_decision": false,
+        "decision_latency_ms": 10.905868
+      }
+    },
+    "policy_dispose_c": {
+      "timestamp": "2026-11-21T21:24:46.217525819Z",
+      "stage": "dispose",
+      "chain_id": "c_d8f47f0792b7f4308ce7a2fb5bb627f7",
+      "actor_spiffe_id": "spiffe://lab.local/svc/vending-service",
+      "outcome": "allow",
+      "detail": {
+        "policy_id": "nhi_grants_c_d8f47f0792b7f4308ce7a2fb5bb627f7",
+        "reason": "grant module removed"
+      }
+    }
+  },
+  {
+    "trial": 11,
+    "delete": {
+      "status": 200,
+      "send_ns": 1795296293644493043,
+      "recv_ns": 1795296293697049695,
+      "round_trip_ns": 52556652,
+      "response": "{\"chain_id\":\"c_7120fc1eb1095d5eb229dabd4d085290\",\"revoked\":true}\n"
+    },
+    "poll_ready": {
+      "event": "ready",
+      "status": 200,
+      "send_ns": 1795296292896198647,
+      "recv_ns": 1795296292906746752
+    },
+    "poll_final": {
+      "event": "denied",
+      "status": 403,
+      "send_ns": 1795296293658585826,
+      "recv_ns": 1795296293667709010,
+      "last_allowed_send_ns": 1795296293637997221,
+      "last_allowed_recv_ns": 1795296293643383744,
+      "polls": 38,
+      "gap_mean_ns": 20605059,
+      "gap_max_ns": 21232911,
+      "latency_mean_ns": 5275227,
+      "latency_max_ns": 17585491
+    },
+    "resource_first_deny": {
+      "timestamp": "2026-11-21T21:24:53.667012094Z",
+      "stage": "operate",
+      "chain_id": "",
+      "actor_spiffe_id": "spiffe://lab.local/agent/parent/exp-root/child/rs-c-93cd6f-11/child/rs-g-93cd6f-11",
+      "outcome": "deny",
+      "detail": {
+        "method": "GET",
+        "path": "/datasets/A",
+        "required_scopes": [
+          "resource:read:datasetA"
+        ],
+        "chain_id_source": "absent",
+        "reason": "policy denied",
+        "policy_decision": false,
+        "decision_latency_ms": 6.959236
+      }
+    },
+    "policy_dispose_c": {
+      "timestamp": "2026-11-21T21:24:53.667052764Z",
+      "stage": "dispose",
+      "chain_id": "c_7120fc1eb1095d5eb229dabd4d085290",
+      "actor_spiffe_id": "spiffe://lab.local/svc/vending-service",
+      "outcome": "allow",
+      "detail": {
+        "policy_id": "nhi_grants_c_7120fc1eb1095d5eb229dabd4d085290",
+        "reason": "grant module removed"
+      }
+    }
+  },
+  {
+    "trial": 12,
+    "delete": {
+      "status": 200,
+      "send_ns": 1795296300940085165,
+      "recv_ns": 1795296301005418307,
+      "round_trip_ns": 65333142,
+      "response": "{\"chain_id\":\"c_c385aa004ce042aa6adf3c954e84692f\",\"revoked\":true}\n"
+    },
+    "poll_ready": {
+      "event": "ready",
+      "status": 200,
+      "send_ns": 1795296300162482071,
+      "recv_ns": 1795296300170575206
+    },
+    "poll_final": {
+      "event": "denied",
+      "status": 403,
+      "send_ns": 1795296300963866029,
+      "recv_ns": 1795296300975201521,
+      "last_allowed_send_ns": 1795296300943249301,
+      "last_allowed_recv_ns": 1795296300950579941,
+      "polls": 40,
+      "gap_mean_ns": 20548307,
+      "gap_max_ns": 21178272,
+      "latency_mean_ns": 5430344,
+      "latency_max_ns": 16734746
+    },
+    "resource_first_deny": {
+      "timestamp": "2026-11-21T21:25:00.974797458Z",
+      "stage": "operate",
+      "chain_id": "",
+      "actor_spiffe_id": "spiffe://lab.local/agent/parent/exp-root/child/rs-c-93cd6f-12/child/rs-g-93cd6f-12",
+      "outcome": "deny",
+      "detail": {
+        "method": "GET",
+        "path": "/datasets/A",
+        "required_scopes": [
+          "resource:read:datasetA"
+        ],
+        "chain_id_source": "absent",
+        "reason": "policy denied",
+        "policy_decision": false,
+        "decision_latency_ms": 8.059335
+      }
+    },
+    "policy_dispose_c": {
+      "timestamp": "2026-11-21T21:25:00.965861525Z",
+      "stage": "dispose",
+      "chain_id": "c_c385aa004ce042aa6adf3c954e84692f",
+      "actor_spiffe_id": "spiffe://lab.local/svc/vending-service",
+      "outcome": "allow",
+      "detail": {
+        "policy_id": "nhi_grants_c_c385aa004ce042aa6adf3c954e84692f",
+        "reason": "grant module removed"
+      }
+    }
+  },
+  {
+    "trial": 13,
+    "delete": {
+      "status": 200,
+      "send_ns": 1795296309315211220,
+      "recv_ns": 1795296309385845905,
+      "round_trip_ns": 70634685,
+      "response": "{\"chain_id\":\"c_99b06a74e975c4145829ffe5ebca53a0\",\"revoked\":true}\n"
+    },
+    "poll_ready": {
+      "event": "ready",
+      "status": 200,
+      "send_ns": 1795296308557991250,
+      "recv_ns": 1795296308565837354
+    },
+    "poll_final": {
+      "event": "denied",
+      "status": 403,
+      "send_ns": 1795296309339045764,
+      "recv_ns": 1795296309346846148,
+      "last_allowed_send_ns": 1795296309318588227,
+      "last_allowed_recv_ns": 1795296309325467173,
+      "polls": 39,
+      "gap_mean_ns": 20554066,
+      "gap_max_ns": 21370734,
+      "latency_mean_ns": 5084475,
+      "latency_max_ns": 11672065
+    },
+    "resource_first_deny": {
+      "timestamp": "2026-11-21T21:25:09.346449244Z",
+      "stage": "operate",
+      "chain_id": "",
+      "actor_spiffe_id": "spiffe://lab.local/agent/parent/exp-root/child/rs-c-93cd6f-13/child/rs-g-93cd6f-13",
+      "outcome": "deny",
+      "detail": {
+        "method": "GET",
+        "path": "/datasets/A",
+        "required_scopes": [
+          "resource:read:datasetA"
+        ],
+        "chain_id_source": "absent",
+        "reason": "policy denied",
+        "policy_decision": false,
+        "decision_latency_ms": 6.715535
+      }
+    },
+    "policy_dispose_c": {
+      "timestamp": "2026-11-21T21:25:09.343894313Z",
+      "stage": "dispose",
+      "chain_id": "c_99b06a74e975c4145829ffe5ebca53a0",
+      "actor_spiffe_id": "spiffe://lab.local/svc/vending-service",
+      "outcome": "allow",
+      "detail": {
+        "policy_id": "nhi_grants_c_99b06a74e975c4145829ffe5ebca53a0",
+        "reason": "grant module removed"
+      }
+    }
+  },
+  {
+    "trial": 14,
+    "delete": {
+      "status": 200,
+      "send_ns": 1795296316626358725,
+      "recv_ns": 1795296316686415304,
+      "round_trip_ns": 60056579,
+      "response": "{\"chain_id\":\"c_2f557efebc6f27599baf11d60cbc74d2\",\"revoked\":true}\n"
+    },
+    "poll_ready": {
+      "event": "ready",
+      "status": 200,
+      "send_ns": 1795296315896160425,
+      "recv_ns": 1795296315903451634
+    },
+    "poll_final": {
+      "event": "denied",
+      "status": 403,
+      "send_ns": 1795296316656017406,
+      "recv_ns": 1795296316661852964,
+      "last_allowed_send_ns": 1795296316635495699,
+      "last_allowed_recv_ns": 1795296316639711813,
+      "polls": 38,
+      "gap_mean_ns": 20536675,
+      "gap_max_ns": 21217713,
+      "latency_mean_ns": 4391150,
+      "latency_max_ns": 9971031
+    },
+    "resource_first_deny": {
+      "timestamp": "2026-11-21T21:25:16.661657202Z",
+      "stage": "operate",
+      "chain_id": "",
+      "actor_spiffe_id": "spiffe://lab.local/agent/parent/exp-root/child/rs-c-93cd6f-14/child/rs-g-93cd6f-14",
+      "outcome": "deny",
+      "detail": {
+        "method": "GET",
+        "path": "/datasets/A",
+        "required_scopes": [
+          "resource:read:datasetA"
+        ],
+        "chain_id_source": "absent",
+        "reason": "policy denied",
+        "policy_decision": false,
+        "decision_latency_ms": 3.569919
+      }
+    },
+    "policy_dispose_c": {
+      "timestamp": "2026-11-21T21:25:16.648186023Z",
+      "stage": "dispose",
+      "chain_id": "c_2f557efebc6f27599baf11d60cbc74d2",
+      "actor_spiffe_id": "spiffe://lab.local/svc/vending-service",
+      "outcome": "allow",
+      "detail": {
+        "policy_id": "nhi_grants_c_2f557efebc6f27599baf11d60cbc74d2",
+        "reason": "grant module removed"
+      }
+    }
+  },
+  {
+    "trial": 15,
+    "delete": {
+      "status": 200,
+      "send_ns": 1795296323887562193,
+      "recv_ns": 1795296323945127295,
+      "round_trip_ns": 57565102,
+      "response": "{\"chain_id\":\"c_6a9867f7cd693decacf3d68a8af3163c\",\"revoked\":true}\n"
+    },
+    "poll_ready": {
+      "event": "ready",
+      "status": 200,
+      "send_ns": 1795296323110589082,
+      "recv_ns": 1795296323123371464
+    },
+    "poll_final": {
+      "event": "denied",
+      "status": 403,
+      "send_ns": 1795296323911739337,
+      "recv_ns": 1795296323917386472,
+      "last_allowed_send_ns": 1795296323891228462,
+      "last_allowed_recv_ns": 1795296323897706504,
+      "polls": 40,
+      "gap_mean_ns": 20542314,
+      "gap_max_ns": 21107389,
+      "latency_mean_ns": 5129459,
+      "latency_max_ns": 18755961
+    },
+    "resource_first_deny": {
+      "timestamp": "2026-11-21T21:25:23.916648766Z",
+      "stage": "operate",
+      "chain_id": "",
+      "actor_spiffe_id": "spiffe://lab.local/agent/parent/exp-root/child/rs-c-93cd6f-15/child/rs-g-93cd6f-15",
+      "outcome": "deny",
+      "detail": {
+        "method": "GET",
+        "path": "/datasets/A",
+        "required_scopes": [
+          "resource:read:datasetA"
+        ],
+        "chain_id_source": "absent",
+        "reason": "policy denied",
+        "policy_decision": false,
+        "decision_latency_ms": 3.610179
+      }
+    },
+    "policy_dispose_c": {
+      "timestamp": "2026-11-21T21:25:23.906227193Z",
+      "stage": "dispose",
+      "chain_id": "c_6a9867f7cd693decacf3d68a8af3163c",
+      "actor_spiffe_id": "spiffe://lab.local/svc/vending-service",
+      "outcome": "allow",
+      "detail": {
+        "policy_id": "nhi_grants_c_6a9867f7cd693decacf3d68a8af3163c",
+        "reason": "grant module removed"
+      }
+    }
+  },
+  {
+    "trial": 16,
+    "delete": {
+      "status": 200,
+      "send_ns": 1795296329881288081,
+      "recv_ns": 1795296329942072999,
+      "round_trip_ns": 60784918,
+      "response": "{\"chain_id\":\"c_d3d21b498f84d77bd2e183a0865eafdc\",\"revoked\":true}\n"
+    },
+    "poll_ready": {
+      "event": "ready",
+      "status": 200,
+      "send_ns": 1795296329131810261,
+      "recv_ns": 1795296329141424548
+    },
+    "poll_final": {
+      "event": "denied",
+      "status": 403,
+      "send_ns": 1795296329914410167,
+      "recv_ns": 1795296329918228497,
+      "last_allowed_send_ns": 1795296329893727241,
+      "last_allowed_recv_ns": 1795296329901079430,
+      "polls": 39,
+      "gap_mean_ns": 20594734,
+      "gap_max_ns": 21489842,
+      "latency_mean_ns": 4822644,
+      "latency_max_ns": 11733534
+    },
+    "resource_first_deny": {
+      "timestamp": "2026-11-21T21:25:29.917802924Z",
+      "stage": "operate",
+      "chain_id": "",
+      "actor_spiffe_id": "spiffe://lab.local/agent/parent/exp-root/child/rs-c-93cd6f-16/child/rs-g-93cd6f-16",
+      "outcome": "deny",
+      "detail": {
+        "method": "GET",
+        "path": "/datasets/A",
+        "required_scopes": [
+          "resource:read:datasetA"
+        ],
+        "chain_id_source": "absent",
+        "reason": "policy denied",
+        "policy_decision": false,
+        "decision_latency_ms": 2.682341
+      }
+    },
+    "policy_dispose_c": {
+      "timestamp": "2026-11-21T21:25:29.905033172Z",
+      "stage": "dispose",
+      "chain_id": "c_d3d21b498f84d77bd2e183a0865eafdc",
+      "actor_spiffe_id": "spiffe://lab.local/svc/vending-service",
+      "outcome": "allow",
+      "detail": {
+        "policy_id": "nhi_grants_c_d3d21b498f84d77bd2e183a0865eafdc",
+        "reason": "grant module removed"
+      }
+    }
+  },
+  {
+    "trial": 17,
+    "delete": {
+      "status": 200,
+      "send_ns": 1795296337674393585,
+      "recv_ns": 1795296337734840230,
+      "round_trip_ns": 60446645,
+      "response": "{\"chain_id\":\"c_0ed3b9be91d128f2ccf8900c62d1deb6\",\"revoked\":true}\n"
+    },
+    "poll_ready": {
+      "event": "ready",
+      "status": 200,
+      "send_ns": 1795296336933505111,
+      "recv_ns": 1795296336945568888
+    },
+    "poll_final": {
+      "event": "denied",
+      "status": 403,
+      "send_ns": 1795296337697341489,
+      "recv_ns": 1795296337703328317,
+      "last_allowed_send_ns": 1795296337676737634,
+      "last_allowed_recv_ns": 1795296337681968836,
+      "polls": 38,
+      "gap_mean_ns": 20644226,
+      "gap_max_ns": 22192788,
+      "latency_mean_ns": 5229403,
+      "latency_max_ns": 20018751
+    },
+    "resource_first_deny": {
+      "timestamp": "2026-11-21T21:25:37.702671192Z",
+      "stage": "operate",
+      "chain_id": "",
+      "actor_spiffe_id": "spiffe://lab.local/agent/parent/exp-root/child/rs-c-93cd6f-17/child/rs-g-93cd6f-17",
+      "outcome": "deny",
+      "detail": {
+        "method": "GET",
+        "path": "/datasets/A",
+        "required_scopes": [
+          "resource:read:datasetA"
+        ],
+        "chain_id_source": "absent",
+        "reason": "policy denied",
+        "policy_decision": false,
+        "decision_latency_ms": 4.071233
+      }
+    },
+    "policy_dispose_c": {
+      "timestamp": "2026-11-21T21:25:37.694998901Z",
+      "stage": "dispose",
+      "chain_id": "c_0ed3b9be91d128f2ccf8900c62d1deb6",
+      "actor_spiffe_id": "spiffe://lab.local/svc/vending-service",
+      "outcome": "allow",
+      "detail": {
+        "policy_id": "nhi_grants_c_0ed3b9be91d128f2ccf8900c62d1deb6",
+        "reason": "grant module removed"
+      }
+    }
+  },
+  {
+    "trial": 18,
+    "delete": {
+      "status": 200,
+      "send_ns": 1795296345015829937,
+      "recv_ns": 1795296345086713116,
+      "round_trip_ns": 70883179,
+      "response": "{\"chain_id\":\"c_2e48ca9e19fcda263b02eecdbf264ceb\",\"revoked\":true}\n"
+    },
+    "poll_ready": {
+      "event": "ready",
+      "status": 200,
+      "send_ns": 1795296344267640784,
+      "recv_ns": 1795296344275273175
+    },
+    "poll_final": {
+      "event": "denied",
+      "status": 403,
+      "send_ns": 1795296345032577201,
+      "recv_ns": 1795296345041762965,
+      "last_allowed_send_ns": 1795296345011759764,
+      "last_allowed_recv_ns": 1795296345020369913,
+      "polls": 38,
+      "gap_mean_ns": 20673957,
+      "gap_max_ns": 21418732,
+      "latency_mean_ns": 5329474,
+      "latency_max_ns": 14484136
+    },
+    "resource_first_deny": {
+      "timestamp": "2026-11-21T21:25:45.041519093Z",
+      "stage": "operate",
+      "chain_id": "",
+      "actor_spiffe_id": "spiffe://lab.local/agent/parent/exp-root/child/rs-c-93cd6f-18/child/rs-g-93cd6f-18",
+      "outcome": "deny",
+      "detail": {
+        "method": "GET",
+        "path": "/datasets/A",
+        "required_scopes": [
+          "resource:read:datasetA"
+        ],
+        "chain_id_source": "absent",
+        "reason": "policy denied",
+        "policy_decision": false,
+        "decision_latency_ms": 8.032365
+      }
+    },
+    "policy_dispose_c": {
+      "timestamp": "2026-11-21T21:25:45.037548421Z",
+      "stage": "dispose",
+      "chain_id": "c_2e48ca9e19fcda263b02eecdbf264ceb",
+      "actor_spiffe_id": "spiffe://lab.local/svc/vending-service",
+      "outcome": "allow",
+      "detail": {
+        "policy_id": "nhi_grants_c_2e48ca9e19fcda263b02eecdbf264ceb",
+        "reason": "grant module removed"
+      }
+    }
+  },
+  {
+    "trial": 19,
+    "delete": {
+      "status": 200,
+      "send_ns": 1795296352193603857,
+      "recv_ns": 1795296352255570385,
+      "round_trip_ns": 61966528,
+      "response": "{\"chain_id\":\"c_44af467f0561ac9ce385a6ad09c05852\",\"revoked\":true}\n"
+    },
+    "poll_ready": {
+      "event": "ready",
+      "status": 200,
+      "send_ns": 1795296351479663994,
+      "recv_ns": 1795296351488440344
+    },
+    "poll_final": {
+      "event": "denied",
+      "status": 403,
+      "send_ns": 1795296352219361014,
+      "recv_ns": 1795296352225042100,
+      "last_allowed_send_ns": 1795296352199240573,
+      "last_allowed_recv_ns": 1795296352205208851,
+      "polls": 37,
+      "gap_mean_ns": 20547139,
+      "gap_max_ns": 21415152,
+      "latency_mean_ns": 4685073,
+      "latency_max_ns": 11171200
+    },
+    "resource_first_deny": {
+      "timestamp": "2026-11-21T21:25:52.224638717Z",
+      "stage": "operate",
+      "chain_id": "",
+      "actor_spiffe_id": "spiffe://lab.local/agent/parent/exp-root/child/rs-c-93cd6f-19/child/rs-g-93cd6f-19",
+      "outcome": "deny",
+      "detail": {
+        "method": "GET",
+        "path": "/datasets/A",
+        "required_scopes": [
+          "resource:read:datasetA"
+        ],
+        "chain_id_source": "absent",
+        "reason": "policy denied",
+        "policy_decision": false,
+        "decision_latency_ms": 4.205163
+      }
+    },
+    "policy_dispose_c": {
+      "timestamp": "2026-11-21T21:25:52.214814238Z",
+      "stage": "dispose",
+      "chain_id": "c_44af467f0561ac9ce385a6ad09c05852",
+      "actor_spiffe_id": "spiffe://lab.local/svc/vending-service",
+      "outcome": "allow",
+      "detail": {
+        "policy_id": "nhi_grants_c_44af467f0561ac9ce385a6ad09c05852",
+        "reason": "grant module removed"
+      }
+    }
+  },
+  {
+    "trial": 20,
+    "delete": {
+      "status": 200,
+      "send_ns": 1795296360665260235,
+      "recv_ns": 1795296360729461641,
+      "round_trip_ns": 64201406,
+      "response": "{\"chain_id\":\"c_5f4085610ee1910f7a2f7e628e5c9348\",\"revoked\":true}\n"
+    },
+    "poll_ready": {
+      "event": "ready",
+      "status": 200,
+      "send_ns": 1795296359945191682,
+      "recv_ns": 1795296359955069421
+    },
+    "poll_final": {
+      "event": "denied",
+      "status": 403,
+      "send_ns": 1795296360686418855,
+      "recv_ns": 1795296360700602469,
+      "last_allowed_send_ns": 1795296360664407188,
+      "last_allowed_recv_ns": 1795296360669959553,
+      "polls": 37,
+      "gap_mean_ns": 20589644,
+      "gap_max_ns": 22011677,
+      "latency_mean_ns": 4877537,
+      "latency_max_ns": 14183594
+    },
+    "resource_first_deny": {
+      "timestamp": "2026-11-21T21:26:00.700164915Z",
+      "stage": "operate",
+      "chain_id": "",
+      "actor_spiffe_id": "spiffe://lab.local/agent/parent/exp-root/child/rs-c-93cd6f-20/child/rs-g-93cd6f-20",
+      "outcome": "deny",
+      "detail": {
+        "method": "GET",
+        "path": "/datasets/A",
+        "required_scopes": [
+          "resource:read:datasetA"
+        ],
+        "chain_id_source": "absent",
+        "reason": "policy denied",
+        "policy_decision": false,
+        "decision_latency_ms": 13.019285
+      }
+    },
+    "policy_dispose_c": {
+      "timestamp": "2026-11-21T21:26:00.697136021Z",
+      "stage": "dispose",
+      "chain_id": "c_5f4085610ee1910f7a2f7e628e5c9348",
+      "actor_spiffe_id": "spiffe://lab.local/svc/vending-service",
+      "outcome": "allow",
+      "detail": {
+        "policy_id": "nhi_grants_c_5f4085610ee1910f7a2f7e628e5c9348",
+        "reason": "grant module removed"
+      }
+    }
+  },
+  {
+    "trial": 21,
+    "delete": {
+      "status": 200,
+      "send_ns": 1795296366676672371,
+      "recv_ns": 1795296366733257596,
+      "round_trip_ns": 56585225,
+      "response": "{\"chain_id\":\"c_e91f3624d2b74254f4e1d3a75880d8c3\",\"revoked\":true}\n"
+    },
+    "poll_ready": {
+      "event": "ready",
+      "status": 200,
+      "send_ns": 1795296365965808087,
+      "recv_ns": 1795296365973618500
+    },
+    "poll_final": {
+      "event": "denied",
+      "status": 403,
+      "send_ns": 1795296366706998105,
+      "recv_ns": 1795296366714485695,
+      "last_allowed_send_ns": 1795296366686338949,
+      "last_allowed_recv_ns": 1795296366694654736,
+      "polls": 37,
+      "gap_mean_ns": 20588612,
+      "gap_max_ns": 21068609,
+      "latency_mean_ns": 4436534,
+      "latency_max_ns": 11794765
+    },
+    "resource_first_deny": {
+      "timestamp": "2026-11-21T21:26:06.714039172Z",
+      "stage": "operate",
+      "chain_id": "",
+      "actor_spiffe_id": "spiffe://lab.local/agent/parent/exp-root/child/rs-c-93cd6f-21/child/rs-g-93cd6f-21",
+      "outcome": "deny",
+      "detail": {
+        "method": "GET",
+        "path": "/datasets/A",
+        "required_scopes": [
+          "resource:read:datasetA"
+        ],
+        "chain_id_source": "absent",
+        "reason": "policy denied",
+        "policy_decision": false,
+        "decision_latency_ms": 4.220504
+      }
+    },
+    "policy_dispose_c": {
+      "timestamp": "2026-11-21T21:26:06.700695614Z",
+      "stage": "dispose",
+      "chain_id": "c_e91f3624d2b74254f4e1d3a75880d8c3",
+      "actor_spiffe_id": "spiffe://lab.local/svc/vending-service",
+      "outcome": "allow",
+      "detail": {
+        "policy_id": "nhi_grants_c_e91f3624d2b74254f4e1d3a75880d8c3",
+        "reason": "grant module removed"
+      }
+    }
+  },
+  {
+    "trial": 22,
+    "delete": {
+      "status": 200,
+      "send_ns": 1795296375103409782,
+      "recv_ns": 1795296375161417458,
+      "round_trip_ns": 58007676,
+      "response": "{\"chain_id\":\"c_d37fdcc0ebf89574e83e5311abb726b5\",\"revoked\":true}\n"
+    },
+    "poll_ready": {
+      "event": "ready",
+      "status": 200,
+      "send_ns": 1795296374378709316,
+      "recv_ns": 1795296374387029683
+    },
+    "poll_final": {
+      "event": "denied",
+      "status": 403,
+      "send_ns": 1795296375120404938,
+      "recv_ns": 1795296375130505780,
+      "last_allowed_send_ns": 1795296375100020474,
+      "last_allowed_recv_ns": 1795296375107014141,
+      "polls": 37,
+      "gap_mean_ns": 20602656,
+      "gap_max_ns": 21123019,
+      "latency_mean_ns": 4789380,
+      "latency_max_ns": 11401932
+    },
+    "resource_first_deny": {
+      "timestamp": "2026-11-21T21:26:15.130201707Z",
+      "stage": "operate",
+      "chain_id": "",
+      "actor_spiffe_id": "spiffe://lab.local/agent/parent/exp-root/child/rs-c-93cd6f-22/child/rs-g-93cd6f-22",
+      "outcome": "deny",
+      "detail": {
+        "method": "GET",
+        "path": "/datasets/A",
+        "required_scopes": [
+          "resource:read:datasetA"
+        ],
+        "chain_id_source": "absent",
+        "reason": "policy denied",
+        "policy_decision": false,
+        "decision_latency_ms": 8.78056
+      }
+    },
+    "policy_dispose_c": {
+      "timestamp": "2026-11-21T21:26:15.1267802Z",
+      "stage": "dispose",
+      "chain_id": "c_d37fdcc0ebf89574e83e5311abb726b5",
+      "actor_spiffe_id": "spiffe://lab.local/svc/vending-service",
+      "outcome": "allow",
+      "detail": {
+        "policy_id": "nhi_grants_c_d37fdcc0ebf89574e83e5311abb726b5",
+        "reason": "grant module removed"
+      }
+    }
+  },
+  {
+    "trial": 23,
+    "delete": {
+      "status": 200,
+      "send_ns": 1795296381261162022,
+      "recv_ns": 1795296381325685971,
+      "round_trip_ns": 64523949,
+      "response": "{\"chain_id\":\"c_e17326ad4d9b86ac78524d14ac87b4d0\",\"revoked\":true}\n"
+    },
+    "poll_ready": {
+      "event": "ready",
+      "status": 200,
+      "send_ns": 1795296380541414366,
+      "recv_ns": 1795296380550346438
+    },
+    "poll_final": {
+      "event": "denied",
+      "status": 403,
+      "send_ns": 1795296381284622451,
+      "recv_ns": 1795296381290113095,
+      "last_allowed_send_ns": 1795296381263827704,
+      "last_allowed_recv_ns": 1795296381273125059,
+      "polls": 37,
+      "gap_mean_ns": 20644669,
+      "gap_max_ns": 21816526,
+      "latency_mean_ns": 4916352,
+      "latency_max_ns": 11464872
+    },
+    "resource_first_deny": {
+      "timestamp": "2026-11-21T21:26:21.28949302Z",
+      "stage": "operate",
+      "chain_id": "",
+      "actor_spiffe_id": "spiffe://lab.local/agent/parent/exp-root/child/rs-c-93cd6f-23/child/rs-g-93cd6f-23",
+      "outcome": "deny",
+      "detail": {
+        "method": "GET",
+        "path": "/datasets/A",
+        "required_scopes": [
+          "resource:read:datasetA"
+        ],
+        "chain_id_source": "absent",
+        "reason": "policy denied",
+        "policy_decision": false,
+        "decision_latency_ms": 3.769791
+      }
+    },
+    "policy_dispose_c": {
+      "timestamp": "2026-11-21T21:26:21.284091277Z",
+      "stage": "dispose",
+      "chain_id": "c_e17326ad4d9b86ac78524d14ac87b4d0",
+      "actor_spiffe_id": "spiffe://lab.local/svc/vending-service",
+      "outcome": "allow",
+      "detail": {
+        "policy_id": "nhi_grants_c_e17326ad4d9b86ac78524d14ac87b4d0",
+        "reason": "grant module removed"
+      }
+    }
+  },
+  {
+    "trial": 24,
+    "delete": {
+      "status": 200,
+      "send_ns": 1795296388474497930,
+      "recv_ns": 1795296388529396604,
+      "round_trip_ns": 54898674,
+      "response": "{\"chain_id\":\"c_bee3698a9678ba59f20c92302c9641a0\",\"revoked\":true}\n"
+    },
+    "poll_ready": {
+      "event": "ready",
+      "status": 200,
+      "send_ns": 1795296387733166991,
+      "recv_ns": 1795296387748561626
+    },
+    "poll_final": {
+      "event": "denied",
+      "status": 403,
+      "send_ns": 1795296388484511411,
+      "recv_ns": 1795296388497485196,
+      "last_allowed_send_ns": 1795296388463394640,
+      "last_allowed_recv_ns": 1795296388471264714,
+      "polls": 36,
+      "gap_mean_ns": 21466983,
+      "gap_max_ns": 52980948,
+      "latency_mean_ns": 6613719,
+      "latency_max_ns": 52874247
+    },
+    "resource_first_deny": {
+      "timestamp": "2026-11-21T21:26:28.496583399Z",
+      "stage": "operate",
+      "chain_id": "",
+      "actor_spiffe_id": "spiffe://lab.local/agent/parent/exp-root/child/rs-c-93cd6f-24/child/rs-g-93cd6f-24",
+      "outcome": "deny",
+      "detail": {
+        "method": "GET",
+        "path": "/datasets/A",
+        "required_scopes": [
+          "resource:read:datasetA"
+        ],
+        "chain_id_source": "absent",
+        "reason": "policy denied",
+        "policy_decision": false,
+        "decision_latency_ms": 10.638526
+      }
+    },
+    "policy_dispose_c": {
+      "timestamp": "2026-11-21T21:26:28.495000446Z",
+      "stage": "dispose",
+      "chain_id": "c_bee3698a9678ba59f20c92302c9641a0",
+      "actor_spiffe_id": "spiffe://lab.local/svc/vending-service",
+      "outcome": "allow",
+      "detail": {
+        "policy_id": "nhi_grants_c_bee3698a9678ba59f20c92302c9641a0",
+        "reason": "grant module removed"
+      }
+    }
+  },
+  {
+    "trial": 25,
+    "delete": {
+      "status": 200,
+      "send_ns": 1795296398393799617,
+      "recv_ns": 1795296398481911877,
+      "round_trip_ns": 88112260,
+      "response": "{\"chain_id\":\"c_5420acb4ba0dc44a2ebe5369ed012c57\",\"revoked\":true}\n"
+    },
+    "poll_ready": {
+      "event": "ready",
+      "status": 200,
+      "send_ns": 1795296397665644731,
+      "recv_ns": 1795296397673842038
+    },
+    "poll_final": {
+      "event": "denied",
+      "status": 403,
+      "send_ns": 1795296398428887369,
+      "recv_ns": 1795296398433937910,
+      "last_allowed_send_ns": 1795296398408136492,
+      "last_allowed_recv_ns": 1795296398412554988,
+      "polls": 38,
+      "gap_mean_ns": 20628179,
+      "gap_max_ns": 21192581,
+      "latency_mean_ns": 5095442,
+      "latency_max_ns": 16773375
+    },
+    "resource_first_deny": {
+      "timestamp": "2026-11-21T21:26:38.433454256Z",
+      "stage": "operate",
+      "chain_id": "",
+      "actor_spiffe_id": "spiffe://lab.local/agent/parent/exp-root/child/rs-c-93cd6f-25/child/rs-g-93cd6f-25",
+      "outcome": "deny",
+      "detail": {
+        "method": "GET",
+        "path": "/datasets/A",
+        "required_scopes": [
+          "resource:read:datasetA"
+        ],
+        "chain_id_source": "absent",
+        "reason": "policy denied",
+        "policy_decision": false,
+        "decision_latency_ms": 3.351127
+      }
+    },
+    "policy_dispose_c": {
+      "timestamp": "2026-11-21T21:26:38.424968848Z",
+      "stage": "dispose",
+      "chain_id": "c_5420acb4ba0dc44a2ebe5369ed012c57",
+      "actor_spiffe_id": "spiffe://lab.local/svc/vending-service",
+      "outcome": "allow",
+      "detail": {
+        "policy_id": "nhi_grants_c_5420acb4ba0dc44a2ebe5369ed012c57",
+        "reason": "grant module removed"
+      }
+    }
+  },
+  {
+    "trial": 26,
+    "delete": {
+      "status": 200,
+      "send_ns": 1795296406006954050,
+      "recv_ns": 1795296406058576666,
+      "round_trip_ns": 51622616,
+      "response": "{\"chain_id\":\"c_74d5a82153da582f5defe203c1fed329\",\"revoked\":true}\n"
+    },
+    "poll_ready": {
+      "event": "ready",
+      "status": 200,
+      "send_ns": 1795296405211939474,
+      "recv_ns": 1795296405218964450
+    },
+    "poll_final": {
+      "event": "denied",
+      "status": 403,
+      "send_ns": 1795296406037173373,
+      "recv_ns": 1795296406043005340,
+      "last_allowed_send_ns": 1795296406016637668,
+      "last_allowed_recv_ns": 1795296406020681070,
+      "polls": 41,
+      "gap_mean_ns": 20630847,
+      "gap_max_ns": 21554974,
+      "latency_mean_ns": 5352917,
+      "latency_max_ns": 14922290
+    },
+    "resource_first_deny": {
+      "timestamp": "2026-11-21T21:26:46.042598077Z",
+      "stage": "operate",
+      "chain_id": "",
+      "actor_spiffe_id": "spiffe://lab.local/agent/parent/exp-root/child/rs-c-93cd6f-26/child/rs-g-93cd6f-26",
+      "outcome": "deny",
+      "detail": {
+        "method": "GET",
+        "path": "/datasets/A",
+        "required_scopes": [
+          "resource:read:datasetA"
+        ],
+        "chain_id_source": "absent",
+        "reason": "policy denied",
+        "policy_decision": false,
+        "decision_latency_ms": 4.464116
+      }
+    },
+    "policy_dispose_c": {
+      "timestamp": "2026-11-21T21:26:46.024210559Z",
+      "stage": "dispose",
+      "chain_id": "c_74d5a82153da582f5defe203c1fed329",
+      "actor_spiffe_id": "spiffe://lab.local/svc/vending-service",
+      "outcome": "allow",
+      "detail": {
+        "policy_id": "nhi_grants_c_74d5a82153da582f5defe203c1fed329",
+        "reason": "grant module removed"
+      }
+    }
+  },
+  {
+    "trial": 27,
+    "delete": {
+      "status": 200,
+      "send_ns": 1795296412208703770,
+      "recv_ns": 1795296412274078377,
+      "round_trip_ns": 65374607,
+      "response": "{\"chain_id\":\"c_04869f9035e254ce6122ee81f2de6983\",\"revoked\":true}\n"
+    },
+    "poll_ready": {
+      "event": "ready",
+      "status": 200,
+      "send_ns": 1795296411396208624,
+      "recv_ns": 1795296411406414786
+    },
+    "poll_final": {
+      "event": "denied",
+      "status": 403,
+      "send_ns": 1795296412223269668,
+      "recv_ns": 1795296412229653569,
+      "last_allowed_send_ns": 1795296412202395199,
+      "last_allowed_recv_ns": 1795296412208569419,
+      "polls": 41,
+      "gap_mean_ns": 20676526,
+      "gap_max_ns": 21230741,
+      "latency_mean_ns": 5608240,
+      "latency_max_ns": 13622150
+    },
+    "resource_first_deny": {
+      "timestamp": "2026-11-21T21:26:52.229278706Z",
+      "stage": "operate",
+      "chain_id": "",
+      "actor_spiffe_id": "spiffe://lab.local/agent/parent/exp-root/child/rs-c-93cd6f-27/child/rs-g-93cd6f-27",
+      "outcome": "deny",
+      "detail": {
+        "method": "GET",
+        "path": "/datasets/A",
+        "required_scopes": [
+          "resource:read:datasetA"
+        ],
+        "chain_id_source": "absent",
+        "reason": "policy denied",
+        "policy_decision": false,
+        "decision_latency_ms": 5.224492
+      }
+    },
+    "policy_dispose_c": {
+      "timestamp": "2026-11-21T21:26:52.227370061Z",
+      "stage": "dispose",
+      "chain_id": "c_04869f9035e254ce6122ee81f2de6983",
+      "actor_spiffe_id": "spiffe://lab.local/svc/vending-service",
+      "outcome": "allow",
+      "detail": {
+        "policy_id": "nhi_grants_c_04869f9035e254ce6122ee81f2de6983",
+        "reason": "grant module removed"
+      }
+    }
+  },
+  {
+    "trial": 28,
+    "delete": {
+      "status": 200,
+      "send_ns": 1795296419643050728,
+      "recv_ns": 1795296419703942946,
+      "round_trip_ns": 60892218,
+      "response": "{\"chain_id\":\"c_66d1ca81d2e602d5c8c2abff398811d4\",\"revoked\":true}\n"
+    },
+    "poll_ready": {
+      "event": "ready",
+      "status": 200,
+      "send_ns": 1795296418876463117,
+      "recv_ns": 1795296418884770233
+    },
+    "poll_final": {
+      "event": "denied",
+      "status": 403,
+      "send_ns": 1795296419663134279,
+      "recv_ns": 1795296419667757856,
+      "last_allowed_send_ns": 1795296419642712325,
+      "last_allowed_recv_ns": 1795296419650379557,
+      "polls": 39,
+      "gap_mean_ns": 20701872,
+      "gap_max_ns": 26114549,
+      "latency_mean_ns": 5574192,
+      "latency_max_ns": 25511285
+    },
+    "resource_first_deny": {
+      "timestamp": "2026-11-21T21:26:59.667126881Z",
+      "stage": "operate",
+      "chain_id": "",
+      "actor_spiffe_id": "spiffe://lab.local/agent/parent/exp-root/child/rs-c-93cd6f-28/child/rs-g-93cd6f-28",
+      "outcome": "deny",
+      "detail": {
+        "method": "GET",
+        "path": "/datasets/A",
+        "required_scopes": [
+          "resource:read:datasetA"
+        ],
+        "chain_id_source": "absent",
+        "reason": "policy denied",
+        "policy_decision": false,
+        "decision_latency_ms": 3.205565
+      }
+    },
+    "policy_dispose_c": {
+      "timestamp": "2026-11-21T21:26:59.665024404Z",
+      "stage": "dispose",
+      "chain_id": "c_66d1ca81d2e602d5c8c2abff398811d4",
+      "actor_spiffe_id": "spiffe://lab.local/svc/vending-service",
+      "outcome": "allow",
+      "detail": {
+        "policy_id": "nhi_grants_c_66d1ca81d2e602d5c8c2abff398811d4",
+        "reason": "grant module removed"
+      }
+    }
+  },
+  {
+    "trial": 29,
+    "delete": {
+      "status": 200,
+      "send_ns": 1795296428251907135,
+      "recv_ns": 1795296428314546168,
+      "round_trip_ns": 62639033,
+      "response": "{\"chain_id\":\"c_a4d7dcf711111a99f63eb81bea693cb1\",\"revoked\":true}\n"
+    },
+    "poll_ready": {
+      "event": "ready",
+      "status": 200,
+      "send_ns": 1795296427498159227,
+      "recv_ns": 1795296427506929527
+    },
+    "poll_final": {
+      "event": "denied",
+      "status": 403,
+      "send_ns": 1795296428279290295,
+      "recv_ns": 1795296428286269761,
+      "last_allowed_send_ns": 1795296428259208734,
+      "last_allowed_recv_ns": 1795296428267149057,
+      "polls": 39,
+      "gap_mean_ns": 20556080,
+      "gap_max_ns": 21191850,
+      "latency_mean_ns": 5752822,
+      "latency_max_ns": 13164545
+    },
+    "resource_first_deny": {
+      "timestamp": "2026-11-21T21:27:08.285898948Z",
+      "stage": "operate",
+      "chain_id": "",
+      "actor_spiffe_id": "spiffe://lab.local/agent/parent/exp-root/child/rs-c-93cd6f-29/child/rs-g-93cd6f-29",
+      "outcome": "deny",
+      "detail": {
+        "method": "GET",
+        "path": "/datasets/A",
+        "required_scopes": [
+          "resource:read:datasetA"
+        ],
+        "chain_id_source": "absent",
+        "reason": "policy denied",
+        "policy_decision": false,
+        "decision_latency_ms": 5.853247
+      }
+    },
+    "policy_dispose_c": {
+      "timestamp": "2026-11-21T21:27:08.274402365Z",
+      "stage": "dispose",
+      "chain_id": "c_a4d7dcf711111a99f63eb81bea693cb1",
+      "actor_spiffe_id": "spiffe://lab.local/svc/vending-service",
+      "outcome": "allow",
+      "detail": {
+        "policy_id": "nhi_grants_c_a4d7dcf711111a99f63eb81bea693cb1",
+        "reason": "grant module removed"
+      }
+    }
+  },
+  {
+    "trial": 30,
+    "delete": {
+      "status": 200,
+      "send_ns": 1795296434367062442,
+      "recv_ns": 1795296434436486029,
+      "round_trip_ns": 69423587,
+      "response": "{\"chain_id\":\"c_df0a00911c976c81a15fe636f3cd644b\",\"revoked\":true}\n"
+    },
+    "poll_ready": {
+      "event": "ready",
+      "status": 200,
+      "send_ns": 1795296433656400484,
+      "recv_ns": 1795296433669788582
+    },
+    "poll_final": {
+      "event": "denied",
+      "status": 403,
+      "send_ns": 1795296434381977332,
+      "recv_ns": 1795296434390187498,
+      "last_allowed_send_ns": 1795296434361717099,
+      "last_allowed_recv_ns": 1795296434371694869,
+      "polls": 36,
+      "gap_mean_ns": 20730767,
+      "gap_max_ns": 22152148,
+      "latency_mean_ns": 4774635,
+      "latency_max_ns": 13388108
+    },
+    "resource_first_deny": {
+      "timestamp": "2026-11-21T21:27:14.389850055Z",
+      "stage": "operate",
+      "chain_id": "",
+      "actor_spiffe_id": "spiffe://lab.local/agent/parent/exp-root/child/rs-c-93cd6f-30/child/rs-g-93cd6f-30",
+      "outcome": "deny",
+      "detail": {
+        "method": "GET",
+        "path": "/datasets/A",
+        "required_scopes": [
+          "resource:read:datasetA"
+        ],
+        "chain_id_source": "absent",
+        "reason": "policy denied",
+        "policy_decision": false,
+        "decision_latency_ms": 6.836695
+      }
+    },
+    "policy_dispose_c": {
+      "timestamp": "2026-11-21T21:27:14.388466244Z",
+      "stage": "dispose",
+      "chain_id": "c_df0a00911c976c81a15fe636f3cd644b",
+      "actor_spiffe_id": "spiffe://lab.local/svc/vending-service",
+      "outcome": "allow",
+      "detail": {
+        "policy_id": "nhi_grants_c_df0a00911c976c81a15fe636f3cd644b",
+        "reason": "grant module removed"
+      }
+    }
+  }
+]

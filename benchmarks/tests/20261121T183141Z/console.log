@@ -1,0 +1,80 @@
+
+[2026-11-21T18:36:28Z] uv run --locked --python 3.14.6 python3 -u functional_tests.py 
+Using CPython 3.14.6
+Creating virtual environment at: .venv
+parent=experiments-parent-fc985bd87-ltnxc child=experiments-child-85c8bd56cc-72sc4
+== functional: Pi(C) <= Pi(P) across 30 randomized scope sets ==
+  [PASS] run 0: requested=['resource:admin:everything'] expected=[] got_http=403 got=None
+  [PASS] run 1: requested=['resource:delete:everything', 'resource:read:datasetB', 'resource:write:jobs'] expected=['resource:read:datasetB', 'resource:write:jobs'] got_http=201 got=['resource:read:datasetB', 'resource:write:jobs']
+  [PASS] run 2: requested=['resource:admin:everything', 'resource:read:datasetA', 'resource:read:datasetB'] expected=['resource:read:datasetA', 'resource:read:datasetB'] got_http=201 got=['resource:read:datasetA', 'resource:read:datasetB']
+  [PASS] run 3: requested=['resource:delete:everything'] expected=[] got_http=403 got=None
+  [PASS] run 4: requested=['resource:admin:everything', 'resource:read:datasetA'] expected=['resource:read:datasetA'] got_http=201 got=['resource:read:datasetA']
+  [PASS] run 5: requested=['resource:admin:everything', 'resource:delete:everything', 'resource:read:datasetA', 'resource:read:datasetB', 'resource:write:jobs'] expected=['resource:read:datasetA', 'resource:read:datasetB', 'resource:write:jobs'] got_http=201 got=['resource:read:datasetA', 'resource:read:datasetB', 'resource:write:jobs']
+  [PASS] run 6: requested=['resource:read:datasetA', 'resource:read:datasetB'] expected=['resource:read:datasetA', 'resource:read:datasetB'] got_http=201 got=['resource:read:datasetA', 'resource:read:datasetB']
+  [PASS] run 7: requested=['resource:admin:everything', 'resource:delete:everything', 'resource:read:datasetA', 'resource:read:datasetB'] expected=['resource:read:datasetA', 'resource:read:datasetB'] got_http=201 got=['resource:read:datasetA', 'resource:read:datasetB']
+  [PASS] run 8: requested=['resource:admin:everything', 'resource:read:datasetB'] expected=['resource:read:datasetB'] got_http=201 got=['resource:read:datasetB']
+  [PASS] run 9: requested=['resource:read:datasetA'] expected=['resource:read:datasetA'] got_http=201 got=['resource:read:datasetA']
+  [PASS] run 10: requested=['resource:admin:everything', 'resource:delete:everything', 'resource:read:datasetA', 'resource:read:datasetB', 'resource:write:jobs'] expected=['resource:read:datasetA', 'resource:read:datasetB', 'resource:write:jobs'] got_http=201 got=['resource:read:datasetA', 'resource:read:datasetB', 'resource:write:jobs']
+  [PASS] run 11: requested=['resource:write:jobs'] expected=['resource:write:jobs'] got_http=201 got=['resource:write:jobs']
+  [PASS] run 12: requested=['resource:delete:everything', 'resource:read:datasetA', 'resource:write:jobs'] expected=['resource:read:datasetA', 'resource:write:jobs'] got_http=201 got=['resource:read:datasetA', 'resource:write:jobs']
+  [PASS] run 13: requested=['resource:admin:everything'] expected=[] got_http=403 got=None
+  [PASS] run 14: requested=['resource:read:datasetA'] expected=['resource:read:datasetA'] got_http=201 got=['resource:read:datasetA']
+  [PASS] run 15: requested=['resource:read:datasetB'] expected=['resource:read:datasetB'] got_http=201 got=['resource:read:datasetB']
+  [PASS] run 16: requested=['resource:admin:everything', 'resource:delete:everything', 'resource:read:datasetA', 'resource:read:datasetB', 'resource:write:jobs'] expected=['resource:read:datasetA', 'resource:read:datasetB', 'resource:write:jobs'] got_http=201 got=['resource:read:datasetA', 'resource:read:datasetB', 'resource:write:jobs']
+  [PASS] run 17: requested=['resource:admin:everything', 'resource:read:datasetA', 'resource:read:datasetB', 'resource:write:jobs'] expected=['resource:read:datasetA', 'resource:read:datasetB', 'resource:write:jobs'] got_http=201 got=['resource:read:datasetA', 'resource:read:datasetB', 'resource:write:jobs']
+  [PASS] run 18: requested=['resource:read:datasetA'] expected=['resource:read:datasetA'] got_http=201 got=['resource:read:datasetA']
+  [PASS] run 19: requested=['resource:admin:everything', 'resource:delete:everything', 'resource:read:datasetA', 'resource:read:datasetB', 'resource:write:jobs'] expected=['resource:read:datasetA', 'resource:read:datasetB', 'resource:write:jobs'] got_http=201 got=['resource:read:datasetA', 'resource:read:datasetB', 'resource:write:jobs']
+  [PASS] run 20: requested=['resource:admin:everything', 'resource:delete:everything', 'resource:read:datasetB', 'resource:write:jobs'] expected=['resource:read:datasetB', 'resource:write:jobs'] got_http=201 got=['resource:read:datasetB', 'resource:write:jobs']
+  [PASS] run 21: requested=['resource:admin:everything', 'resource:read:datasetA', 'resource:read:datasetB'] expected=['resource:read:datasetA', 'resource:read:datasetB'] got_http=201 got=['resource:read:datasetA', 'resource:read:datasetB']
+  [PASS] run 22: requested=['resource:admin:everything', 'resource:delete:everything', 'resource:read:datasetA', 'resource:read:datasetB', 'resource:write:jobs'] expected=['resource:read:datasetA', 'resource:read:datasetB', 'resource:write:jobs'] got_http=201 got=['resource:read:datasetA', 'resource:read:datasetB', 'resource:write:jobs']
+  [PASS] run 23: requested=['resource:delete:everything', 'resource:read:datasetB', 'resource:write:jobs'] expected=['resource:read:datasetB', 'resource:write:jobs'] got_http=201 got=['resource:read:datasetB', 'resource:write:jobs']
+  [PASS] run 24: requested=['resource:admin:everything', 'resource:delete:everything', 'resource:read:datasetA', 'resource:read:datasetB'] expected=['resource:read:datasetA', 'resource:read:datasetB'] got_http=201 got=['resource:read:datasetA', 'resource:read:datasetB']
+  [PASS] run 25: requested=['resource:admin:everything', 'resource:delete:everything', 'resource:read:datasetB', 'resource:write:jobs'] expected=['resource:read:datasetB', 'resource:write:jobs'] got_http=201 got=['resource:read:datasetB', 'resource:write:jobs']
+  [PASS] run 26: requested=['resource:admin:everything', 'resource:delete:everything', 'resource:read:datasetA', 'resource:read:datasetB', 'resource:write:jobs'] expected=['resource:read:datasetA', 'resource:read:datasetB', 'resource:write:jobs'] got_http=201 got=['resource:read:datasetA', 'resource:read:datasetB', 'resource:write:jobs']
+  [PASS] run 27: requested=['resource:write:jobs'] expected=['resource:write:jobs'] got_http=201 got=['resource:write:jobs']
+  [PASS] run 28: requested=['resource:write:jobs'] expected=['resource:write:jobs'] got_http=201 got=['resource:write:jobs']
+  [PASS] run 29: requested=['resource:delete:everything'] expected=[] got_http=403 got=None
+
+== functional: credential expiry on child termination (10 runs) ==
+  [PASS] run 0: attest=4.962s dispose_call=0.205s revoke_observed=3.781s
+  [PASS] run 1: attest=4.97s dispose_call=0.209s revoke_observed=5.012s
+  [PASS] run 2: attest=3.791s dispose_call=0.205s revoke_observed=6.178s
+  [PASS] run 3: attest=4.982s dispose_call=0.205s revoke_observed=4.954s
+  [PASS] run 4: attest=3.797s dispose_call=0.229s revoke_observed=5.078s
+  [PASS] run 5: attest=4.966s dispose_call=0.25s revoke_observed=3.732s
+  [PASS] run 6: attest=4.979s dispose_call=0.214s revoke_observed=4.953s
+  [PASS] run 7: attest=4.991s dispose_call=0.216s revoke_observed=4.998s
+  [PASS] run 8: attest=4.966s dispose_call=0.246s revoke_observed=3.734s
+  [PASS] run 9: attest=4.974s dispose_call=0.227s revoke_observed=4.969s
+
+wrote /var/tmp/nhi-lab-c1e4dbe/source/src/experiments/results/latest/functional_scope_containment.csv, functional_credential_expiry.csv, functional_tests_summary.json
+
+PASS: functional suite (30 scope-containment runs, 10 expiry runs)
+
+[2026-11-21T18:38:22Z] uv run --locked --python 3.14.6 python3 -u multi_hop.py 
+== multi-hop suite: P -> C -> G ==
+parent=experiments-parent-fc985bd87-ltnxc child=experiments-child-85c8bd56cc-72sc4 grandchild=experiments-grandchild-7f645577d6-8tj8r
+  hop1: child_scopes=['resource:read:datasetA', 'resource:read:datasetB']  child_spiffe_id=spiffe://lab.local/agent/parent/exp-root/child/mh-c-dd01805c
+  hop1: child pod obtained SVID: True
+  hop1: Pi(C) subset of Pi(P): True  Pi(C)=['resource:read:datasetA', 'resource:read:datasetB']  Pi(P)=['resource:read:datasetA', 'resource:read:datasetB', 'resource:write:jobs']
+  hop2: child_scopes=['resource:read:datasetA', 'resource:read:datasetB']  child_spiffe_id=spiffe://lab.local/agent/parent/exp-root/child/mh-c-dd01805c/child/mh-g-dd01805c
+  hop2: Pi(G) subset of Pi(C): True  Pi(G)=['resource:read:datasetA', 'resource:read:datasetB']
+  hop2: jobs escalation attenuated away (present in Pi(P) but not Pi(C)): True
+  hop2: grandchild pod obtained SVID: True
+  operate: GET /datasets/A -> 200 (want 200); POST /jobs -> 403 (want 403, jobs was attenuated away)
+  audit: hop1 actor=spiffe://lab.local/agent/parent/exp-root  hop2 actor=spiffe://lab.local/agent/parent/exp-root/child/mh-c-dd01805c  lineage_ok=True
+  disposal: only C disposed, by P -> 200 (G is not disposed by hand)
+  cascade: G GET /datasets/A after C was revoked -> 403 (want 403), resource deny event=yes
+  cascade: G delegation revoked_at=1795286313 reason='ancestor_revoked: c_f93fb080b4c88beee6307273200fac54' (want 'ancestor_revoked: c_f93fb080b4c88beee6307273200fac54')
+  cascade: G dispose event actor=spiffe://lab.local/agent/parent/exp-root reason='ancestor_revoked: c_f93fb080b4c88beee6307273200fac54'
+  cascade: G SPIRE entry gone: True
+wrote /var/tmp/nhi-lab-c1e4dbe/source/src/experiments/results/latest/multi_hop.json
+
+PASS: multi-hop P -> C -> G
+
+[2026-11-21T18:38:42Z] uv run --locked --python 3.14.6 python3 -u - /var/tmp/nhi-lab-c1e4dbe/evidence/20261121T183141Z-functional/ttl-reaping.json 
+no pod in agents runs as nhi-exp-negtest-nopod (5 pods checked)
+  [PASS] orphaned_child_reaper
+      entry_reaped: True
+      audit_event: {'timestamp': '2026-11-21T18:38:55.498057733Z', 'stage': 'dispose', 'chain_id': 'c_7d8a4163d2a230f8403f9b0d27703294', 'actor_spiffe_id': 'spiffe://lab.local/svc/vending-service', 'outcome': 'allow', 'detail': {'parent_spiffe_id': 'spiffe://lab.local/agent/parent/exp-root', 'child_spiffe_id': 'spiffe://lab.local/agent/parent/exp-root/child/negtest-orphan-e7724ec55c', 'policy_id': 'nhi_grants_c_7d8a4163d2a230f8403f9b0d27703294', 'entry_id': 'b91db87d-3521-4a2f-9a73-b81d8d3abfc6', 'reason': 'ttl_expired'}}
+      chain_id: c_7d8a4163d2a230f8403f9b0d27703294

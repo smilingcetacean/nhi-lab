@@ -1,0 +1,7 @@
+{
+  "archive_sha256": "ec217b4537e215916adfa270a41aa64a51c83b2633513982a008512f88e87695",
+  "archive_size_bytes": 73982,
+  "source_instance_id": "i-0c432f8d182025e8d",
+  "ssm_run_command_id": "ed3b36c3-593e-4d3a-903c-92c8ee8dc266",
+  "transport": "AWS Systems Manager port forwarding to guest loopback"
+}

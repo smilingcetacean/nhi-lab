@@ -1,0 +1,9 @@
+[2026-11-21T21:03:42Z] make clean KIND_CLUSTER=aws-vend-to-access-poll
+>> deleting kind cluster 'aws-vend-to-access-poll'
+Deleting cluster "aws-vend-to-access-poll" ...
+Deleted nodes: ["aws-vend-to-access-poll-control-plane" "aws-vend-to-access-poll-worker"]
+>> clean
+[2026-11-21T21:03:45Z] rc=0
+No kind clusters found.
+--- kind containers:
+--- all containers:

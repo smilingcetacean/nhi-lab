@@ -1,0 +1,9 @@
+[2026-11-21T21:12:23Z] make clean KIND_CLUSTER=aws-vend-to-access-child-py
+>> deleting kind cluster 'aws-vend-to-access-child-py'
+Deleting cluster "aws-vend-to-access-child-py" ...
+Deleted nodes: ["aws-vend-to-access-child-py-control-plane" "aws-vend-to-access-child-py-worker"]
+>> clean
+[2026-11-21T21:12:25Z] rc=0
+No kind clusters found.
+--- kind containers:
+--- all containers:

@@ -1,0 +1,180 @@
+NAMESPACE            LAST SEEN   TYPE      REASON                    OBJECT                                                           MESSAGE
+default              7m59s       Normal    Starting                  node/aws-revoke-to-deny-worker                                   
+default              8m4s        Normal    Starting                  node/aws-revoke-to-deny-control-plane                            
+default              8m14s       Normal    Starting                  node/aws-revoke-to-deny-control-plane                            Starting kubelet.
+kube-system          8m14s       Normal    LeaderElection            lease/kube-controller-manager                                    aws-revoke-to-deny-control-plane_911c3b3d-4855-4567-845d-cdf308def814 became leader
+default              8m13s       Normal    NodeHasSufficientMemory   node/aws-revoke-to-deny-control-plane                            Node aws-revoke-to-deny-control-plane status is now: NodeHasSufficientMemory
+default              8m13s       Normal    NodeHasNoDiskPressure     node/aws-revoke-to-deny-control-plane                            Node aws-revoke-to-deny-control-plane status is now: NodeHasNoDiskPressure
+default              8m13s       Normal    NodeHasSufficientPID      node/aws-revoke-to-deny-control-plane                            Node aws-revoke-to-deny-control-plane status is now: NodeHasSufficientPID
+default              8m13s       Normal    NodeAllocatableEnforced   node/aws-revoke-to-deny-control-plane                            Updated Node Allocatable limit across pods
+kube-system          8m12s       Warning   Unhealthy                 pod/kube-scheduler-aws-revoke-to-deny-control-plane              Readiness probe failed: HTTP probe failed with statuscode: 500
+kube-system          8m12s       Normal    LeaderElection            lease/kube-scheduler                                             aws-revoke-to-deny-control-plane_80179373-859c-4335-86ba-8b356a18763e became leader
+kube-system          8m9s        Warning   NodeNotReady              pod/kube-scheduler-aws-revoke-to-deny-control-plane              Node is not ready
+default              8m9s        Normal    RegisteredNode            node/aws-revoke-to-deny-control-plane                            Node aws-revoke-to-deny-control-plane event: Registered Node aws-revoke-to-deny-control-plane in Controller
+kube-system          8m9s        Warning   NodeNotReady              pod/kube-controller-manager-aws-revoke-to-deny-control-plane     Node is not ready
+kube-system          8m9s        Warning   NodeNotReady              pod/etcd-aws-revoke-to-deny-control-plane                        Node is not ready
+kube-system          8m8s        Normal    ScalingReplicaSet         deployment/coredns                                               Scaled up replica set coredns-589f44dc88 from 0 to 2
+kube-system          8m8s        Warning   FailedScheduling          pod/coredns-589f44dc88-ngrbw                                     0/1 nodes are available: 1 node(s) had untolerated taint(s). no new claims to deallocate, preemption: 0/1 nodes are available: 1 Preemption is not helpful for scheduling.
+kube-system          8m8s        Normal    SuccessfulCreate          daemonset/kindnet                                                Created pod: kindnet-g697q
+kube-system          8m8s        Normal    SuccessfulCreate          daemonset/kube-proxy                                             Created pod: kube-proxy-7bp8f
+local-path-storage   8m8s        Normal    ScalingReplicaSet         deployment/local-path-provisioner                                Scaled up replica set local-path-provisioner-855c7b7774 from 0 to 1
+kube-system          8m8s        Normal    SuccessfulCreate          replicaset/coredns-589f44dc88                                    Created pod: coredns-589f44dc88-bz6tz
+kube-system          8m8s        Normal    SuccessfulCreate          replicaset/coredns-589f44dc88                                    Created pod: coredns-589f44dc88-ngrbw
+kube-system          8m8s        Warning   FailedScheduling          pod/coredns-589f44dc88-bz6tz                                     0/1 nodes are available: 1 node(s) had untolerated taint(s). no new claims to deallocate, preemption: 0/1 nodes are available: 1 Preemption is not helpful for scheduling.
+kube-system          8m8s        Normal    Scheduled                 pod/kindnet-g697q                                                Successfully assigned kube-system/kindnet-g697q to aws-revoke-to-deny-control-plane
+local-path-storage   8m8s        Warning   FailedScheduling          pod/local-path-provisioner-855c7b7774-tgr9w                      0/1 nodes are available: 1 node(s) had untolerated taint(s). no new claims to deallocate, preemption: 0/1 nodes are available: 1 Preemption is not helpful for scheduling.
+local-path-storage   8m8s        Normal    SuccessfulCreate          replicaset/local-path-provisioner-855c7b7774                     Created pod: local-path-provisioner-855c7b7774-tgr9w
+kube-system          8m8s        Warning   FailedMount               pod/kube-proxy-7bp8f                                             MountVolume.SetUp failed for volume "kube-api-access-zfrh8" : configmap "kube-root-ca.crt" not found
+kube-system          8m8s        Normal    Scheduled                 pod/kube-proxy-7bp8f                                             Successfully assigned kube-system/kube-proxy-7bp8f to aws-revoke-to-deny-control-plane
+kube-system          8m7s        Normal    Pulled                    pod/kube-proxy-7bp8f                                             Container image "registry.k8s.io/kube-proxy:v1.36.1" already present on machine and can be accessed by the pod
+kube-system          8m7s        Normal    Pulled                    pod/kindnet-g697q                                                Container image "docker.io/kindest/kindnetd:v20260528-9350166c" already present on machine and can be accessed by the pod
+kube-system          8m6s        Normal    Created                   pod/kube-proxy-7bp8f                                             Container created
+kube-system          8m5s        Normal    Started                   pod/kube-proxy-7bp8f                                             Container started
+kube-system          8m4s        Normal    SuccessfulCreate          daemonset/kube-proxy                                             Created pod: kube-proxy-ckpvc
+kube-system          8m4s        Normal    Scheduled                 pod/kindnet-pclw2                                                Successfully assigned kube-system/kindnet-pclw2 to aws-revoke-to-deny-worker
+kube-system          8m4s        Normal    Scheduled                 pod/kube-proxy-ckpvc                                             Successfully assigned kube-system/kube-proxy-ckpvc to aws-revoke-to-deny-worker
+kube-system          8m4s        Normal    Created                   pod/kindnet-g697q                                                Container created
+kube-system          8m4s        Normal    SuccessfulCreate          daemonset/kindnet                                                Created pod: kindnet-pclw2
+kube-system          8m4s        Normal    Started                   pod/kindnet-g697q                                                Container started
+default              8m4s        Normal    NodeHasSufficientMemory   node/aws-revoke-to-deny-worker                                   Node aws-revoke-to-deny-worker status is now: NodeHasSufficientMemory
+default              8m4s        Normal    NodeHasNoDiskPressure     node/aws-revoke-to-deny-worker                                   Node aws-revoke-to-deny-worker status is now: NodeHasNoDiskPressure
+default              8m4s        Normal    NodeHasSufficientPID      node/aws-revoke-to-deny-worker                                   Node aws-revoke-to-deny-worker status is now: NodeHasSufficientPID
+default              8m4s        Normal    NodeAllocatableEnforced   node/aws-revoke-to-deny-worker                                   Updated Node Allocatable limit across pods
+default              8m4s        Normal    RegisteredNode            node/aws-revoke-to-deny-worker                                   Node aws-revoke-to-deny-worker event: Registered Node aws-revoke-to-deny-worker in Controller
+kube-system          8m2s        Normal    Pulled                    pod/kube-proxy-ckpvc                                             Container image "registry.k8s.io/kube-proxy:v1.36.1" already present on machine and can be accessed by the pod
+kube-system          8m1s        Normal    Pulled                    pod/kindnet-pclw2                                                Container image "docker.io/kindest/kindnetd:v20260528-9350166c" already present on machine and can be accessed by the pod
+kube-system          8m          Normal    Started                   pod/kube-proxy-ckpvc                                             Container started
+kube-system          8m          Normal    Created                   pod/kube-proxy-ckpvc                                             Container created
+kube-system          7m58s       Normal    Created                   pod/kindnet-pclw2                                                Container created
+kube-system          7m58s       Normal    Started                   pod/kindnet-pclw2                                                Container started
+kube-system          7m53s       Normal    Scheduled                 pod/coredns-589f44dc88-bz6tz                                     Successfully assigned kube-system/coredns-589f44dc88-bz6tz to aws-revoke-to-deny-control-plane
+kube-system          7m53s       Normal    Scheduled                 pod/coredns-589f44dc88-ngrbw                                     Successfully assigned kube-system/coredns-589f44dc88-ngrbw to aws-revoke-to-deny-control-plane
+local-path-storage   7m53s       Normal    Scheduled                 pod/local-path-provisioner-855c7b7774-tgr9w                      Successfully assigned local-path-storage/local-path-provisioner-855c7b7774-tgr9w to aws-revoke-to-deny-control-plane
+default              7m53s       Normal    NodeReady                 node/aws-revoke-to-deny-control-plane                            Node aws-revoke-to-deny-control-plane status is now: NodeReady
+kube-system          7m52s       Normal    Pulled                    pod/coredns-589f44dc88-ngrbw                                     Container image "registry.k8s.io/coredns/coredns:v1.14.2" already present on machine and can be accessed by the pod
+kube-system          7m52s       Normal    Pulled                    pod/coredns-589f44dc88-bz6tz                                     Container image "registry.k8s.io/coredns/coredns:v1.14.2" already present on machine and can be accessed by the pod
+local-path-storage   7m51s       Normal    Pulled                    pod/local-path-provisioner-855c7b7774-tgr9w                      Container image "docker.io/kindest/local-path-provisioner:v20260521-9fb22683" already present on machine and can be accessed by the pod
+default              7m47s       Normal    NodeReady                 node/aws-revoke-to-deny-worker                                   Node aws-revoke-to-deny-worker status is now: NodeReady
+kube-system          7m46s       Normal    Created                   pod/coredns-589f44dc88-bz6tz                                     Container created
+local-path-storage   7m46s       Normal    Created                   pod/local-path-provisioner-855c7b7774-tgr9w                      Container created
+kube-system          7m45s       Normal    Started                   pod/coredns-589f44dc88-bz6tz                                     Container started
+kube-system          7m45s       Normal    Created                   pod/coredns-589f44dc88-ngrbw                                     Container created
+local-path-storage   7m45s       Normal    Started                   pod/local-path-provisioner-855c7b7774-tgr9w                      Container started
+kube-system          7m44s       Warning   Unhealthy                 pod/coredns-589f44dc88-bz6tz                                     Readiness probe failed: Get "http://10.244.0.2:8181/ready": dial tcp 10.244.0.2:8181: connect: connection refused
+kube-system          7m44s       Warning   Unhealthy                 pod/coredns-589f44dc88-ngrbw                                     Readiness probe failed: Get "http://10.244.0.3:8181/ready": dial tcp 10.244.0.3:8181: connect: connection refused
+kube-system          7m44s       Normal    Started                   pod/coredns-589f44dc88-ngrbw                                     Container started
+spire                7m24s       Normal    SuccessfulCreate          statefulset/spire-server                                         Create Pod spire-server-0 in StatefulSet spire-server successful
+spire                7m24s       Normal    SuccessfulCreate          statefulset/spire-server                                         Create Claim spire-data-spire-server-0 Pod spire-server-0 in StatefulSet spire-server success
+spire                7m24s       Normal    Provisioning              persistentvolumeclaim/spire-data-spire-server-0                  External provisioner is provisioning volume for claim "spire/spire-data-spire-server-0"
+spire                7m24s       Normal    ExternalProvisioning      persistentvolumeclaim/spire-data-spire-server-0                  Waiting for a volume to be created either by the external provisioner 'rancher.io/local-path' or manually by the system administrator. If volume creation is delayed, please verify that the provisioner is running and correctly registered.
+spire                7m24s       Normal    WaitForFirstConsumer      persistentvolumeclaim/spire-data-spire-server-0                  waiting for first consumer to be created before binding
+local-path-storage   7m23s       Normal    Created                   pod/helper-pod-create-pvc-d2fd2153-9355-4d7a-a240-2020aff637f3   Container created
+local-path-storage   7m23s       Normal    Started                   pod/helper-pod-create-pvc-d2fd2153-9355-4d7a-a240-2020aff637f3   Container started
+local-path-storage   7m23s       Normal    Pulled                    pod/helper-pod-create-pvc-d2fd2153-9355-4d7a-a240-2020aff637f3   Container image "docker.io/kindest/local-path-helper:v20260131-7181c60a" already present on machine and can be accessed by the pod
+spire                7m19s       Normal    ProvisioningSucceeded     persistentvolumeclaim/spire-data-spire-server-0                  Successfully provisioned volume pvc-d2fd2153-9355-4d7a-a240-2020aff637f3
+spire                7m18s       Normal    Scheduled                 pod/spire-server-0                                               Successfully assigned spire/spire-server-0 to aws-revoke-to-deny-worker
+spire                7m17s       Normal    Created                   pod/spire-server-0                                               Container created
+spire                7m17s       Normal    Pulled                    pod/spire-server-0                                               Container image "ghcr.io/spiffe/spire-server:1.15.2" already present on machine and can be accessed by the pod
+spire                7m17s       Normal    Started                   pod/spire-server-0                                               Container started
+spire                7m11s       Normal    Pulled                    pod/spire-agent-bkdnz                                            Container image "ghcr.io/spiffe/spire-agent:1.15.2" already present on machine and can be accessed by the pod
+spire                7m11s       Normal    Scheduled                 pod/spire-agent-bkdnz                                            Successfully assigned spire/spire-agent-bkdnz to aws-revoke-to-deny-worker
+spire                7m11s       Normal    SuccessfulCreate          daemonset/spire-agent                                            Created pod: spire-agent-bkdnz
+spire                7m11s       Normal    SuccessfulCreate          daemonset/spire-agent                                            Created pod: spire-agent-hc4bc
+spire                7m11s       Normal    Created                   pod/spire-agent-hc4bc                                            Container created
+spire                7m11s       Normal    Pulled                    pod/spire-agent-hc4bc                                            Container image "ghcr.io/spiffe/spire-agent:1.15.2" already present on machine and can be accessed by the pod
+spire                7m11s       Normal    Scheduled                 pod/spire-agent-hc4bc                                            Successfully assigned spire/spire-agent-hc4bc to aws-revoke-to-deny-control-plane
+spire                7m10s       Normal    Created                   pod/spire-agent-bkdnz                                            Container created
+spire                7m10s       Normal    Started                   pod/spire-agent-hc4bc                                            Container started
+spire                7m10s       Normal    Started                   pod/spire-agent-bkdnz                                            Container started
+opa                  6m58s       Normal    ScalingReplicaSet         deployment/opa                                                   Scaled up replica set opa-5c54cb55fb from 0 to 1
+opa                  6m58s       Normal    SuccessfulCreate          replicaset/opa-5c54cb55fb                                        Created pod: opa-5c54cb55fb-28qp7
+opa                  6m58s       Normal    Scheduled                 pod/opa-5c54cb55fb-28qp7                                         Successfully assigned opa/opa-5c54cb55fb-28qp7 to aws-revoke-to-deny-worker
+opa                  6m57s       Normal    Created                   pod/opa-5c54cb55fb-28qp7                                         Container created
+opa                  6m57s       Normal    Pulled                    pod/opa-5c54cb55fb-28qp7                                         Container image "ghcr.io/spiffe/spiffe-helper:0.11.0" already present on machine and can be accessed by the pod
+opa                  6m57s       Normal    Started                   pod/opa-5c54cb55fb-28qp7                                         Container started
+opa                  6m56s       Normal    Created                   pod/opa-5c54cb55fb-28qp7                                         Container created
+opa                  6m56s       Normal    Started                   pod/opa-5c54cb55fb-28qp7                                         Container started
+opa                  6m56s       Normal    Created                   pod/opa-5c54cb55fb-28qp7                                         Container created
+opa                  6m56s       Normal    Pulled                    pod/opa-5c54cb55fb-28qp7                                         Container image "ghcr.io/spiffe/spiffe-helper:0.11.0" already present on machine and can be accessed by the pod
+opa                  6m56s       Normal    Pulled                    pod/opa-5c54cb55fb-28qp7                                         Container image "openpolicyagent/opa:1.18.2" already present on machine and can be accessed by the pod
+opa                  6m56s       Normal    Started                   pod/opa-5c54cb55fb-28qp7                                         Container started
+agents               6m49s       Normal    Scheduled                 pod/nhi-test-workload-5965cbf6f8-tgtl7                           Successfully assigned agents/nhi-test-workload-5965cbf6f8-tgtl7 to aws-revoke-to-deny-worker
+agents               6m49s       Normal    ScalingReplicaSet         deployment/nhi-test-workload                                     Scaled up replica set nhi-test-workload-5965cbf6f8 from 0 to 1
+nhi                  6m49s       Normal    ScalingReplicaSet         deployment/policy-engine                                         Scaled up replica set policy-engine-9f7dd98c4 from 0 to 1
+nhi                  6m49s       Normal    SuccessfulCreate          replicaset/policy-engine-9f7dd98c4                               Created pod: policy-engine-9f7dd98c4-4mzz8
+nhi                  6m49s       Normal    Scheduled                 pod/policy-engine-9f7dd98c4-4mzz8                                Successfully assigned nhi/policy-engine-9f7dd98c4-4mzz8 to aws-revoke-to-deny-worker
+agents               6m49s       Normal    SuccessfulCreate          replicaset/nhi-test-workload-5965cbf6f8                          Created pod: nhi-test-workload-5965cbf6f8-tgtl7
+agents               6m48s       Normal    Created                   pod/nhi-test-workload-5965cbf6f8-tgtl7                           Container created
+nhi                  6m48s       Warning   ErrImageNeverPull         pod/policy-engine-9f7dd98c4-4mzz8                                Container image "nhi-lab/policy-engine:dev" is not present with pull policy of Never
+nhi                  6m48s       Warning   Failed                    pod/policy-engine-9f7dd98c4-4mzz8                                Error: ErrImageNeverPull
+agents               6m48s       Normal    Started                   pod/nhi-test-workload-5965cbf6f8-tgtl7                           Container started
+agents               6m48s       Normal    Pulled                    pod/nhi-test-workload-5965cbf6f8-tgtl7                           Container image "ghcr.io/spiffe/spire-agent:1.15.2" already present on machine and can be accessed by the pod
+nhi                  6m36s       Normal    Pulled                    pod/policy-engine-9f7dd98c4-4mzz8                                Container image "nhi-lab/policy-engine:dev" already present on machine and can be accessed by the pod
+nhi                  6m36s       Normal    Created                   pod/policy-engine-9f7dd98c4-4mzz8                                Container created
+nhi                  6m36s       Normal    Started                   pod/policy-engine-9f7dd98c4-4mzz8                                Container started
+nhi                  6m34s       Normal    SuccessfulCreate          replicaset/policy-engine-84b7b47899                              Created pod: policy-engine-84b7b47899-j8gqn
+nhi                  6m34s       Normal    Created                   pod/policy-engine-84b7b47899-j8gqn                               Container created
+nhi                  6m34s       Normal    ScalingReplicaSet         deployment/policy-engine                                         Scaled up replica set policy-engine-84b7b47899 from 0 to 1
+nhi                  6m34s       Normal    Scheduled                 pod/policy-engine-84b7b47899-j8gqn                               Successfully assigned nhi/policy-engine-84b7b47899-j8gqn to aws-revoke-to-deny-worker
+nhi                  6m34s       Normal    Pulled                    pod/policy-engine-84b7b47899-j8gqn                               Container image "nhi-lab/policy-engine:dev" already present on machine and can be accessed by the pod
+nhi                  6m33s       Normal    Started                   pod/policy-engine-84b7b47899-j8gqn                               Container started
+nhi                  6m28s       Normal    Killing                   pod/policy-engine-9f7dd98c4-4mzz8                                Stopping container policy-engine
+nhi                  6m28s       Normal    SuccessfulDelete          replicaset/policy-engine-9f7dd98c4                               Deleted pod: policy-engine-9f7dd98c4-4mzz8
+nhi                  6m28s       Normal    ScalingReplicaSet         deployment/policy-engine                                         Scaled down replica set policy-engine-9f7dd98c4 from 1 to 0
+nhi                  6m24s       Normal    SuccessfulDelete          replicaset/vending-service-598b4b5754                            Deleted pod: vending-service-598b4b5754-v46kl
+nhi                  6m24s       Normal    SuccessfulCreate          replicaset/vending-service-856d48f6c8                            Created pod: vending-service-856d48f6c8-9gjz9
+nhi                  6m24s       Normal    ScalingReplicaSet         deployment/vending-service                                       Scaled up replica set vending-service-598b4b5754 from 0 to 1
+nhi                  6m24s       Normal    ScalingReplicaSet         deployment/vending-service                                       Scaled down replica set vending-service-598b4b5754 from 1 to 0
+nhi                  6m24s       Normal    SuccessfulCreate          replicaset/vending-service-598b4b5754                            Created pod: vending-service-598b4b5754-v46kl
+nhi                  6m24s       Normal    ScalingReplicaSet         deployment/vending-service                                       Scaled up replica set vending-service-856d48f6c8 from 0 to 1
+nhi                  6m24s       Normal    WaitForFirstConsumer      persistentvolumeclaim/vending-data                               waiting for first consumer to be created before binding
+nhi                  6m24s       Normal    ExternalProvisioning      persistentvolumeclaim/vending-data                               Waiting for a volume to be created either by the external provisioner 'rancher.io/local-path' or manually by the system administrator. If volume creation is delayed, please verify that the provisioner is running and correctly registered.
+nhi                  6m24s       Normal    Provisioning              persistentvolumeclaim/vending-data                               External provisioner is provisioning volume for claim "nhi/vending-data"
+local-path-storage   6m23s       Normal    Pulled                    pod/helper-pod-create-pvc-eaf14261-236a-490d-8877-65faa0cc1e90   Container image "docker.io/kindest/local-path-helper:v20260131-7181c60a" already present on machine and can be accessed by the pod
+local-path-storage   6m23s       Normal    Created                   pod/helper-pod-create-pvc-eaf14261-236a-490d-8877-65faa0cc1e90   Container created
+local-path-storage   6m23s       Normal    Started                   pod/helper-pod-create-pvc-eaf14261-236a-490d-8877-65faa0cc1e90   Container started
+nhi                  6m23s       Warning   FailedScheduling          pod/vending-service-598b4b5754-v46kl                             running PreBind plugin "VolumeBinding": binding volumes: pod does not exist any more: pod "vending-service-598b4b5754-v46kl" not found
+nhi                  6m21s       Normal    ProvisioningSucceeded     persistentvolumeclaim/vending-data                               Successfully provisioned volume pvc-eaf14261-236a-490d-8877-65faa0cc1e90
+nhi                  6m21s       Normal    Scheduled                 pod/vending-service-856d48f6c8-9gjz9                             Successfully assigned nhi/vending-service-856d48f6c8-9gjz9 to aws-revoke-to-deny-worker
+nhi                  6m20s       Normal    Pulled                    pod/vending-service-856d48f6c8-9gjz9                             Container image "nhi-lab/vending-service:dev" already present on machine and can be accessed by the pod
+nhi                  6m20s       Normal    Created                   pod/vending-service-856d48f6c8-9gjz9                             Container created
+nhi                  6m20s       Normal    Started                   pod/vending-service-856d48f6c8-9gjz9                             Container started
+nhi                  6m12s       Normal    ScalingReplicaSet         deployment/resource                                              Scaled up replica set resource-588fb4f95d from 0 to 1
+nhi                  6m12s       Normal    ScalingReplicaSet         deployment/resource                                              Scaled up replica set resource-66f9fdcb44 from 0 to 1
+nhi                  6m12s       Normal    SuccessfulCreate          replicaset/resource-66f9fdcb44                                   Created pod: resource-66f9fdcb44-glznj
+nhi                  6m12s       Normal    Scheduled                 pod/resource-66f9fdcb44-glznj                                    Successfully assigned nhi/resource-66f9fdcb44-glznj to aws-revoke-to-deny-worker
+nhi                  6m12s       Normal    SuccessfulCreate          replicaset/resource-588fb4f95d                                   Created pod: resource-588fb4f95d-t2lg7
+nhi                  6m11s       Normal    Created                   pod/resource-66f9fdcb44-glznj                                    Container created
+nhi                  6m11s       Normal    Started                   pod/resource-66f9fdcb44-glznj                                    Container started
+nhi                  6m11s       Normal    Pulled                    pod/resource-66f9fdcb44-glznj                                    Container image "nhi-lab/resource:dev" already present on machine and can be accessed by the pod
+nhi                  6m11s       Normal    Started                   pod/resource-588fb4f95d-t2lg7                                    Container started
+nhi                  6m11s       Normal    Created                   pod/resource-588fb4f95d-t2lg7                                    Container created
+nhi                  6m11s       Normal    Pulled                    pod/resource-588fb4f95d-t2lg7                                    Container image "nhi-lab/resource:dev" already present on machine and can be accessed by the pod
+nhi                  6m11s       Normal    Scheduled                 pod/resource-588fb4f95d-t2lg7                                    Successfully assigned nhi/resource-588fb4f95d-t2lg7 to aws-revoke-to-deny-worker
+nhi                  6m5s        Normal    ScalingReplicaSet         deployment/resource                                              Scaled down replica set resource-66f9fdcb44 from 1 to 0
+nhi                  6m5s        Normal    SuccessfulDelete          replicaset/resource-66f9fdcb44                                   Deleted pod: resource-66f9fdcb44-glznj
+nhi                  6m5s        Normal    Killing                   pod/resource-66f9fdcb44-glznj                                    Stopping container resource
+agents               6m1s        Normal    Scheduled                 pod/experiments-attacker-c7c7dcc66-qpcn4                         Successfully assigned agents/experiments-attacker-c7c7dcc66-qpcn4 to aws-revoke-to-deny-worker
+agents               6m1s        Normal    SuccessfulCreate          replicaset/experiments-grandchild-7f645577d6                     Created pod: experiments-grandchild-7f645577d6-4s6c2
+agents               6m1s        Normal    ScalingReplicaSet         deployment/experiments-parent                                    Scaled up replica set experiments-parent-fc985bd87 from 0 to 1
+agents               6m1s        Normal    SuccessfulCreate          replicaset/experiments-parent-fc985bd87                          Created pod: experiments-parent-fc985bd87-96q9m
+agents               6m1s        Normal    SuccessfulCreate          replicaset/experiments-child-85c8bd56cc                          Created pod: experiments-child-85c8bd56cc-8prjd
+agents               6m1s        Normal    ScalingReplicaSet         deployment/experiments-child                                     Scaled up replica set experiments-child-85c8bd56cc from 0 to 1
+agents               6m1s        Normal    Scheduled                 pod/experiments-grandchild-7f645577d6-4s6c2                      Successfully assigned agents/experiments-grandchild-7f645577d6-4s6c2 to aws-revoke-to-deny-worker
+agents               6m1s        Normal    Scheduled                 pod/experiments-child-85c8bd56cc-8prjd                           Successfully assigned agents/experiments-child-85c8bd56cc-8prjd to aws-revoke-to-deny-worker
+agents               6m1s        Normal    SuccessfulCreate          replicaset/experiments-attacker-c7c7dcc66                        Created pod: experiments-attacker-c7c7dcc66-qpcn4
+agents               6m1s        Normal    ScalingReplicaSet         deployment/experiments-attacker                                  Scaled up replica set experiments-attacker-c7c7dcc66 from 0 to 1
+agents               6m1s        Normal    Scheduled                 pod/experiments-parent-fc985bd87-96q9m                           Successfully assigned agents/experiments-parent-fc985bd87-96q9m to aws-revoke-to-deny-worker
+agents               6m1s        Normal    ScalingReplicaSet         deployment/experiments-grandchild                                Scaled up replica set experiments-grandchild-7f645577d6 from 0 to 1
+agents               6m          Normal    Pulled                    pod/experiments-child-85c8bd56cc-8prjd                           Container image "nhi-lab/parentsim:dev" already present on machine and can be accessed by the pod
+agents               6m          Normal    Created                   pod/experiments-grandchild-7f645577d6-4s6c2                      Container created
+agents               6m          Normal    Pulled                    pod/experiments-grandchild-7f645577d6-4s6c2                      Container image "nhi-lab/parentsim:dev" already present on machine and can be accessed by the pod
+agents               6m          Normal    Started                   pod/experiments-attacker-c7c7dcc66-qpcn4                         Container started
+agents               6m          Normal    Pulled                    pod/experiments-parent-fc985bd87-96q9m                           Container image "nhi-lab/parentsim:dev" already present on machine and can be accessed by the pod
+agents               6m          Normal    Created                   pod/experiments-parent-fc985bd87-96q9m                           Container created
+agents               6m          Normal    Started                   pod/experiments-parent-fc985bd87-96q9m                           Container started
+agents               6m          Normal    Started                   pod/experiments-child-85c8bd56cc-8prjd                           Container started
+agents               6m          Normal    Created                   pod/experiments-child-85c8bd56cc-8prjd                           Container created
+agents               6m          Normal    Created                   pod/experiments-attacker-c7c7dcc66-qpcn4                         Container created
+agents               6m          Normal    Pulled                    pod/experiments-attacker-c7c7dcc66-qpcn4                         Container image "nhi-lab/parentsim:dev" already present on machine and can be accessed by the pod
+agents               5m59s       Normal    Started                   pod/experiments-grandchild-7f645577d6-4s6c2                      Container started

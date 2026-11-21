@@ -1,0 +1,31 @@
+run,requested_scopes,expected_child_scopes,http_code,got_child_scopes,pass_
+0,"[""resource:admin:everything""]",[],403,null,True
+1,"[""resource:delete:everything"", ""resource:read:datasetB"", ""resource:write:jobs""]","[""resource:read:datasetB"", ""resource:write:jobs""]",201,"[""resource:read:datasetB"", ""resource:write:jobs""]",True
+2,"[""resource:admin:everything"", ""resource:read:datasetA"", ""resource:read:datasetB""]","[""resource:read:datasetA"", ""resource:read:datasetB""]",201,"[""resource:read:datasetA"", ""resource:read:datasetB""]",True
+3,"[""resource:delete:everything""]",[],403,null,True
+4,"[""resource:admin:everything"", ""resource:read:datasetA""]","[""resource:read:datasetA""]",201,"[""resource:read:datasetA""]",True
+5,"[""resource:admin:everything"", ""resource:delete:everything"", ""resource:read:datasetA"", ""resource:read:datasetB"", ""resource:write:jobs""]","[""resource:read:datasetA"", ""resource:read:datasetB"", ""resource:write:jobs""]",201,"[""resource:read:datasetA"", ""resource:read:datasetB"", ""resource:write:jobs""]",True
+6,"[""resource:read:datasetA"", ""resource:read:datasetB""]","[""resource:read:datasetA"", ""resource:read:datasetB""]",201,"[""resource:read:datasetA"", ""resource:read:datasetB""]",True
+7,"[""resource:admin:everything"", ""resource:delete:everything"", ""resource:read:datasetA"", ""resource:read:datasetB""]","[""resource:read:datasetA"", ""resource:read:datasetB""]",201,"[""resource:read:datasetA"", ""resource:read:datasetB""]",True
+8,"[""resource:admin:everything"", ""resource:read:datasetB""]","[""resource:read:datasetB""]",201,"[""resource:read:datasetB""]",True
+9,"[""resource:read:datasetA""]","[""resource:read:datasetA""]",201,"[""resource:read:datasetA""]",True
+10,"[""resource:admin:everything"", ""resource:delete:everything"", ""resource:read:datasetA"", ""resource:read:datasetB"", ""resource:write:jobs""]","[""resource:read:datasetA"", ""resource:read:datasetB"", ""resource:write:jobs""]",201,"[""resource:read:datasetA"", ""resource:read:datasetB"", ""resource:write:jobs""]",True
+11,"[""resource:write:jobs""]","[""resource:write:jobs""]",201,"[""resource:write:jobs""]",True
+12,"[""resource:delete:everything"", ""resource:read:datasetA"", ""resource:write:jobs""]","[""resource:read:datasetA"", ""resource:write:jobs""]",201,"[""resource:read:datasetA"", ""resource:write:jobs""]",True
+13,"[""resource:admin:everything""]",[],403,null,True
+14,"[""resource:read:datasetA""]","[""resource:read:datasetA""]",201,"[""resource:read:datasetA""]",True
+15,"[""resource:read:datasetB""]","[""resource:read:datasetB""]",201,"[""resource:read:datasetB""]",True
+16,"[""resource:admin:everything"", ""resource:delete:everything"", ""resource:read:datasetA"", ""resource:read:datasetB"", ""resource:write:jobs""]","[""resource:read:datasetA"", ""resource:read:datasetB"", ""resource:write:jobs""]",201,"[""resource:read:datasetA"", ""resource:read:datasetB"", ""resource:write:jobs""]",True
+17,"[""resource:admin:everything"", ""resource:read:datasetA"", ""resource:read:datasetB"", ""resource:write:jobs""]","[""resource:read:datasetA"", ""resource:read:datasetB"", ""resource:write:jobs""]",201,"[""resource:read:datasetA"", ""resource:read:datasetB"", ""resource:write:jobs""]",True
+18,"[""resource:read:datasetA""]","[""resource:read:datasetA""]",201,"[""resource:read:datasetA""]",True
+19,"[""resource:admin:everything"", ""resource:delete:everything"", ""resource:read:datasetA"", ""resource:read:datasetB"", ""resource:write:jobs""]","[""resource:read:datasetA"", ""resource:read:datasetB"", ""resource:write:jobs""]",201,"[""resource:read:datasetA"", ""resource:read:datasetB"", ""resource:write:jobs""]",True
+20,"[""resource:admin:everything"", ""resource:delete:everything"", ""resource:read:datasetB"", ""resource:write:jobs""]","[""resource:read:datasetB"", ""resource:write:jobs""]",201,"[""resource:read:datasetB"", ""resource:write:jobs""]",True
+21,"[""resource:admin:everything"", ""resource:read:datasetA"", ""resource:read:datasetB""]","[""resource:read:datasetA"", ""resource:read:datasetB""]",201,"[""resource:read:datasetA"", ""resource:read:datasetB""]",True
+22,"[""resource:admin:everything"", ""resource:delete:everything"", ""resource:read:datasetA"", ""resource:read:datasetB"", ""resource:write:jobs""]","[""resource:read:datasetA"", ""resource:read:datasetB"", ""resource:write:jobs""]",201,"[""resource:read:datasetA"", ""resource:read:datasetB"", ""resource:write:jobs""]",True
+23,"[""resource:delete:everything"", ""resource:read:datasetB"", ""resource:write:jobs""]","[""resource:read:datasetB"", ""resource:write:jobs""]",201,"[""resource:read:datasetB"", ""resource:write:jobs""]",True
+24,"[""resource:admin:everything"", ""resource:delete:everything"", ""resource:read:datasetA"", ""resource:read:datasetB""]","[""resource:read:datasetA"", ""resource:read:datasetB""]",201,"[""resource:read:datasetA"", ""resource:read:datasetB""]",True
+25,"[""resource:admin:everything"", ""resource:delete:everything"", ""resource:read:datasetB"", ""resource:write:jobs""]","[""resource:read:datasetB"", ""resource:write:jobs""]",201,"[""resource:read:datasetB"", ""resource:write:jobs""]",True
+26,"[""resource:admin:everything"", ""resource:delete:everything"", ""resource:read:datasetA"", ""resource:read:datasetB"", ""resource:write:jobs""]","[""resource:read:datasetA"", ""resource:read:datasetB"", ""resource:write:jobs""]",201,"[""resource:read:datasetA"", ""resource:read:datasetB"", ""resource:write:jobs""]",True
+27,"[""resource:write:jobs""]","[""resource:write:jobs""]",201,"[""resource:write:jobs""]",True
+28,"[""resource:write:jobs""]","[""resource:write:jobs""]",201,"[""resource:write:jobs""]",True
+29,"[""resource:delete:everything""]",[],403,null,True

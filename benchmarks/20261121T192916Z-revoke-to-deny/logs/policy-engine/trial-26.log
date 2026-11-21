@@ -1,0 +1,7 @@
+2026-11-21T19:37:39.888010897Z 2026/11/21 19:37:39 http: TLS handshake error from 10.244.1.1:45802: EOF
+2026-11-21T19:37:39.890610590Z {"timestamp":"2026-11-21T19:37:39.890444428Z","stage":"vend","chain_id":"c_8b70c97524c4c81090eec1d6318667ab","actor_spiffe_id":"spiffe://lab.local/svc/vending-service","outcome":"allow","detail":{"parent_spiffe_id":"spiffe://lab.local/agent/parent/exp-root","child_spiffe_id":"spiffe://lab.local/agent/parent/exp-root/child/r2d-a42558-26","requested_scopes":["resource:read:datasetA"],"child_scopes":["resource:read:datasetA"],"parent_scopes":["resource:read:datasetA","resource:read:datasetB","resource:write:jobs"],"policy_id":"nhi_grants_c_8b70c97524c4c81090eec1d6318667ab","expires_at":1795290159,"task_context":"revocation speed"}}
+2026-11-21T19:37:44.171925246Z 2026/11/21 19:37:44 http: TLS handshake error from 10.244.1.1:45814: EOF
+2026-11-21T19:37:44.887535222Z 2026/11/21 19:37:44 http: TLS handshake error from 10.244.1.1:52480: EOF
+2026-11-21T19:37:47.690131231Z {"timestamp":"2026-11-21T19:37:47.689934338Z","stage":"dispose","chain_id":"c_8b70c97524c4c81090eec1d6318667ab","actor_spiffe_id":"spiffe://lab.local/svc/vending-service","outcome":"allow","detail":{"policy_id":"nhi_grants_c_8b70c97524c4c81090eec1d6318667ab","reason":"grant module removed"}}
+2026-11-21T19:37:49.887521783Z 2026/11/21 19:37:49 http: TLS handshake error from 10.244.1.1:52482: EOF
+2026-11-21T19:37:54.172525657Z 2026/11/21 19:37:54 http: TLS handshake error from 10.244.1.1:52488: EOF

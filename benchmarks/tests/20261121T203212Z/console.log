@@ -1,0 +1,58 @@
+[2026-11-21T20:32:13Z] make resource-test
+go: downloading github.com/spiffe/go-spiffe/v2 v2.8.1
+go: downloading github.com/go-jose/go-jose/v4 v4.1.4
+go: downloading google.golang.org/grpc v1.79.3
+go: downloading google.golang.org/protobuf v1.36.11
+go: downloading golang.org/x/net v0.48.0
+go: downloading google.golang.org/genproto/googleapis/rpc v0.0.0-20251202230838-ff82c1b0f217
+go: downloading golang.org/x/sys v0.39.0
+go: downloading golang.org/x/text v0.32.0
+ok  	nhi-lab/resource	0.018s
+[2026-11-21T20:33:15Z] make policy-engine-test
+ok  	nhi-lab/policy-engine	0.059s
+[2026-11-21T20:33:17Z] make vending-service-test
+go: downloading github.com/spiffe/spire-api-sdk v1.15.2
+go: downloading modernc.org/sqlite v1.54.0
+go: downloading golang.org/x/sys v0.46.0
+go: downloading modernc.org/libc v1.74.1
+go: downloading github.com/dustin/go-humanize v1.0.1
+go: downloading github.com/google/uuid v1.6.0
+go: downloading modernc.org/mathutil v1.7.1
+go: downloading modernc.org/memory v1.11.0
+go: downloading github.com/remyoudompheng/bigfft v0.0.0-20230129092748-24d4a6f8daec
+ok  	nhi-lab/vending-service/cmd/parentsim	0.667s
+ok  	nhi-lab/vending-service/cmd/vending-service	0.190s
+ok  	nhi-lab/vending-service/internal/audit	0.008s
+ok  	nhi-lab/vending-service/internal/manifest	0.009s
+?   	nhi-lab/vending-service/internal/policyclient	[no test files]
+ok  	nhi-lab/vending-service/internal/signature	0.014s
+?   	nhi-lab/vending-service/internal/spireentry	[no test files]
+ok  	nhi-lab/vending-service/internal/store	0.034s
+[2026-11-21T20:34:09Z] make agents-test
+[2026-11-21T20:34:09Z] make rego-test
+/tmp/tmp.2u9W7KIrTL/resource_test.rego:101:
+data.nhi.resource_test.test_scope_not_granted_denies: PASS (2.038126ms)
+/tmp/tmp.2u9W7KIrTL/resource_test.rego:41:
+data.nhi.resource_test.test_g_allowed_when_c_and_g_grants_live: PASS (4.230244ms)
+/tmp/tmp.2u9W7KIrTL/resource_test.rego:47:
+data.nhi.resource_test.test_g_denied_when_c_grant_removed: PASS (4.546367ms)
+/tmp/tmp.2u9W7KIrTL/resource_test.rego:52:
+data.nhi.resource_test.test_c_allowed_with_only_the_root_above_it: PASS (3.263347ms)
+/tmp/tmp.2u9W7KIrTL/resource_test.rego:107:
+data.nhi.resource_test.test_root_has_no_ancestors: PASS (2.46194ms)
+/tmp/tmp.2u9W7KIrTL/resource_test.rego:111:
+data.nhi.resource_test.test_ancestors_of_g_are_c_only: PASS (1.875555ms)
+/tmp/tmp.2u9W7KIrTL/resource_test.rego:62:
+data.nhi.resource_test.test_c_denied_when_its_own_grant_expired: PASS (1.631074ms)
+/tmp/tmp.2u9W7KIrTL/resource_test.rego:57:
+data.nhi.resource_test.test_g_denied_when_c_grant_expired: PASS (3.139876ms)
+/tmp/tmp.2u9W7KIrTL/resource_test.rego:69:
+data.nhi.resource_test.test_a_grant_for_a_different_child_is_not_an_ancestor_grant: PASS (2.646371ms)
+/tmp/tmp.2u9W7KIrTL/resource_test.rego:75:
+data.nhi.resource_test.test_two_grants_for_the_ancestor_one_expired_still_live: PASS (3.126556ms)
+/tmp/tmp.2u9W7KIrTL/resource_test.rego:97:
+data.nhi.resource_test.test_no_grants_denies: PASS (888.718µs)
+/tmp/tmp.2u9W7KIrTL/resource_test.rego:85:
+data.nhi.resource_test.test_depth_three_needs_the_whole_chain: PASS (10.119652ms)
+--------------------------------------------------------------------------------
+PASS: 12/12

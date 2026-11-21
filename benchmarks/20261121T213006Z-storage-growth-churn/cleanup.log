@@ -1,0 +1,9 @@
+[2026-11-21T21:34:59Z] make clean KIND_CLUSTER=aws-storage-growth-churn
+>> deleting kind cluster 'aws-storage-growth-churn'
+Deleting cluster "aws-storage-growth-churn" ...
+Deleted nodes: ["aws-storage-growth-churn-worker" "aws-storage-growth-churn-control-plane"]
+>> clean
+[2026-11-21T21:35:01Z] rc=0
+No kind clusters found.
+--- kind containers:
+--- all containers:

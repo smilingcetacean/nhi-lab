@@ -1,0 +1,22 @@
+[
+  {
+    "test": "orphaned_child_reaper",
+    "pass": true,
+    "entry_reaped": true,
+    "audit_event": {
+      "timestamp": "2026-11-21T18:38:55.498057733Z",
+      "stage": "dispose",
+      "chain_id": "c_7d8a4163d2a230f8403f9b0d27703294",
+      "actor_spiffe_id": "spiffe://lab.local/svc/vending-service",
+      "outcome": "allow",
+      "detail": {
+        "parent_spiffe_id": "spiffe://lab.local/agent/parent/exp-root",
+        "child_spiffe_id": "spiffe://lab.local/agent/parent/exp-root/child/negtest-orphan-e7724ec55c",
+        "policy_id": "nhi_grants_c_7d8a4163d2a230f8403f9b0d27703294",
+        "entry_id": "b91db87d-3521-4a2f-9a73-b81d8d3abfc6",
+        "reason": "ttl_expired"
+      }
+    },
+    "chain_id": "c_7d8a4163d2a230f8403f9b0d27703294"
+  }
+]

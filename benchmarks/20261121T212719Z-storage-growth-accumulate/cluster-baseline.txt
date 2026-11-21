@@ -1,0 +1,290 @@
+NAME                                          STATUS   ROLES           AGE     VERSION   INTERNAL-IP   EXTERNAL-IP   OS-IMAGE                       KERNEL-VERSION           CONTAINER-RUNTIME
+aws-storage-growth-accumulate-control-plane   Ready    control-plane   2m20s   v1.36.1   172.18.0.3    <none>        Debian GNU/Linux 13 (trixie)   7.0.0-1018-aws (amd64)   containerd://2.3.1
+aws-storage-growth-accumulate-worker          Ready    <none>          2m8s    v1.36.1   172.18.0.2    <none>        Debian GNU/Linux 13 (trixie)   7.0.0-1018-aws (amd64)   containerd://2.3.1
+NS                   NAME                                                                  IMAGES
+agents               experiments-attacker-c7c7dcc66-q598w                                  docker.io/nhi-lab/parentsim:dev
+agents               experiments-child-85c8bd56cc-4ch4q                                    docker.io/nhi-lab/parentsim:dev
+agents               experiments-grandchild-7f645577d6-8sfrp                               docker.io/nhi-lab/parentsim:dev
+agents               experiments-parent-fc985bd87-hctmz                                    docker.io/nhi-lab/parentsim:dev
+agents               nhi-test-workload-5965cbf6f8-m8pjd                                    ghcr.io/spiffe/spire-agent:1.15.2
+kube-system          coredns-589f44dc88-cq457                                              registry.k8s.io/coredns/coredns:v1.14.2
+kube-system          coredns-589f44dc88-kjsn2                                              registry.k8s.io/coredns/coredns:v1.14.2
+kube-system          etcd-aws-storage-growth-accumulate-control-plane                      registry.k8s.io/etcd:3.6.8-0
+kube-system          kindnet-v9hwc                                                         docker.io/kindest/kindnetd:v20260528-9350166c
+kube-system          kindnet-wtk6d                                                         docker.io/kindest/kindnetd:v20260528-9350166c
+kube-system          kube-apiserver-aws-storage-growth-accumulate-control-plane            registry.k8s.io/kube-apiserver-amd64:v1.36.1
+kube-system          kube-controller-manager-aws-storage-growth-accumulate-control-plane   registry.k8s.io/kube-controller-manager-amd64:v1.36.1
+kube-system          kube-proxy-8r8dr                                                      registry.k8s.io/kube-proxy-amd64:v1.36.1
+kube-system          kube-proxy-8tw4r                                                      registry.k8s.io/kube-proxy-amd64:v1.36.1
+kube-system          kube-scheduler-aws-storage-growth-accumulate-control-plane            registry.k8s.io/kube-scheduler-amd64:v1.36.1
+local-path-storage   local-path-provisioner-855c7b7774-zmrnx                               docker.io/kindest/local-path-provisioner:v20260521-9fb22683
+nhi                  policy-engine-7854f7886-p6ksk                                         docker.io/nhi-lab/policy-engine:dev
+nhi                  resource-7c845679b-ncc5p                                              docker.io/nhi-lab/resource:dev
+nhi                  vending-service-5b6f9446c6-h2jfj                                      docker.io/nhi-lab/vending-service:dev
+opa                  opa-5c54cb55fb-4h9ml                                                  docker.io/openpolicyagent/opa:1.18.2
+spire                spire-agent-7dz2t                                                     ghcr.io/spiffe/spire-agent:1.15.2
+spire                spire-agent-m2hdt                                                     ghcr.io/spiffe/spire-agent:1.15.2
+spire                spire-server-0                                                        ghcr.io/spiffe/spire-server:1.15.2
+NAMESPACE   NAME                        STATUS   VOLUME                                     CAPACITY   ACCESS MODES   STORAGECLASS   VOLUMEATTRIBUTESCLASS   AGE
+nhi         vending-data                Bound    pvc-b3b66f88-9294-4d72-abf0-36fe30ea613e   256Mi      RWO            standard       <unset>                 27s
+spire       spire-data-spire-server-0   Bound    pvc-4faf8ce3-5de1-4ac2-847b-271c3e27ecef   1Gi        RWO            standard       <unset>                 85s
+apiVersion: v1
+items:
+- apiVersion: v1
+  data:
+    ca.crt: |
+      -----BEGIN CERTIFICATE-----
+      MIIDBTCCAe2gAwIBAgIIOP3ejKwnIZkwDQYJKoZIhvcNAQELBQAwFTETMBEGA1UE
+      AxMKa3ViZXJuZXRlczAeFw0yNjExMjEyMTIyMzBaFw0zNjExMTgyMTI3MzBaMBUx
+      EzARBgNVBAMTCmt1YmVybmV0ZXMwggEiMA0GCSqGSIb3DQEBAQUAA4IBDwAwggEK
+      AoIBAQDMNMVFTJ9dX0ZSAOLgTmC5lZc0sDeuYsqu3Uciem2mKMBVb9nTjsTaxEIm
+      mbCfuHy8/c+F9bIRJR4DM3fGa7LjwS1h++eoEt9d01UMq0Yq+OAkG4hOa+zK6Jvq
+      X7N/OXfg5GUC2XjK4u6WAO7cBFMLnp36PM4wRvfrfBVUEVTUT67nF4UNpQ1WmB6u
+      3//ABgkyjYLTpsPvqbXEL1fr4d9cYORfG4QGLB3jUPNYI3Ix2WUWg3M1PIUs+Tyc
+      Spf7X92FHEU1XxRves9YuHa4rBURF1L0Vi0H++xAVLrUccYFNt2DCWCjFWhcgMN4
+      A7DZZ9ryFmNtETc2AeIHYp22s0U1AgMBAAGjWTBXMA4GA1UdDwEB/wQEAwICpDAP
+      BgNVHRMBAf8EBTADAQH/MB0GA1UdDgQWBBS1qoQAhc3puhulJJHSAVY+YUPY2zAV
+      BgNVHREEDjAMggprdWJlcm5ldGVzMA0GCSqGSIb3DQEBCwUAA4IBAQBmQvOedkf9
+      0uawy9IduFuEDSt+OoQnLjaXG8N1eBNJBIAjxGcQ0jlwy8K70nB+TBGkFs6OwwLA
+      Zrc3KUQivj5+qi0bEdoh/a0xvNgkmiw5/Id5VifpCjxZ/CKQK/6wYBIjznQlc+AH
+      tF+zs+9/Pdbkp38gbizDldRrSuk+xidxI5Uz8WeomLLIIGeYqhzwgsTOih/BYG7t
+      nYHKQ9M088esWbbJnNso+NKLPht8fvIYs7NXPFyun0/EL05CR6SXsm7abouTsUFD
+      AjQ7QKtPOv1cL9OGn3o791VfQDWNgYsofV7xCzTVPn3pnRfIuyVOvAsiGy/zEqmF
+      EuJzZZ6ldmS3
+      -----END CERTIFICATE-----
+  kind: ConfigMap
+  metadata:
+    annotations:
+      kubernetes.io/description: Contains a CA bundle that can be used to verify the
+        kube-apiserver when using internal endpoints such as the internal service
+        IP or kubernetes.default.svc. No other usage is guaranteed across distributions
+        of Kubernetes clusters.
+    creationTimestamp: "2026-11-21T21:28:34Z"
+    name: kube-root-ca.crt
+    namespace: spire
+    resourceVersion: "580"
+    uid: e8ad88c8-c9f9-477f-a7d2-4b00c50164d2
+- apiVersion: v1
+  data:
+    agent.conf: |
+      agent {
+          data_dir          = "/run/spire/agent-data"
+          log_level         = "INFO"
+          server_address    = "spire-server.spire.svc.cluster.local"
+          server_port       = "8081"
+
+          experimental {
+              sync_interval = "1s"
+          }
+
+          # Workload API endpoint. Shared into workload pods by hostPath
+          # (not the SPIFFE CSI driver); the hostPath directory is
+          # /run/spire/sockets on the node.
+          socket_path       = "/run/spire/sockets/agent.sock"
+
+          trust_bundle_path = "/run/spire/bundle/bundle.crt"
+          trust_domain      = "lab.local"
+      }
+
+      plugins {
+          # Node attestation, server-side counterpart in 11-server-configmap.yaml.
+          # token_path points at the projected token volume whose audience is
+          # "spire-server"; the server's k8s_psat `audience` must match exactly.
+          NodeAttestor "k8s_psat" {
+              plugin_data {
+                  cluster    = "nhi-lab"
+                  token_path = "/var/run/secrets/tokens/spire-agent"
+              }
+          }
+
+          KeyManager "memory" {
+              plugin_data {}
+          }
+
+          # Workload attestation. Emits k8s:ns:<ns>, k8s:sa:<sa>, k8s:pod-uid:<uid>
+          # and friends — the selectors a spawn manifest carries in its
+          # `child_selectors` field.
+          #
+          # skip_kubelet_verification: kind's kubelet serves a self-signed
+          # certificate that no in-cluster CA vouches for. Lab-only shortcut and
+          # a known limitation of this deployment.
+          #
+          # What it weakens: the selectors this attestor derives from the kubelet
+          # /pods query are the sole binding between a minted child SPIFFE ID and
+          # the pod entitled to use it, so the provenance claim
+          # terminates at the integrity of that query. Forging it requires
+          # intercepting a loopback connection inside the node's own network
+          # namespace, i.e. node compromise — already terminal for SPIRE's node
+          # attestation trust model. Low residual risk, but stated explicitly
+          # rather than left assumed.
+          WorkloadAttestor "k8s" {
+              plugin_data {
+                  skip_kubelet_verification = true
+              }
+          }
+
+          WorkloadAttestor "unix" {
+              plugin_data {}
+          }
+      }
+
+      health_checks {
+          listener_enabled = true
+          bind_address     = "0.0.0.0"
+          bind_port        = "8082"
+          live_path        = "/live"
+          ready_path       = "/ready"
+      }
+  kind: ConfigMap
+  metadata:
+    annotations:
+      kubectl.kubernetes.io/last-applied-configuration: |
+        {"apiVersion":"v1","data":{"agent.conf":"agent {\n    data_dir          = \"/run/spire/agent-data\"\n    log_level         = \"INFO\"\n    server_address    = \"spire-server.spire.svc.cluster.local\"\n    server_port       = \"8081\"\n\n    experimental {\n        sync_interval = \"1s\"\n    }\n\n    # Workload API endpoint. Shared into workload pods by hostPath\n    # (not the SPIFFE CSI driver); the hostPath directory is\n    # /run/spire/sockets on the node.\n    socket_path       = \"/run/spire/sockets/agent.sock\"\n\n    trust_bundle_path = \"/run/spire/bundle/bundle.crt\"\n    trust_domain      = \"lab.local\"\n}\n\nplugins {\n    # Node attestation, server-side counterpart in 11-server-configmap.yaml.\n    # token_path points at the projected token volume whose audience is\n    # \"spire-server\"; the server's k8s_psat `audience` must match exactly.\n    NodeAttestor \"k8s_psat\" {\n        plugin_data {\n            cluster    = \"nhi-lab\"\n            token_path = \"/var/run/secrets/tokens/spire-agent\"\n        }\n    }\n\n    KeyManager \"memory\" {\n        plugin_data {}\n    }\n\n    # Workload attestation. Emits k8s:ns:\u003cns\u003e, k8s:sa:\u003csa\u003e, k8s:pod-uid:\u003cuid\u003e\n    # and friends — the selectors a spawn manifest carries in its\n    # `child_selectors` field.\n    #\n    # skip_kubelet_verification: kind's kubelet serves a self-signed\n    # certificate that no in-cluster CA vouches for. Lab-only shortcut and\n    # a known limitation of this deployment.\n    #\n    # What it weakens: the selectors this attestor derives from the kubelet\n    # /pods query are the sole binding between a minted child SPIFFE ID and\n    # the pod entitled to use it, so the provenance claim\n    # terminates at the integrity of that query. Forging it requires\n    # intercepting a loopback connection inside the node's own network\n    # namespace, i.e. node compromise — already terminal for SPIRE's node\n    # attestation trust model. Low residual risk, but stated explicitly\n    # rather than left assumed.\n    WorkloadAttestor \"k8s\" {\n        plugin_data {\n            skip_kubelet_verification = true\n        }\n    }\n\n    WorkloadAttestor \"unix\" {\n        plugin_data {}\n    }\n}\n\nhealth_checks {\n    listener_enabled = true\n    bind_address     = \"0.0.0.0\"\n    bind_port        = \"8082\"\n    live_path        = \"/live\"\n    ready_path       = \"/ready\"\n}\n"},"kind":"ConfigMap","metadata":{"annotations":{},"name":"spire-agent","namespace":"spire"}}
+    creationTimestamp: "2026-11-21T21:28:48Z"
+    name: spire-agent
+    namespace: spire
+    resourceVersion: "671"
+    uid: fd5f1ceb-c6ce-4f6f-8919-a839b78c0dc8
+- apiVersion: v1
+  data:
+    bundle.crt: |
+      -----BEGIN CERTIFICATE-----
+      MIICJzCCAc2gAwIBAgIQEAEf+GMTC736xko3djS+ZTAKBggqhkjOPQQDAjBkMQsw
+      CQYDVQQGEwJVUzEQMA4GA1UEChMHbmhpLWxhYjESMBAGA1UEAxMJbGFiLmxvY2Fs
+      MS8wLQYDVQQFEyYyMTI3MzQ4ODY2MzM2MTI0NjU0Njg1MDMwMjQzNjcxNzE0OTc5
+      NzAeFw0yNjExMjEyMTI4MzNaFw0yNjExMjIyMTI4NDNaMGQxCzAJBgNVBAYTAlVT
+      MRAwDgYDVQQKEwduaGktbGFiMRIwEAYDVQQDEwlsYWIubG9jYWwxLzAtBgNVBAUT
+      JjIxMjczNDg4NjYzMzYxMjQ2NTQ2ODUwMzAyNDM2NzE3MTQ5Nzk3MFkwEwYHKoZI
+      zj0CAQYIKoZIzj0DAQcDQgAEJtpQ4NZV61mx7NlZNMK7rThQblHEU667ot4vz3hU
+      sW/TT7qiaLWhhZzUGZjwdOJqkfMKZIcywXDs0gAIHawfRKNhMF8wDgYDVR0PAQH/
+      BAQDAgEGMA8GA1UdEwEB/wQFMAMBAf8wHQYDVR0OBBYEFMlS8U/kA3iRRHxqvEMH
+      PdF0TfwoMB0GA1UdEQQWMBSGEnNwaWZmZTovL2xhYi5sb2NhbDAKBggqhkjOPQQD
+      AgNIADBFAiAgp1g8z1RBPzTgkxdzBqTKDiOaHHUzplGH41KBHjiBLwIhAMd6I9y3
+      bo8VxORITz+MlSzE+Kgwwr/SELJpX4OofHpb
+      -----END CERTIFICATE-----
+  kind: ConfigMap
+  metadata:
+    annotations:
+      kubectl.kubernetes.io/last-applied-configuration: |
+        {"apiVersion":"v1","kind":"ConfigMap","metadata":{"annotations":{},"name":"spire-bundle","namespace":"spire"}}
+    creationTimestamp: "2026-11-21T21:28:34Z"
+    name: spire-bundle
+    namespace: spire
+    resourceVersion: "655"
+    uid: 8307243c-2784-4d01-a52c-2f999f33df42
+- apiVersion: v1
+  data:
+    server.conf: |
+      server {
+          bind_address   = "0.0.0.0"
+          bind_port      = "8081"
+
+          # Trust domain is fixed lab-wide (SPIFFE IDs, OPA rules and tests all
+          # embed it). Do not change.
+          trust_domain   = "lab.local"
+
+          data_dir       = "/run/spire/data"
+          log_level      = "INFO"
+
+          experimental {
+              cache_reload_interval = "1s"
+          }
+
+          # Local admin socket. `spire-server entry ...` executed inside this
+          # container talks to the server over this UDS; that is how the
+          # static entries (`make entries`) are created.
+          socket_path    = "/tmp/spire-server/private/api.sock"
+
+          ca_ttl                = "24h"
+          default_x509_svid_ttl = "1h"
+
+          # Deliberately short. JWT-SVIDs are the credential the protected
+          # resource accepts, so a short lifetime is what makes the
+          # "dispose" stage observable within an experiment run.
+          default_jwt_svid_ttl  = "5m"
+
+          ca_subject {
+              country      = ["US"]
+              organization = ["nhi-lab"]
+              common_name  = "lab.local"
+          }
+
+          # WARNING — this is an UNSCOPED privilege grant.
+          #
+          # admin_ids is not limited to the Entry API. A caller holding this
+          # SPIFFE ID may create, update and DELETE any entry for ANY SPIFFE ID
+          # with ANY selectors and TTL, ban or delete agents, and write the
+          # bundle and trust-domain APIs. SPIRE 1.15 cannot express a narrower
+          # grant such as "may only create entries beneath this path".
+          #
+          # Consequence: the SPIRE server places NO independent constraint on
+          # what the vending service mints, so the scope attenuation invariant
+          # Pi(C) subset-of Pi(P) is enforced by the vending service's own code
+          # plus default deny at the resource — not by the server. This is an
+          # accepted, documented limitation of the design.
+          #
+          # Note: SPIRE matches admin_ids against the caller's X509-SVID,
+          # not a JWT-SVID. The vending service must reach :8081 over mTLS.
+          admin_ids = ["spiffe://lab.local/svc/vending-service"]
+      }
+
+      plugins {
+          DataStore "sql" {
+              plugin_data {
+                  database_type     = "sqlite3"
+                  connection_string = "/run/spire/data/datastore.sqlite3"
+              }
+          }
+
+          # Node attestation: Projected Service Account Token.
+          # `audience` here MUST match the audience the agent's projected token
+          # volume requests (see 22-agent-daemonset.yaml). Mismatch is the
+          # classic PSAT failure: TokenReview returns authenticated=false with
+          # no obvious explanation.
+          NodeAttestor "k8s_psat" {
+              plugin_data {
+                  clusters = {
+                      "nhi-lab" = {
+                          service_account_allow_list = ["spire:spire-agent"]
+                          audience                   = ["spire-server"]
+                      }
+                  }
+              }
+          }
+
+          KeyManager "disk" {
+              plugin_data {
+                  keys_path = "/run/spire/data/keys.json"
+              }
+          }
+
+          # Publishes the trust bundle into the `spire-bundle` ConfigMap so the
+          # agent DaemonSet can bootstrap without a pre-shared join token.
+          Notifier "k8sbundle" {
+              plugin_data {
+                  namespace  = "spire"
+                  config_map = "spire-bundle"
+              }
+          }
+      }
+
+      health_checks {
+          listener_enabled = true
+          bind_address     = "0.0.0.0"
+          bind_port        = "8080"
+          live_path        = "/live"
+          ready_path       = "/ready"
+      }
+  kind: ConfigMap
+  metadata:
+    annotations:
+      kubectl.kubernetes.io/last-applied-configuration: |
+        {"apiVersion":"v1","data":{"server.conf":"server {\n    bind_address   = \"0.0.0.0\"\n    bind_port      = \"8081\"\n\n    # Trust domain is fixed lab-wide (SPIFFE IDs, OPA rules and tests all\n    # embed it). Do not change.\n    trust_domain   = \"lab.local\"\n\n    data_dir       = \"/run/spire/data\"\n    log_level      = \"INFO\"\n\n    experimental {\n        cache_reload_interval = \"1s\"\n    }\n\n    # Local admin socket. `spire-server entry ...` executed inside this\n    # container talks to the server over this UDS; that is how the\n    # static entries (`make entries`) are created.\n    socket_path    = \"/tmp/spire-server/private/api.sock\"\n\n    ca_ttl                = \"24h\"\n    default_x509_svid_ttl = \"1h\"\n\n    # Deliberately short. JWT-SVIDs are the credential the protected\n    # resource accepts, so a short lifetime is what makes the\n    # \"dispose\" stage observable within an experiment run.\n    default_jwt_svid_ttl  = \"5m\"\n\n    ca_subject {\n        country      = [\"US\"]\n        organization = [\"nhi-lab\"]\n        common_name  = \"lab.local\"\n    }\n\n    # WARNING — this is an UNSCOPED privilege grant.\n    #\n    # admin_ids is not limited to the Entry API. A caller holding this\n    # SPIFFE ID may create, update and DELETE any entry for ANY SPIFFE ID\n    # with ANY selectors and TTL, ban or delete agents, and write the\n    # bundle and trust-domain APIs. SPIRE 1.15 cannot express a narrower\n    # grant such as \"may only create entries beneath this path\".\n    #\n    # Consequence: the SPIRE server places NO independent constraint on\n    # what the vending service mints, so the scope attenuation invariant\n    # Pi(C) subset-of Pi(P) is enforced by the vending service's own code\n    # plus default deny at the resource — not by the server. This is an\n    # accepted, documented limitation of the design.\n    #\n    # Note: SPIRE matches admin_ids against the caller's X509-SVID,\n    # not a JWT-SVID. The vending service must reach :8081 over mTLS.\n    admin_ids = [\"spiffe://lab.local/svc/vending-service\"]\n}\n\nplugins {\n    DataStore \"sql\" {\n        plugin_data {\n            database_type     = \"sqlite3\"\n            connection_string = \"/run/spire/data/datastore.sqlite3\"\n        }\n    }\n\n    # Node attestation: Projected Service Account Token.\n    # `audience` here MUST match the audience the agent's projected token\n    # volume requests (see 22-agent-daemonset.yaml). Mismatch is the\n    # classic PSAT failure: TokenReview returns authenticated=false with\n    # no obvious explanation.\n    NodeAttestor \"k8s_psat\" {\n        plugin_data {\n            clusters = {\n                \"nhi-lab\" = {\n                    service_account_allow_list = [\"spire:spire-agent\"]\n                    audience                   = [\"spire-server\"]\n                }\n            }\n        }\n    }\n\n    KeyManager \"disk\" {\n        plugin_data {\n            keys_path = \"/run/spire/data/keys.json\"\n        }\n    }\n\n    # Publishes the trust bundle into the `spire-bundle` ConfigMap so the\n    # agent DaemonSet can bootstrap without a pre-shared join token.\n    Notifier \"k8sbundle\" {\n        plugin_data {\n            namespace  = \"spire\"\n            config_map = \"spire-bundle\"\n        }\n    }\n}\n\nhealth_checks {\n    listener_enabled = true\n    bind_address     = \"0.0.0.0\"\n    bind_port        = \"8080\"\n    live_path        = \"/live\"\n    ready_path       = \"/ready\"\n}\n"},"kind":"ConfigMap","metadata":{"annotations":{},"name":"spire-server","namespace":"spire"}}
+    creationTimestamp: "2026-11-21T21:28:34Z"
+    name: spire-server
+    namespace: spire
+    resourceVersion: "596"
+    uid: d073fda5-24f5-434d-ac88-50d8c98b146e
+kind: List
+metadata:
+  resourceVersion: ""

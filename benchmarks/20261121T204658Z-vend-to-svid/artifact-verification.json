@@ -1,0 +1,12 @@
+{
+  "archive_sha256": "55d97bc1a47f442483ff2c0fab23f39044b30b5f316e7d684d812c0274f1c6fa",
+  "archive_size_bytes": 55153,
+  "guest_sha256_recorded_by_queue_at_creation": "55d97bc1a47f442483ff2c0fab23f39044b30b5f316e7d684d812c0274f1c6fa",
+  "guest_sha256_recomputed_before_transfer": "55d97bc1a47f442483ff2c0fab23f39044b30b5f316e7d684d812c0274f1c6fa",
+  "local_sha256_after_transfer": "55d97bc1a47f442483ff2c0fab23f39044b30b5f316e7d684d812c0274f1c6fa",
+  "sha256_match": true,
+  "guest_archive_path": "/var/tmp/nhi-rerun/out/20261121T204658Z-vend-to-svid.tar.gz",
+  "source_instance_id": "i-01d083bbb690a12c2",
+  "source_archive_sha256_guest_and_local": "651b450c3d455dcc5db8b6edc024b7ca1b98a2c427eb40d895e9642004f2142d",
+  "transport": "AWS Systems Manager Run Command (AWS-RunShellScript): tarball read on the guest as base64 in 18000-character slices (cut), reassembled and decoded locally; no port forwarding, no ingress"
+}

@@ -1,0 +1,24 @@
+NAMESPACE            NAME                                                            READY   STATUS    RESTARTS   AGE     IP            NODE                                    NOMINATED NODE   READINESS GATES
+agents               experiments-attacker-c7c7dcc66-fgwvv                            1/1     Running   0          5m52s   10.244.1.13   aws-vend-to-access-poll-worker          <none>           <none>
+agents               experiments-child-85c8bd56cc-lxd9z                              1/1     Running   0          5m52s   10.244.1.14   aws-vend-to-access-poll-worker          <none>           <none>
+agents               experiments-grandchild-7f645577d6-9cmpn                         1/1     Running   0          5m52s   10.244.1.15   aws-vend-to-access-poll-worker          <none>           <none>
+agents               experiments-parent-fc985bd87-zzvjw                              1/1     Running   0          5m52s   10.244.1.12   aws-vend-to-access-poll-worker          <none>           <none>
+agents               nhi-test-workload-5965cbf6f8-hjfp4                              1/1     Running   0          6m39s   10.244.1.6    aws-vend-to-access-poll-worker          <none>           <none>
+kube-system          coredns-589f44dc88-hksvf                                        1/1     Running   0          8m2s    10.244.0.2    aws-vend-to-access-poll-control-plane   <none>           <none>
+kube-system          coredns-589f44dc88-sszj5                                        1/1     Running   0          8m2s    10.244.0.3    aws-vend-to-access-poll-control-plane   <none>           <none>
+kube-system          etcd-aws-vend-to-access-poll-control-plane                      1/1     Running   0          8m9s    172.18.0.3    aws-vend-to-access-poll-control-plane   <none>           <none>
+kube-system          kindnet-847r6                                                   1/1     Running   0          8m1s    172.18.0.2    aws-vend-to-access-poll-worker          <none>           <none>
+kube-system          kindnet-hd9pg                                                   1/1     Running   0          8m3s    172.18.0.3    aws-vend-to-access-poll-control-plane   <none>           <none>
+kube-system          kube-apiserver-aws-vend-to-access-poll-control-plane            1/1     Running   0          8m9s    172.18.0.3    aws-vend-to-access-poll-control-plane   <none>           <none>
+kube-system          kube-controller-manager-aws-vend-to-access-poll-control-plane   1/1     Running   0          8m9s    172.18.0.3    aws-vend-to-access-poll-control-plane   <none>           <none>
+kube-system          kube-proxy-4p9xs                                                1/1     Running   0          8m1s    172.18.0.2    aws-vend-to-access-poll-worker          <none>           <none>
+kube-system          kube-proxy-bsvgg                                                1/1     Running   0          8m3s    172.18.0.3    aws-vend-to-access-poll-control-plane   <none>           <none>
+kube-system          kube-scheduler-aws-vend-to-access-poll-control-plane            1/1     Running   0          8m9s    172.18.0.3    aws-vend-to-access-poll-control-plane   <none>           <none>
+local-path-storage   local-path-provisioner-855c7b7774-fwjfl                         1/1     Running   0          8m2s    10.244.0.4    aws-vend-to-access-poll-control-plane   <none>           <none>
+nhi                  policy-engine-949997b74-fcczs                                   1/1     Running   0          6m25s   10.244.1.7    aws-vend-to-access-poll-worker          <none>           <none>
+nhi                  resource-677689db84-kdf5x                                       1/1     Running   0          6m2s    10.244.1.11   aws-vend-to-access-poll-worker          <none>           <none>
+nhi                  vending-service-597d4c8676-7z7g9                                1/1     Running   0          6m14s   10.244.1.9    aws-vend-to-access-poll-worker          <none>           <none>
+opa                  opa-5c54cb55fb-6z9mq                                            2/2     Running   0          6m47s   10.244.1.4    aws-vend-to-access-poll-worker          <none>           <none>
+spire                spire-agent-fprfk                                               1/1     Running   0          7m1s    172.18.0.3    aws-vend-to-access-poll-control-plane   <none>           <none>
+spire                spire-agent-gcd77                                               1/1     Running   0          7m1s    172.18.0.2    aws-vend-to-access-poll-worker          <none>           <none>
+spire                spire-server-0                                                  1/1     Running   0          7m15s   10.244.1.3    aws-vend-to-access-poll-worker          <none>           <none>

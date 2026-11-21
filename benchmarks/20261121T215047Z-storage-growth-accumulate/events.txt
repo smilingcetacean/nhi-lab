@@ -1,0 +1,194 @@
+NAMESPACE            LAST SEEN   TYPE      REASON                    OBJECT                                                           MESSAGE
+default              7m          Normal    Starting                  node/aws-storage-growth-accumulate-control-plane                 
+default              6m53s       Normal    Starting                  node/aws-storage-growth-accumulate-worker                        
+default              7m8s        Normal    Starting                  node/aws-storage-growth-accumulate-control-plane                 Starting kubelet.
+kube-system          7m8s        Normal    LeaderElection            lease/kube-controller-manager                                    aws-storage-growth-accumulate-control-plane_315f9ad1-6b2b-45c4-ac3a-602b0f11be9b became leader
+default              7m7s        Normal    NodeAllocatableEnforced   node/aws-storage-growth-accumulate-control-plane                 Updated Node Allocatable limit across pods
+default              7m7s        Normal    NodeHasSufficientMemory   node/aws-storage-growth-accumulate-control-plane                 Node aws-storage-growth-accumulate-control-plane status is now: NodeHasSufficientMemory
+default              7m7s        Normal    NodeHasNoDiskPressure     node/aws-storage-growth-accumulate-control-plane                 Node aws-storage-growth-accumulate-control-plane status is now: NodeHasNoDiskPressure
+default              7m7s        Normal    NodeHasSufficientPID      node/aws-storage-growth-accumulate-control-plane                 Node aws-storage-growth-accumulate-control-plane status is now: NodeHasSufficientPID
+kube-system          7m7s        Normal    LeaderElection            lease/kube-scheduler                                             aws-storage-growth-accumulate-control-plane_15c615c7-812f-4e6c-b8f4-53736dfd22d8 became leader
+kube-system          7m7s        Warning   Unhealthy                 pod/kube-scheduler-aws-storage-growth-accumulate-control-plane   Readiness probe failed: HTTP probe failed with statuscode: 500
+default              7m3s        Normal    RegisteredNode            node/aws-storage-growth-accumulate-control-plane                 Node aws-storage-growth-accumulate-control-plane event: Registered Node aws-storage-growth-accumulate-control-plane in Controller
+kube-system          7m2s        Warning   FailedScheduling          pod/coredns-589f44dc88-fngfw                                     0/1 nodes are available: 1 node(s) had untolerated taint(s). no new claims to deallocate, preemption: 0/1 nodes are available: 1 Preemption is not helpful for scheduling.
+kube-system          7m2s        Normal    SuccessfulCreate          daemonset/kindnet                                                Created pod: kindnet-k2s6t
+kube-system          7m2s        Normal    SuccessfulCreate          daemonset/kube-proxy                                             Created pod: kube-proxy-bmtbb
+local-path-storage   7m2s        Warning   FailedScheduling          pod/local-path-provisioner-855c7b7774-wmlwt                      0/1 nodes are available: 1 node(s) had untolerated taint(s). no new claims to deallocate, preemption: 0/1 nodes are available: 1 Preemption is not helpful for scheduling.
+local-path-storage   7m2s        Normal    ScalingReplicaSet         deployment/local-path-provisioner                                Scaled up replica set local-path-provisioner-855c7b7774 from 0 to 1
+kube-system          7m2s        Normal    Scheduled                 pod/kindnet-k2s6t                                                Successfully assigned kube-system/kindnet-k2s6t to aws-storage-growth-accumulate-control-plane
+local-path-storage   7m2s        Normal    SuccessfulCreate          replicaset/local-path-provisioner-855c7b7774                     Created pod: local-path-provisioner-855c7b7774-wmlwt
+kube-system          7m2s        Normal    Scheduled                 pod/kube-proxy-bmtbb                                             Successfully assigned kube-system/kube-proxy-bmtbb to aws-storage-growth-accumulate-control-plane
+kube-system          7m2s        Normal    SuccessfulCreate          replicaset/coredns-589f44dc88                                    Created pod: coredns-589f44dc88-zd246
+kube-system          7m2s        Normal    SuccessfulCreate          replicaset/coredns-589f44dc88                                    Created pod: coredns-589f44dc88-fngfw
+kube-system          7m2s        Normal    ScalingReplicaSet         deployment/coredns                                               Scaled up replica set coredns-589f44dc88 from 0 to 2
+kube-system          7m2s        Warning   FailedScheduling          pod/coredns-589f44dc88-zd246                                     0/1 nodes are available: 1 node(s) had untolerated taint(s). no new claims to deallocate, preemption: 0/1 nodes are available: 1 Preemption is not helpful for scheduling.
+kube-system          7m1s        Normal    Pulled                    pod/kube-proxy-bmtbb                                             Container image "registry.k8s.io/kube-proxy:v1.36.1" already present on machine and can be accessed by the pod
+kube-system          7m1s        Normal    Pulled                    pod/kindnet-k2s6t                                                Container image "docker.io/kindest/kindnetd:v20260528-9350166c" already present on machine and can be accessed by the pod
+kube-system          7m1s        Normal    Created                   pod/kube-proxy-bmtbb                                             Container created
+kube-system          7m1s        Normal    Started                   pod/kube-proxy-bmtbb                                             Container started
+kube-system          6m59s       Normal    SuccessfulCreate          daemonset/kube-proxy                                             Created pod: kube-proxy-sdn4q
+default              6m59s       Normal    NodeHasSufficientPID      node/aws-storage-growth-accumulate-worker                        Node aws-storage-growth-accumulate-worker status is now: NodeHasSufficientPID
+kube-system          6m59s       Normal    Scheduled                 pod/kindnet-cz7h4                                                Successfully assigned kube-system/kindnet-cz7h4 to aws-storage-growth-accumulate-worker
+default              6m59s       Normal    NodeAllocatableEnforced   node/aws-storage-growth-accumulate-worker                        Updated Node Allocatable limit across pods
+kube-system          6m59s       Normal    SuccessfulCreate          daemonset/kindnet                                                Created pod: kindnet-cz7h4
+kube-system          6m59s       Normal    Scheduled                 pod/kube-proxy-sdn4q                                             Successfully assigned kube-system/kube-proxy-sdn4q to aws-storage-growth-accumulate-worker
+default              6m59s       Normal    NodeHasSufficientMemory   node/aws-storage-growth-accumulate-worker                        Node aws-storage-growth-accumulate-worker status is now: NodeHasSufficientMemory
+default              6m59s       Normal    NodeHasNoDiskPressure     node/aws-storage-growth-accumulate-worker                        Node aws-storage-growth-accumulate-worker status is now: NodeHasNoDiskPressure
+default              6m58s       Normal    RegisteredNode            node/aws-storage-growth-accumulate-worker                        Node aws-storage-growth-accumulate-worker event: Registered Node aws-storage-growth-accumulate-worker in Controller
+kube-system          6m58s       Normal    Created                   pod/kindnet-k2s6t                                                Container created
+kube-system          6m58s       Normal    Started                   pod/kindnet-k2s6t                                                Container started
+kube-system          6m56s       Normal    Pulled                    pod/kube-proxy-sdn4q                                             Container image "registry.k8s.io/kube-proxy:v1.36.1" already present on machine and can be accessed by the pod
+kube-system          6m56s       Normal    Pulled                    pod/kindnet-cz7h4                                                Container image "docker.io/kindest/kindnetd:v20260528-9350166c" already present on machine and can be accessed by the pod
+kube-system          6m55s       Normal    Created                   pod/kube-proxy-sdn4q                                             Container created
+kube-system          6m54s       Normal    Started                   pod/kube-proxy-sdn4q                                             Container started
+kube-system          6m53s       Normal    Created                   pod/kindnet-cz7h4                                                Container created
+kube-system          6m52s       Normal    Started                   pod/kindnet-cz7h4                                                Container started
+kube-system          6m47s       Normal    Scheduled                 pod/coredns-589f44dc88-fngfw                                     Successfully assigned kube-system/coredns-589f44dc88-fngfw to aws-storage-growth-accumulate-control-plane
+default              6m47s       Normal    NodeReady                 node/aws-storage-growth-accumulate-control-plane                 Node aws-storage-growth-accumulate-control-plane status is now: NodeReady
+local-path-storage   6m47s       Normal    Scheduled                 pod/local-path-provisioner-855c7b7774-wmlwt                      Successfully assigned local-path-storage/local-path-provisioner-855c7b7774-wmlwt to aws-storage-growth-accumulate-control-plane
+kube-system          6m47s       Normal    Scheduled                 pod/coredns-589f44dc88-zd246                                     Successfully assigned kube-system/coredns-589f44dc88-zd246 to aws-storage-growth-accumulate-control-plane
+kube-system          6m46s       Normal    Pulled                    pod/coredns-589f44dc88-zd246                                     Container image "registry.k8s.io/coredns/coredns:v1.14.2" already present on machine and can be accessed by the pod
+kube-system          6m46s       Normal    Pulled                    pod/coredns-589f44dc88-fngfw                                     Container image "registry.k8s.io/coredns/coredns:v1.14.2" already present on machine and can be accessed by the pod
+local-path-storage   6m46s       Normal    Pulled                    pod/local-path-provisioner-855c7b7774-wmlwt                      Container image "docker.io/kindest/local-path-provisioner:v20260521-9fb22683" already present on machine and can be accessed by the pod
+default              6m42s       Normal    NodeReady                 node/aws-storage-growth-accumulate-worker                        Node aws-storage-growth-accumulate-worker status is now: NodeReady
+local-path-storage   6m41s       Normal    Created                   pod/local-path-provisioner-855c7b7774-wmlwt                      Container created
+kube-system          6m40s       Normal    Created                   pod/coredns-589f44dc88-zd246                                     Container created
+local-path-storage   6m40s       Normal    Started                   pod/local-path-provisioner-855c7b7774-wmlwt                      Container started
+kube-system          6m39s       Normal    Started                   pod/coredns-589f44dc88-zd246                                     Container started
+kube-system          6m39s       Normal    Created                   pod/coredns-589f44dc88-fngfw                                     Container created
+kube-system          6m38s       Warning   Unhealthy                 pod/coredns-589f44dc88-zd246                                     Readiness probe failed: Get "http://10.244.0.4:8181/ready": dial tcp 10.244.0.4:8181: connect: connection refused
+kube-system          6m38s       Warning   Unhealthy                 pod/coredns-589f44dc88-fngfw                                     Readiness probe failed: Get "http://10.244.0.2:8181/ready": dial tcp 10.244.0.2:8181: connect: connection refused
+kube-system          6m38s       Normal    Started                   pod/coredns-589f44dc88-fngfw                                     Container started
+spire                6m18s       Normal    SuccessfulCreate          statefulset/spire-server                                         Create Claim spire-data-spire-server-0 Pod spire-server-0 in StatefulSet spire-server success
+spire                6m18s       Normal    WaitForFirstConsumer      persistentvolumeclaim/spire-data-spire-server-0                  waiting for first consumer to be created before binding
+spire                6m18s       Normal    SuccessfulCreate          statefulset/spire-server                                         Create Pod spire-server-0 in StatefulSet spire-server successful
+local-path-storage   6m18s       Normal    Pulled                    pod/helper-pod-create-pvc-d73be624-a2bf-4569-aa3a-9d1272bbb902   Container image "docker.io/kindest/local-path-helper:v20260131-7181c60a" already present on machine and can be accessed by the pod
+spire                6m18s       Normal    Provisioning              persistentvolumeclaim/spire-data-spire-server-0                  External provisioner is provisioning volume for claim "spire/spire-data-spire-server-0"
+spire                6m18s       Normal    ExternalProvisioning      persistentvolumeclaim/spire-data-spire-server-0                  Waiting for a volume to be created either by the external provisioner 'rancher.io/local-path' or manually by the system administrator. If volume creation is delayed, please verify that the provisioner is running and correctly registered.
+local-path-storage   6m17s       Normal    Started                   pod/helper-pod-create-pvc-d73be624-a2bf-4569-aa3a-9d1272bbb902   Container started
+local-path-storage   6m17s       Normal    Created                   pod/helper-pod-create-pvc-d73be624-a2bf-4569-aa3a-9d1272bbb902   Container created
+spire                6m13s       Normal    ProvisioningSucceeded     persistentvolumeclaim/spire-data-spire-server-0                  Successfully provisioned volume pvc-d73be624-a2bf-4569-aa3a-9d1272bbb902
+spire                6m12s       Normal    Created                   pod/spire-server-0                                               Container created
+spire                6m12s       Normal    Pulled                    pod/spire-server-0                                               Container image "ghcr.io/spiffe/spire-server:1.15.2" already present on machine and can be accessed by the pod
+spire                6m12s       Normal    Scheduled                 pod/spire-server-0                                               Successfully assigned spire/spire-server-0 to aws-storage-growth-accumulate-worker
+spire                6m11s       Normal    Started                   pod/spire-server-0                                               Container started
+spire                6m5s        Normal    Scheduled                 pod/spire-agent-k7mgm                                            Successfully assigned spire/spire-agent-k7mgm to aws-storage-growth-accumulate-control-plane
+spire                6m5s        Normal    Scheduled                 pod/spire-agent-4t8kg                                            Successfully assigned spire/spire-agent-4t8kg to aws-storage-growth-accumulate-worker
+spire                6m5s        Normal    SuccessfulCreate          daemonset/spire-agent                                            Created pod: spire-agent-4t8kg
+spire                6m5s        Normal    SuccessfulCreate          daemonset/spire-agent                                            Created pod: spire-agent-k7mgm
+spire                6m4s        Normal    Started                   pod/spire-agent-k7mgm                                            Container started
+spire                6m4s        Normal    Created                   pod/spire-agent-k7mgm                                            Container created
+spire                6m4s        Normal    Started                   pod/spire-agent-4t8kg                                            Container started
+spire                6m4s        Normal    Created                   pod/spire-agent-4t8kg                                            Container created
+spire                6m4s        Normal    Pulled                    pod/spire-agent-4t8kg                                            Container image "ghcr.io/spiffe/spire-agent:1.15.2" already present on machine and can be accessed by the pod
+spire                6m4s        Normal    Pulled                    pod/spire-agent-k7mgm                                            Container image "ghcr.io/spiffe/spire-agent:1.15.2" already present on machine and can be accessed by the pod
+opa                  5m50s       Normal    Scheduled                 pod/opa-5c54cb55fb-sj98c                                         Successfully assigned opa/opa-5c54cb55fb-sj98c to aws-storage-growth-accumulate-worker
+opa                  5m50s       Normal    ScalingReplicaSet         deployment/opa                                                   Scaled up replica set opa-5c54cb55fb from 0 to 1
+opa                  5m50s       Normal    SuccessfulCreate          replicaset/opa-5c54cb55fb                                        Created pod: opa-5c54cb55fb-sj98c
+opa                  5m50s       Normal    Pulled                    pod/opa-5c54cb55fb-sj98c                                         Container image "ghcr.io/spiffe/spiffe-helper:0.11.0" already present on machine and can be accessed by the pod
+opa                  5m49s       Normal    Started                   pod/opa-5c54cb55fb-sj98c                                         Container started
+opa                  5m49s       Normal    Created                   pod/opa-5c54cb55fb-sj98c                                         Container created
+opa                  5m48s       Normal    Created                   pod/opa-5c54cb55fb-sj98c                                         Container created
+opa                  5m48s       Normal    Started                   pod/opa-5c54cb55fb-sj98c                                         Container started
+opa                  5m48s       Normal    Created                   pod/opa-5c54cb55fb-sj98c                                         Container created
+opa                  5m48s       Normal    Pulled                    pod/opa-5c54cb55fb-sj98c                                         Container image "openpolicyagent/opa:1.18.2" already present on machine and can be accessed by the pod
+opa                  5m48s       Normal    Started                   pod/opa-5c54cb55fb-sj98c                                         Container started
+opa                  5m48s       Normal    Pulled                    pod/opa-5c54cb55fb-sj98c                                         Container image "ghcr.io/spiffe/spiffe-helper:0.11.0" already present on machine and can be accessed by the pod
+agents               5m42s       Normal    ScalingReplicaSet         deployment/nhi-test-workload                                     Scaled up replica set nhi-test-workload-5965cbf6f8 from 0 to 1
+agents               5m42s       Normal    SuccessfulCreate          replicaset/nhi-test-workload-5965cbf6f8                          Created pod: nhi-test-workload-5965cbf6f8-hdvj2
+nhi                  5m42s       Normal    Scheduled                 pod/policy-engine-9f7dd98c4-8cgnt                                Successfully assigned nhi/policy-engine-9f7dd98c4-8cgnt to aws-storage-growth-accumulate-worker
+nhi                  5m42s       Normal    SuccessfulCreate          replicaset/policy-engine-9f7dd98c4                               Created pod: policy-engine-9f7dd98c4-8cgnt
+nhi                  5m42s       Normal    ScalingReplicaSet         deployment/policy-engine                                         Scaled up replica set policy-engine-9f7dd98c4 from 0 to 1
+agents               5m41s       Normal    Pulled                    pod/nhi-test-workload-5965cbf6f8-hdvj2                           Container image "ghcr.io/spiffe/spire-agent:1.15.2" already present on machine and can be accessed by the pod
+agents               5m41s       Normal    Scheduled                 pod/nhi-test-workload-5965cbf6f8-hdvj2                           Successfully assigned agents/nhi-test-workload-5965cbf6f8-hdvj2 to aws-storage-growth-accumulate-worker
+agents               5m41s       Normal    Started                   pod/nhi-test-workload-5965cbf6f8-hdvj2                           Container started
+agents               5m41s       Normal    Created                   pod/nhi-test-workload-5965cbf6f8-hdvj2                           Container created
+nhi                  5m40s       Warning   Failed                    pod/policy-engine-9f7dd98c4-8cgnt                                Error: ErrImageNeverPull
+nhi                  5m40s       Warning   ErrImageNeverPull         pod/policy-engine-9f7dd98c4-8cgnt                                Container image "nhi-lab/policy-engine:dev" is not present with pull policy of Never
+nhi                  5m29s       Normal    Started                   pod/policy-engine-9f7dd98c4-8cgnt                                Container started
+nhi                  5m29s       Normal    Created                   pod/policy-engine-9f7dd98c4-8cgnt                                Container created
+nhi                  5m29s       Normal    Pulled                    pod/policy-engine-9f7dd98c4-8cgnt                                Container image "nhi-lab/policy-engine:dev" already present on machine and can be accessed by the pod
+nhi                  5m21s       Normal    Scheduled                 pod/policy-engine-686c895cd4-slg2t                               Successfully assigned nhi/policy-engine-686c895cd4-slg2t to aws-storage-growth-accumulate-worker
+nhi                  5m21s       Normal    SuccessfulCreate          replicaset/policy-engine-686c895cd4                              Created pod: policy-engine-686c895cd4-slg2t
+nhi                  5m21s       Normal    ScalingReplicaSet         deployment/policy-engine                                         Scaled up replica set policy-engine-686c895cd4 from 0 to 1
+nhi                  5m20s       Normal    Started                   pod/policy-engine-686c895cd4-slg2t                               Container started
+nhi                  5m20s       Normal    Pulled                    pod/policy-engine-686c895cd4-slg2t                               Container image "nhi-lab/policy-engine:dev" already present on machine and can be accessed by the pod
+nhi                  5m20s       Normal    Created                   pod/policy-engine-686c895cd4-slg2t                               Container created
+nhi                  5m14s       Normal    ScalingReplicaSet         deployment/policy-engine                                         Scaled down replica set policy-engine-9f7dd98c4 from 1 to 0
+nhi                  5m14s       Normal    SuccessfulDelete          replicaset/policy-engine-9f7dd98c4                               Deleted pod: policy-engine-9f7dd98c4-8cgnt
+nhi                  5m14s       Normal    Killing                   pod/policy-engine-9f7dd98c4-8cgnt                                Stopping container policy-engine
+nhi                  5m3s        Normal    ScalingReplicaSet         deployment/vending-service                                       Scaled up replica set vending-service-598b4b5754 from 0 to 1
+nhi                  5m3s        Normal    SuccessfulCreate          replicaset/vending-service-598b4b5754                            Created pod: vending-service-598b4b5754-jbcd8
+nhi                  5m3s        Normal    ExternalProvisioning      persistentvolumeclaim/vending-data                               Waiting for a volume to be created either by the external provisioner 'rancher.io/local-path' or manually by the system administrator. If volume creation is delayed, please verify that the provisioner is running and correctly registered.
+nhi                  5m3s        Normal    Provisioning              persistentvolumeclaim/vending-data                               External provisioner is provisioning volume for claim "nhi/vending-data"
+nhi                  5m3s        Normal    WaitForFirstConsumer      persistentvolumeclaim/vending-data                               waiting for first consumer to be created before binding
+local-path-storage   5m2s        Normal    Created                   pod/helper-pod-create-pvc-f15b7701-0e20-42f7-8f74-564ce222f385   Container created
+nhi                  5m2s        Normal    SuccessfulCreate          replicaset/vending-service-5dbcdb57                              Created pod: vending-service-5dbcdb57-rjxrs
+nhi                  5m2s        Normal    SuccessfulDelete          replicaset/vending-service-598b4b5754                            Deleted pod: vending-service-598b4b5754-jbcd8
+local-path-storage   5m2s        Normal    Pulled                    pod/helper-pod-create-pvc-f15b7701-0e20-42f7-8f74-564ce222f385   Container image "docker.io/kindest/local-path-helper:v20260131-7181c60a" already present on machine and can be accessed by the pod
+nhi                  5m2s        Warning   FailedScheduling          pod/vending-service-598b4b5754-jbcd8                             running PreBind plugin "VolumeBinding": binding volumes: pod does not exist any more: pod "vending-service-598b4b5754-jbcd8" not found
+local-path-storage   5m2s        Normal    Started                   pod/helper-pod-create-pvc-f15b7701-0e20-42f7-8f74-564ce222f385   Container started
+nhi                  5m2s        Normal    ScalingReplicaSet         deployment/vending-service                                       Scaled down replica set vending-service-598b4b5754 from 1 to 0
+nhi                  5m2s        Normal    ScalingReplicaSet         deployment/vending-service                                       Scaled up replica set vending-service-5dbcdb57 from 0 to 1
+nhi                  4m59s       Normal    Created                   pod/vending-service-5dbcdb57-rjxrs                               Container created
+nhi                  4m59s       Normal    Pulled                    pod/vending-service-5dbcdb57-rjxrs                               Container image "nhi-lab/vending-service:dev" already present on machine and can be accessed by the pod
+nhi                  4m59s       Normal    Scheduled                 pod/vending-service-5dbcdb57-rjxrs                               Successfully assigned nhi/vending-service-5dbcdb57-rjxrs to aws-storage-growth-accumulate-worker
+nhi                  4m59s       Normal    ProvisioningSucceeded     persistentvolumeclaim/vending-data                               Successfully provisioned volume pvc-f15b7701-0e20-42f7-8f74-564ce222f385
+nhi                  4m58s       Normal    Started                   pod/vending-service-5dbcdb57-rjxrs                               Container started
+nhi                  4m42s       Normal    ScalingReplicaSet         deployment/resource                                              Scaled up replica set resource-577675b886 from 0 to 1
+nhi                  4m42s       Normal    Pulled                    pod/resource-66f9fdcb44-znzrq                                    Container image "nhi-lab/resource:dev" already present on machine and can be accessed by the pod
+nhi                  4m42s       Normal    ScalingReplicaSet         deployment/resource                                              Scaled up replica set resource-66f9fdcb44 from 0 to 1
+nhi                  4m42s       Normal    Scheduled                 pod/resource-577675b886-sdqx6                                    Successfully assigned nhi/resource-577675b886-sdqx6 to aws-storage-growth-accumulate-worker
+nhi                  4m42s       Normal    SuccessfulCreate          replicaset/resource-66f9fdcb44                                   Created pod: resource-66f9fdcb44-znzrq
+nhi                  4m42s       Normal    SuccessfulCreate          replicaset/resource-577675b886                                   Created pod: resource-577675b886-sdqx6
+nhi                  4m42s       Normal    Scheduled                 pod/resource-66f9fdcb44-znzrq                                    Successfully assigned nhi/resource-66f9fdcb44-znzrq to aws-storage-growth-accumulate-worker
+nhi                  4m42s       Normal    Created                   pod/resource-66f9fdcb44-znzrq                                    Container created
+nhi                  4m41s       Normal    Started                   pod/resource-577675b886-sdqx6                                    Container started
+nhi                  4m41s       Normal    Started                   pod/resource-66f9fdcb44-znzrq                                    Container started
+nhi                  4m41s       Normal    Created                   pod/resource-577675b886-sdqx6                                    Container created
+nhi                  4m41s       Normal    Pulled                    pod/resource-577675b886-sdqx6                                    Container image "nhi-lab/resource:dev" already present on machine and can be accessed by the pod
+nhi                  4m36s       Normal    Killing                   pod/resource-66f9fdcb44-znzrq                                    Stopping container resource
+nhi                  4m36s       Normal    ScalingReplicaSet         deployment/resource                                              Scaled down replica set resource-66f9fdcb44 from 1 to 0
+nhi                  4m36s       Normal    SuccessfulDelete          replicaset/resource-66f9fdcb44                                   Deleted pod: resource-66f9fdcb44-znzrq
+nhi                  4m22s       Normal    ScalingReplicaSet         deployment/policy-engine                                         Scaled up replica set policy-engine-6b86f64986 from 0 to 1
+nhi                  4m21s       Normal    SuccessfulCreate          replicaset/policy-engine-6b86f64986                              Created pod: policy-engine-6b86f64986-6r2q7
+nhi                  4m21s       Normal    Scheduled                 pod/policy-engine-6b86f64986-6r2q7                               Successfully assigned nhi/policy-engine-6b86f64986-6r2q7 to aws-storage-growth-accumulate-worker
+nhi                  4m21s       Normal    Pulled                    pod/policy-engine-6b86f64986-6r2q7                               Container image "nhi-lab/policy-engine:dev" already present on machine and can be accessed by the pod
+nhi                  4m21s       Normal    Created                   pod/policy-engine-6b86f64986-6r2q7                               Container created
+nhi                  4m21s       Normal    Started                   pod/policy-engine-6b86f64986-6r2q7                               Container started
+nhi                  4m15s       Normal    ScalingReplicaSet         deployment/policy-engine                                         Scaled down replica set policy-engine-686c895cd4 from 1 to 0
+nhi                  4m15s       Normal    SuccessfulDelete          replicaset/policy-engine-686c895cd4                              Deleted pod: policy-engine-686c895cd4-slg2t
+nhi                  4m15s       Normal    Killing                   pod/policy-engine-686c895cd4-slg2t                               Stopping container policy-engine
+agents               4m14s       Normal    ScalingReplicaSet         deployment/experiments-parent                                    Scaled up replica set experiments-parent-fc985bd87 from 0 to 1
+agents               4m14s       Normal    Scheduled                 pod/experiments-parent-fc985bd87-2pb54                           Successfully assigned agents/experiments-parent-fc985bd87-2pb54 to aws-storage-growth-accumulate-worker
+agents               4m14s       Normal    SuccessfulCreate          replicaset/experiments-attacker-c7c7dcc66                        Created pod: experiments-attacker-c7c7dcc66-8vrl7
+agents               4m14s       Normal    ScalingReplicaSet         deployment/experiments-attacker                                  Scaled up replica set experiments-attacker-c7c7dcc66 from 0 to 1
+agents               4m14s       Normal    Scheduled                 pod/experiments-child-85c8bd56cc-mdrt8                           Successfully assigned agents/experiments-child-85c8bd56cc-mdrt8 to aws-storage-growth-accumulate-worker
+agents               4m14s       Normal    SuccessfulCreate          replicaset/experiments-child-85c8bd56cc                          Created pod: experiments-child-85c8bd56cc-mdrt8
+agents               4m14s       Normal    Scheduled                 pod/experiments-attacker-c7c7dcc66-8vrl7                         Successfully assigned agents/experiments-attacker-c7c7dcc66-8vrl7 to aws-storage-growth-accumulate-worker
+agents               4m14s       Normal    ScalingReplicaSet         deployment/experiments-child                                     Scaled up replica set experiments-child-85c8bd56cc from 0 to 1
+agents               4m14s       Normal    Scheduled                 pod/experiments-grandchild-7f645577d6-9jkt4                      Successfully assigned agents/experiments-grandchild-7f645577d6-9jkt4 to aws-storage-growth-accumulate-worker
+agents               4m14s       Normal    SuccessfulCreate          replicaset/experiments-grandchild-7f645577d6                     Created pod: experiments-grandchild-7f645577d6-9jkt4
+agents               4m14s       Normal    ScalingReplicaSet         deployment/experiments-grandchild                                Scaled up replica set experiments-grandchild-7f645577d6 from 0 to 1
+agents               4m14s       Normal    SuccessfulCreate          replicaset/experiments-parent-fc985bd87                          Created pod: experiments-parent-fc985bd87-2pb54
+agents               4m13s       Normal    Started                   pod/experiments-attacker-c7c7dcc66-8vrl7                         Container started
+agents               4m13s       Normal    Pulled                    pod/experiments-child-85c8bd56cc-mdrt8                           Container image "nhi-lab/parentsim:dev" already present on machine and can be accessed by the pod
+agents               4m13s       Normal    Pulled                    pod/experiments-parent-fc985bd87-2pb54                           Container image "nhi-lab/parentsim:dev" already present on machine and can be accessed by the pod
+agents               4m13s       Normal    Started                   pod/experiments-parent-fc985bd87-2pb54                           Container started
+agents               4m13s       Normal    Pulled                    pod/experiments-attacker-c7c7dcc66-8vrl7                         Container image "nhi-lab/parentsim:dev" already present on machine and can be accessed by the pod
+agents               4m13s       Normal    Created                   pod/experiments-attacker-c7c7dcc66-8vrl7                         Container created
+agents               4m13s       Normal    Started                   pod/experiments-grandchild-7f645577d6-9jkt4                      Container started
+agents               4m13s       Normal    Created                   pod/experiments-grandchild-7f645577d6-9jkt4                      Container created
+agents               4m13s       Normal    Pulled                    pod/experiments-grandchild-7f645577d6-9jkt4                      Container image "nhi-lab/parentsim:dev" already present on machine and can be accessed by the pod
+agents               4m13s       Normal    Started                   pod/experiments-child-85c8bd56cc-mdrt8                           Container started
+agents               4m13s       Normal    Created                   pod/experiments-child-85c8bd56cc-mdrt8                           Container created
+agents               4m13s       Normal    Created                   pod/experiments-parent-fc985bd87-2pb54                           Container created
+nhi                  4m11s       Normal    Scheduled                 pod/vending-service-75c7cf5d79-wz9hr                             Successfully assigned nhi/vending-service-75c7cf5d79-wz9hr to aws-storage-growth-accumulate-worker
+nhi                  4m11s       Normal    ScalingReplicaSet         deployment/vending-service                                       Scaled up replica set vending-service-75c7cf5d79 from 0 to 1
+nhi                  4m11s       Normal    SuccessfulDelete          replicaset/vending-service-5dbcdb57                              Deleted pod: vending-service-5dbcdb57-rjxrs
+nhi                  4m11s       Normal    Killing                   pod/vending-service-5dbcdb57-rjxrs                               Stopping container vending-service
+nhi                  4m11s       Normal    SuccessfulCreate          replicaset/vending-service-75c7cf5d79                            Created pod: vending-service-75c7cf5d79-wz9hr
+nhi                  4m11s       Normal    ScalingReplicaSet         deployment/vending-service                                       Scaled down replica set vending-service-5dbcdb57 from 1 to 0
+nhi                  4m10s       Normal    Pulled                    pod/vending-service-75c7cf5d79-wz9hr                             Container image "nhi-lab/vending-service:dev" already present on machine and can be accessed by the pod
+nhi                  4m10s       Normal    Created                   pod/vending-service-75c7cf5d79-wz9hr                             Container created
+nhi                  4m10s       Normal    Started                   pod/vending-service-75c7cf5d79-wz9hr                             Container started

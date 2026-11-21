@@ -1,0 +1,19 @@
+
+[2026-11-21T18:41:13Z] make vending-service-test 
+go: downloading github.com/spiffe/spire-api-sdk v1.15.2
+go: downloading modernc.org/sqlite v1.54.0
+go: downloading golang.org/x/sys v0.46.0
+go: downloading modernc.org/libc v1.74.1
+go: downloading github.com/google/uuid v1.6.0
+go: downloading github.com/dustin/go-humanize v1.0.1
+go: downloading modernc.org/mathutil v1.7.1
+go: downloading modernc.org/memory v1.11.0
+go: downloading github.com/remyoudompheng/bigfft v0.0.0-20230129092748-24d4a6f8daec
+ok  	nhi-lab/vending-service/cmd/parentsim	0.975s
+ok  	nhi-lab/vending-service/cmd/vending-service	0.384s
+ok  	nhi-lab/vending-service/internal/audit	0.058s
+ok  	nhi-lab/vending-service/internal/manifest	0.006s
+?   	nhi-lab/vending-service/internal/policyclient	[no test files]
+ok  	nhi-lab/vending-service/internal/signature	0.066s
+?   	nhi-lab/vending-service/internal/spireentry	[no test files]
+ok  	nhi-lab/vending-service/internal/store	0.080s

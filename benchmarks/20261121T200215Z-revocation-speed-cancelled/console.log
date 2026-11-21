@@ -1,0 +1,10 @@
+
+[2026-11-21T20:05:22Z] uv run --locked --python 3.14.6 python3 -u revocation_speed.py --trials 30 --run-id 20261121T200215Z-revocation-speed 
+== revocation speed: 30 trials, G polls every 20 ms ==
+P=experiments-parent-fc985bd87-ptlw6 C=experiments-child-85c8bd56cc-99dfb G=experiments-grandchild-7f645577d6-x4dx7
+  trial  1/30: 155.1 ms  [17.7s]
+  trial  2/30: 75.3 ms  [20.7s]
+  trial  3/30: 80.8 ms  [15.7s]
+  trial  4/30: 20.5 ms  [16.5s]
+  trial  5/30: 156.0 ms  [17.0s]
+  trial  6/30: 95.3 ms  [15.6s]

@@ -1,0 +1,24 @@
+NAMESPACE            NAME                                                       READY   STATUS    RESTARTS   AGE     IP            NODE                               NOMINATED NODE   READINESS GATES
+agents               experiments-attacker-c7c7dcc66-qpcn4                       1/1     Running   0          6m1s    10.244.1.13   aws-revoke-to-deny-worker          <none>           <none>
+agents               experiments-child-85c8bd56cc-8prjd                         1/1     Running   0          6m1s    10.244.1.14   aws-revoke-to-deny-worker          <none>           <none>
+agents               experiments-grandchild-7f645577d6-4s6c2                    1/1     Running   0          6m1s    10.244.1.15   aws-revoke-to-deny-worker          <none>           <none>
+agents               experiments-parent-fc985bd87-96q9m                         1/1     Running   0          6m1s    10.244.1.12   aws-revoke-to-deny-worker          <none>           <none>
+agents               nhi-test-workload-5965cbf6f8-tgtl7                         1/1     Running   0          6m49s   10.244.1.6    aws-revoke-to-deny-worker          <none>           <none>
+kube-system          coredns-589f44dc88-bz6tz                                   1/1     Running   0          8m8s    10.244.0.2    aws-revoke-to-deny-control-plane   <none>           <none>
+kube-system          coredns-589f44dc88-ngrbw                                   1/1     Running   0          8m8s    10.244.0.3    aws-revoke-to-deny-control-plane   <none>           <none>
+kube-system          etcd-aws-revoke-to-deny-control-plane                      1/1     Running   0          8m13s   172.18.0.3    aws-revoke-to-deny-control-plane   <none>           <none>
+kube-system          kindnet-g697q                                              1/1     Running   0          8m8s    172.18.0.3    aws-revoke-to-deny-control-plane   <none>           <none>
+kube-system          kindnet-pclw2                                              1/1     Running   0          8m4s    172.18.0.2    aws-revoke-to-deny-worker          <none>           <none>
+kube-system          kube-apiserver-aws-revoke-to-deny-control-plane            1/1     Running   0          8m13s   172.18.0.3    aws-revoke-to-deny-control-plane   <none>           <none>
+kube-system          kube-controller-manager-aws-revoke-to-deny-control-plane   1/1     Running   0          8m14s   172.18.0.3    aws-revoke-to-deny-control-plane   <none>           <none>
+kube-system          kube-proxy-7bp8f                                           1/1     Running   0          8m8s    172.18.0.3    aws-revoke-to-deny-control-plane   <none>           <none>
+kube-system          kube-proxy-ckpvc                                           1/1     Running   0          8m4s    172.18.0.2    aws-revoke-to-deny-worker          <none>           <none>
+kube-system          kube-scheduler-aws-revoke-to-deny-control-plane            1/1     Running   0          8m13s   172.18.0.3    aws-revoke-to-deny-control-plane   <none>           <none>
+local-path-storage   local-path-provisioner-855c7b7774-tgr9w                    1/1     Running   0          8m8s    10.244.0.4    aws-revoke-to-deny-control-plane   <none>           <none>
+nhi                  policy-engine-84b7b47899-j8gqn                             1/1     Running   0          6m34s   10.244.1.7    aws-revoke-to-deny-worker          <none>           <none>
+nhi                  resource-588fb4f95d-t2lg7                                  1/1     Running   0          6m12s   10.244.1.11   aws-revoke-to-deny-worker          <none>           <none>
+nhi                  vending-service-856d48f6c8-9gjz9                           1/1     Running   0          6m24s   10.244.1.9    aws-revoke-to-deny-worker          <none>           <none>
+opa                  opa-5c54cb55fb-28qp7                                       2/2     Running   0          6m58s   10.244.1.4    aws-revoke-to-deny-worker          <none>           <none>
+spire                spire-agent-bkdnz                                          1/1     Running   0          7m11s   172.18.0.2    aws-revoke-to-deny-worker          <none>           <none>
+spire                spire-agent-hc4bc                                          1/1     Running   0          7m11s   172.18.0.3    aws-revoke-to-deny-control-plane   <none>           <none>
+spire                spire-server-0                                             1/1     Running   0          7m24s   10.244.1.3    aws-revoke-to-deny-worker          <none>           <none>

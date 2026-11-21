@@ -1,0 +1,26 @@
+NAMESPACE            NAME                                                   READY   STATUS        RESTARTS   AGE     IP            NODE                           NOMINATED NODE   READINESS GATES
+agents               experiments-attacker-c7c7dcc66-f5v4x                   1/1     Running       0          2m32s   10.244.1.13   aws-functional-worker          <none>           <none>
+agents               experiments-child-85c8bd56cc-72sc4                     1/1     Running       0          2m31s   10.244.1.15   aws-functional-worker          <none>           <none>
+agents               experiments-grandchild-7f645577d6-8tj8r                1/1     Running       0          2m31s   10.244.1.14   aws-functional-worker          <none>           <none>
+agents               experiments-parent-fc985bd87-ltnxc                     1/1     Running       0          2m32s   10.244.1.12   aws-functional-worker          <none>           <none>
+agents               nhi-test-workload-5965cbf6f8-xnl5q                     1/1     Running       0          5m23s   10.244.1.6    aws-functional-worker          <none>           <none>
+kube-system          coredns-589f44dc88-n7lzl                               1/1     Running       0          6m43s   10.244.0.2    aws-functional-control-plane   <none>           <none>
+kube-system          coredns-589f44dc88-ztrvl                               1/1     Running       0          6m43s   10.244.0.3    aws-functional-control-plane   <none>           <none>
+kube-system          etcd-aws-functional-control-plane                      1/1     Running       0          6m50s   172.18.0.3    aws-functional-control-plane   <none>           <none>
+kube-system          kindnet-lwjp7                                          1/1     Running       0          6m43s   172.18.0.3    aws-functional-control-plane   <none>           <none>
+kube-system          kindnet-psjzk                                          1/1     Running       0          6m40s   172.18.0.2    aws-functional-worker          <none>           <none>
+kube-system          kube-apiserver-aws-functional-control-plane            1/1     Running       0          6m50s   172.18.0.3    aws-functional-control-plane   <none>           <none>
+kube-system          kube-controller-manager-aws-functional-control-plane   1/1     Running       0          6m50s   172.18.0.3    aws-functional-control-plane   <none>           <none>
+kube-system          kube-proxy-89fx2                                       1/1     Running       0          6m40s   172.18.0.2    aws-functional-worker          <none>           <none>
+kube-system          kube-proxy-ldbn5                                       1/1     Running       0          6m43s   172.18.0.3    aws-functional-control-plane   <none>           <none>
+kube-system          kube-scheduler-aws-functional-control-plane            1/1     Running       0          6m50s   172.18.0.3    aws-functional-control-plane   <none>           <none>
+local-path-storage   local-path-provisioner-855c7b7774-2vnsw                1/1     Running       0          6m43s   10.244.0.4    aws-functional-control-plane   <none>           <none>
+nhi                  policy-engine-b96754675-dxz7w                          1/1     Running       0          5m17s   10.244.1.7    aws-functional-worker          <none>           <none>
+nhi                  policy-probe-authorized-577d9745fb-6wxdt               1/1     Terminating   0          18s     10.244.1.17   aws-functional-worker          <none>           <none>
+nhi                  policy-probe-unauthorized-5cd658447f-wk4t9             1/1     Terminating   0          19s     10.244.1.16   aws-functional-worker          <none>           <none>
+nhi                  resource-676d84d-ffmk7                                 1/1     Running       0          3m47s   10.244.1.11   aws-functional-worker          <none>           <none>
+nhi                  vending-service-5d7dbfcb56-vdvjq                       1/1     Running       0          5m6s    10.244.1.9    aws-functional-worker          <none>           <none>
+opa                  opa-5c54cb55fb-5fthh                                   2/2     Running       0          5m32s   10.244.1.4    aws-functional-worker          <none>           <none>
+spire                spire-agent-2nsvx                                      1/1     Running       0          5m45s   172.18.0.3    aws-functional-control-plane   <none>           <none>
+spire                spire-agent-j6j67                                      1/1     Running       0          5m45s   172.18.0.2    aws-functional-worker          <none>           <none>
+spire                spire-server-0                                         1/1     Running       0          6m      10.244.1.3    aws-functional-worker          <none>           <none>

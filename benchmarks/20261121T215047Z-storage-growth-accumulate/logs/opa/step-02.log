@@ -1,0 +1,5 @@
+2026-11-21T21:54:50.334016952Z {"client_addr":"10.244.1.12:47420","level":"info","msg":"Received request.","req_id":1,"req_method":"GET","req_path":"/v1/policies","time":"2026-11-21T21:54:50Z"}
+2026-11-21T21:54:50.339409560Z {"client_addr":"10.244.1.12:47420","level":"info","msg":"Sent response.","req_id":1,"req_method":"GET","req_path":"/v1/policies","resp_bytes":38333,"resp_duration":5.282197,"resp_status":200,"time":"2026-11-21T21:54:50Z"}
+2026-11-21T21:54:50.341211776Z {"client_addr":"10.244.1.12:47420","level":"info","msg":"Received request.","req_id":2,"req_method":"PUT","req_path":"/v1/policies/nhi_grants_c_ddd7c7a75b1e990212588c984730046c","time":"2026-11-21T21:54:50Z"}
+2026-11-21T21:54:50.351973542Z {"client_addr":"10.244.1.12:47420","level":"info","msg":"Sent response.","req_id":2,"req_method":"PUT","req_path":"/v1/policies/nhi_grants_c_ddd7c7a75b1e990212588c984730046c","resp_bytes":3,"resp_duration":10.05747,"resp_status":200,"time":"2026-11-21T21:54:50Z"}
+2026-11-21T21:54:51.059190802Z 2026/11/21 21:54:51 http: TLS handshake error from 10.244.1.1:48848: EOF

@@ -1,0 +1,1 @@
+2026-11-21T19:07:54.163098911Z {"timestamp":"2026-11-21T19:07:54.162755306Z","stage":"operate","chain_id":"","actor_spiffe_id":"spiffe://lab.local/agent/parent/exp-root/child/v2a-4d963a-01","outcome":"allow","detail":{"method":"GET","path":"/datasets/A","required_scopes":["resource:read:datasetA"],"chain_id_source":"absent","policy_decision":true,"decision_latency_ms":15.618392}}

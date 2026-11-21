@@ -1,0 +1,12 @@
+{
+  "archive_sha256": "2f3124f49b1f054515c69eb16448d43ef4158997917986bd3eb02f96e648d6e5",
+  "archive_size_bytes": 28144,
+  "guest_sha256_recorded_by_queue_at_creation": "2f3124f49b1f054515c69eb16448d43ef4158997917986bd3eb02f96e648d6e5",
+  "guest_sha256_recomputed_before_transfer": "2f3124f49b1f054515c69eb16448d43ef4158997917986bd3eb02f96e648d6e5",
+  "local_sha256_after_transfer": "2f3124f49b1f054515c69eb16448d43ef4158997917986bd3eb02f96e648d6e5",
+  "sha256_match": true,
+  "guest_archive_path": "/var/tmp/nhi-rerun/out/20261121T203409Z-functional.tar.gz",
+  "source_instance_id": "i-01d083bbb690a12c2",
+  "source_archive_sha256_guest_and_local": "651b450c3d455dcc5db8b6edc024b7ca1b98a2c427eb40d895e9642004f2142d",
+  "transport": "AWS Systems Manager Run Command (AWS-RunShellScript): tarball read on the guest as base64 in 18000-character slices (cut), reassembled and decoded locally; no port forwarding, no ingress"
+}

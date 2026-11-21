@@ -1,0 +1,9 @@
+[2026-11-21T21:27:16Z] make clean KIND_CLUSTER=aws-revocation-speed
+>> deleting kind cluster 'aws-revocation-speed'
+Deleting cluster "aws-revocation-speed" ...
+Deleted nodes: ["aws-revocation-speed-control-plane" "aws-revocation-speed-worker"]
+>> clean
+[2026-11-21T21:27:19Z] rc=0
+No kind clusters found.
+--- kind containers:
+--- all containers:
