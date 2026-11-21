@@ -11,6 +11,10 @@ data:
         server_address    = "spire-server.spire.svc.cluster.local"
         server_port       = "8081"
 
+        experimental {
+            sync_interval = "1s"
+        }
+
         # Workload API endpoint. Shared into workload pods by hostPath
         # (not the SPIFFE CSI driver); the hostPath directory is
         # /run/spire/sockets on the node.

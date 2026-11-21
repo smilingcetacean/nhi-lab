@@ -16,6 +16,10 @@ data:
         data_dir       = "/run/spire/data"
         log_level      = "INFO"
 
+        experimental {
+            cache_reload_interval = "1s"
+        }
+
         # Local admin socket. `spire-server entry ...` executed inside this
         # container talks to the server over this UDS; that is how the
         # static entries (`make entries`) are created.
