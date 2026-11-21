@@ -56,21 +56,37 @@ KUBECTL=(kubectl --context "${KUBECTX}")
 SPIRE_SERVER=("${KUBECTL[@]}" exec -n spire spire-server-0 -c spire-server --
               /opt/spire/bin/spire-server)
 
+# Capture the listing before matching it. Piping `entry show` straight into
+# `grep -q` lets grep exit at the first match; a later write from kubectl exec
+# then dies of SIGPIPE, and under pipefail the pipeline reports 141, so an
+# entry that exists reads as absent and the create below fails AlreadyExists.
 entry_exists() {
-  local spiffe_id="$1"
-  "${SPIRE_SERVER[@]}" entry show -spiffeID "${spiffe_id}" 2>/dev/null \
-    | grep -q "^Entry ID"
+  local spiffe_id="$1" listing
+  listing="$("${SPIRE_SERVER[@]}" entry show -spiffeID "${spiffe_id}" 2>/dev/null)" \
+    || return 1
+  grep -q "^Entry ID" <<<"${listing}"
 }
 
 ensure_entry() {
   local description="$1"; shift
   local spiffe_id="$1"; shift
+  local out
   if entry_exists "${spiffe_id}"; then
     echo "  = ${description}: ${spiffe_id} (already registered)"
     return 0
   fi
+  # AlreadyExists here means an entry with the same SPIFFE ID, parent and
+  # selectors is registered, which is the state this script wants. It covers
+  # a lookup that failed transiently, for example while spire-server-0 rolls.
+  if ! out="$("${SPIRE_SERVER[@]}" entry create "$@" 2>&1)"; then
+    if grep -q "AlreadyExists" <<<"${out}"; then
+      echo "  = ${description}: ${spiffe_id} (already registered)"
+      return 0
+    fi
+    printf '%s\n' "${out}" >&2
+    return 1
+  fi
   echo "  + ${description}: ${spiffe_id}"
-  "${SPIRE_SERVER[@]}" entry create "$@" >/dev/null
 }
 
 echo "Registering static SPIRE entries in trust domain ${TRUST_DOMAIN}"
