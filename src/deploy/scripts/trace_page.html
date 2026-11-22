@@ -1,0 +1,100 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src 'unsafe-inline'; script-src 'unsafe-inline'">
+<title>NHI lifecycle trace</title>
+<style>
+:root{color-scheme:light dark;--page:#fff;--ink:#0b0b0b;--ink2:#52514e;--muted:#6f6d68;--line:rgba(11,11,11,.12);--line2:rgba(11,11,11,.4);--tint:#f3f2ee;--deny:#b3261e;
+--parent:#2a78d6;--vending-service:#eb6834;--policy-engine:#1baf7a;--resource:#eda100;--child:#e87ba4}
+@media (prefers-color-scheme:dark){:root{--page:#151515;--ink:#f0efec;--ink2:#c3c2b7;--muted:#98968f;--line:rgba(255,255,255,.14);--line2:rgba(255,255,255,.45);--tint:#242423;--deny:#ff8a80;
+--parent:#3987e5;--vending-service:#d95926;--policy-engine:#199e70;--resource:#c98500;--child:#d55181}}
+*{box-sizing:border-box}
+body{margin:0 auto;max-width:960px;padding:16px;background:var(--page);color:var(--ink);font:14px/1.5 system-ui,sans-serif}
+button{font:inherit;color:inherit;background:transparent;border:1px solid var(--line);border-radius:8px;padding:6px 12px;cursor:pointer}
+button[aria-pressed=true]{background:var(--tint);border-color:var(--line2)}
+button:focus-visible{outline:2px solid var(--parent);outline-offset:1px}
+code,pre{font-family:ui-monospace,monospace}
+#traces-bar,#legend,#zoom{display:flex;flex-wrap:wrap;gap:8px}
+#traces-bar{margin-bottom:12px}
+#traces-bar button{font-size:13px}
+#traces-bar code{font-size:11px}
+#bar{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;margin-bottom:8px}
+#legend{gap:14px;font-size:12px;color:var(--ink2)}
+#zoom button{font-size:12px}
+.sw{display:inline-block;width:10px;height:10px;border-radius:2px;margin-right:6px}
+.grid{display:grid;grid-template-columns:196px minmax(0,1fr) 78px;gap:10px;align-items:center}
+.row{width:100%;padding:5px 4px;border:0;border-bottom:1px solid var(--line);border-radius:0;text-align:left;font-size:12px}
+.row:hover,.row[aria-pressed=true]{background:var(--tint)}
+.name{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.deny{color:var(--deny);font-weight:500}
+.track{position:relative;height:14px}
+.fill{position:absolute;top:2px;height:10px;border-radius:0 4px 4px 0;min-width:3px}
+.at{text-align:right;font-variant-numeric:tabular-nums;color:var(--ink2)}
+.axis{font-size:11px;color:var(--muted);padding:4px}
+.axis .ends{display:flex;justify-content:space-between}
+#detail{margin:10px 0 0;padding:12px;background:var(--tint);border-radius:8px;font-size:12px;white-space:pre-wrap;overflow-wrap:anywhere}
+@media (max-width:520px){.grid{grid-template-columns:120px minmax(0,1fr) 64px;gap:6px}}
+</style>
+</head>
+<body>
+<div id="traces-bar"></div>
+<div id="bar"><div id="legend"></div><div id="zoom">
+<button id="zoom-full">Full trace</button><button id="zoom-vend">Vend only</button></div></div>
+<div id="rows"></div>
+<div class="grid axis"><span>Bar: time since previous event</span><span class="ends"><span>0</span><span id="max"></span></span><span class="at">At</span></div>
+<pre id="detail"></pre>
+<script id="data" type="application/json">__TRACES__</script>
+<script>
+const SERVICES={'parent':'Parent agent','vending-service':'Vending service','policy-engine':'Policy engine','resource':'Resource','child':'Child agent'};
+const ICONS={ok:'✓',warn:'!',deny:'✕',open:'…'};
+const TRACES=JSON.parse(document.getElementById('data').textContent);
+const $=id=>document.getElementById(id);
+const el=(tag,cls,...kids)=>{const n=document.createElement(tag);if(cls)n.className=cls;n.append(...kids);return n};
+const swatch=s=>{const n=el('span','sw');n.style.background='var(--'+s+')';return n};
+const time=ms=>ms>=1000?(ms/1000).toFixed(2)+' s':ms.toFixed(1)+' ms';
+let current=0,vendOnly=false,selected=0;
+for(const [s,name] of Object.entries(SERVICES))$('legend').append(el('span','',swatch(s),name));
+function visible(events){
+  if(!vendOnly)return events;
+  const last=events.findLastIndex(e=>e.stage==='vend');
+  return last<0?events:events.slice(0,last+1);
+}
+function draw(){
+  $('zoom-full').setAttribute('aria-pressed',!vendOnly);
+  $('zoom-vend').setAttribute('aria-pressed',vendOnly);
+  $('traces-bar').replaceChildren(...TRACES.map((t,i)=>{
+    const b=el('button','',(ICONS[t.status]||'')+' '+t.title+' ',el('code','',t.id.slice(0,10)));
+    b.setAttribute('aria-pressed',i===current);
+    b.onclick=()=>{current=i;selected=0;draw()};
+    return b;
+  }));
+  if(!TRACES.length){$('detail').textContent='No traces in this log.';return}
+  const events=visible(TRACES[current].events);
+  if(selected>=events.length)selected=0;
+  const max=events[events.length-1].at_ms||1;
+  $('rows').replaceChildren(...events.map((e,i)=>{
+    const from=i?events[i-1].at_ms:0,left=Math.min(from/max*100,99);
+    const refused=e.outcome!=='allow';
+    const name=el('span','name',swatch(e.service),e.label);
+    if(refused)name.append(el('span','deny',' ('+e.outcome+')'));
+    const fill=el('span','fill');
+    fill.style.left=left+'%';
+    fill.style.width=Math.min((e.at_ms-from)/max*100,100-left)+'%';
+    fill.style.background='var(--'+e.service+')';
+    const b=el('button','grid row',name,el('span','track',fill),el('span','at',time(e.at_ms)));
+    b.setAttribute('aria-pressed',i===selected);
+    b.onclick=()=>{selected=i;draw()};
+    return b;
+  }));
+  $('max').textContent=time(max);
+  const e=events[selected];
+  $('detail').textContent=[SERVICES[e.service]+' | '+e.label+' | '+e.outcome,e.summary,'join: '+e.join].join('\n');
+}
+$('zoom-full').onclick=()=>{vendOnly=false;draw()};
+$('zoom-vend').onclick=()=>{vendOnly=true;draw()};
+draw();
+</script>
+</body>
+</html>
