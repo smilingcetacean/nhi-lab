@@ -55,6 +55,8 @@ each check rather than only a verdict.
 | `make logs-vending-service` | Follow the vending service's JSON-Lines audit events (stdout of the running pod only) |
 | `make vending-audit` | Print the vending service's durable audit trail (`audit.jsonl` on the `vending-data` volume) via a short-lived read-only reader pod; stdout is the file alone |
 | `make demo` | One full spawn → attest → vend → operate → dispose cycle driven by the Python agent harness, with every component's audit events collected into `src/deploy/demo-audit.jsonl` |
+| `make trace` | Render the demo audit log as `src/deploy/trace.html` for offline viewing. Pass `AUDIT=<absolute path>` to select another audit log. |
+| `make trace-test` | Run the trace page unit tests without a cluster |
 | `make demo-identity-uniqueness` | Short narrated demo: one parent vends three children, each with a distinct chain_id, SPIFFE ID, SPIRE entry and OPA grant |
 | `make experiments` | Run the negative, multi-hop, functional and performance suites (`src/experiments/`) |
 | `make clean` | Delete the kind cluster and its kubeconfig context — full teardown |
@@ -206,7 +208,10 @@ src/deploy/
     ├── vending-audit.sh              # `make vending-audit`: print the durable audit trail
     ├── demo.sh                       # `make demo`
     ├── demo-identity-uniqueness.sh   # `make demo-identity-uniqueness`
-    └── demo-identity-uniqueness-walkthrough.md  # the same demo, step by step by hand
+    ├── demo-identity-uniqueness-walkthrough.md  # the same demo, step by step by hand
+    ├── trace_page.py                  # render audit logs as a trace page
+    ├── trace_page.html                # offline trace page template
+    └── test_trace_page.py             # trace page unit tests
 ```
 
 ---

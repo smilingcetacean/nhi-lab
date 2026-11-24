@@ -39,6 +39,8 @@ TRUST_DOMAIN  ?= lab.local
 DEPLOY_DIR    := $(patsubst %/,%,$(dir $(abspath $(lastword $(MAKEFILE_LIST)))))
 MANIFESTS     := $(DEPLOY_DIR)/manifests
 SCRIPTS       := $(DEPLOY_DIR)/scripts
+AUDIT         ?= $(DEPLOY_DIR)/demo-audit.jsonl
+TRACE_OUT     ?= $(DEPLOY_DIR)/trace.html
 
 KUBECTL       := kubectl --context $(KUBECTX)
 
@@ -511,6 +513,15 @@ verify-exit-hooks: present-up ## Verify the parents' exit hooks: delete each par
 .PHONY: present-audit
 present-audit: ## Stream live audit events from the parent, vending service, policy engine and resource
 	@bash '$(SCRIPTS)/present-audit.sh'
+
+.PHONY: trace
+trace: ## Render an audit log as a trace page (AUDIT=<absolute path> selects the log)
+	@python3 '$(SCRIPTS)/trace_page.py' --out '$(TRACE_OUT)' $(AUDIT)
+	@echo ">> open $(TRACE_OUT)"
+
+.PHONY: trace-test
+trace-test: ## Unit-test the trace page script (no cluster)
+	@cd '$(SCRIPTS)' && python3 -m unittest -v test_trace_page
 
 # A short, narrated demo (contrast the full `demo` above): one parent
 # identity (the experiments-parent fixture) vends
